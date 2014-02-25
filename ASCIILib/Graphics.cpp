@@ -70,7 +70,7 @@ void ascii::Graphics::update()
 				SDL_Surface* characterSurface = TTF_RenderText_Solid(mFont, character.c_str(), characterColor);
 				SDL_Texture* characterTexture = SDL_CreateTextureFromSurface(mRenderer, characterSurface);
 
-				SDL_RenderCopy(mRenderer, characterTexture, NULL, &charRect);
+				//SDL_RenderCopy(mRenderer, characterTexture, NULL, &charRect);
 
 				SDL_DestroyTexture(characterTexture);
 				SDL_FreeSurface(characterSurface);
