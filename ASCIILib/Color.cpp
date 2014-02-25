@@ -18,6 +18,7 @@ ascii::Color::Color()
 }
 
 //static
+const Uint8 ascii::Color::kAlpha = 255;
 const ascii::Color ascii::Color::Black(0, 0, 0);
 const ascii::Color ascii::Color::White(255, 255, 255);
 
