@@ -19,6 +19,8 @@ namespace ascii
 
 			void clear();
 			void update();
+
+			Surface* buffer() { return mBuffer; }
 		private:
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;

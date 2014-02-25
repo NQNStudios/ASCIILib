@@ -28,6 +28,8 @@ namespace ascii
 			void setCharacter(int x, int y, char value) { mCharacters[x][y] = value; }
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
+
+			void clear();
 		private:
 			int mWidth, mHeight;
 

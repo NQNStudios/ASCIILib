@@ -26,11 +26,12 @@ namespace ascii
 			///</summary>
 			Color();
 
+			static const Uint8 kAlpha;
 			static const Color Black;
 			static const Color White;
 
 			operator SDL_Color();
-		private:
+			
 			Uint8 r, g, b;
 	};
 
