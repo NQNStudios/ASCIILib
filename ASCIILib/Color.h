@@ -26,7 +26,11 @@ namespace ascii
 			///</summary>
 			Color();
 
+			///<summary>
+			/// The alpha value of all colors in ASCIILib graphics (255).
+			///</summary>
 			static const Uint8 kAlpha;
+
 			static const Color Black;
 			static const Color White;
 

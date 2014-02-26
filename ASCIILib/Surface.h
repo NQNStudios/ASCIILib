@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Color.h"
+#include "Rectangle.h"
 
 namespace ascii
 {
@@ -29,7 +30,17 @@ namespace ascii
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
 
+			///<summary>
+			/// Clears the surface of all characters and non-black colors.
+			///</summary>
 			void clear();
+
+			///<summary>
+			/// Blits another surface to this surface at the given location.
+			///</summary>
+			///<param name="surface">The surface to blit to this one.</param>
+			///<param name="source">The source rectangle from which to blit, or NULL if the entire source is desired.</param>
+			void blit(Surface* surface, Rectangle source, int x, int y);
 		private:
 			int mWidth, mHeight;
 
@@ -39,4 +50,4 @@ namespace ascii
 			std::vector<std::vector<Color> > mCharacterColors;
 	};
 
-};
+}
