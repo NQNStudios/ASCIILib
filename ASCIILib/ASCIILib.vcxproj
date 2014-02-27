@@ -81,12 +81,14 @@
   <ItemGroup>
     <ClInclude Include="Color.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Surface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Surface.cpp" />
   </ItemGroup>
