@@ -39,14 +39,21 @@ namespace ascii
 			/// Blits an entire surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>
-			void blit(Surface* surface, int x, int y);
+			void blitSurface(Surface* surface, int x, int y);
 
 			///<summary>
 			/// Blits part of another surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>
 			///<param name="source">The source rectangle from which to blit, or NULL if the entire source is desired.</param>
-			void blit(Surface* surface, Rectangle source, int x, int y);
+			void blitSurface(Surface* surface, Rectangle source, int x, int y);
+
+			///<summary>
+			/// Blits a string to this surface.
+			///</summary>
+			///<param name="text">The string to blit to this surface.</param>
+			///<param name="color">The color of the text.</param>
+			void blitString(char* text, Color color, int x, int y);
 		private:
 			int mWidth, mHeight;
 

@@ -22,7 +22,7 @@ void ascii::Surface::clear()
 	}
 }
 
-void ascii::Surface::blit(Surface* surface, int x, int y)
+void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 {
 	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
 	{
@@ -35,7 +35,7 @@ void ascii::Surface::blit(Surface* surface, int x, int y)
 	}
 }
 
-void ascii::Surface::blit(Surface* surface, Rectangle source, int x, int y)
+void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int y)
 {
 	for (int destx = x, srcx = source.x; destx < mWidth && srcx < source.right(); ++destx, ++srcx)
 	{
@@ -45,5 +45,20 @@ void ascii::Surface::blit(Surface* surface, Rectangle source, int x, int y)
 			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
 			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
 		}
+	}
+}
+
+void ascii::Surface::blitString(char* text, Color color, int x, int y)
+{
+	std::string str(text);
+
+	int destx = x, desty = y;
+	std::string::iterator it = str.begin();
+	while (destx < mWidth && desty < mHeight && it != str.end())
+	{
+		mCharacters[destx][desty] = *it;
+		mCharacterColors[destx][desty] = color;
+
+		++it, ++destx;
 	}
 }
