@@ -22,7 +22,7 @@ namespace ascii
 			///<summary>
 			/// Constructs a default rectangle with no dimensions.
 			///</summary>
-			Rectangle(int)
+			Rectangle()
 				: x(0), y(0), width(0), height(0)
 			{
 			}

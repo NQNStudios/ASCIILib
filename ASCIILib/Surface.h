@@ -36,7 +36,13 @@ namespace ascii
 			void clear();
 
 			///<summary>
-			/// Blits another surface to this surface at the given location.
+			/// Blits an entire surface to this surface at the given location.
+			///</summary>
+			///<param name="surface">The surface to blit to this one.</param>
+			void blit(Surface* surface, int x, int y);
+
+			///<summary>
+			/// Blits part of another surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>
 			///<param name="source">The source rectangle from which to blit, or NULL if the entire source is desired.</param>
