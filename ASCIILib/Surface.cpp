@@ -9,16 +9,118 @@ ascii::Surface::Surface(int width, int height)
 
 }
 
+ascii::Surface::Surface(int width, int height, char character, Color backgroundColor, Color characterColor)
+	: mWidth(width), mHeight(height),
+		mCharacters(width, std::vector<char>(height, character)),
+		mBackgroundColors(width, std::vector<Color>(height, backgroundColor)),
+		mCharacterColors(width, std::vector<Color>(height, characterColor))
+{
+
+}
+
+ascii::Surface::Surface(char character, Color backgroundColor, Color characterColor)
+	: mWidth(1), mHeight(1),
+		mCharacters(1, std::vector<char>(1, character)),
+		mBackgroundColors(1, std::vector<Color>(1, backgroundColor)),
+		mCharacterColors(1, std::vector<Color>(1, characterColor))
+{
+
+}
+
 void ascii::Surface::clear()
+{
+	fill(' ', Color::Black, Color::White);
+}
+
+void ascii::Surface::fill(char character, Color backgroundColor, Color characterColor)
 {
 	for (int x = 0; x < mWidth; ++x)
 	{
 		for (int y = 0; y < mHeight; ++y)
 		{
-			setCharacter(x, y, ' ');
-			setBackgroundColor(x, y, Color::Black);
-			setCharacterColor(x, y, Color::White);
+			setCharacter(x, y, character);
+			setBackgroundColor(x, y, backgroundColor);
+			setCharacterColor(x, y, characterColor);
 		}
+	}
+}
+
+void ascii::Surface::fillRect(Rectangle destination, char character, Color backgroundColor, Color characterColor)
+{
+	for (int x = destination.left(); x < destination.right(); ++x)
+	{
+		for (int y = destination.top(); x < destination.bottom(); ++y)
+		{
+			setCharacter(x, y, character);
+			setBackgroundColor(x, y, backgroundColor);
+			setCharacterColor(x, y, characterColor);
+		}
+	}
+}
+
+void ascii::Surface::drawBorder(char character, Color backgroundColor, Color characterColor)
+{
+	int x1 = 0;
+	int x2 = mWidth - 1;
+
+	int y1 = 0;
+	int y2 = mHeight - 1;
+
+	//draw the top and bottom
+	for (int x = x1; x <= x2; ++x)
+	{
+		setCharacter(x, y1, character);
+		setBackgroundColor(x, y1, backgroundColor);
+		setCharacterColor(x, y1, characterColor);
+
+		setCharacter(x, y2, character);
+		setBackgroundColor(x, y2, backgroundColor);
+		setCharacterColor(x, y2, characterColor);
+	}
+
+	//draw the left and right
+	for (int y = y1; y <= y2; ++y)
+	{
+		setCharacter(x1, y, character);
+		setBackgroundColor(x1, y, backgroundColor);
+		setCharacterColor(x1, y, characterColor);
+
+		setCharacter(x2, y, character);
+		setBackgroundColor(x2, y, backgroundColor);
+		setCharacterColor(x2, y, characterColor);
+	}
+}
+
+void ascii::Surface::drawRect(Rectangle destination, char character, Color backgroundColor, Color characterColor)
+{
+	int x1 = destination.left();
+	int x2 = destination.right() - 1;
+
+	int y1 = destination.top();
+	int y2 = destination.bottom() - 1;
+
+	//draw the top and bottom
+	for (int x = x1; x <= x2; ++x)
+	{
+		setCharacter(x, y1, character);
+		setBackgroundColor(x, y1, backgroundColor);
+		setCharacterColor(x, y1, characterColor);
+
+		setCharacter(x, y2, character);
+		setBackgroundColor(x, y2, backgroundColor);
+		setCharacterColor(x, y2, characterColor);
+	}
+
+	//draw the left and right
+	for (int y = y1; y <= y2; ++y)
+	{
+		setCharacter(x1, y, character);
+		setBackgroundColor(x1, y, backgroundColor);
+		setCharacterColor(x1, y, characterColor);
+
+		setCharacter(x1, y, character);
+		setBackgroundColor(x1, y, backgroundColor);
+		setCharacterColor(x1, y, characterColor);
 	}
 }
 

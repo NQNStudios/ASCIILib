@@ -19,6 +19,16 @@ namespace ascii
 			///</summary>
 			Surface(int width, int height);
 
+			///<summary>
+			/// Constructs a surface of the given dimensions filled with the given character and background color.
+			///</summary>
+			Surface(int width, int height, char character, Color backgroundColor, Color characterColor);
+
+			///<summary>
+			/// Constructs a 1x1 surface with the given character and background color.
+			///</summary>
+			Surface(char character, Color backgroundColor, Color characterColor);
+
 			int width() { return mWidth; }
 			int height() { return mHeight; }
 
@@ -36,6 +46,26 @@ namespace ascii
 			void clear();
 
 			///<summary>
+			/// Fills the entire surface with the given character and background color.
+			///</summary>
+			void fill(char character, Color backgroundColor, Color characterColor);
+
+			///<summary>
+			/// Fills a rectangle on this surface with the given character and background color.
+			///</summary>
+			void fillRect(Rectangle destination, char character, Color backgroundColor, Color characterColor);
+
+			///<summary>
+			/// Draws a border around the entire surface using the given character and background color.
+			///</summary>
+			void drawBorder(char character, Color backgroundColor, Color characterColor);
+
+			///<summary>
+			/// Draws an empty rectangle on this surface with the given character and background color.
+			///</summary>
+			void drawRect(Rectangle destination, char character, Color backgroundColor, Color characterColor);
+
+			///<summary>
 			/// Blits an entire surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>
@@ -45,7 +75,7 @@ namespace ascii
 			/// Blits part of another surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>
-			///<param name="source">The source rectangle from which to blit, or NULL if the entire source is desired.</param>
+			///<param name="source">The source rectangle from which to blit.</param>
 			void blitSurface(Surface* surface, Rectangle source, int x, int y);
 
 			///<summary>
