@@ -31,8 +31,34 @@ namespace ascii
 			///</summary>
 			static const Uint8 kAlpha;
 
-			static const Color Black;
+			//Color constants
+			static const Color Red;
+			static const Color DarkRed;
+			static const Color Crimson;
+			static const Color Maroon;
+
+			static const Color Green;
+			static const Color ForestGreen;
+			static const Color DarkGreen;
+			static const Color DarkOliveGreen;
+			
+			static const Color Blue;
+			static const Color DarkBlue;
+			static const Color BlueViolet;
+			static const Color MidnightBlue;
+
+			static const Color Yellow;
+			static const Color Gold;
+			static const Color GoldenRod;
+
 			static const Color White;
+
+			static const Color Gray;
+			static const Color DarkGray;
+			static const Color DimGray;
+			static const Color LightSlateGray;
+
+			static const Color Black;
 
 			operator SDL_Color();
 			
