@@ -92,3 +92,13 @@ void ascii::Graphics::update()
 
 	SDL_RenderPresent(mRenderer);
 }
+
+void ascii::Graphics::blitSurface(Surface* surface, int x, int y)
+{
+	mBuffer->blitSurface(surface, x, y);
+}
+
+void ascii::Graphics::blitSurface(Surface* surface, Rectangle source, int x, int y)
+{
+	mBuffer->blitSurface(surface, source, x, y);
+}
