@@ -49,7 +49,7 @@ void ascii::Surface::fillRect(Rectangle destination, char character, Color backg
 {
 	for (int x = destination.left(); x < destination.right(); ++x)
 	{
-		for (int y = destination.top(); x < destination.bottom(); ++y)
+		for (int y = destination.top(); y < destination.bottom(); ++y)
 		{
 			setCharacter(x, y, character);
 			setBackgroundColor(x, y, backgroundColor);

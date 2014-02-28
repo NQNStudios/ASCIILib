@@ -9,9 +9,16 @@
 namespace ascii
 {
 
+	///<summary>
+	/// Handles all rendering for an ASCIILib game.
+	///</summary>
 	class Graphics
 	{
 		public:
+			///<summary>
+			/// Creates a game window and sets up the Graphics instance.
+			///</summary>
+			///<param name="title">The title of the game window.</param>
 			Graphics(const char* title);
 			~Graphics();
 
