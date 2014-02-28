@@ -50,43 +50,76 @@ void ascii::Graphics::clear()
 
 void ascii::Graphics::update()
 {
-	SDL_Rect charRect;
-
-	for (int x = 0; x < kBufferWidth; ++x)
+	//draw all background colors
+	for (int y = 0; y < kBufferHeight; ++y)
 	{
-		for (int y = 0; y < kBufferHeight; ++y)
+		int x = 0;
+
+		while (x < kBufferWidth)
 		{
-			charRect.x = x * mCharWidth;
-			charRect.y = y * mCharHeight;
-			charRect.w = mCharWidth;
-			charRect.h = mCharHeight;
+			//chain all adjacent background colors in a row for more efficient rendering
+			SDL_Rect colorRect;
 
-			if (mBuffer->getCharacter(x, y) == 'x')
-			{
-				mBuffer->getBackgroundColor(x, y);
-			}
-
-			std::stringstream charstream;
-			charstream << mBuffer->getCharacter(x, y);
-			std::string character;
-			charstream >> character;
+			colorRect.x = x * mCharWidth;
+			colorRect.y = y * mCharHeight;
+			colorRect.w = 0;
+			colorRect.h = mCharHeight;
 
 			Color backgroundColor = mBuffer->getBackgroundColor(x, y);
-			Color characterColor = mBuffer->getCharacterColor(x, y);
+
+			do
+			{
+				colorRect.w += mCharWidth;
+				++x;
+			} while (x < kBufferWidth && mBuffer->getBackgroundColor(x, y) == backgroundColor);
 
 			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
-			SDL_RenderFillRect(mRenderer, &charRect);
+			SDL_RenderFillRect(mRenderer, &colorRect);
+		}
+	}
 
-			if (strcmp(character.c_str(), " "))
+	//draw all characters
+	for (int y = 0; y < kBufferHeight; ++y)
+	{
+		int x = 0;
+
+		while (x < kBufferWidth)
+		{
+			//chain all adjacent characters with the same color into strings for more efficient rendering
+			std::stringstream charstream;
+			SDL_Rect textRect;
+
+			textRect.x = x * mCharWidth;
+			textRect.y = y * mCharHeight;
+			textRect.w = 0;
+			textRect.h = mCharHeight;
+			Color characterColor = mBuffer->getCharacterColor(x, y);
+
+			char ch = mBuffer->getCharacter(x, y);
+			if (ch == ' ')
 			{
-				SDL_Surface* characterSurface = TTF_RenderText_Solid(mFont, character.c_str(), characterColor);
-				SDL_Texture* characterTexture = SDL_CreateTextureFromSurface(mRenderer, characterSurface);
-
-				SDL_RenderCopy(mRenderer, characterTexture, NULL, &charRect);
-
-				SDL_DestroyTexture(characterTexture);
-				SDL_FreeSurface(characterSurface);
+				++x;
+				continue;
 			}
+
+			do
+			{
+				char ch = mBuffer->getCharacter(x, y);
+				charstream << ch;
+				textRect.w += mCharWidth;
+				++x;
+			} while (x < kBufferWidth && mBuffer->getCharacterColor(x, y) == characterColor && mBuffer->getCharacter(x, y) != ' ');
+
+			std::string str;
+			charstream >> str;
+
+			SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
+			SDL_Texture* texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+
+			SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
+
+			SDL_DestroyTexture(texture);
+			SDL_FreeSurface(surface);
 		}
 	}
 

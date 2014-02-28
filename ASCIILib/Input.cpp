@@ -9,8 +9,11 @@ void ascii::Input::beginNewFrame()
 
 void ascii::Input::keyDownEvent(const SDL_Event& event)
 {
-	pressed_keys_[event.key.keysym.sym] = true;
-	held_keys_[event.key.keysym.sym] = true;
+	if (!event.key.repeat)
+	{
+		pressed_keys_[event.key.keysym.sym] = true;
+		held_keys_[event.key.keysym.sym] = true;
+	}
 }
 
 void ascii::Input::keyUpEvent(const SDL_Event& event)
