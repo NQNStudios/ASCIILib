@@ -86,6 +86,14 @@ void ascii::Graphics::update()
 		while (x < kBufferWidth)
 		{
 			//chain all adjacent characters with the same color into strings for more efficient rendering
+
+			char ch = mBuffer->getCharacter(x, y);
+			if (ch == ' ')
+			{
+				++x;
+				continue;
+			}
+
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
@@ -94,13 +102,6 @@ void ascii::Graphics::update()
 			textRect.w = 0;
 			textRect.h = mCharHeight;
 			Color characterColor = mBuffer->getCharacterColor(x, y);
-
-			char ch = mBuffer->getCharacter(x, y);
-			if (ch == ' ')
-			{
-				++x;
-				continue;
-			}
 
 			do
 			{
