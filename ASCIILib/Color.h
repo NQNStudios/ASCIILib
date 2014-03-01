@@ -56,6 +56,7 @@ namespace ascii
 			static const Color Gray;
 			static const Color DarkGray;
 			static const Color DimGray;
+			static const Color LightGray;
 			static const Color LightSlateGray;
 
 			static const Color Black;

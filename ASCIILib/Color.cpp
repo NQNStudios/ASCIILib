@@ -45,6 +45,7 @@ const ascii::Color ascii::Color::White = ascii::Color(255, 255, 255);
 const ascii::Color ascii::Color::Gray = ascii::Color(128, 128, 128);
 const ascii::Color ascii::Color::DimGray = ascii::Color(105, 105, 105);
 const ascii::Color ascii::Color::DarkGray = ascii::Color(85, 85, 85);
+const ascii::Color ascii::Color::LightGray = ascii::Color(211, 211, 211);
 const ascii::Color ascii::Color::LightSlateGray = ascii::Color(119, 136, 153);
 
 const ascii::Color ascii::Color::Black = ascii::Color(0, 0, 0);
