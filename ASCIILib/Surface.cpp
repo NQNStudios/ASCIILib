@@ -192,8 +192,10 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 			//if there's not enough room on this line, move to the next one
 			++y;
 			x = destination.left();
+
+			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
 		}
-		
+
 		blitString(tempstr.c_str(), color, x, y);
 
 		x += tempstr.size() + 1;
