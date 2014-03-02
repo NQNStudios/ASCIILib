@@ -12,7 +12,7 @@ namespace ascii
 	///<summary>
 	/// Handles all rendering for an ASCIILib game.
 	///</summary>
-	class Graphics
+	class Graphics : public Surface
 	{
 		public:
 			///<summary>
@@ -26,33 +26,15 @@ namespace ascii
 			static const unsigned int kBufferHeight;
 
 			///<summary>
-			/// Clears the rendering buffer completely.
-			///</summary>
-			void clear();
-
-			///<summary>
 			/// Renders the rendering buffer in its current state.
 			///</summary>
 			void update();
-
-			///<summary>
-			/// Blits a surface to the rendering buffer at the given location.
-			///</summary>
-			void blitSurface(Surface* surface, int x, int y);
-
-			///<summary>
-			/// Blits part of a surface to the rendering buffer at the given location.
-			///</summary>
-			///<param name="source">The part of the surface to blit.</param>
-			void blitSurface(Surface* surface, Rectangle source, int x, int y);
 		private:
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;
 
 			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
-
-			Surface* mBuffer;
 	};
 
 };

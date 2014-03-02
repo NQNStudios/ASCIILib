@@ -13,6 +13,7 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 ascii::Graphics::Graphics(const char* title)
+	: Surface(kBufferWidth, kBufferHeight)
 {
 	TTF_Init();
 
@@ -25,15 +26,11 @@ ascii::Graphics::Graphics(const char* title)
 		SDL_WINDOW_SHOWN);
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
-
-	mBuffer = new Surface(kBufferWidth, kBufferHeight);
 }
 
 
 ascii::Graphics::~Graphics(void)
 {
-	delete mBuffer;
-
 	SDL_DestroyRenderer(mRenderer);
 	
 	SDL_DestroyWindow(mWindow);
@@ -41,11 +38,6 @@ ascii::Graphics::~Graphics(void)
 	TTF_CloseFont(mFont);
 
 	TTF_Quit();
-}
-
-void ascii::Graphics::clear()
-{
-	mBuffer->clear();
 }
 
 void ascii::Graphics::update()
@@ -65,13 +57,13 @@ void ascii::Graphics::update()
 			colorRect.w = 0;
 			colorRect.h = mCharHeight;
 
-			Color backgroundColor = mBuffer->getBackgroundColor(x, y);
+			Color backgroundColor = getBackgroundColor(x, y);
 
 			do
 			{
 				colorRect.w += mCharWidth;
 				++x;
-			} while (x < kBufferWidth && mBuffer->getBackgroundColor(x, y) == backgroundColor);
+			} while (x < kBufferWidth && getBackgroundColor(x, y) == backgroundColor);
 
 			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
 			SDL_RenderFillRect(mRenderer, &colorRect);
@@ -87,7 +79,7 @@ void ascii::Graphics::update()
 		{
 			//chain all adjacent characters with the same color into strings for more efficient rendering
 
-			char ch = mBuffer->getCharacter(x, y);
+			char ch = getCharacter(x, y);
 			if (ch == ' ')
 			{
 				++x;
@@ -101,15 +93,15 @@ void ascii::Graphics::update()
 			textRect.y = y * mCharHeight;
 			textRect.w = 0;
 			textRect.h = mCharHeight;
-			Color characterColor = mBuffer->getCharacterColor(x, y);
+			Color characterColor = getCharacterColor(x, y);
 
 			do
 			{
-				char ch = mBuffer->getCharacter(x, y);
+				char ch = getCharacter(x, y);
 				charstream << ch;
 				textRect.w += mCharWidth;
 				++x;
-			} while (x < kBufferWidth && mBuffer->getCharacterColor(x, y) == characterColor && mBuffer->getCharacter(x, y) != ' ');
+			} while (x < kBufferWidth && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
 
 			std::string str;
 			charstream >> str;
@@ -125,14 +117,4 @@ void ascii::Graphics::update()
 	}
 
 	SDL_RenderPresent(mRenderer);
-}
-
-void ascii::Graphics::blitSurface(Surface* surface, int x, int y)
-{
-	mBuffer->blitSurface(surface, x, y);
-}
-
-void ascii::Graphics::blitSurface(Surface* surface, Rectangle source, int x, int y)
-{
-	mBuffer->blitSurface(surface, source, x, y);
 }
