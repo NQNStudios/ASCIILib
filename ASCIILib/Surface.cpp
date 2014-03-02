@@ -1,5 +1,7 @@
 #include "Surface.h"
 
+#include <sstream>
+
 ascii::Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), 
 		mCharacters(width, std::vector<char>(height, ' ')),
@@ -162,5 +164,38 @@ void ascii::Surface::blitString(const char* text, Color color, int x, int y)
 		mCharacterColors[destx][desty] = color;
 
 		++it, ++destx;
+	}
+}
+
+void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangle destination)
+{
+	std::stringstream sstream(text);
+	std::string tempstr;
+
+	std::vector<std::string> words;
+
+	while (sstream >> tempstr)
+	{
+		words.push_back(tempstr); //collect the individual words in a vector
+	}
+
+	int x = destination.left();
+	int y = destination.top();
+
+	for (std::vector<std::string>::iterator it = words.begin(); it != words.end(); ++it)
+	{
+		//blit each word
+		tempstr = *it;
+		
+		if (x + tempstr.size() > destination.right())
+		{
+			//if there's not enough room on this line, move to the next one
+			++y;
+			x = destination.left();
+		}
+		
+		blitString(tempstr.c_str(), color, x, y);
+
+		x += tempstr.size() + 1;
 	}
 }

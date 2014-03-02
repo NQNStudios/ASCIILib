@@ -84,6 +84,11 @@ namespace ascii
 			///<param name="text">The string to blit to this surface.</param>
 			///<param name="color">The color of the text.</param>
 			void blitString(const char* text, Color color, int x, int y);
+
+			///<summary>
+			/// Blits a large string to this surface, wrapping it across multiple lines to fit the given destination rectangle.
+			///</summary>
+			void blitStringMultiline(const char* text, Color color, Rectangle destination);
 		private:
 			int mWidth, mHeight;
 
