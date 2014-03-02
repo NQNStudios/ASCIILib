@@ -83,7 +83,7 @@ namespace ascii
 			///</summary>
 			///<param name="text">The string to blit to this surface.</param>
 			///<param name="color">The color of the text.</param>
-			void blitString(char* text, Color color, int x, int y);
+			void blitString(const char* text, Color color, int x, int y);
 		private:
 			int mWidth, mHeight;
 

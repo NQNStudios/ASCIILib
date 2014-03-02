@@ -150,7 +150,7 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 	}
 }
 
-void ascii::Surface::blitString(char* text, Color color, int x, int y)
+void ascii::Surface::blitString(const char* text, Color color, int x, int y)
 {
 	std::string str(text);
 
