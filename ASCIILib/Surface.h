@@ -89,6 +89,11 @@ namespace ascii
 			/// Blits a large string to this surface, wrapping it across multiple lines to fit the given destination rectangle.
 			///</summary>
 			void blitStringMultiline(const char* text, Color color, Rectangle destination);
+
+			///<summary>
+			/// Measures the number of lines needed to blit the given string across multiple lines.
+			///</summary>
+			int measureStringMultiline(const char* text, Rectangle destination);
 		private:
 			int mWidth, mHeight;
 

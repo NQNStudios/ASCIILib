@@ -200,4 +200,42 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 
 		x += tempstr.size() + 1;
 	}
+
+}
+
+int ascii::Surface::measureStringMultiline(const char* text, Rectangle destination)
+{
+	std::stringstream sstream(text);
+	std::string tempstr;
+
+	std::vector<std::string> words;
+
+	while (sstream >> tempstr)
+	{
+		words.push_back(tempstr); //collect the individual words in a vector
+	}
+
+	int x = destination.left();
+	int y = destination.top();
+
+	int lines = 1;
+
+	for (std::vector<std::string>::iterator it = words.begin(); it != words.end(); ++it)
+	{
+		tempstr = *it;
+		
+		if (x + tempstr.size() > destination.right())
+		{
+			//if there's not enough room on this line, move to the next one
+			++y;
+			++lines;
+			x = destination.left();
+
+			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
+		}
+
+		x += tempstr.size() + 1;
+	}
+
+	return lines;
 }
