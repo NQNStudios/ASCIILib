@@ -91,9 +91,14 @@ namespace ascii
 			void blitStringMultiline(const char* text, Color color, Rectangle destination);
 
 			///<summary>
+			/// Measures the final x position of the text drawn across multiple lines.
+			///</summary>
+			int measureStringMultilineX(const char* text, Rectangle destination);
+
+			///<summary>
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
-			int measureStringMultiline(const char* text, Rectangle destination);
+			int measureStringMultilineY(const char* text, Rectangle destination);
 		private:
 			int mWidth, mHeight;
 
