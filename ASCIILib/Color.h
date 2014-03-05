@@ -71,4 +71,24 @@ namespace ascii
 		return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b;
 	}
 
+	inline bool operator<(const Color& c1, const Color& c2)
+	{
+		if (c1.r != c2.r)
+		{
+			return c1.r < c2.r;
+		}
+
+		if (c1.g != c2.g)
+		{
+			return c1.g < c2.g;
+		}
+
+		if (c1.b != c2.b)
+		{
+			return c1.b < c2.b;
+		}
+
+		return false;
+	}
+
 };

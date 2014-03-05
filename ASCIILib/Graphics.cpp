@@ -1,7 +1,6 @@
 #include "Graphics.h"
 
 #include <sstream>
-#include <string>
 
 const int kFontSize = 12;
 const char* kFontPath = "terminal.fon";
@@ -31,6 +30,11 @@ ascii::Graphics::Graphics(const char* title)
 
 ascii::Graphics::~Graphics(void)
 {
+	for (std::map<Glyph, SDL_Texture*>::iterator it = mStringTextures.begin(); it != mStringTextures.end(); ++it)
+	{
+		SDL_DestroyTexture(it->second); //destroy all stored string textures
+	}
+
 	SDL_DestroyRenderer(mRenderer);
 	
 	SDL_DestroyWindow(mWindow);
@@ -106,13 +110,25 @@ void ascii::Graphics::update()
 			std::string str;
 			charstream >> str;
 
-			SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
-			SDL_Texture* texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+			Glyph glyph = std::make_pair(str, characterColor);
+
+			SDL_Texture* texture = NULL;
+
+			if (mStringTextures[glyph])
+			{
+				texture = mStringTextures[glyph];
+			}
+			else
+			{
+				SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
+				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+
+				mStringTextures[glyph] = texture;
+				
+				SDL_FreeSurface(surface);
+			}
 
 			SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
-
-			SDL_DestroyTexture(texture);
-			SDL_FreeSurface(surface);
 		}
 	}
 

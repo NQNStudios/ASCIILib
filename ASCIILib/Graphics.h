@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <string>
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -30,11 +33,15 @@ namespace ascii
 			///</summary>
 			void update();
 		private:
+			typedef std::pair<std::string, Color> Glyph;
+
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;
 
 			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
+
+			std::map<Glyph, SDL_Texture*> mStringTextures;
 	};
 
 };
