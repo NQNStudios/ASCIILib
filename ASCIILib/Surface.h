@@ -29,6 +29,11 @@ namespace ascii
 			///</summary>
 			Surface(char character, Color backgroundColor, Color characterColor);
 
+			///<summary>
+			/// Loads a surface from a text file.
+			///</summary>
+			static Surface* FromFile(char* filepath);
+
 			int width() { return mWidth; }
 			int height() { return mHeight; }
 

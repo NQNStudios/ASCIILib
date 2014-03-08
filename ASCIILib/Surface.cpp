@@ -1,5 +1,9 @@
 #include "Surface.h"
 
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <map>
 #include <sstream>
 
 ascii::Surface::Surface(int width, int height)
@@ -27,6 +31,106 @@ ascii::Surface::Surface(char character, Color backgroundColor, Color characterCo
 		mCharacterColors(1, std::vector<Color>(1, characterColor))
 {
 
+}
+
+ascii::Surface* ascii::Surface::FromFile(char* filepath)
+{
+	std::ifstream file;
+	file.open(filepath);
+
+	std::map<char, Color> colors;
+
+	std::string str;
+	std::stringstream sstream;
+
+	std::getline(file, str); //COLORS
+	std::getline(file, str);
+
+	char symbol[1+1];
+	char red[3+1];
+	char green[3+1];
+	char blue[3+1];
+
+	do
+	{
+		sstream = std::stringstream(str);
+
+		sstream >> symbol;
+		sstream >> red;
+		sstream >> green;
+		sstream >> blue;
+
+		colors[symbol[0]] = Color(atoi(red), atoi(green), atoi(blue));
+		
+		std::getline(file, str);
+	} while (str.compare("SIZE"));
+
+	//SIZE
+	std::getline(file, str);
+	sstream = std::stringstream(str);
+	char width[3+1];
+	char height[3+1];
+	sstream >> width;
+	sstream >> height;
+
+	Surface* surface = new Surface(atoi(width), atoi(height));
+
+	std::getline(file, str); //CHARACTERS
+	
+	char character = ' ';
+	for (int r = 0; r < atoi(height); ++r)
+	{
+		std::getline(file, str);
+
+		int c = 0;
+		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		{
+			character = *it;
+
+			surface->setCharacter(c, r, character);
+
+			++c;
+		}
+	}
+
+	std::getline(file, str); //BACKGROUND COLORS
+	
+	char colorsymbol = ' ';
+	for (int r = 0; r < atoi(height); ++r)
+	{
+		std::getline(file, str);
+
+		int c = 0;
+		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		{
+			colorsymbol = *it;
+
+			surface->setBackgroundColor(c, r, colors[colorsymbol]);
+
+			++c;
+		}
+	}
+
+	std::getline(file, str); //CHARACTER COLORS
+	
+	for (int r = 0; r < atoi(height); ++r)
+	{
+		std::getline(file, str);
+
+		int c = 0;
+		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		{
+			colorsymbol = *it;
+
+			surface->setCharacterColor(c, r, colors[colorsymbol]);
+
+			++c;
+		}
+	}
+
+	file.close();
+
+	return surface;
 }
 
 void ascii::Surface::clear()
