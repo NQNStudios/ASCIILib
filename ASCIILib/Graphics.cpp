@@ -27,6 +27,21 @@ ascii::Graphics::Graphics(const char* title)
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 }
 
+ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
+	: Surface(bufferWidth, bufferHeight)
+{
+	TTF_Init();
+
+	mFont = TTF_OpenFont(kFontPath, kFontSize);
+	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
+
+	mWindow = SDL_CreateWindow(title,
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		bufferWidth * mCharWidth, bufferHeight * mCharHeight,
+		SDL_WINDOW_SHOWN);
+
+	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+}
 
 ascii::Graphics::~Graphics(void)
 {
@@ -44,14 +59,29 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
+SDL_Texture* ascii::Graphics::loadTexture(const char* texturePath)
+{
+	SDL_Surface* imageSurface = SDL_LoadBMP(texturePath);
+
+	//Make sure the image dimensions will align to the buffer
+	SDL_assert(imageSurface->w % mCharWidth == 0);
+	SDL_assert(imageSurface->h % mCharHeight == 0);
+
+	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
+
+	SDL_FreeSurface(imageSurface);
+
+	return imageTexture;
+}
+
 void ascii::Graphics::update()
 {
 	//draw all background colors
-	for (int y = 0; y < kBufferHeight; ++y)
+	for (int y = 0; y < height(); ++y)
 	{
 		int x = 0;
 
-		while (x < kBufferWidth)
+		while (x < width())
 		{
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
@@ -67,19 +97,39 @@ void ascii::Graphics::update()
 			{
 				colorRect.w += mCharWidth;
 				++x;
-			} while (x < kBufferWidth && getBackgroundColor(x, y) == backgroundColor);
+			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
 
 			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
 			SDL_RenderFillRect(mRenderer, &colorRect);
 		}
 	}
 
+	//draw all images
+	for (auto it = mImages.begin(); it != mImages.end(); ++it)
+	{
+		ascii::Point pos(it->first);
+
+		SDL_Texture* texture = it->second;
+
+		int w, h;
+
+		SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+
+		SDL_Rect dest;
+		dest.x = pos.x * mCharWidth;
+		dest.y = pos.y * mCharHeight;
+		dest.w = w;
+		dest.h = h;
+
+		SDL_RenderCopy(mRenderer, texture, NULL, &dest);
+	}
+
 	//draw all characters
-	for (int y = 0; y < kBufferHeight; ++y)
+	for (int y = 0; y < height(); ++y)
 	{
 		int x = 0;
 
-		while (x < kBufferWidth)
+		while (x < width())
 		{
 			//chain all adjacent characters with the same color into strings for more efficient rendering
 
@@ -105,7 +155,7 @@ void ascii::Graphics::update()
 				charstream << ch;
 				textRect.w += mCharWidth;
 				++x;
-			} while (x < kBufferWidth && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
+			} while (x < width() && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
 
 			std::string str;
 			charstream >> str;

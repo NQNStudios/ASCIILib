@@ -1,9 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <map>
+
+#include <SDL.h>
 
 #include "Color.h"
 #include "Rectangle.h"
+#include "Point.h"
 
 namespace ascii
 {
@@ -84,6 +88,11 @@ namespace ascii
 			void blitSurface(Surface* surface, Rectangle source, int x, int y);
 
 			///<summary>
+			/// Blits a texture to the given location.
+			///</summary>
+			void blitTexture(SDL_Texture* texture, int x, int y);
+
+			///<summary>
 			/// Blits a string to this surface.
 			///</summary>
 			///<param name="text">The string to blit to this surface.</param>
@@ -104,6 +113,8 @@ namespace ascii
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
 			int measureStringMultilineY(const char* text, Rectangle destination);
+		protected:
+			std::map<ascii::Point, SDL_Texture*> mImages;
 		private:
 			int mWidth, mHeight;
 

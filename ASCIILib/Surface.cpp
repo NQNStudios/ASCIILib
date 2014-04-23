@@ -136,6 +136,8 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 void ascii::Surface::clear()
 {
 	fill(' ', Color::Black, Color::White);
+
+	mImages.clear();
 }
 
 void ascii::Surface::fill(char character, Color backgroundColor, Color characterColor)
@@ -241,6 +243,16 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
 		}
 	}
+
+	//blit the images from the other surface
+	for (auto it = surface->mImages.begin(); it != surface->mImages.end(); ++it)
+	{
+		ascii::Point pos(it->first);
+		pos.x += x;
+		pos.y += y;
+
+		blitTexture(it->second, pos.x, pos.y);
+	}
 }
 
 void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int y)
@@ -254,6 +266,21 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
 		}
 	}
+
+	//blit the images from the other surface
+	for (auto it = surface->mImages.begin(); it != surface->mImages.end(); ++it)
+	{
+		ascii::Point pos(it->first);
+		pos.x += x;
+		pos.y += y;
+
+		blitTexture(it->second, pos.x, pos.y);
+	}
+}
+
+void ascii::Surface::blitTexture(SDL_Texture* texture, int x, int y)
+{
+	mImages[ascii::Point(x, y)] = texture;
 }
 
 void ascii::Surface::blitString(const char* text, Color color, int x, int y)
