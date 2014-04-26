@@ -42,7 +42,7 @@ ascii::Surface::Surface(char character, Color backgroundColor, Color characterCo
 	mCellOpacity.push_back(new bool[1]);
 }
 
-ascii::Surface* ascii::Surface::FromFile(char* filepath)
+ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cache)
 {
 	std::ifstream file;
 	file.open(filepath);
@@ -108,7 +108,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 		sstream >> imageKey;
 		sstream >> imagePath;
 
-		//TODO load the images
+		cache->loadTexture(imageKey.c_str(), imagePath.c_str());
 
 		std::getline(file, str);
 	}
@@ -217,9 +217,18 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 
 	std::getline(file, str); //IMAGES
 
+	char x[3+1]; //assuming max of 3 characters in coordinates
+	char y[3+1];
 	while (std::getline(file, str)) //while loop without comparison used because this is the last section and may be empty
 	{
-		//TODO place the images
+		sstream = std::stringstream(str);
+
+		sstream >> imageKey;
+
+		sstream >> x;
+		sstream >> y;
+
+		surface->blitTexture(cache->getTexture(imageKey.c_str()), atoi(x), atoi(y));
 	}
 
 	file.close();

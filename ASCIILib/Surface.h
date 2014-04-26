@@ -9,6 +9,7 @@
 #include "Color.h"
 #include "Rectangle.h"
 #include "Point.h"
+#include "ImageCache.h"
 
 namespace ascii
 {
@@ -37,7 +38,7 @@ namespace ascii
 			///<summary>
 			/// Loads a surface from a text file.
 			///</summary>
-			static Surface* FromFile(char* filepath);
+			static Surface* FromFile(char* filepath, ascii::ImageCache* cache);
 
 			int width() { return mWidth; }
 			int height() { return mHeight; }

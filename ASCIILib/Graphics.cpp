@@ -59,19 +59,9 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
-SDL_Texture* ascii::Graphics::loadTexture(const char* texturePath)
+ascii::ImageCache* ascii::Graphics::createImageCache()
 {
-	SDL_Surface* imageSurface = SDL_LoadBMP(texturePath);
-
-	//Make sure the image dimensions will align to the buffer
-	SDL_assert(imageSurface->w % mCharWidth == 0);
-	SDL_assert(imageSurface->h % mCharHeight == 0);
-
-	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
-
-	SDL_FreeSurface(imageSurface);
-
-	return imageTexture;
+	return new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
 }
 
 void ascii::Graphics::update()

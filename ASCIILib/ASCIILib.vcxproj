@@ -83,6 +83,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="ImageCache.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="ImageCache.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />
