@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SurfaceEditor.Lib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +19,17 @@ namespace SurfaceEditor
         public EditorForm()
         {
             InitializeComponent();
+        }
+
+        private void openSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                surfacePanel1.Surface = Surface.FromFile(dialog.FileName);
+                surfacePanel1.Refresh();
+            }
         }
     }
 }
