@@ -61,3 +61,8 @@ ascii::Color::operator SDL_Color()
 
 	return color;
 }
+
+Uint32 ascii::Color::ToUint32(const SDL_PixelFormat* format)
+{
+	return SDL_MapRGB(format, r, g, b);
+}

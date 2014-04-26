@@ -12,13 +12,15 @@ ascii::ImageCache::~ImageCache()
 	clearTextures();
 }
 
-void ascii::ImageCache::loadTexture(const char* key, const char* path)
+void ascii::ImageCache::loadTexture(const char* key, const char* path, ascii::Color colorKey)
 {
 	SDL_Surface* imageSurface = SDL_LoadBMP(path);
 
 	//Make sure the image dimensions will align to the buffer
 	SDL_assert(imageSurface->w % mCharWidth == 0);
 	SDL_assert(imageSurface->h % mCharHeight == 0);
+
+	SDL_SetColorKey(imageSurface, SDL_ENABLE, colorKey.ToUint32(imageSurface->format));
 
 	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
 

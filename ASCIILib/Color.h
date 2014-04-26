@@ -11,24 +11,29 @@ namespace ascii
 	struct Color
 	{
 		public:
-			///<summary>
+			/// <summary>
 			/// Constructs a color from RGB values. Values must be between 0 and 255, inclusive.
-			///</summary>
+			/// </summary>
 			Color(int r, int g, int b);
 
-			///<summary>
+			/// <summary>
 			/// Constructs a color from float RGB values. Values must be between 0 and 1, inclusive.
-			///</summary>
+			/// </summary>
 			Color(float r, float g, float b);
 
-			///<summary>
-			///Constructs a default color (black).
-			///</summary>
+			/// <summary>
+			/// Constructs a default color (black).
+			/// </summary>
 			Color();
 
-			///<summary>
+			/// <summary>
+			/// Maps this Color to an SDL Uint32 using the given pixel format.
+			/// </summary>
+			Uint32 ToUint32(const SDL_PixelFormat* format);
+
+			/// <summary>
 			/// The alpha value of all colors in ASCIILib graphics (255).
-			///</summary>
+			/// </summary>
 			static const Uint8 kAlpha;
 
 			//Color constants
@@ -62,7 +67,7 @@ namespace ascii
 			static const Color Black;
 
 			operator SDL_Color();
-			
+
 			Uint8 r, g, b;
 	};
 

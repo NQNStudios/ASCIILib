@@ -99,16 +99,21 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 
 	std::string imageKey;
 	std::string imagePath;
-	SDL_Texture* image;
+	char r[3+1];
+	char g[3+1];
+	char b[3+1];
 
-	 while (str.compare("SIZE")) //while loop used because IMAGES may be empty section
+	while (str.compare("SIZE")) //while loop used because IMAGES may be empty section
 	{
 		sstream = std::stringstream(str);
 
 		sstream >> imageKey;
 		sstream >> imagePath;
+		sstream >> r;
+		sstream >> g;
+		sstream >> b;
 
-		cache->loadTexture(imageKey.c_str(), imagePath.c_str());
+		cache->loadTexture(imageKey.c_str(), imagePath.c_str(), ascii::Color(atoi(r), atoi(g), atoi(b)));
 
 		std::getline(file, str);
 	}

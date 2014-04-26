@@ -4,6 +4,8 @@
 
 #include <SDL.h>
 
+#include "Color.h"
+
 namespace ascii
 {
 	
@@ -13,34 +15,35 @@ namespace ascii
 	class ImageCache
 	{
 		public:
-			///<summary>
+			/// <summary>
 			/// Creates an ImageCache and prepares it for loading textures.
-			///</summary>
+			/// </summary>
 			ImageCache(SDL_Renderer* renderer, int charWidth, int charHeight);
 			~ImageCache();
 
-			///<summary>
+			/// <summary>
 			/// Loads a texture and stores it in the cache. Ensures that the texture will align with the "Console" buffer.
-			///</summary>
-			///<param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
-			///<param name="path">The filepath of the texture to load (must be a bitmap).</param>
-			void loadTexture(const char* key, const char* path);
+			/// </summary>
+			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
+			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
+			/// <param name="colorKey">The transparent color of the texture to load.</param>
+			void loadTexture(const char* key, const char* path, Color colorKey);
 
-			///<summary>
+			/// <summary>
 			/// Frees the texture in the cache associated with the given key string.
-			///</summary>
+			/// </summary>
 			void freeTexture(const char* key);
 
-			///<summary>
+			/// <summary>
 			/// Gets a texture from the cache.
-			///</summary>
-			///<param name="key">The unique key with which this texture was loaded.</param>
-			///<returns>The texture associated with the given key.</returns>
+			/// </summary>
+			/// <param name="key">The unique key with which this texture was loaded.</param>
+			/// <returns>The texture associated with the given key.</returns>
 			SDL_Texture* getTexture(const char* key);
 
-			///<summary>
+			/// <summary>
 			/// Frees all textures currently held in the cache.
-			///</summary>
+			/// </summary>
 			void clearTextures();
 		private:
 			SDL_Renderer* mRenderer;
