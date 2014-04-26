@@ -352,6 +352,7 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
 				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
 			}
 		}
 	}
@@ -379,6 +380,7 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
 				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
 			}
 		}
 	}
