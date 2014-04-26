@@ -10,27 +10,36 @@ ascii::Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), 
 		mCharacters(width, std::vector<char>(height, ' ')),
 		mBackgroundColors(width, std::vector<Color>(height, Color::Black)),
-		mCharacterColors(width, std::vector<Color>(height, Color::White))
+		mCharacterColors(width, std::vector<Color>(height, Color::White)),
+		mSpecialInfo(width, std::vector<std::string>(height, ""))
 {
-
+	for (int x = 0; x < width; ++x)
+	{
+		mCellOpacity.push_back(new bool[height]);
+	}
 }
 
 ascii::Surface::Surface(int width, int height, char character, Color backgroundColor, Color characterColor)
 	: mWidth(width), mHeight(height),
 		mCharacters(width, std::vector<char>(height, character)),
 		mBackgroundColors(width, std::vector<Color>(height, backgroundColor)),
-		mCharacterColors(width, std::vector<Color>(height, characterColor))
+		mCharacterColors(width, std::vector<Color>(height, characterColor)),
+		mSpecialInfo(width, std::vector<std::string>(height, ""))
 {
-
+	for (int x = 0; x < width; ++x)
+	{
+		mCellOpacity.push_back(new bool[height]);
+	}
 }
 
 ascii::Surface::Surface(char character, Color backgroundColor, Color characterColor)
 	: mWidth(1), mHeight(1),
 		mCharacters(1, std::vector<char>(1, character)),
 		mBackgroundColors(1, std::vector<Color>(1, backgroundColor)),
-		mCharacterColors(1, std::vector<Color>(1, characterColor))
+		mCharacterColors(1, std::vector<Color>(1, characterColor)),
+		mSpecialInfo(1, std::vector<std::string>(1, ""))
 {
-
+	mCellOpacity.push_back(new bool[1]);
 }
 
 ascii::Surface* ascii::Surface::FromFile(char* filepath)
@@ -39,6 +48,8 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 	file.open(filepath);
 
 	std::map<char, Color> colors;
+	std::map<char, std::string> infoCodes;
+	std::map<std::string, SDL_Texture*> images;
 
 	std::string str;
 	std::stringstream sstream;
@@ -63,7 +74,44 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 		colors[symbol[0]] = Color(atoi(red), atoi(green), atoi(blue));
 		
 		std::getline(file, str);
-	} while (str.compare("SIZE"));
+	} while (str.compare("INFO CODES")); //do-while loop used because COLORS will never be empty section
+
+	//INFO CODES
+	std::getline(file, str);
+
+	char infoCode[1+1];
+	std::string infoVal;
+
+	while (str.compare("IMAGES")) //while loop used because INFO CODES may be empty section
+	{
+		sstream = std::stringstream(str);
+		
+		sstream >> infoCode;
+		sstream >> infoVal;
+
+		infoCodes[infoCode[0]] = infoVal;
+
+		std::getline(file, str);
+	}
+
+	//IMAGES
+	std::getline(file, str);
+
+	std::string imageKey;
+	std::string imagePath;
+	SDL_Texture* image;
+
+	 while (str.compare("SIZE")) //while loop used because IMAGES may be empty section
+	{
+		sstream = std::stringstream(str);
+
+		sstream >> imageKey;
+		sstream >> imagePath;
+
+		//TODO load the images
+
+		std::getline(file, str);
+	}
 
 	//SIZE
 	std::getline(file, str);
@@ -78,7 +126,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 	std::getline(file, str); //CHARACTERS
 	
 	char character = ' ';
-	for (int r = 0; r < atoi(height); ++r)
+	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		std::getline(file, str);
 
@@ -96,7 +144,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 	std::getline(file, str); //BACKGROUND COLORS
 	
 	char colorsymbol = ' ';
-	for (int r = 0; r < atoi(height); ++r)
+	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		std::getline(file, str);
 
@@ -113,7 +161,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 
 	std::getline(file, str); //CHARACTER COLORS
 	
-	for (int r = 0; r < atoi(height); ++r)
+	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		std::getline(file, str);
 
@@ -126,6 +174,52 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath)
 
 			++c;
 		}
+	}
+
+	std::getline(file, str); //OPACITY
+
+	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	{
+		std::getline(file, str);
+
+		int c = 0;
+		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		{
+			colorsymbol = *it;
+
+			bool opaque = colorsymbol == '1';
+
+			surface->setOpaque(c, r, opaque);
+
+			++c;
+		}
+	}
+
+	std::getline(file, str); //SPECIAL INFO
+
+	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	{
+		std::getline(file, str);
+
+		int c = 0;
+		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		{
+			colorsymbol = *it;
+
+			if (colorsymbol != ' ')
+			{
+				surface->setSpecialInfo(c, r, infoCodes[colorsymbol]);
+			}
+
+			++c;
+		}
+	}
+
+	std::getline(file, str); //IMAGES
+
+	while (std::getline(file, str)) //while loop without comparison used because this is the last section and may be empty
+	{
+		//TODO place the images
 	}
 
 	file.close();
@@ -234,13 +328,17 @@ void ascii::Surface::drawRect(Rectangle destination, char character, Color backg
 
 void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 {
+	//blit the opaque cells from the other surface
 	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
 	{
 		for (int desty = y, srcy = 0; desty < mWidth && srcy < surface->mHeight; ++desty, ++srcy)
 		{
-			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
-			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
-			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			if (surface->isOpaque(srcx, srcy))
+			{
+				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			}
 		}
 	}
 
@@ -257,13 +355,17 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 
 void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int y)
 {
+	//blit the opaque cells from the other surface
 	for (int destx = x, srcx = source.x; destx < mWidth && srcx < source.right(); ++destx, ++srcx)
 	{
 		for (int desty = y, srcy = source.y; desty < mHeight && srcy < source.bottom(); ++desty, ++srcy)
 		{
-			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
-			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
-			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			if (surface->isOpaque(srcx, srcy))
+			{
+				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			}
 		}
 	}
 
