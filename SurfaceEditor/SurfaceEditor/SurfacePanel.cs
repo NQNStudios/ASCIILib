@@ -18,12 +18,27 @@ namespace SurfaceEditor
     /// </summary>
     public partial class SurfacePanel : UserControl
     {
+        public enum InputMode
+        {
+            ToggleOpacity,
+            None
+        }
+
         public const int CHAR_WIDTH = 8;
         public const int CHAR_HEIGHT = 12;
+        public static Color BACKGROUND_COLOR = Color.Gray;
+        public static Color CURSOR_COLOR = Color.FromArgb(128, 255, 0, 0);
 
         Graphics graphics;
         Font font;
         Surface surface;
+
+        Point selectedCell;
+        Point selectionSize = new Point(1, 1);
+
+        bool clicked = false;
+
+        public InputMode Mode = InputMode.None;
 
         #region Initialization
 
@@ -47,6 +62,77 @@ namespace SurfaceEditor
         {
             get { return surface; }
             set { surface = value; }
+        }
+
+        public Point SelectedCell
+        {
+            get { return selectedCell; }
+            set
+            {
+                if (surface == null) return;
+
+                //if a place was previously selected, draw over its highlight
+                if (surface.IsInBounds(selectedCell))
+                {
+                    int x = selectedCell.X;
+                    int y = selectedCell.Y;
+
+                    for (int i = 0; i < selectionSize.X; ++i)
+                    {
+                        for (int j = 0; j < selectionSize.Y; ++j)
+                        {
+                            x = selectedCell.X + i;
+                            y = selectedCell.Y + j;
+
+                            //draw over the old one
+                            if (surface.IsInBounds(new Point(x, y)) && surface.IsCellOpaque(x, y))
+                            {
+                                Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
+
+                                Brush brush = new SolidBrush(surface.GetBackgroundColor(x, y));
+
+                                graphics.FillRectangle(brush, rectangle);
+                                graphics.DrawString("" + surface.GetCharacter(x, y), font, new SolidBrush(surface.GetCharacterColor(x, y)), new PointF(rectangle.X - 2, rectangle.Y));
+                            }
+                            else
+                            {
+                                Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
+
+                                graphics.FillRectangle(new SolidBrush(BACKGROUND_COLOR), rectangle);
+                            }
+                        }
+                    }
+                }
+
+                //redraw images so they don't get erased
+                DrawImages();
+                
+                //draw a highlight on the selected cell
+                if (surface.IsInBounds(value))
+                {
+                    int x = value.X * CHAR_WIDTH;
+                    int y = value.Y * CHAR_HEIGHT;
+
+                    int w = Math.Min(selectionSize.X, surface.Width - value.X);
+                    int h = Math.Min(selectionSize.Y, surface.Height - value.Y);
+
+                    graphics.FillRectangle(new SolidBrush(CURSOR_COLOR), new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h));
+                }
+
+                selectedCell = value;
+            }
+        }
+
+        public Point SelectionSize
+        {
+            get { return selectionSize; }
+            set { selectionSize = value; }
+        }
+
+        public bool Clicked
+        {
+            get { return clicked; }
+            set { clicked = value; }
         }
 
         #endregion
@@ -96,20 +182,7 @@ namespace SurfaceEditor
 		            }
 	            }
 
-                string directoryPath = Path.GetDirectoryName(surface.FilePath);
-
-	            //draw all images
-                foreach (KeyValuePair<Point, string> pair in surface.Images)
-                {
-                    Image bmp = Bitmap.FromFile(directoryPath + "/" + surface.ImagePaths[pair.Value]);
-
-                    ImageAttributes attr = new ImageAttributes();
-                    attr.SetColorKey(surface.ImageColorKeys[pair.Value], surface.ImageColorKeys[pair.Value]); 
-
-                    Rectangle dstRect = new Rectangle(pair.Key.X * CHAR_WIDTH, pair.Key.Y * CHAR_HEIGHT, bmp.Width, bmp.Height);
-                    graphics.DrawImage(bmp, dstRect, 0, 0, bmp.Width, bmp.Height,
-                        GraphicsUnit.Pixel, attr);
-                }
+                DrawImages();
 
 	            //draw all characters
 	            for (int y = 0; y < surface.Height; ++y)
@@ -148,11 +221,39 @@ namespace SurfaceEditor
 
         #endregion
 
+        #region Input Handling
+
+        public void SurfacePanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e == null || e.Button == MouseButtons.Left)
+            {
+                if (surface != null && surface.IsInBounds(SelectedCell))
+                {
+                    //handle input for all valid selected cells
+                    for (int c = SelectedCell.X, i = 0; c < surface.Width && i < SelectionSize.X; ++c, ++i)
+                    {
+                        for (int r = SelectedCell.Y, j = 0; r < surface.Height && j < SelectionSize.Y; ++r, ++j)
+                        {
+                            //a cell was clicked on. Handle the appropriate behavior for the selected mode.
+                            switch (Mode)
+                            {
+                                case InputMode.ToggleOpacity:
+                                    surface.SetCellOpacity(c, r, !surface.IsCellOpaque(c, r));
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region Graphics Helper Methods
 
         private void Clear()
         {
-            graphics.Clear(Color.Gray);
+            graphics.Clear(BACKGROUND_COLOR);
         }
 
         private void FillRectangle(Rectangle rectangle, Color color)
@@ -162,6 +263,24 @@ namespace SurfaceEditor
             graphics.FillRectangle(brush, rectangle);
 
             brush.Dispose();
+        }
+
+        private void DrawImages()
+        {
+            string directoryPath = Path.GetDirectoryName(surface.FilePath);
+
+            //draw all images
+            foreach (KeyValuePair<Point, string> pair in surface.Images)
+            {
+                Image bmp = Bitmap.FromFile(directoryPath + "/" + surface.ImagePaths[pair.Value]);
+
+                ImageAttributes attr = new ImageAttributes();
+                attr.SetColorKey(surface.ImageColorKeys[pair.Value], surface.ImageColorKeys[pair.Value]);
+
+                Rectangle dstRect = new Rectangle(pair.Key.X * CHAR_WIDTH, pair.Key.Y * CHAR_HEIGHT, bmp.Width, bmp.Height);
+                graphics.DrawImage(bmp, dstRect, 0, 0, bmp.Width, bmp.Height,
+                    GraphicsUnit.Pixel, attr);
+            }
         }
 
         #endregion

@@ -451,6 +451,8 @@ namespace SurfaceEditor.Lib
                     newSpecialInfoColumn.AddRange(Enumerable.Repeat(DEFAULT_SPECIAL_INFO, height));
                     specialInfo.Add(newSpecialInfoColumn);
                 }
+
+                
             }
 
             else if (value < width)

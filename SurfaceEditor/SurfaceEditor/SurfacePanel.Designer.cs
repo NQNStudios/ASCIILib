@@ -35,8 +35,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "SurfacePanel";
-            this.Size = new System.Drawing.Size(716, 480);
+            this.Size = new System.Drawing.Size(716, 358);
             this.Load += new System.EventHandler(this.SurfacePanel_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseDown);
             this.ResumeLayout(false);
 
         }

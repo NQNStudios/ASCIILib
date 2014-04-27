@@ -33,6 +33,7 @@
             this.newSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resizeControl1 = new SurfaceEditor.ResizeControl();
             this.toolbox1 = new SurfaceEditor.Toolbox();
             this.cellInfo1 = new SurfaceEditor.CellInfo();
             this.surfacePanel1 = new SurfaceEditor.SurfacePanel();
@@ -45,7 +46,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(974, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(908, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -78,11 +79,20 @@
             this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             // 
+            // resizeControl1
+            // 
+            this.resizeControl1.Location = new System.Drawing.Point(735, 281);
+            this.resizeControl1.Name = "resizeControl1";
+            this.resizeControl1.Size = new System.Drawing.Size(147, 104);
+            this.resizeControl1.TabIndex = 4;
+            this.resizeControl1.Visible = false;
+            // 
             // toolbox1
             // 
-            this.toolbox1.Location = new System.Drawing.Point(735, 27);
+            this.toolbox1.Enabled = false;
+            this.toolbox1.Location = new System.Drawing.Point(736, 27);
             this.toolbox1.Name = "toolbox1";
-            this.toolbox1.Size = new System.Drawing.Size(160, 221);
+            this.toolbox1.Size = new System.Drawing.Size(160, 248);
             this.toolbox1.TabIndex = 3;
             // 
             // cellInfo1
@@ -99,6 +109,8 @@
             // 
             this.surfacePanel1.Location = new System.Drawing.Point(12, 27);
             this.surfacePanel1.Name = "surfacePanel1";
+            this.surfacePanel1.SelectedCell = new System.Drawing.Point(0, 0);
+            this.surfacePanel1.SelectionSize = new System.Drawing.Point(1, 1);
             this.surfacePanel1.Size = new System.Drawing.Size(716, 358);
             this.surfacePanel1.Surface = null;
             this.surfacePanel1.TabIndex = 0;
@@ -108,7 +120,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(974, 533);
+            this.ClientSize = new System.Drawing.Size(908, 533);
+            this.Controls.Add(this.resizeControl1);
             this.Controls.Add(this.toolbox1);
             this.Controls.Add(this.cellInfo1);
             this.Controls.Add(this.surfacePanel1);
@@ -133,6 +146,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveSurfaceToolStripMenuItem;
         private CellInfo cellInfo1;
         private Toolbox toolbox1;
+        private ResizeControl resizeControl1;
     }
 }
 

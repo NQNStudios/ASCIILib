@@ -28,6 +28,16 @@ namespace SurfaceEditor
             get { return cellInfo1; }
         }
 
+        public SurfacePanel SurfacePanel
+        {
+            get { return surfacePanel1; }
+        }
+
+        public ResizeControl ResizeControl
+        {
+            get { return resizeControl1; }
+        }
+
         #endregion
 
         #region File Menu Events
@@ -43,6 +53,8 @@ namespace SurfaceEditor
             }
 
             cellInfo1.Surface = surfacePanel1.Surface;
+
+            toolbox1.Enabled = true;
         }
 
         #endregion
@@ -58,6 +70,11 @@ namespace SurfaceEditor
             else
             {
                 cellInfo1.ClearCellInfo();
+            }
+
+            if (surfacePanel1.Surface != null && cell != surfacePanel1.SelectedCell && surfacePanel1.Surface.IsInBounds(cell))
+            {
+                surfacePanel1.SelectedCell = cell;
             }
         }
     }
