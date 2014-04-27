@@ -30,6 +30,22 @@ namespace SurfaceEditor
                 surfacePanel1.Surface = Surface.FromFile(dialog.FileName);
                 surfacePanel1.Refresh();
             }
+
+            cellInfo1.Surface = surfacePanel1.Surface;
+        }
+
+        private void surfacePanel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point cell = new Point(e.X / SurfacePanel.CHAR_WIDTH, e.Y / SurfacePanel.CHAR_HEIGHT);
+
+            if (cellInfo1.Surface != null && surfacePanel1.Surface.IsInBounds(cell))
+            {
+                cellInfo1.ShowCellInfo(cell.X, cell.Y);
+            }
+            else
+            {
+                cellInfo1.ClearCellInfo();
+            }
         }
     }
 }

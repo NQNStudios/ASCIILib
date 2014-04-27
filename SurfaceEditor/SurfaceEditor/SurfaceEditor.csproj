@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CellInfo.Designer.cs">
+      <DependentUpon>CellInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +65,9 @@
     <Compile Include="SurfacePanel.Designer.cs">
       <DependentUpon>SurfacePanel.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CellInfo.resx">
+      <DependentUpon>CellInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>

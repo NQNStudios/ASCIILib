@@ -323,6 +323,15 @@ namespace SurfaceEditor.Lib
 
         #endregion
 
+        #region Methods
+
+        public bool IsInBounds(Point cell)
+        {
+            return cell.X >= 0 && cell.Y >= 0 && cell.X < Width && cell.Y < Height;
+        }
+
+        #endregion
+
         #region Draw Methods
 
         /// <summary>
