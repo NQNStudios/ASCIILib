@@ -33,6 +33,7 @@
             this.newSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolbox1 = new SurfaceEditor.Toolbox();
             this.cellInfo1 = new SurfaceEditor.CellInfo();
             this.surfacePanel1 = new SurfaceEditor.SurfacePanel();
             this.menuStrip1.SuspendLayout();
@@ -77,6 +78,13 @@
             this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             // 
+            // toolbox1
+            // 
+            this.toolbox1.Location = new System.Drawing.Point(735, 27);
+            this.toolbox1.Name = "toolbox1";
+            this.toolbox1.Size = new System.Drawing.Size(160, 221);
+            this.toolbox1.TabIndex = 3;
+            // 
             // cellInfo1
             // 
             this.cellInfo1.BackColor = System.Drawing.Color.LightGray;
@@ -84,6 +92,7 @@
             this.cellInfo1.Location = new System.Drawing.Point(12, 391);
             this.cellInfo1.Name = "cellInfo1";
             this.cellInfo1.Size = new System.Drawing.Size(204, 134);
+            this.cellInfo1.Surface = null;
             this.cellInfo1.TabIndex = 2;
             // 
             // surfacePanel1
@@ -100,6 +109,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 533);
+            this.Controls.Add(this.toolbox1);
             this.Controls.Add(this.cellInfo1);
             this.Controls.Add(this.surfacePanel1);
             this.Controls.Add(this.menuStrip1);
@@ -122,6 +132,7 @@
         private System.Windows.Forms.ToolStripMenuItem openSurfaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveSurfaceToolStripMenuItem;
         private CellInfo cellInfo1;
+        private Toolbox toolbox1;
     }
 }
 

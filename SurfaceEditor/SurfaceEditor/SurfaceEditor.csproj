@@ -65,6 +65,12 @@
     <Compile Include="SurfacePanel.Designer.cs">
       <DependentUpon>SurfacePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Toolbox.Designer.cs">
+      <DependentUpon>Toolbox.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CellInfo.resx">
       <DependentUpon>CellInfo.cs</DependentUpon>
     </EmbeddedResource>
@@ -82,6 +88,9 @@
     </Compile>
     <EmbeddedResource Include="SurfacePanel.resx">
       <DependentUpon>SurfacePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox.resx">
+      <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

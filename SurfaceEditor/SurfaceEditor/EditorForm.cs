@@ -21,6 +21,17 @@ namespace SurfaceEditor
             InitializeComponent();
         }
 
+        #region Properties
+
+        public CellInfo CellInfo
+        {
+            get { return cellInfo1; }
+        }
+
+        #endregion
+
+        #region File Menu Events
+
         private void openSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -33,6 +44,8 @@ namespace SurfaceEditor
 
             cellInfo1.Surface = surfacePanel1.Surface;
         }
+
+        #endregion
 
         private void surfacePanel1_MouseMove(object sender, MouseEventArgs e)
         {
