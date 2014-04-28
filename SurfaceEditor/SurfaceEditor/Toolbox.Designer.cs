@@ -31,13 +31,12 @@
             this.viewCellsButton = new System.Windows.Forms.RadioButton();
             this.paintCellsButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.shiftButton = new System.Windows.Forms.RadioButton();
             this.resizeButton = new System.Windows.Forms.RadioButton();
             this.longTextButton = new System.Windows.Forms.RadioButton();
             this.textButton = new System.Windows.Forms.RadioButton();
-            this.imagesButton = new System.Windows.Forms.RadioButton();
             this.placeInfoButton = new System.Windows.Forms.RadioButton();
             this.toggleOpacityButton = new System.Windows.Forms.RadioButton();
-            this.shiftButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +70,6 @@
             this.groupBox1.Controls.Add(this.resizeButton);
             this.groupBox1.Controls.Add(this.longTextButton);
             this.groupBox1.Controls.Add(this.textButton);
-            this.groupBox1.Controls.Add(this.imagesButton);
             this.groupBox1.Controls.Add(this.placeInfoButton);
             this.groupBox1.Controls.Add(this.toggleOpacityButton);
             this.groupBox1.Controls.Add(this.viewCellsButton);
@@ -83,10 +81,21 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode";
             // 
+            // shiftButton
+            // 
+            this.shiftButton.AutoSize = true;
+            this.shiftButton.Location = new System.Drawing.Point(6, 182);
+            this.shiftButton.Name = "shiftButton";
+            this.shiftButton.Size = new System.Drawing.Size(86, 17);
+            this.shiftButton.TabIndex = 8;
+            this.shiftButton.TabStop = true;
+            this.shiftButton.Text = "Shift Surface";
+            this.shiftButton.UseVisualStyleBackColor = true;
+            // 
             // resizeButton
             // 
             this.resizeButton.AutoSize = true;
-            this.resizeButton.Location = new System.Drawing.Point(6, 184);
+            this.resizeButton.Location = new System.Drawing.Point(6, 159);
             this.resizeButton.Name = "resizeButton";
             this.resizeButton.Size = new System.Drawing.Size(97, 17);
             this.resizeButton.TabIndex = 7;
@@ -98,7 +107,7 @@
             // longTextButton
             // 
             this.longTextButton.AutoSize = true;
-            this.longTextButton.Location = new System.Drawing.Point(6, 160);
+            this.longTextButton.Location = new System.Drawing.Point(6, 136);
             this.longTextButton.Name = "longTextButton";
             this.longTextButton.Size = new System.Drawing.Size(103, 17);
             this.longTextButton.TabIndex = 6;
@@ -109,24 +118,13 @@
             // textButton
             // 
             this.textButton.AutoSize = true;
-            this.textButton.Location = new System.Drawing.Point(6, 137);
+            this.textButton.Location = new System.Drawing.Point(6, 113);
             this.textButton.Name = "textButton";
             this.textButton.Size = new System.Drawing.Size(76, 17);
             this.textButton.TabIndex = 5;
             this.textButton.Text = "Place Text";
             this.textButton.UseVisualStyleBackColor = true;
             this.textButton.CheckedChanged += new System.EventHandler(this.textButton_CheckedChanged);
-            // 
-            // imagesButton
-            // 
-            this.imagesButton.AutoSize = true;
-            this.imagesButton.Location = new System.Drawing.Point(6, 114);
-            this.imagesButton.Name = "imagesButton";
-            this.imagesButton.Size = new System.Drawing.Size(80, 17);
-            this.imagesButton.TabIndex = 4;
-            this.imagesButton.Text = "Edit Images";
-            this.imagesButton.UseVisualStyleBackColor = true;
-            this.imagesButton.CheckedChanged += new System.EventHandler(this.imagesButton_CheckedChanged);
             // 
             // placeInfoButton
             // 
@@ -150,17 +148,6 @@
             this.toggleOpacityButton.UseVisualStyleBackColor = true;
             this.toggleOpacityButton.CheckedChanged += new System.EventHandler(this.toggleOpacityButton_CheckedChanged);
             // 
-            // shiftButton
-            // 
-            this.shiftButton.AutoSize = true;
-            this.shiftButton.Location = new System.Drawing.Point(6, 208);
-            this.shiftButton.Name = "shiftButton";
-            this.shiftButton.Size = new System.Drawing.Size(86, 17);
-            this.shiftButton.TabIndex = 8;
-            this.shiftButton.TabStop = true;
-            this.shiftButton.Text = "Shift Surface";
-            this.shiftButton.UseVisualStyleBackColor = true;
-            // 
             // Toolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,7 +168,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton longTextButton;
         private System.Windows.Forms.RadioButton textButton;
-        private System.Windows.Forms.RadioButton imagesButton;
         private System.Windows.Forms.RadioButton placeInfoButton;
         private System.Windows.Forms.RadioButton toggleOpacityButton;
         private System.Windows.Forms.RadioButton resizeButton;

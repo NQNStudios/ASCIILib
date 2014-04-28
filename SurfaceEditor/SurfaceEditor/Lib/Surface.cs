@@ -88,7 +88,7 @@ namespace SurfaceEditor.Lib
             Dictionary<char, string> infoCodes = new Dictionary<char, string>();
 
             //INFO CODES
-            while ((line = reader.ReadLine()) != "IMAGES") //While loop used here because INFO CODES may be an empty section
+            while ((line = reader.ReadLine()) != "SIZE") //While loop used here because INFO CODES may be an empty section
             {
                 string[] split = line.Split(' ');
 
@@ -96,21 +96,6 @@ namespace SurfaceEditor.Lib
                 string code = split[1];
 
                 infoCodes[key] = code;
-            }
-
-            //IMAGES
-            while ((line = reader.ReadLine()) != "SIZE") //While loop used here because IMAGES may be an empty section
-            {
-                string[] split = line.Split(' ');
-
-                string key = split[0];
-                string imagePath = split[1];
-                string r = split[2];
-                string g = split[3];
-                string b = split[4];
-
-                surface.imagePaths[key] = imagePath;
-                surface.imageColorKeys[key] = Color.FromArgb(int.Parse(r), int.Parse(g), int.Parse(b));
             }
 
             //SIZE
@@ -200,20 +185,6 @@ namespace SurfaceEditor.Lib
                         surface.SetSpecialInfo(c, r, infoCodes[key]);
                     }
                 }
-            }
-
-            //IMAGES
-            line = reader.ReadLine();
-
-            while ((line = reader.ReadLine()) != null) //while loop used because this will come to the end of the file and may be empty
-            {
-                string[] split = line.Split(' ');
-
-                string key = split[0];
-                string x = split[1];
-                string y = split[2];
-
-                surface.images[new Point(int.Parse(x), int.Parse(y))] = key;
             }
 
             reader.Close();

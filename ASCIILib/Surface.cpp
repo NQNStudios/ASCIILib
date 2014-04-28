@@ -49,7 +49,6 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 
 	std::map<char, Color> colors;
 	std::map<char, std::string> infoCodes;
-	std::map<std::string, SDL_Texture*> images;
 
 	std::string str;
 	std::stringstream sstream;
@@ -82,7 +81,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 	char infoCode[1+1];
 	std::string infoVal;
 
-	while (str.compare("IMAGES")) //while loop used because INFO CODES may be empty section
+	while (str.compare("SIZE")) //while loop used because INFO CODES may be empty section
 	{
 		sstream = std::stringstream(str);
 		
@@ -90,30 +89,6 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 		sstream >> infoVal;
 
 		infoCodes[infoCode[0]] = infoVal;
-
-		std::getline(file, str);
-	}
-
-	//IMAGES
-	std::getline(file, str);
-
-	std::string imageKey;
-	std::string imagePath;
-	char r[3+1];
-	char g[3+1];
-	char b[3+1];
-
-	while (str.compare("SIZE")) //while loop used because IMAGES may be empty section
-	{
-		sstream = std::stringstream(str);
-
-		sstream >> imageKey;
-		sstream >> imagePath;
-		sstream >> r;
-		sstream >> g;
-		sstream >> b;
-
-		cache->loadTexture(imageKey.c_str(), imagePath.c_str(), ascii::Color(atoi(r), atoi(g), atoi(b)));
 
 		std::getline(file, str);
 	}
@@ -220,22 +195,6 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 		}
 	}
 
-	std::getline(file, str); //IMAGES
-
-	char x[3+1]; //assuming max of 3 characters in coordinates
-	char y[3+1];
-	while (std::getline(file, str)) //while loop without comparison used because this is the last section and may be empty
-	{
-		sstream = std::stringstream(str);
-
-		sstream >> imageKey;
-
-		sstream >> x;
-		sstream >> y;
-
-		surface->blitTexture(cache->getTexture(imageKey.c_str()), atoi(x), atoi(y));
-	}
-
 	file.close();
 
 	return surface;
@@ -244,8 +203,6 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 void ascii::Surface::clear()
 {
 	fill(' ', Color::Black, Color::White);
-
-	mImages.clear();
 }
 
 void ascii::Surface::fill(char character, Color backgroundColor, Color characterColor)
@@ -353,18 +310,10 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
 				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
 				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+
+				mCellOpacity[destx][desty] = true; //Cover transparent cells in the lower surface with opaque ones
 			}
 		}
-	}
-
-	//blit the images from the other surface
-	for (auto it = surface->mImages.begin(); it != surface->mImages.end(); ++it)
-	{
-		ascii::Point pos(it->first);
-		pos.x += x;
-		pos.y += y;
-
-		blitTexture(it->second, pos.x, pos.y);
 	}
 }
 
@@ -381,24 +330,11 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
 				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
 				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+
+				mCellOpacity[destx][desty] = true; //Cover transparent cells in the lower surface with opaque ones
 			}
 		}
 	}
-
-	//blit the images from the other surface
-	for (auto it = surface->mImages.begin(); it != surface->mImages.end(); ++it)
-	{
-		ascii::Point pos(it->first);
-		pos.x += x;
-		pos.y += y;
-
-		blitTexture(it->second, pos.x, pos.y);
-	}
-}
-
-void ascii::Surface::blitTexture(SDL_Texture* texture, int x, int y)
-{
-	mImages[ascii::Point(x, y)] = texture;
 }
 
 void ascii::Surface::blitString(const char* text, Color color, int x, int y)

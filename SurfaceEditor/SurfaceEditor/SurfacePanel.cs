@@ -103,9 +103,6 @@ namespace SurfaceEditor
                         }
                     }
                 }
-
-                //redraw images so they don't get erased
-                DrawImages();
                 
                 //draw a highlight on the selected cell
                 if (surface.IsInBounds(value))
@@ -182,8 +179,6 @@ namespace SurfaceEditor
 		            }
 	            }
 
-                DrawImages();
-
 	            //draw all characters
 	            for (int y = 0; y < surface.Height; ++y)
 	            {
@@ -208,6 +203,12 @@ namespace SurfaceEditor
 
 			            do
 			            {
+                            if (!surface.IsCellOpaque(x, y))
+                            {
+                                ++x;
+                                break;
+                            }
+
 				            char character = surface.GetCharacter(x, y);
 				            text += character;
 				            ++x;
@@ -263,24 +264,6 @@ namespace SurfaceEditor
             graphics.FillRectangle(brush, rectangle);
 
             brush.Dispose();
-        }
-
-        private void DrawImages()
-        {
-            string directoryPath = Path.GetDirectoryName(surface.FilePath);
-
-            //draw all images
-            foreach (KeyValuePair<Point, string> pair in surface.Images)
-            {
-                Image bmp = Bitmap.FromFile(directoryPath + "/" + surface.ImagePaths[pair.Value]);
-
-                ImageAttributes attr = new ImageAttributes();
-                attr.SetColorKey(surface.ImageColorKeys[pair.Value], surface.ImageColorKeys[pair.Value]);
-
-                Rectangle dstRect = new Rectangle(pair.Key.X * CHAR_WIDTH, pair.Key.Y * CHAR_HEIGHT, bmp.Width, bmp.Height);
-                graphics.DrawImage(bmp, dstRect, 0, 0, bmp.Width, bmp.Height,
-                    GraphicsUnit.Pixel, attr);
-            }
         }
 
         #endregion

@@ -85,6 +85,12 @@ void ascii::Graphics::update()
 
 			do
 			{
+				if (!isOpaque(x, y))
+                {
+                    ++x;
+                    break;
+                }
+
 				colorRect.w += mCharWidth;
 				++x;
 			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
@@ -92,26 +98,6 @@ void ascii::Graphics::update()
 			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
 			SDL_RenderFillRect(mRenderer, &colorRect);
 		}
-	}
-
-	//draw all images
-	for (auto it = mImages.begin(); it != mImages.end(); ++it)
-	{
-		ascii::Point pos(it->first);
-
-		SDL_Texture* texture = it->second;
-
-		int w, h;
-
-		SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-
-		SDL_Rect dest;
-		dest.x = pos.x * mCharWidth;
-		dest.y = pos.y * mCharHeight;
-		dest.w = w;
-		dest.h = h;
-
-		SDL_RenderCopy(mRenderer, texture, NULL, &dest);
 	}
 
 	//draw all characters
@@ -141,6 +127,12 @@ void ascii::Graphics::update()
 
 			do
 			{
+				if (!isOpaque(x, y))
+				{
+					++x;
+					break;
+				}
+
 				char ch = getCharacter(x, y);
 				charstream << ch;
 				textRect.w += mCharWidth;
