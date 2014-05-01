@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SurfaceEditor.Lib
+namespace SurfaceEditor
 {
     /// <summary>
     /// Represents an ASCIILib surface in the editor. This class is different from the ASCIILib Surface class because Surfaces in the editor can be resized.

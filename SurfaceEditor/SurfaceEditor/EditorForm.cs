@@ -1,5 +1,4 @@
-﻿using SurfaceEditor.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,6 +37,11 @@ namespace SurfaceEditor
             get { return resizeControl1; }
         }
 
+        public BrushControl BrushControl
+        {
+            get { return brushControl1; }
+        }
+
         #endregion
 
         #region File Menu Events
@@ -53,7 +57,8 @@ namespace SurfaceEditor
             }
 
             cellInfo1.Surface = surfacePanel1.Surface;
-
+            cellInfo1.Enabled = true;
+            
             toolbox1.Enabled = true;
         }
 

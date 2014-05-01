@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SurfaceEditor.Lib;
 
 namespace SurfaceEditor
 {
@@ -37,10 +36,12 @@ namespace SurfaceEditor
             if (paintCellsButton.Checked)
             {
                 EnableBrushResize();
+                EnableBrushControl();   
             }
             else
             {
                 DisableBrushResize();
+                DisableBrushControl();
             }
         }
 
@@ -109,6 +110,8 @@ namespace SurfaceEditor
             resize.Visible = resizeButton.Checked;
         }
 
+        #region Brush Resize Helpers
+
         private void EnableBrushResize()
         {
             ResizeControl resize = (Parent as EditorForm).ResizeControl;
@@ -162,5 +165,21 @@ namespace SurfaceEditor
 
             (Parent as EditorForm).SurfacePanel.Refresh();
         }
+
+        #endregion
+
+        #region Brush Control Helpers
+
+        private void EnableBrushControl()
+        {
+            (Parent as EditorForm).BrushControl.Visible = true;
+        }
+
+        private void DisableBrushControl()
+        {
+            (Parent as EditorForm).BrushControl.Visible = false;
+        }
+
+        #endregion
     }
 }

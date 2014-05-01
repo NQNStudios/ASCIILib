@@ -33,6 +33,7 @@
             this.newSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.brushControl1 = new SurfaceEditor.BrushControl();
             this.resizeControl1 = new SurfaceEditor.ResizeControl();
             this.toolbox1 = new SurfaceEditor.Toolbox();
             this.cellInfo1 = new SurfaceEditor.CellInfo();
@@ -46,7 +47,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(908, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(965, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -79,6 +80,14 @@
             this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             // 
+            // brushControl1
+            // 
+            this.brushControl1.Location = new System.Drawing.Point(736, 391);
+            this.brushControl1.Name = "brushControl1";
+            this.brushControl1.Size = new System.Drawing.Size(146, 112);
+            this.brushControl1.TabIndex = 5;
+            this.brushControl1.Visible = false;
+            // 
             // resizeControl1
             // 
             this.resizeControl1.Location = new System.Drawing.Point(735, 281);
@@ -99,7 +108,8 @@
             // 
             this.cellInfo1.BackColor = System.Drawing.Color.LightGray;
             this.cellInfo1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cellInfo1.Location = new System.Drawing.Point(12, 391);
+            this.cellInfo1.Enabled = false;
+            this.cellInfo1.Location = new System.Drawing.Point(735, 281);
             this.cellInfo1.Name = "cellInfo1";
             this.cellInfo1.Size = new System.Drawing.Size(204, 134);
             this.cellInfo1.Surface = null;
@@ -107,11 +117,12 @@
             // 
             // surfacePanel1
             // 
+            this.surfacePanel1.Clicked = false;
             this.surfacePanel1.Location = new System.Drawing.Point(12, 27);
             this.surfacePanel1.Name = "surfacePanel1";
             this.surfacePanel1.SelectedCell = new System.Drawing.Point(0, 0);
             this.surfacePanel1.SelectionSize = new System.Drawing.Point(1, 1);
-            this.surfacePanel1.Size = new System.Drawing.Size(716, 358);
+            this.surfacePanel1.Size = new System.Drawing.Size(716, 494);
             this.surfacePanel1.Surface = null;
             this.surfacePanel1.TabIndex = 0;
             this.surfacePanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.surfacePanel1_MouseMove);
@@ -120,7 +131,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(908, 533);
+            this.ClientSize = new System.Drawing.Size(965, 533);
+            this.Controls.Add(this.brushControl1);
             this.Controls.Add(this.resizeControl1);
             this.Controls.Add(this.toolbox1);
             this.Controls.Add(this.cellInfo1);
@@ -147,6 +159,7 @@
         private CellInfo cellInfo1;
         private Toolbox toolbox1;
         private ResizeControl resizeControl1;
+        private BrushControl brushControl1;
     }
 }
 
