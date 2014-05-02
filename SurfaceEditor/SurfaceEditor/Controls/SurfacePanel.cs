@@ -20,6 +20,7 @@ namespace SurfaceEditor
         public enum InputMode
         {
             ToggleOpacity,
+            PaintBrush,
             None
         }
 
@@ -239,6 +240,23 @@ namespace SurfaceEditor
                             {
                                 case InputMode.ToggleOpacity:
                                     surface.SetCellOpacity(c, r, !surface.IsCellOpaque(c, r));
+                                    break;
+                                case InputMode.PaintBrush:
+                                    EditorForm parent = (Parent as EditorForm);
+                                    BrushControl brushControl = parent.BrushControl;
+
+                                    if (brushControl.PaintCharacter)
+                                    {
+                                        surface.SetCharacter(c, r, brushControl.Character);
+                                    }
+                                    if (brushControl.PaintBackgroundColor)
+                                    {
+                                        surface.SetBackgroundColor(c, r, brushControl.BackgroundColor);
+                                    }
+                                    if (brushControl.PaintCharacterColor)
+                                    {
+                                        surface.SetCharacterColor(c, r, brushControl.CharacterColor);
+                                    }
                                     break;
                             }
                         }

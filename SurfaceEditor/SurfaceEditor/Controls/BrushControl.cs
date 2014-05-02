@@ -21,5 +21,44 @@ namespace SurfaceEditor
         {
             bgColorPicker.Color = Color.Black;
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            charCheckBox.Checked = charTextBox.Text != "";
+        }
+
+        #region Properties
+
+        public bool PaintCharacter
+        {
+            get { return charCheckBox.Checked; }
+        }
+
+        public bool PaintBackgroundColor
+        {
+            get { return bgColorCheckBox.Checked; }
+        }
+
+        public bool PaintCharacterColor
+        {
+            get { return charColorCheckBox.Checked; }
+        }
+
+        public char Character
+        {
+            get { return charTextBox.Text[0]; }
+        }
+
+        public Color BackgroundColor
+        {
+            get { return bgColorPicker.Color; }
+        }
+
+        public Color CharacterColor
+        {
+            get { return charColorPicker.Color; }
+        }
+
+        #endregion
     }
 }

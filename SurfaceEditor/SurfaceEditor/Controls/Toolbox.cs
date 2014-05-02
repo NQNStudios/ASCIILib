@@ -36,12 +36,14 @@ namespace SurfaceEditor
             if (paintCellsButton.Checked)
             {
                 EnableBrushResize();
-                EnableBrushControl();   
+                EnableBrushControl();
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.PaintBrush;
             }
             else
             {
                 DisableBrushResize();
                 DisableBrushControl();
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.None;
             }
         }
 

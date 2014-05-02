@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.charTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.charColorCheckBox = new System.Windows.Forms.CheckBox();
             this.bgColorCheckBox = new System.Windows.Forms.CheckBox();
@@ -38,20 +38,21 @@
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox1
+            // charTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 20);
-            this.textBox1.MaxLength = 1;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(20, 20);
-            this.textBox1.TabIndex = 0;
+            this.charTextBox.Location = new System.Drawing.Point(6, 20);
+            this.charTextBox.MaxLength = 1;
+            this.charTextBox.Name = "charTextBox";
+            this.charTextBox.Size = new System.Drawing.Size(20, 20);
+            this.charTextBox.TabIndex = 0;
+            this.charTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.charColorCheckBox);
             this.groupBox1.Controls.Add(this.bgColorCheckBox);
             this.groupBox1.Controls.Add(this.charCheckBox);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.charTextBox);
             this.groupBox1.Controls.Add(this.bgColorPicker);
             this.groupBox1.Controls.Add(this.charColorPicker);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
@@ -64,6 +65,8 @@
             // charColorCheckBox
             // 
             this.charColorCheckBox.AutoSize = true;
+            this.charColorCheckBox.Checked = true;
+            this.charColorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.charColorCheckBox.Location = new System.Drawing.Point(34, 74);
             this.charColorCheckBox.Name = "charColorCheckBox";
             this.charColorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -75,6 +78,8 @@
             // bgColorCheckBox
             // 
             this.bgColorCheckBox.AutoSize = true;
+            this.bgColorCheckBox.Checked = true;
+            this.bgColorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.bgColorCheckBox.Location = new System.Drawing.Point(33, 48);
             this.bgColorCheckBox.Name = "bgColorCheckBox";
             this.bgColorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -86,6 +91,7 @@
             // charCheckBox
             // 
             this.charCheckBox.AutoSize = true;
+            this.charCheckBox.Enabled = false;
             this.charCheckBox.Location = new System.Drawing.Point(35, 23);
             this.charCheckBox.Name = "charCheckBox";
             this.charCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -121,6 +127,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "BrushControl";
             this.Size = new System.Drawing.Size(160, 112);
+            this.Load += new System.EventHandler(this.BrushControl_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -129,7 +136,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox charTextBox;
         private ColorPickerControl bgColorPicker;
         private ColorPickerControl charColorPicker;
         private System.Windows.Forms.GroupBox groupBox1;
