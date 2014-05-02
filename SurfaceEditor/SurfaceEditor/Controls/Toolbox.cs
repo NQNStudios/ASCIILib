@@ -80,7 +80,10 @@ namespace SurfaceEditor
 
         private void textButton_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (textButton.Checked)
+            {
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.SmallText;
+            }
         }
 
         private void longTextButton_CheckedChanged(object sender, EventArgs e)

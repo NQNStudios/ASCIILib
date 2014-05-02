@@ -448,8 +448,11 @@ namespace SurfaceEditor
         {
             for (int i = 0; i < text.Length; ++i)
             {
-                SetCharacter(x + i, y, text[i]);
-                SetCharacterColor(x + i, y, color);
+                if (x + i < width)
+                {
+                    SetCharacter(x + i, y, text[i]);
+                    SetCharacterColor(x + i, y, color);
+                }
             }
         }
 

@@ -21,6 +21,7 @@ namespace SurfaceEditor
         {
             ToggleOpacity,
             PaintBrush,
+            SmallText,
             None
         }
 
@@ -256,6 +257,16 @@ namespace SurfaceEditor
                                     if (brushControl.PaintCharacterColor)
                                     {
                                         surface.SetCharacterColor(c, r, brushControl.CharacterColor);
+                                    }
+                                    break;
+                                case InputMode.SmallText:
+                                    ShortTextForm form = new ShortTextForm();
+                                    DialogResult result = form.ShowDialog(this);
+
+                                    if (result == DialogResult.OK)
+                                    {
+                                        surface.BlitString(form.ChosenText, form.ChosenColor, c, r);
+                                        Refresh();
                                     }
                                     break;
                             }

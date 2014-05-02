@@ -87,7 +87,7 @@ namespace SurfaceEditor
                 cellInfo1.ClearCellInfo();
             }
 
-            if (surfacePanel1.Surface != null && cell != surfacePanel1.SelectedCell && surfacePanel1.Surface.IsInBounds(cell))
+            if (surfacePanel1.Surface != null && cell != surfacePanel1.SelectedCell)
             {
                 surfacePanel1.SelectedCell = cell;
             }
