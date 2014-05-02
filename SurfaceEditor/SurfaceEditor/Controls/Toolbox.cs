@@ -43,7 +43,6 @@ namespace SurfaceEditor
             {
                 DisableBrushResize();
                 DisableBrushControl();
-                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.None;
             }
         }
 
@@ -52,11 +51,12 @@ namespace SurfaceEditor
             if (toggleOpacityButton.Checked)
             {
                 EnableBrushResize();
-
+                (Parent as EditorForm).ClearTransparencyButton.Visible = true;
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.ToggleOpacity;
             }
             else
             {
+                (Parent as EditorForm).ClearTransparencyButton.Visible = false;
                 DisableBrushResize();
             }
         }

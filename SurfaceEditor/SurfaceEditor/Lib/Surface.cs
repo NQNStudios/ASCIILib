@@ -301,6 +301,17 @@ namespace SurfaceEditor
             return cell.X >= 0 && cell.Y >= 0 && cell.X < Width && cell.Y < Height;
         }
 
+        public void ClearTransparency()
+        {
+            for (int c = 0; c < width; ++c)
+            {
+                for (int r = 0; r < height; ++r)
+                {
+                    SetCellOpacity(c, r, true);
+                }
+            }
+        }
+
         #endregion
 
         #region Draw Methods

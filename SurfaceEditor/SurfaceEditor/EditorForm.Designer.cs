@@ -33,6 +33,7 @@
             this.newSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.brushControl1 = new SurfaceEditor.BrushControl();
             this.resizeControl1 = new SurfaceEditor.ResizeControl();
             this.toolbox1 = new SurfaceEditor.Toolbox();
@@ -80,8 +81,21 @@
             this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(752, 391);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(110, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Clear Transparency";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // brushControl1
             // 
+            this.brushControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.brushControl1.Location = new System.Drawing.Point(736, 391);
             this.brushControl1.Name = "brushControl1";
             this.brushControl1.Size = new System.Drawing.Size(146, 112);
@@ -90,6 +104,7 @@
             // 
             // resizeControl1
             // 
+            this.resizeControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.resizeControl1.Location = new System.Drawing.Point(735, 281);
             this.resizeControl1.Name = "resizeControl1";
             this.resizeControl1.Size = new System.Drawing.Size(147, 104);
@@ -98,6 +113,7 @@
             // 
             // toolbox1
             // 
+            this.toolbox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.toolbox1.Enabled = false;
             this.toolbox1.Location = new System.Drawing.Point(736, 27);
             this.toolbox1.Name = "toolbox1";
@@ -106,23 +122,26 @@
             // 
             // cellInfo1
             // 
-            this.cellInfo1.BackColor = System.Drawing.Color.LightGray;
-            this.cellInfo1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cellInfo1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cellInfo1.BackColor = System.Drawing.SystemColors.Control;
             this.cellInfo1.Enabled = false;
             this.cellInfo1.Location = new System.Drawing.Point(735, 281);
             this.cellInfo1.Name = "cellInfo1";
-            this.cellInfo1.Size = new System.Drawing.Size(204, 134);
+            this.cellInfo1.Size = new System.Drawing.Size(209, 167);
             this.cellInfo1.Surface = null;
             this.cellInfo1.TabIndex = 2;
             // 
             // surfacePanel1
             // 
+            this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.surfacePanel1.Clicked = false;
             this.surfacePanel1.Location = new System.Drawing.Point(12, 27);
             this.surfacePanel1.Name = "surfacePanel1";
             this.surfacePanel1.SelectedCell = new System.Drawing.Point(0, 0);
             this.surfacePanel1.SelectionSize = new System.Drawing.Point(1, 1);
-            this.surfacePanel1.Size = new System.Drawing.Size(716, 494);
+            this.surfacePanel1.Size = new System.Drawing.Size(700, 500);
             this.surfacePanel1.Surface = null;
             this.surfacePanel1.TabIndex = 0;
             this.surfacePanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.surfacePanel1_MouseMove);
@@ -132,6 +151,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 533);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.brushControl1);
             this.Controls.Add(this.resizeControl1);
             this.Controls.Add(this.toolbox1);
@@ -160,6 +180,7 @@
         private Toolbox toolbox1;
         private ResizeControl resizeControl1;
         private BrushControl brushControl1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

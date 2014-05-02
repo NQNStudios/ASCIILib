@@ -42,6 +42,11 @@ namespace SurfaceEditor
             get { return brushControl1; }
         }
 
+        public Button ClearTransparencyButton
+        {
+            get { return button1; }
+        }
+
         #endregion
 
         #region File Menu Events
@@ -81,6 +86,12 @@ namespace SurfaceEditor
             {
                 surfacePanel1.SelectedCell = cell;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            surfacePanel1.Surface.ClearTransparency();
+            surfacePanel1.Refresh();
         }
     }
 }

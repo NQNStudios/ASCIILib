@@ -40,12 +40,14 @@
             this.opacityTextBox = new System.Windows.Forms.TextBox();
             this.infoTextBox = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // characterLabel
             // 
             this.characterLabel.AutoSize = true;
-            this.characterLabel.Location = new System.Drawing.Point(45, 6);
+            this.characterLabel.Location = new System.Drawing.Point(41, 23);
             this.characterLabel.Name = "characterLabel";
             this.characterLabel.Size = new System.Drawing.Size(59, 13);
             this.characterLabel.TabIndex = 3;
@@ -54,7 +56,7 @@
             // backColorLabel
             // 
             this.backColorLabel.AutoSize = true;
-            this.backColorLabel.Location = new System.Drawing.Point(9, 58);
+            this.backColorLabel.Location = new System.Drawing.Point(5, 75);
             this.backColorLabel.Name = "backColorLabel";
             this.backColorLabel.Size = new System.Drawing.Size(95, 13);
             this.backColorLabel.TabIndex = 4;
@@ -63,7 +65,7 @@
             // charColorLabel
             // 
             this.charColorLabel.AutoSize = true;
-            this.charColorLabel.Location = new System.Drawing.Point(21, 32);
+            this.charColorLabel.Location = new System.Drawing.Point(17, 49);
             this.charColorLabel.Name = "charColorLabel";
             this.charColorLabel.Size = new System.Drawing.Size(83, 13);
             this.charColorLabel.TabIndex = 5;
@@ -72,7 +74,7 @@
             // opacityLabel
             // 
             this.opacityLabel.AutoSize = true;
-            this.opacityLabel.Location = new System.Drawing.Point(56, 84);
+            this.opacityLabel.Location = new System.Drawing.Point(52, 101);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(48, 13);
             this.opacityLabel.TabIndex = 6;
@@ -81,7 +83,7 @@
             // infoLabel
             // 
             this.infoLabel.AutoSize = true;
-            this.infoLabel.Location = new System.Drawing.Point(38, 110);
+            this.infoLabel.Location = new System.Drawing.Point(34, 127);
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(66, 13);
             this.infoLabel.TabIndex = 7;
@@ -90,7 +92,7 @@
             // charTextBox
             // 
             this.charTextBox.Enabled = false;
-            this.charTextBox.Location = new System.Drawing.Point(110, 3);
+            this.charTextBox.Location = new System.Drawing.Point(106, 20);
             this.charTextBox.Name = "charTextBox";
             this.charTextBox.Size = new System.Drawing.Size(87, 20);
             this.charTextBox.TabIndex = 8;
@@ -98,7 +100,7 @@
             // charColorTextBox
             // 
             this.charColorTextBox.Enabled = false;
-            this.charColorTextBox.Location = new System.Drawing.Point(110, 29);
+            this.charColorTextBox.Location = new System.Drawing.Point(106, 46);
             this.charColorTextBox.Name = "charColorTextBox";
             this.charColorTextBox.Size = new System.Drawing.Size(87, 20);
             this.charColorTextBox.TabIndex = 9;
@@ -106,7 +108,7 @@
             // backColorTextBox
             // 
             this.backColorTextBox.Enabled = false;
-            this.backColorTextBox.Location = new System.Drawing.Point(110, 55);
+            this.backColorTextBox.Location = new System.Drawing.Point(106, 72);
             this.backColorTextBox.Name = "backColorTextBox";
             this.backColorTextBox.Size = new System.Drawing.Size(87, 20);
             this.backColorTextBox.TabIndex = 10;
@@ -114,7 +116,7 @@
             // opacityTextBox
             // 
             this.opacityTextBox.Enabled = false;
-            this.opacityTextBox.Location = new System.Drawing.Point(110, 81);
+            this.opacityTextBox.Location = new System.Drawing.Point(106, 98);
             this.opacityTextBox.Name = "opacityTextBox";
             this.opacityTextBox.Size = new System.Drawing.Size(87, 20);
             this.opacityTextBox.TabIndex = 11;
@@ -122,31 +124,41 @@
             // infoTextBox
             // 
             this.infoTextBox.Enabled = false;
-            this.infoTextBox.Location = new System.Drawing.Point(110, 107);
+            this.infoTextBox.Location = new System.Drawing.Point(106, 124);
             this.infoTextBox.Name = "infoTextBox";
             this.infoTextBox.Size = new System.Drawing.Size(87, 20);
             this.infoTextBox.TabIndex = 12;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.opacityTextBox);
+            this.groupBox1.Controls.Add(this.infoTextBox);
+            this.groupBox1.Controls.Add(this.characterLabel);
+            this.groupBox1.Controls.Add(this.backColorLabel);
+            this.groupBox1.Controls.Add(this.backColorTextBox);
+            this.groupBox1.Controls.Add(this.charColorLabel);
+            this.groupBox1.Controls.Add(this.charColorTextBox);
+            this.groupBox1.Controls.Add(this.opacityLabel);
+            this.groupBox1.Controls.Add(this.charTextBox);
+            this.groupBox1.Controls.Add(this.infoLabel);
+            this.groupBox1.Location = new System.Drawing.Point(4, 4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(199, 156);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Cell Info";
             // 
             // CellInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightGray;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.infoTextBox);
-            this.Controls.Add(this.opacityTextBox);
-            this.Controls.Add(this.backColorTextBox);
-            this.Controls.Add(this.charColorTextBox);
-            this.Controls.Add(this.charTextBox);
-            this.Controls.Add(this.infoLabel);
-            this.Controls.Add(this.opacityLabel);
-            this.Controls.Add(this.charColorLabel);
-            this.Controls.Add(this.backColorLabel);
-            this.Controls.Add(this.characterLabel);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.groupBox1);
             this.Name = "CellInfo";
-            this.Size = new System.Drawing.Size(204, 134);
+            this.Size = new System.Drawing.Size(209, 167);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -163,5 +175,6 @@
         private System.Windows.Forms.TextBox opacityTextBox;
         private System.Windows.Forms.TextBox infoTextBox;
         private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
