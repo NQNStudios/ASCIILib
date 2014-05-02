@@ -83,12 +83,38 @@ namespace SurfaceEditor
             if (textButton.Checked)
             {
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.SmallText;
+                (Parent as EditorForm).SurfacePanel.SelectionSize = new Point(1, 1);
             }
         }
 
         private void longTextButton_CheckedChanged(object sender, EventArgs e)
         {
+            ResizeControl resize = (Parent as EditorForm).ResizeControl;
 
+            if (longTextButton.Checked)
+            {
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.LongText;
+
+                resize.Init("Text Bounds",
+                    (Parent as EditorForm).SurfacePanel.Surface.Width, (Parent as EditorForm).SurfacePanel.Surface.Height,
+                    MAX_SURFACE_WIDTH, MAX_SURFACE_HEIGHT);
+
+                resize.WidthControl.ValueChanged += BrushWidthChanged;
+                resize.HeightControl.ValueChanged += BrushHeightChanged;
+
+                //trigger cursor resize
+                --resize.WidthControl.Value;
+                ++resize.WidthControl.Value;
+                --resize.HeightControl.Value;
+                ++resize.HeightControl.Value;
+            }
+            else
+            {
+                resize.WidthControl.ValueChanged -= BrushWidthChanged;
+                resize.HeightControl.ValueChanged -= BrushHeightChanged;
+            }
+
+            resize.Visible = longTextButton.Checked;
         }
 
         private void shiftButton_CheckedChanged(object sender, EventArgs e)

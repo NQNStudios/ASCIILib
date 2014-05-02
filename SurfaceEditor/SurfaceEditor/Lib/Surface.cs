@@ -456,7 +456,7 @@ namespace SurfaceEditor
             }
         }
 
-        public void BlitStringMultiline(string text, Color color, int x, int y, int maxWidth)
+        public void BlitStringMultiline(string text, Color color, int x, int y, int maxWidth, int maxHeight)
         {
             string[] words = text.Split(' ');
 
@@ -464,11 +464,16 @@ namespace SurfaceEditor
 
             foreach (string word in words)
             {
-                if (x - dest.Left + word.Length > maxWidth)
+                if (x - dest.Left + word.Length > maxWidth || x + word.Length > width)
                 {
                     //wrap to the next line
                     x = dest.Left;
                     ++y;
+
+                    if (y - dest.Top > maxHeight)
+                    {
+                        return;
+                    }
                 }
 
                 BlitString(word, color, x, y);

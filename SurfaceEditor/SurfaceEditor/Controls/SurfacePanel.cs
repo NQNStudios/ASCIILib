@@ -22,6 +22,7 @@ namespace SurfaceEditor
             ToggleOpacity,
             PaintBrush,
             SmallText,
+            LongText,
             None
         }
 
@@ -269,7 +270,26 @@ namespace SurfaceEditor
                                         Refresh();
                                     }
                                     break;
+                                case InputMode.LongText:
+                                    LongTextForm longTextForm = new LongTextForm();
+                                    DialogResult longResult = longTextForm.ShowDialog(this);
+
+                                    if (longResult == DialogResult.OK)
+                                    {
+                                        surface.BlitStringMultiline(longTextForm.ChosenText, longTextForm.ChosenColor, 
+                                            c, r, selectionSize.X, selectionSize.Y);
+                                        Refresh();
+                                    }
+                                    break;
                             }
+                            if (Mode == InputMode.LongText)
+                            {
+                                break; //stop recursing through the whole selection; it only has to happen once
+                            }
+                        }
+                        if (Mode == InputMode.LongText)
+                        {
+                            break; //stop recursing through the whole selection; it only has to happen once
                         }
                     }
                 }
