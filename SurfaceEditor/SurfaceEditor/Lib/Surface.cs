@@ -312,6 +312,78 @@ namespace SurfaceEditor
             }
         }
 
+        public void ShiftUp()
+        {
+            for (int r = 1; r < height; ++r)
+            {
+                for (int c = 0; c < width; ++c)
+                {
+                    CopyCell(c, r, c, r - 1);
+                }
+            }
+
+            //Generate a new bottom row from default
+            --Height;
+            ++Height;
+        }
+
+        public void ShiftDown()
+        {
+            for (int r = height - 2; r >= 0; --r)
+            {
+                for (int c = 0; c < width; ++c)
+                {
+                    CopyCell(c, r, c, r + 1);
+                }
+            }
+
+            //Reset the top row to default
+            for (int c = 0; c < width; ++c)
+            {
+                SetCharacter(c, 0, DEFAULT_CHAR);
+                SetBackgroundColor(c, 0, DEFAULT_BACK_COLOR);
+                SetCharacterColor(c, 0, DEFAULT_CHAR_COLOR);
+                SetCellOpacity(c, 0, DEFAULT_CELL_OPACITY);
+                SetSpecialInfo(c, 0, DEFAULT_SPECIAL_INFO);
+            }
+        }
+
+        public void ShiftLeft()
+        {
+            for (int c = 1; c < width; ++c)
+            {
+                for (int r = 0; r < height; ++r)
+                {
+                    CopyCell(c, r, c - 1, r);
+                }
+            }
+
+            //Generate a new right row from default
+            --Width;
+            ++Width;
+        }
+
+        public void ShiftRight()
+        {
+            for (int c = width - 2; c >= 0; --c)
+            {
+                for (int r = 0; r < height; ++r)
+                {
+                    CopyCell(c, r, c + 1, r);
+                }
+            }
+
+            //Reset the left row to default
+            for (int r = 0; r < height; ++r)
+            {
+                SetCharacter(0, r, DEFAULT_CHAR);
+                SetBackgroundColor(0, r, DEFAULT_BACK_COLOR);
+                SetCharacterColor(0, r, DEFAULT_CHAR_COLOR);
+                SetCellOpacity(0, r, DEFAULT_CELL_OPACITY);
+                SetSpecialInfo(0, r, DEFAULT_SPECIAL_INFO);
+            }
+        }
+
         #endregion
 
         #region Draw Methods
@@ -488,6 +560,15 @@ namespace SurfaceEditor
             }
 
             height = value;
+        }
+
+        void CopyCell(int srcx, int srcy, int destx, int desty)
+        {
+            SetCharacter(destx, desty, GetCharacter(srcx, srcy));
+            SetBackgroundColor(destx, desty, GetBackgroundColor(srcx, srcy));
+            SetCharacterColor(destx, desty, GetCharacterColor(srcx, srcy));
+            SetCellOpacity(destx, desty, IsCellOpaque(srcx, srcy));
+            SetSpecialInfo(destx, desty, GetSpecialInfo(srcx, srcy));
         }
 
         #endregion

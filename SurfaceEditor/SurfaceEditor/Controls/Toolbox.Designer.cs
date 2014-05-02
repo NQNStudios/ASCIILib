@@ -91,6 +91,7 @@
             this.shiftButton.TabStop = true;
             this.shiftButton.Text = "Shift Surface";
             this.shiftButton.UseVisualStyleBackColor = true;
+            this.shiftButton.CheckedChanged += new System.EventHandler(this.shiftButton_CheckedChanged);
             // 
             // resizeButton
             // 

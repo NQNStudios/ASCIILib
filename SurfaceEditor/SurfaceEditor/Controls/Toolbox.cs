@@ -88,6 +88,19 @@ namespace SurfaceEditor
 
         }
 
+        private void shiftButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (shiftButton.Checked)
+            {
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.None;
+                (Parent as EditorForm).ShiftControl.Visible = true;
+            }
+            else
+            {
+                (Parent as EditorForm).ShiftControl.Visible = false;
+            }
+        }
+
         private void resizeButton_CheckedChanged(object sender, EventArgs e)
         {
             ResizeControl resize = (Parent as EditorForm).ResizeControl;

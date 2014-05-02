@@ -39,6 +39,7 @@
             this.toolbox1 = new SurfaceEditor.Toolbox();
             this.cellInfo1 = new SurfaceEditor.CellInfo();
             this.surfacePanel1 = new SurfaceEditor.SurfacePanel();
+            this.shiftControl1 = new SurfaceEditor.ShiftControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,11 +147,21 @@
             this.surfacePanel1.TabIndex = 0;
             this.surfacePanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.surfacePanel1_MouseMove);
             // 
+            // shiftControl1
+            // 
+            this.shiftControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.shiftControl1.Location = new System.Drawing.Point(752, 281);
+            this.shiftControl1.Name = "shiftControl1";
+            this.shiftControl1.Size = new System.Drawing.Size(93, 116);
+            this.shiftControl1.TabIndex = 7;
+            this.shiftControl1.Visible = false;
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 533);
+            this.Controls.Add(this.shiftControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.brushControl1);
             this.Controls.Add(this.resizeControl1);
@@ -181,6 +192,7 @@
         private ResizeControl resizeControl1;
         private BrushControl brushControl1;
         private System.Windows.Forms.Button button1;
+        private ShiftControl shiftControl1;
     }
 }
 

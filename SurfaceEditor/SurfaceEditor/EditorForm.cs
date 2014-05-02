@@ -47,6 +47,11 @@ namespace SurfaceEditor
             get { return button1; }
         }
 
+        public ShiftControl ShiftControl
+        {
+            get { return shiftControl1; }
+        }
+
         #endregion
 
         #region File Menu Events
