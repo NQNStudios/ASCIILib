@@ -79,43 +79,13 @@ namespace SurfaceEditor
                     int x = selectedCell.X;
                     int y = selectedCell.Y;
 
-                    for (int i = 0; i < selectionSize.X; ++i)
-                    {
-                        for (int j = 0; j < selectionSize.Y; ++j)
-                        {
-                            x = selectedCell.X + i;
-                            y = selectedCell.Y + j;
-
-                            //draw over the old one
-                            if (surface.IsInBounds(new Point(x, y)) && surface.IsCellOpaque(x, y))
-                            {
-                                Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
-
-                                Brush brush = new SolidBrush(surface.GetBackgroundColor(x, y));
-
-                                graphics.FillRectangle(brush, rectangle);
-                                graphics.DrawString("" + surface.GetCharacter(x, y), font, new SolidBrush(surface.GetCharacterColor(x, y)), new PointF(rectangle.X - 2, rectangle.Y));
-                            }
-                            else
-                            {
-                                Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
-
-                                graphics.FillRectangle(new SolidBrush(BACKGROUND_COLOR), rectangle);
-                            }
-                        }
-                    }
+                    RefreshRect(new Rectangle(x, y, selectionSize.X, selectionSize.Y));
                 }
                 
                 //draw a highlight on the selected cell
                 if (surface.IsInBounds(value))
                 {
-                    int x = value.X * CHAR_WIDTH;
-                    int y = value.Y * CHAR_HEIGHT;
-
-                    int w = Math.Min(selectionSize.X, surface.Width - value.X);
-                    int h = Math.Min(selectionSize.Y, surface.Height - value.Y);
-
-                    graphics.FillRectangle(new SolidBrush(CURSOR_COLOR), new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h));
+                     DrawCursor(value);
                 }
 
                 selectedCell = value;
@@ -292,6 +262,8 @@ namespace SurfaceEditor
                             break; //stop recursing through the whole selection; it only has to happen once
                         }
                     }
+                    RefreshRect(new Rectangle(selectedCell.X, selectedCell.Y, selectionSize.X, selectionSize.Y));
+                    DrawCursor(new Point(selectedCell.X, selectedCell.Y));
                 }
             }
         }
@@ -312,6 +284,46 @@ namespace SurfaceEditor
             graphics.FillRectangle(brush, rectangle);
 
             brush.Dispose();
+        }
+
+        private void DrawCursor(Point position)
+        {
+            int x = position.X * CHAR_WIDTH;
+            int y = position.Y * CHAR_HEIGHT;
+
+            int w = Math.Min(selectionSize.X, surface.Width - position.X);
+            int h = Math.Min(selectionSize.Y, surface.Height - position.Y);
+
+            graphics.FillRectangle(new SolidBrush(CURSOR_COLOR), new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h));
+        }
+
+        private void RefreshRect(Rectangle rect)
+        {
+            for (int i = 0; i < rect.Width; ++i)
+            {
+                for (int j = 0; j < rect.Height; ++j)
+                {
+                    int x = rect.X + i;
+                    int y = rect.Y + j;
+
+                    //draw over the old one
+                    if (surface.IsInBounds(new Point(x, y)) && surface.IsCellOpaque(x, y))
+                    {
+                        Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
+
+                        Brush brush = new SolidBrush(surface.GetBackgroundColor(x, y));
+
+                        graphics.FillRectangle(brush, rectangle);
+                        graphics.DrawString("" + surface.GetCharacter(x, y), font, new SolidBrush(surface.GetCharacterColor(x, y)), new PointF(rectangle.X - 2, rectangle.Y));
+                    }
+                    else
+                    {
+                        Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
+
+                        graphics.FillRectangle(new SolidBrush(BACKGROUND_COLOR), rectangle);
+                    }
+                }
+            }
         }
 
         #endregion
