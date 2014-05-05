@@ -29,6 +29,8 @@ namespace SurfaceEditor
 
         public const int CHAR_WIDTH = 8;
         public const int CHAR_HEIGHT = 12;
+        public const float CHAR_OFFSET = -2.0f;
+
         public static Color BACKGROUND_COLOR = Color.Gray;
         public static Color CURSOR_COLOR = Color.FromArgb(128, 255, 0, 0);
         public static Color INFO_COLOR = Color.FromArgb(128, 255, 255, 0);
@@ -79,13 +81,6 @@ namespace SurfaceEditor
             set
             { 
                 surface = value;
-
-                if (surface != null)
-                {
-                    //prepare the editor now that a new surface has been loaded.
-                    (Parent as EditorForm).SpecialInfoControl.ClearLabels();
-                    (Parent as EditorForm).SpecialInfoControl.LoadLabels(surface);
-                }
             }
         }
 
@@ -364,7 +359,7 @@ namespace SurfaceEditor
                         ++x;
                     } while (x < rect.Right && x < surface.Width && surface.GetCharacterColor(x, y) == characterColor && surface.GetCharacter(x, y) != ' ' && surface.IsCellOpaque(x, y));
 
-                    graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx - 2, desty));
+                    graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx + CHAR_OFFSET, desty));
                 }
             }
 

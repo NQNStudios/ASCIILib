@@ -67,14 +67,24 @@ namespace SurfaceEditor
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                surfacePanel1.Surface = Surface.FromFile(dialog.FileName);
-                surfacePanel1.Refresh();
+                SetSurface(Surface.FromFile(dialog.FileName));
             }
+        }
+
+        private void SetSurface(Surface surface)
+        {
+            surfacePanel1.Surface = surface;
+            surfacePanel1.Refresh();
+
+            //prepare the editor now that a new surface has been loaded.
 
             cellInfo1.Surface = surfacePanel1.Surface;
             cellInfo1.Enabled = true;
-            
+
             toolbox1.Enabled = true;
+
+            SpecialInfoControl.ClearLabels();
+            SpecialInfoControl.LoadLabels(surface);
         }
 
         #endregion
@@ -83,6 +93,18 @@ namespace SurfaceEditor
         {
             surfacePanel1.Surface.ClearTransparency();
             surfacePanel1.Refresh();
+        }
+
+        private void newSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewSurfaceForm dialog = new NewSurfaceForm();
+
+            DialogResult result = dialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                SetSurface(new Surface(dialog.SurfaceWidth, dialog.SurfaceHeight));
+            }
         }
     }
 }
