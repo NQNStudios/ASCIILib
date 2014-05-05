@@ -99,7 +99,7 @@ namespace SurfaceEditor
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.LongText;
 
                 resize.Init("Text Bounds",
-                    (Parent as EditorForm).SurfacePanel.Surface.Width, (Parent as EditorForm).SurfacePanel.Surface.Height,
+                    (Parent as EditorForm).SurfacePanel.Surface.Width / 2, (Parent as EditorForm).SurfacePanel.Surface.Height / 2,
                     MAX_SURFACE_WIDTH, MAX_SURFACE_HEIGHT);
 
                 resize.WidthControl.ValueChanged += BrushWidthChanged;
