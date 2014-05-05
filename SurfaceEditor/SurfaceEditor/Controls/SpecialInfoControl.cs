@@ -33,9 +33,31 @@ namespace SurfaceEditor
             textBox2.Text = "";
         }
 
-        private void SpecialInfoControl_Load(object sender, EventArgs e)
+        public void ClearLabels()
         {
+            listBox2.Items.Clear();
             listBox2.Items.Add("[Clear Info]");
+        }
+
+        public void LoadLabels(Surface surface)
+        {
+            for (int c = 0; c < surface.Width; ++c)
+            {
+                for (int r = 0; r < surface.Height; ++r)
+                {
+                    string label = surface.GetSpecialInfo(c, r);
+
+                    if (label.Length > 0 && !listBox2.Items.Contains(label))
+                    {
+                        listBox2.Items.Add(label);
+                    }
+                }
+            }
+        }
+
+        public void SelectLabel(string label)
+        {
+            listBox2.SelectedIndex = listBox2.Items.IndexOf(label);
         }
     }
 }

@@ -68,17 +68,15 @@ namespace SurfaceEditor
                 EnableBrushResize();
                 (Parent as EditorForm).SpecialInfoControl.Visible = true;
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.SpecialInfo;
+                (Parent as EditorForm).SurfacePanel.Refresh();
             }
             else
             {
                 DisableBrushResize();
                 (Parent as EditorForm).SpecialInfoControl.Visible = false;
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.None;
+                (Parent as EditorForm).SurfacePanel.Refresh();
             }
-        }
-
-        private void imagesButton_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void textButton_CheckedChanged(object sender, EventArgs e)
@@ -100,7 +98,7 @@ namespace SurfaceEditor
 
                 resize.Init("Text Bounds",
                     (Parent as EditorForm).SurfacePanel.Surface.Width / 2, (Parent as EditorForm).SurfacePanel.Surface.Height / 2,
-                    MAX_SURFACE_WIDTH, MAX_SURFACE_HEIGHT);
+                    (Parent as EditorForm).SurfacePanel.Surface.Width, (Parent as EditorForm).SurfacePanel.Surface.Height);
 
                 resize.WidthControl.ValueChanged += BrushWidthChanged;
                 resize.HeightControl.ValueChanged += BrushHeightChanged;

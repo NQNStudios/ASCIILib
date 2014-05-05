@@ -79,7 +79,6 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "SpecialInfoControl";
             this.Size = new System.Drawing.Size(227, 168);
-            this.Load += new System.EventHandler(this.SpecialInfoControl_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

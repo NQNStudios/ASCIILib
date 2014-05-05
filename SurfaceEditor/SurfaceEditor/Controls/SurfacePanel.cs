@@ -31,6 +31,7 @@ namespace SurfaceEditor
         public const int CHAR_HEIGHT = 12;
         public static Color BACKGROUND_COLOR = Color.Gray;
         public static Color CURSOR_COLOR = Color.FromArgb(128, 255, 0, 0);
+        public static Color INFO_COLOR = Color.FromArgb(128, 255, 255, 0);
 
         Graphics graphics;
         Font font;
@@ -38,6 +39,8 @@ namespace SurfaceEditor
 
         Point selectedCell;
         Point selectionSize = new Point(1, 1);
+
+        ToolTip toolTip1;
 
         bool clicked = false;
 
@@ -48,6 +51,15 @@ namespace SurfaceEditor
         public SurfacePanel()
         {
             InitializeComponent();
+
+            toolTip1 = new ToolTip();
+
+            // Set up the delays for the ToolTip.
+            toolTip1.AutoPopDelay = 5000;
+            toolTip1.InitialDelay = 0;
+            toolTip1.ReshowDelay = 500;
+            // Force the ToolTip text to be displayed whether or not the form is active.
+            toolTip1.ShowAlways = true;
         }
 
         private void SurfacePanel_Load(object sender, EventArgs e)
@@ -64,7 +76,17 @@ namespace SurfaceEditor
         public Surface Surface
         {
             get { return surface; }
-            set { surface = value; }
+            set
+            { 
+                surface = value;
+
+                if (surface != null)
+                {
+                    //prepare the editor now that a new surface has been loaded.
+                    (Parent as EditorForm).SpecialInfoControl.ClearLabels();
+                    (Parent as EditorForm).SpecialInfoControl.LoadLabels(surface);
+                }
+            }
         }
 
         public Point SelectedCell
@@ -83,10 +105,19 @@ namespace SurfaceEditor
                     RefreshRect(new Rectangle(x, y, selectionSize.X, selectionSize.Y));
                 }
                 
-                //draw a highlight on the selected cell
                 if (surface.IsInBounds(value))
                 {
-                     DrawCursor(value);
+                    //draw a highlight on the selected cell
+                    DrawCursor(value);
+
+                    //highlight its special info
+                    if (Mode == InputMode.SpecialInfo)
+                    {
+                        string label = surface.GetSpecialInfo(value.X, value.Y);
+                        
+                        toolTip1.SetToolTip(this, label);
+                    }
+                    
                 }
 
                 selectedCell = value;
@@ -119,77 +150,7 @@ namespace SurfaceEditor
             {
                 //Draw the loaded surface
 
-                //draw all background colors
-	            for (int y = 0; y < surface.Height; ++y)
-	            {
-		            int x = 0;
-
-		            while (x < surface.Width)
-		            {
-			            //chain all adjacent background colors in a row for more efficient rendering
-			            Rectangle colorRect = new Rectangle();
-
-			            colorRect.X = x * CHAR_WIDTH;
-			            colorRect.Y = y * CHAR_HEIGHT;
-			            colorRect.Width = 0;
-			            colorRect.Height = CHAR_HEIGHT;
-
-			            Color backgroundColor = surface.GetBackgroundColor(x, y);
-
-			            do
-			            {
-                            if (!surface.IsCellOpaque(x, y))
-                            {
-                                ++x;
-                                break;
-                            }
-
-				            colorRect.Width += CHAR_WIDTH;
-				            ++x;
-			            } while (x < surface.Width && surface.GetBackgroundColor(x, y) == backgroundColor);
-
-                        graphics.FillRectangle(new SolidBrush(backgroundColor), colorRect);
-		            }
-	            }
-
-	            //draw all characters
-	            for (int y = 0; y < surface.Height; ++y)
-	            {
-		            int x = 0;
-
-		            while (x < surface.Width)
-		            {
-			            //chain all adjacent characters with the same color into strings for more efficient rendering
-
-			            char ch = surface.GetCharacter(x, y);
-			            if (ch == ' ')
-			            {
-				            ++x;
-				            continue;
-			            }
-
-			            int destx = x * CHAR_WIDTH;
-			            int desty = y * CHAR_HEIGHT;
-			            
-                        string text = "";
-			            Color characterColor = surface.GetCharacterColor(x, y);
-
-			            do
-			            {
-                            if (!surface.IsCellOpaque(x, y))
-                            {
-                                ++x;
-                                break;
-                            }
-
-				            char character = surface.GetCharacter(x, y);
-				            text += character;
-				            ++x;
-                        } while (x < surface.Width && surface.GetCharacterColor(x, y) == characterColor && surface.GetCharacter(x, y) != ' ' && surface.IsCellOpaque(x, y));
-
-			            graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx - 2, desty));
-		            }
-	            }
+                RefreshRect(new Rectangle(0, 0, surface.Width, surface.Height));
             }
         }
 
@@ -303,33 +264,97 @@ namespace SurfaceEditor
             int w = Math.Min(selectionSize.X, surface.Width - position.X);
             int h = Math.Min(selectionSize.Y, surface.Height - position.Y);
 
-            graphics.FillRectangle(new SolidBrush(CURSOR_COLOR), new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h));
+            FillRectangle(new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h), CURSOR_COLOR);
         }
 
         private void RefreshRect(Rectangle rect)
         {
-            for (int i = 0; i < rect.Width; ++i)
+            //draw all background colors
+            for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)
             {
-                for (int j = 0; j < rect.Height; ++j)
+                int x = rect.X;
+
+                while (x < rect.Right && x < surface.Width)
                 {
-                    int x = rect.X + i;
-                    int y = rect.Y + j;
+                    //chain all adjacent background colors in a row for more efficient rendering
+                    Rectangle colorRect = new Rectangle();
 
-                    //draw over the old one
-                    if (surface.IsInBounds(new Point(x, y)) && surface.IsCellOpaque(x, y))
+                    colorRect.X = x * CHAR_WIDTH;
+                    colorRect.Y = y * CHAR_HEIGHT;
+                    colorRect.Width = 0;
+                    colorRect.Height = CHAR_HEIGHT;
+
+                    Color backgroundColor = surface.GetBackgroundColor(x, y);
+
+                    do
                     {
-                        Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
+                        if (!surface.IsCellOpaque(x, y))
+                        {
+                            FillRectangle(new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT), BACKGROUND_COLOR);
+                            ++x;
+                            break;
+                        }
 
-                        Brush brush = new SolidBrush(surface.GetBackgroundColor(x, y));
+                        colorRect.Width += CHAR_WIDTH;
+                        ++x;
+                    } while (x < rect.Right && x < surface.Width && surface.GetBackgroundColor(x, y) == backgroundColor);
 
-                        graphics.FillRectangle(brush, rectangle);
-                        graphics.DrawString("" + surface.GetCharacter(x, y), font, new SolidBrush(surface.GetCharacterColor(x, y)), new PointF(rectangle.X - 2, rectangle.Y));
+                    FillRectangle(colorRect, backgroundColor);
+                }
+            }
+
+            //draw all characters
+            for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)
+            {
+                int x = rect.X;
+
+                while (x < rect.Right && x < surface.Width)
+                {
+                    //chain all adjacent characters with the same color into strings for more efficient rendering
+
+                    char ch = surface.GetCharacter(x, y);
+                    if (ch == ' ')
+                    {
+                        ++x;
+                        continue;
                     }
-                    else
-                    {
-                        Rectangle rectangle = new Rectangle(x * CHAR_WIDTH, y * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
 
-                        graphics.FillRectangle(new SolidBrush(BACKGROUND_COLOR), rectangle);
+                    int destx = x * CHAR_WIDTH;
+                    int desty = y * CHAR_HEIGHT;
+
+                    string text = "";
+                    Color characterColor = surface.GetCharacterColor(x, y);
+
+                    do
+                    {
+                        if (!surface.IsCellOpaque(x, y))
+                        {
+                            ++x;
+                            break;
+                        }
+
+                        char character = surface.GetCharacter(x, y);
+                        text += character;
+                        ++x;
+                    } while (x < rect.Right && x < surface.Width && surface.GetCharacterColor(x, y) == characterColor && surface.GetCharacter(x, y) != ' ' && surface.IsCellOpaque(x, y));
+
+                    graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx - 2, desty));
+                }
+            }
+
+            //draw special info overlays
+            if (Mode == InputMode.SpecialInfo)
+            {
+                for (int c = rect.X; c < rect.Right && c < surface.Width; ++c)
+                {
+                    for (int r = rect.Y; r < rect.Bottom && r < surface.Height; ++r)
+                    {
+                        string label = surface.GetSpecialInfo(c, r);
+
+                        if (label.Length > 0)
+                        {
+                            FillRectangle(new Rectangle(c * CHAR_WIDTH, r * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT), INFO_COLOR);
+                        }
                     }
                 }
             }
