@@ -38,6 +38,8 @@
             this.Size = new System.Drawing.Size(716, 358);
             this.Load += new System.EventHandler(this.SurfacePanel_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseDown);
+            this.MouseLeave += new System.EventHandler(this.SurfacePanel_MouseLeave);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseMove);
             this.ResumeLayout(false);
 
         }

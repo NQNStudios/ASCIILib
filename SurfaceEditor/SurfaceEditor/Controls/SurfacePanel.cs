@@ -158,7 +158,33 @@ namespace SurfaceEditor
 
         #region Input Handling
 
-        public void SurfacePanel_MouseDown(object sender, MouseEventArgs e)
+        private void SurfacePanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            CellInfo cellInfo1 = (Parent as EditorForm).CellInfo;
+
+            Point cell = new Point(e.X / SurfacePanel.CHAR_WIDTH, e.Y / SurfacePanel.CHAR_HEIGHT);
+
+            if (cellInfo1.Surface != null && surface.IsInBounds(cell))
+            {
+                cellInfo1.ShowCellInfo(cell.X, cell.Y);
+            }
+            else
+            {
+                cellInfo1.ClearCellInfo();
+            }
+
+            if (surface != null && cell != SelectedCell)
+            {
+                SelectedCell = cell;
+            }
+        }
+
+        private void SurfacePanel_MouseLeave(object sender, EventArgs e)
+        {
+            SelectedCell = new Point(-1, -1);
+        }
+
+        private void SurfacePanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e == null || e.Button == MouseButtons.Left)
             {

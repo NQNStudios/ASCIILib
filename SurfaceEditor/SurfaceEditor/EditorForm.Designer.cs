@@ -146,7 +146,6 @@
             this.surfacePanel1.Size = new System.Drawing.Size(700, 534);
             this.surfacePanel1.Surface = null;
             this.surfacePanel1.TabIndex = 0;
-            this.surfacePanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.surfacePanel1_MouseMove);
             // 
             // shiftControl1
             // 
