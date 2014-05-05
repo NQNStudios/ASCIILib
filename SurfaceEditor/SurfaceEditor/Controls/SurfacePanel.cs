@@ -23,6 +23,7 @@ namespace SurfaceEditor
             PaintBrush,
             SmallText,
             LongText,
+            SpecialInfo,
             None
         }
 
@@ -280,6 +281,14 @@ namespace SurfaceEditor
                                             c, r, selectionSize.X, selectionSize.Y);
                                         Refresh();
                                     }
+                                    break;
+                                case InputMode.SpecialInfo:
+                                    string label = (Parent as EditorForm).SpecialInfoControl.SelectedLabel;
+                                    if (label == "[Clear Info]")
+                                    {
+                                        label = "";
+                                    }
+                                    surface.SetSpecialInfo(c, r, label);
                                     break;
                             }
                             if (Mode == InputMode.LongText)

@@ -52,6 +52,11 @@ namespace SurfaceEditor
             get { return shiftControl1; }
         }
 
+        public SpecialInfoControl SpecialInfoControl
+        {
+            get { return specialInfoControl1; }
+        }
+
         #endregion
 
         #region File Menu Events

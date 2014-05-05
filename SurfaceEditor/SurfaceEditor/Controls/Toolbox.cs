@@ -66,10 +66,13 @@ namespace SurfaceEditor
             if (placeInfoButton.Checked)
             {
                 EnableBrushResize();
+                (Parent as EditorForm).SpecialInfoControl.Visible = true;
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.SpecialInfo;
             }
             else
             {
                 DisableBrushResize();
+                (Parent as EditorForm).SpecialInfoControl.Visible = false;
             }
         }
 

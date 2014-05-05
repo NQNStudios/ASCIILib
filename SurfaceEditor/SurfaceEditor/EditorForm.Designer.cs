@@ -40,6 +40,7 @@
             this.cellInfo1 = new SurfaceEditor.CellInfo();
             this.surfacePanel1 = new SurfaceEditor.SurfacePanel();
             this.shiftControl1 = new SurfaceEditor.ShiftControl();
+            this.specialInfoControl1 = new SurfaceEditor.SpecialInfoControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -142,7 +143,7 @@
             this.surfacePanel1.Name = "surfacePanel1";
             this.surfacePanel1.SelectedCell = new System.Drawing.Point(0, 0);
             this.surfacePanel1.SelectionSize = new System.Drawing.Point(1, 1);
-            this.surfacePanel1.Size = new System.Drawing.Size(700, 500);
+            this.surfacePanel1.Size = new System.Drawing.Size(700, 534);
             this.surfacePanel1.Surface = null;
             this.surfacePanel1.TabIndex = 0;
             this.surfacePanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.surfacePanel1_MouseMove);
@@ -156,11 +157,20 @@
             this.shiftControl1.TabIndex = 7;
             this.shiftControl1.Visible = false;
             // 
+            // specialInfoControl1
+            // 
+            this.specialInfoControl1.Location = new System.Drawing.Point(736, 391);
+            this.specialInfoControl1.Name = "specialInfoControl1";
+            this.specialInfoControl1.Size = new System.Drawing.Size(227, 168);
+            this.specialInfoControl1.TabIndex = 8;
+            this.specialInfoControl1.Visible = false;
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(965, 533);
+            this.ClientSize = new System.Drawing.Size(965, 567);
+            this.Controls.Add(this.specialInfoControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.brushControl1);
             this.Controls.Add(this.resizeControl1);
@@ -193,6 +203,7 @@
         private BrushControl brushControl1;
         private System.Windows.Forms.Button button1;
         private ShiftControl shiftControl1;
+        private SpecialInfoControl specialInfoControl1;
     }
 }
 

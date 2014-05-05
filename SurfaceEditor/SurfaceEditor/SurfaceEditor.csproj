@@ -68,6 +68,12 @@
     <Compile Include="Controls\ShiftControl.Designer.cs">
       <DependentUpon>ShiftControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SpecialInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SpecialInfoControl.Designer.cs">
+      <DependentUpon>SpecialInfoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ShiftControl.resx">
       <DependentUpon>ShiftControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SpecialInfoControl.resx">
+      <DependentUpon>SpecialInfoControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
