@@ -46,13 +46,13 @@ namespace ascii
 			char getCharacter(int x, int y) { return mCharacters[x][y]; }
 			Color getBackgroundColor(int x, int y) { return mBackgroundColors[x][y]; }
 			Color getCharacterColor(int x, int y) { return mCharacterColors[x][y]; }
-			bool isOpaque(int x, int y) { return mCellOpacity[x][y]; }
+			bool isCellOpaque(int x, int y) { return mCellOpacity[x][y]; }
 			std::string getSpecialInfo(int x, int y) { return mSpecialInfo[x][y]; }
 
 			void setCharacter(int x, int y, char value) { mCharacters[x][y] = value; }
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
-			void setOpaque(int x, int y, bool value) { mCellOpacity[x][y] = value; }
+			void setCellOpacity(int x, int y, bool value) { mCellOpacity[x][y] = value; }
 			void setSpecialInfo(int x, int y, std::string value) { mSpecialInfo[x][y] = value; }
 
 			///<summary>

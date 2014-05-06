@@ -85,7 +85,7 @@ void ascii::Graphics::update()
 
 			do
 			{
-				if (!isOpaque(x, y))
+				if (!isCellOpaque(x, y))
                 {
                     ++x;
                     break;
@@ -127,7 +127,7 @@ void ascii::Graphics::update()
 
 			do
 			{
-				if (!isOpaque(x, y))
+				if (!isCellOpaque(x, y))
 				{
 					++x;
 					break;

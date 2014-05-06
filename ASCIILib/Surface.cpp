@@ -169,7 +169,7 @@ ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cach
 
 			bool opaque = colorsymbol == '1';
 
-			surface->setOpaque(c, r, opaque);
+			surface->setCellOpacity(c, r, opaque);
 
 			++c;
 		}
@@ -304,7 +304,7 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 	{
 		for (int desty = y, srcy = 0; desty < mWidth && srcy < surface->mHeight; ++desty, ++srcy)
 		{
-			if (surface->isOpaque(srcx, srcy))
+			if (surface->isCellOpaque(srcx, srcy))
 			{
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
@@ -324,7 +324,7 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 	{
 		for (int desty = y, srcy = source.y; desty < mHeight && srcy < source.bottom(); ++desty, ++srcy)
 		{
-			if (surface->isOpaque(srcx, srcy))
+			if (surface->isCellOpaque(srcx, srcy))
 			{
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
