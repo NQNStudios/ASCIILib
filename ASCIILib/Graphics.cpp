@@ -24,6 +24,8 @@ ascii::Graphics::Graphics(const char* title)
 		kBufferWidth * mCharWidth, kBufferHeight * mCharHeight, 
 		SDL_WINDOW_SHOWN);
 
+	checkSize();
+
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 }
 
@@ -39,6 +41,8 @@ ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		bufferWidth * mCharWidth, bufferHeight * mCharHeight,
 		SDL_WINDOW_SHOWN);
+
+	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -165,4 +169,12 @@ void ascii::Graphics::update()
 	}
 
 	SDL_RenderPresent(mRenderer);
+}
+
+void ascii::Graphics::checkSize()
+{
+	int w, h;
+	SDL_GetWindowSize(mWindow, &w, &h);
+
+	SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
 }

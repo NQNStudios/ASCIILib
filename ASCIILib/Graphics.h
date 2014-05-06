@@ -56,6 +56,11 @@ namespace ascii
 			///</summary>
 			void update();
 		private:
+			///<summary>
+			/// Ensures that this Graphics instance was not created with dimensions too small to fit
+			///</summary>
+			void checkSize();
+
 			typedef std::pair<std::string, Color> Glyph;
 
 			SDL_Window* mWindow;
