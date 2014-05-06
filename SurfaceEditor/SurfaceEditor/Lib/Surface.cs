@@ -192,9 +192,128 @@ namespace SurfaceEditor
             return surface;
         }
 
-        public void WriteToFile(string path)
+        public void SaveToFile(string path)
         {
+            StreamWriter writer = new StreamWriter(path);
 
+            writer.WriteLine("COLORS");
+
+            Dictionary<Color, char> colorKeys = new Dictionary<Color, char>();
+            char key = (char)0;
+
+            for (int x = 0; x < width; ++x)
+            {
+                for (int y = 0; y < height; ++y)
+                {
+                    Color bgCol = GetBackgroundColor(x, y);
+                    Color fgCol = GetCharacterColor(x, y);
+
+                    if (!colorKeys.Keys.Contains(bgCol))
+                    {
+                        colorKeys[bgCol] = key++;
+                    }
+
+                    if (!colorKeys.Keys.Contains(fgCol))
+                    {
+                        colorKeys[fgCol] = key++;
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<Color, char> pair in colorKeys)
+            {
+                writer.WriteLine("" + pair.Value + " " + pair.Key.R + " " + pair.Key.G + " " + pair.Key.B);
+            }
+
+            writer.WriteLine("INFO CODES");
+
+            Dictionary<string, char> infoKeys = new Dictionary<string, char>();
+            key = (char)0;
+
+            for (int x = 0; x < width; ++x)
+            {
+                for (int y = 0; y < height; ++y)
+                {
+                    string label = GetSpecialInfo(x, y);
+
+                    if (!infoKeys.Keys.Contains(label))
+                    {
+                        infoKeys[label] = key++;
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<string, char> pair in infoKeys)
+            {
+                writer.WriteLine("" + pair.Value + " " + pair.Key);
+            }
+
+            writer.WriteLine("SIZE");
+
+            writer.WriteLine("" + width + " " + height);
+
+            writer.WriteLine("CHARACTERS");
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    writer.Write(GetCharacter(x, y));
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.WriteLine("BACKGROUND COLORS");
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    writer.Write(colorKeys[GetBackgroundColor(x, y)]);
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.WriteLine("CHARACTER COLORS");
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    writer.Write(colorKeys[GetCharacterColor(x, y)]);
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.WriteLine("OPACITY");
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    char opacity = IsCellOpaque(x, y) ? '1' : '0';
+                    writer.Write(opacity);
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.WriteLine("SPECIAL INFO");
+
+            for (int y = 0; y < height; ++y)
+            {
+                for (int x = 0; x < width; ++x)
+                {
+                    writer.Write(infoKeys[GetSpecialInfo(x, y)]);
+                }
+
+                writer.WriteLine();
+            }
+
+            writer.Close();
         }
 
         #endregion

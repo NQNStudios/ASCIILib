@@ -100,7 +100,7 @@ namespace SurfaceEditor
                     RefreshRect(new Rectangle(x, y, selectionSize.X, selectionSize.Y));
                 }
                 
-                if (surface.IsInBounds(value))
+                if (surface.IsInBounds(value) && Mode != InputMode.None)
                 {
                     //draw a highlight on the selected cell
                     DrawCursor(value);
@@ -176,7 +176,10 @@ namespace SurfaceEditor
 
         private void SurfacePanel_MouseLeave(object sender, EventArgs e)
         {
-            SelectedCell = new Point(-1, -1);
+            if (Parent.Focused)
+            {
+                SelectedCell = new Point(-1, -1);
+            }
         }
 
         private void SurfacePanel_MouseDown(object sender, MouseEventArgs e)

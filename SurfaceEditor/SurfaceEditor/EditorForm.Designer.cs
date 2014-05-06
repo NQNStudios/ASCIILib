@@ -83,6 +83,7 @@
             this.saveSurfaceToolStripMenuItem.Name = "saveSurfaceToolStripMenuItem";
             this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
+            this.saveSurfaceToolStripMenuItem.Click += new System.EventHandler(this.saveSurfaceToolStripMenuItem_Click);
             // 
             // button1
             // 

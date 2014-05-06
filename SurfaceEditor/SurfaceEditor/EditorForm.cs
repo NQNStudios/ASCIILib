@@ -64,6 +64,7 @@ namespace SurfaceEditor
         private void openSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Surface File | *.srf";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -104,6 +105,22 @@ namespace SurfaceEditor
             if (result == DialogResult.OK)
             {
                 SetSurface(new Surface(dialog.SurfaceWidth, dialog.SurfaceHeight));
+            }
+        }
+
+        private void saveSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "MySurface.srf";
+            dialog.Filter = "Surface File | *.srf";
+
+            DialogResult result = dialog.ShowDialog(this);
+
+            if (result == DialogResult.OK && surfacePanel1.Surface != null)
+            {
+                string path = dialog.FileName;
+
+                surfacePanel1.Surface.SaveToFile(path);
             }
         }
     }
