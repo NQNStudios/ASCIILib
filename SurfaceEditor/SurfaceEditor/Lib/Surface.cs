@@ -338,6 +338,16 @@ namespace SurfaceEditor
             set { SetHeight(value); }
         }
 
+        public int PixelWidth
+        {
+            get { return width * SurfacePanel.CHAR_WIDTH; }
+        }
+
+        public int PixelHeight
+        {
+            get { return height * SurfacePanel.CHAR_HEIGHT; }
+        }
+
         public Dictionary<string, string> ImagePaths
         {
             get { return imagePaths; }
