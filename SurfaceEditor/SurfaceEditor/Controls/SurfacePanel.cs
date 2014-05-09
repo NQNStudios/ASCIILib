@@ -25,7 +25,8 @@ namespace SurfaceEditor
             LongText,
             SpecialInfo,
             FillCells,
-            None
+            None,
+            EyeDropper
         }
 
         public const int CHAR_WIDTH = 8;
@@ -223,7 +224,7 @@ namespace SurfaceEditor
 
                                     if (result == DialogResult.OK)
                                     {
-                                        surface.BlitString(form.ChosenText, form.ChosenColor, c, r);
+                                        surface.BlitString(form.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, c, r);
                                         Refresh();
                                     }
                                     break;
@@ -233,7 +234,7 @@ namespace SurfaceEditor
 
                                     if (longResult == DialogResult.OK)
                                     {
-                                        surface.BlitStringMultiline(longTextForm.ChosenText, longTextForm.ChosenColor, 
+                                        surface.BlitStringMultiline(longTextForm.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, 
                                             c, r, selectionSize.X, selectionSize.Y);
                                         Refresh();
                                     }
@@ -264,6 +265,23 @@ namespace SurfaceEditor
                                     }
 
                                     Refresh();
+                                    break;
+                                case InputMode.EyeDropper:
+                                    parent = (Parent as EditorForm);
+                                    brushControl = parent.BrushControl;
+
+                                    if (brushControl.PaintCharacter)
+                                    {
+                                        brushControl.Character = surface.GetCharacter(c, r);
+                                    }
+                                    if (brushControl.PaintBackgroundColor)
+                                    {
+                                        brushControl.BackgroundColor = surface.GetBackgroundColor(c, r);
+                                    }
+                                    if (brushControl.PaintCharacterColor)
+                                    {
+                                        brushControl.CharacterColor = surface.GetCharacterColor(c, r);
+                                    }
                                     break;
                             }
                             if (Mode == InputMode.LongText)

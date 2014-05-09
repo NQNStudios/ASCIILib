@@ -121,7 +121,7 @@
             this.toolbox1.Enabled = false;
             this.toolbox1.Location = new System.Drawing.Point(736, 27);
             this.toolbox1.Name = "toolbox1";
-            this.toolbox1.Size = new System.Drawing.Size(160, 248);
+            this.toolbox1.Size = new System.Drawing.Size(240, 248);
             this.toolbox1.TabIndex = 3;
             // 
             // cellInfo1
@@ -140,6 +140,7 @@
             this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.surfacePanel1.AutoScroll = true;
             this.surfacePanel1.Clicked = false;
             this.surfacePanel1.Location = new System.Drawing.Point(12, 27);
             this.surfacePanel1.Name = "surfacePanel1";
@@ -160,6 +161,7 @@
             // 
             // specialInfoControl1
             // 
+            this.specialInfoControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.specialInfoControl1.Location = new System.Drawing.Point(736, 391);
             this.specialInfoControl1.Name = "specialInfoControl1";
             this.specialInfoControl1.Size = new System.Drawing.Size(227, 168);

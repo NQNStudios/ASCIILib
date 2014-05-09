@@ -38,6 +38,7 @@
             this.placeInfoButton = new System.Windows.Forms.RadioButton();
             this.toggleOpacityButton = new System.Windows.Forms.RadioButton();
             this.fillCellsButton = new System.Windows.Forms.RadioButton();
+            this.eyeDropperButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +68,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.eyeDropperButton);
             this.groupBox1.Controls.Add(this.fillCellsButton);
             this.groupBox1.Controls.Add(this.shiftButton);
             this.groupBox1.Controls.Add(this.resizeButton);
@@ -76,9 +78,9 @@
             this.groupBox1.Controls.Add(this.toggleOpacityButton);
             this.groupBox1.Controls.Add(this.viewCellsButton);
             this.groupBox1.Controls.Add(this.paintCellsButton);
-            this.groupBox1.Location = new System.Drawing.Point(5, 5);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(147, 236);
+            this.groupBox1.Size = new System.Drawing.Size(210, 236);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode";
@@ -163,13 +165,25 @@
             this.fillCellsButton.UseVisualStyleBackColor = true;
             this.fillCellsButton.CheckedChanged += new System.EventHandler(this.fillCellsButton_CheckedChanged);
             // 
+            // eyeDropperButton
+            // 
+            this.eyeDropperButton.AutoSize = true;
+            this.eyeDropperButton.Location = new System.Drawing.Point(118, 19);
+            this.eyeDropperButton.Name = "eyeDropperButton";
+            this.eyeDropperButton.Size = new System.Drawing.Size(84, 17);
+            this.eyeDropperButton.TabIndex = 10;
+            this.eyeDropperButton.TabStop = true;
+            this.eyeDropperButton.Text = "Eye Dropper";
+            this.eyeDropperButton.UseVisualStyleBackColor = true;
+            this.eyeDropperButton.CheckedChanged += new System.EventHandler(this.eyeDropperButton_CheckedChanged);
+            // 
             // Toolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "Toolbox";
-            this.Size = new System.Drawing.Size(159, 244);
+            this.Size = new System.Drawing.Size(326, 244);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -188,5 +202,6 @@
         private System.Windows.Forms.RadioButton resizeButton;
         private System.Windows.Forms.RadioButton shiftButton;
         private System.Windows.Forms.RadioButton fillCellsButton;
+        private System.Windows.Forms.RadioButton eyeDropperButton;
     }
 }

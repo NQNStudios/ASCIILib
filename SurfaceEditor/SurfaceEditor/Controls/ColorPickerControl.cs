@@ -46,11 +46,14 @@ namespace SurfaceEditor
 
         private void ColorPickerControl_Click(object sender, EventArgs e)
         {
-            DialogResult result = colorDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
+            if (Enabled)
             {
-                Color = colorDialog.Color;
+                DialogResult result = colorDialog.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    Color = colorDialog.Color;
+                }
             }
         }
 

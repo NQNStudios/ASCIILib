@@ -20,6 +20,8 @@ namespace SurfaceEditor
             InitializeComponent();
         }
 
+        #region Button Events
+
         void viewCellsButton_CheckedChanged(object sender, EventArgs e)
         {
             (Parent as EditorForm).CellInfo.Visible = viewCellsButton.Checked;
@@ -85,6 +87,12 @@ namespace SurfaceEditor
             {
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.SmallText;
                 (Parent as EditorForm).SurfacePanel.SelectionSize = new Point(1, 1);
+
+                (Parent as EditorForm).BrushControl.BeginTextMode();
+            }
+            else
+            {
+                (Parent as EditorForm).BrushControl.EndTextMode();
             }
         }
 
@@ -95,6 +103,7 @@ namespace SurfaceEditor
             if (longTextButton.Checked)
             {
                 (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.LongText;
+                (Parent as EditorForm).BrushControl.BeginTextMode();
 
                 resize.Init("Text Bounds",
                     (Parent as EditorForm).SurfacePanel.Surface.Width / 2, (Parent as EditorForm).SurfacePanel.Surface.Height / 2,
@@ -113,6 +122,7 @@ namespace SurfaceEditor
             {
                 resize.WidthControl.ValueChanged -= BrushWidthChanged;
                 resize.HeightControl.ValueChanged -= BrushHeightChanged;
+                (Parent as EditorForm).BrushControl.EndTextMode();
             }
 
             resize.Visible = longTextButton.Checked;
@@ -168,6 +178,22 @@ namespace SurfaceEditor
                 DisableBrushControl();
             }
         }
+
+        private void eyeDropperButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (eyeDropperButton.Checked)
+            {
+                EnableDropperBrushControl();
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.EyeDropper;
+                (Parent as EditorForm).SurfacePanel.SelectionSize = new Point(1, 1);
+            }
+            else
+            {
+                DisableDropperBrushControl();
+            }
+        }
+
+        #endregion
 
         #region Brush Resize Helpers
 
@@ -281,7 +307,18 @@ namespace SurfaceEditor
             (Parent as EditorForm).BrushControl.Visible = false;
         }
 
-        #endregion
+        private void EnableDropperBrushControl()
+        {
+            EnableBrushControl();
+            (Parent as EditorForm).BrushControl.BeginDropperMode();
+        }
 
+        private void DisableDropperBrushControl()
+        {
+            DisableBrushControl();
+            (Parent as EditorForm).BrushControl.EndDropperMode();
+        }
+
+        #endregion
     }
 }

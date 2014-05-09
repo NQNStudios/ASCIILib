@@ -22,11 +22,6 @@ namespace SurfaceEditor
             get { return textBox1.Text; }
         }
 
-        public Color ChosenColor
-        {
-            get { return colorPickerControl1.Color; }
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;

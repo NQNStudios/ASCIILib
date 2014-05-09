@@ -47,16 +47,80 @@ namespace SurfaceEditor
         public char Character
         {
             get { return charTextBox.Text[0]; }
+            set
+            {
+                charTextBox.Text = "" + value;
+            }
         }
 
         public Color BackgroundColor
         {
             get { return bgColorPicker.Color; }
+            set
+            {
+                bgColorPicker.Color = value;
+            }
         }
 
         public Color CharacterColor
         {
             get { return charColorPicker.Color; }
+            set
+            {
+                charColorPicker.Color = value;
+            }
+        }
+
+        #endregion
+
+        #region Special Modes
+
+        public void BeginDropperMode()
+        {
+            charCheckBox.Enabled = true;
+            charCheckBox.Checked = true;
+            charTextBox.Enabled = false;
+            bgColorPicker.Enabled = false;
+            charColorPicker.Enabled = false;
+        }
+
+        public void EndDropperMode()
+        {
+            charCheckBox.Enabled = false;
+            charCheckBox.Checked = charTextBox.Text.Length > 0;
+            charTextBox.Enabled = true;
+            bgColorPicker.Enabled = true;
+            charColorPicker.Enabled = true;
+        }
+
+        public void BeginTextMode()
+        {
+            Visible = true;
+
+            charCheckBox.Checked = false;
+            charTextBox.Enabled = false;
+
+            bgColorCheckBox.Checked = false;
+            bgColorCheckBox.Enabled = false;
+
+            bgColorPicker.Enabled = false;
+            charColorCheckBox.Checked = true;
+            charColorCheckBox.Enabled = false;
+        }
+
+        public void EndTextMode()
+        {
+            Visible = false;
+
+            charCheckBox.Checked = false;
+            charTextBox.Enabled = charTextBox.Text.Length > 0;
+
+            bgColorCheckBox.Checked = true;
+            bgColorCheckBox.Enabled = true;
+
+            bgColorPicker.Enabled = true;
+            charColorCheckBox.Checked = true;
+            charColorCheckBox.Enabled = true;
         }
 
         #endregion
