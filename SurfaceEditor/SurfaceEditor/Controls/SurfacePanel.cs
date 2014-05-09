@@ -24,6 +24,7 @@ namespace SurfaceEditor
             SmallText,
             LongText,
             SpecialInfo,
+            FillCells,
             None
         }
 
@@ -245,6 +246,25 @@ namespace SurfaceEditor
                                     }
                                     surface.SetSpecialInfo(c, r, label);
                                     break;
+                                case InputMode.FillCells:
+                                    parent = (Parent as EditorForm);
+                                    brushControl = parent.BrushControl;
+
+                                    if (brushControl.PaintCharacter)
+                                    {
+                                        FloodFillChar(c, r, brushControl.Character);
+                                    }
+                                    if (brushControl.PaintBackgroundColor)
+                                    {
+                                        FloodFillBack(c, r, brushControl.BackgroundColor);
+                                    }
+                                    if (brushControl.PaintCharacterColor)
+                                    {
+                                        FloodFillFore(c, r, brushControl.CharacterColor);
+                                    }
+
+                                    Refresh();
+                                    break;
                             }
                             if (Mode == InputMode.LongText)
                             {
@@ -264,23 +284,95 @@ namespace SurfaceEditor
 
         #endregion
 
-        #region Methods
+        #region Flood Fill Helpers
 
-        public void UpdateScrollBars()
+        private void FloodFillChar(int x, int y, char value)
         {
-            hScrollBar1.Visible = false;
-            vScrollBar1.Visible = false;
+            char prevValue = surface.GetCharacter(x, y);
 
-            if (surface.PixelWidth > this.Width)
+            if (prevValue == value)
+                return;
+                
+            surface.SetCharacter(x, y, value);
+
+            if (x > 0 && surface.GetCharacter(x - 1, y) == prevValue)
             {
-                hScrollBar1.Visible = true;
-                hScrollBar1.Maximum = surface.PixelWidth - this.Width;
+                FloodFillChar(x - 1, y, value);
             }
 
-            if (surface.PixelHeight > this.Height)
+            if (y > 0 && surface.GetCharacter(x, y - 1) == prevValue)
             {
-                vScrollBar1.Visible = true;
-                vScrollBar1.Maximum = surface.PixelHeight - this.Height;
+                FloodFillChar(x, y - 1, value);
+            }
+
+            if (x < surface.Width - 1 && surface.GetCharacter(x + 1, y) == prevValue)
+            {
+                FloodFillChar(x + 1, y, value);
+            }
+
+            if (y < surface.Height - 1 && surface.GetCharacter(x, y + 1) == prevValue)
+            {
+                FloodFillChar(x, y + 1, value);
+            }
+        }
+
+        private void FloodFillBack(int x, int y, Color value)
+        {
+            Color prevValue = surface.GetBackgroundColor(x, y);
+
+            if (prevValue == value)
+                return;
+
+            surface.SetBackgroundColor(x, y, value);
+
+            if (x > 0 && surface.GetBackgroundColor(x - 1, y) == prevValue)
+            {
+                FloodFillBack(x - 1, y, value);
+            }
+
+            if (y > 0 && surface.GetBackgroundColor(x, y - 1) == prevValue)
+            {
+                FloodFillBack(x, y - 1, value);
+            }
+
+            if (x < surface.Width - 1 && surface.GetBackgroundColor(x + 1, y) == prevValue)
+            {
+                FloodFillBack(x + 1, y, value);
+            }
+
+            if (y < surface.Height - 1 && surface.GetBackgroundColor(x, y + 1) == prevValue)
+            {
+                FloodFillBack(x, y + 1, value);
+            }
+        }
+
+        private void FloodFillFore(int x, int y, Color value)
+        {
+            Color prevValue = surface.GetCharacterColor(x, y);
+
+            if (prevValue == value)
+                return;
+
+            surface.SetCharacterColor(x, y, value);
+
+            if (x > 0 && surface.GetCharacterColor(x - 1, y) == prevValue)
+            {
+                FloodFillFore(x - 1, y, value);
+            }
+
+            if (y > 0 && surface.GetCharacterColor(x, y - 1) == prevValue)
+            {
+                FloodFillFore(x, y - 1, value);
+            }
+
+            if (x < surface.Width - 1 && surface.GetCharacterColor(x + 1, y) == prevValue)
+            {
+                FloodFillFore(x + 1, y, value);
+            }
+
+            if (y < surface.Height - 1 && surface.GetCharacterColor(x, y + 1) == prevValue)
+            {
+                FloodFillFore(x, y + 1, value);
             }
         }
 
@@ -413,6 +505,26 @@ namespace SurfaceEditor
 
         #endregion
 
+        #region Scrollbar/Resize Events and Helpers
+
+        public void UpdateScrollBars()
+        {
+            hScrollBar1.Visible = false;
+            vScrollBar1.Visible = false;
+
+            if (surface.PixelWidth > this.Width)
+            {
+                hScrollBar1.Visible = true;
+                hScrollBar1.Maximum = surface.PixelWidth - this.Width;
+            }
+
+            if (surface.PixelHeight > this.Height)
+            {
+                vScrollBar1.Visible = true;
+                vScrollBar1.Maximum = surface.PixelHeight - this.Height;
+            }
+        }
+
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.Type == ScrollEventType.EndScroll)
@@ -443,5 +555,7 @@ namespace SurfaceEditor
                 graphics = this.CreateGraphics();
             }
         }
+
+        #endregion
     }
 }

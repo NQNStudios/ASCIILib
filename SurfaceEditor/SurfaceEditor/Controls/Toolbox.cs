@@ -155,6 +155,20 @@ namespace SurfaceEditor
             resize.Visible = resizeButton.Checked;
         }
 
+        private void fillCellsButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fillCellsButton.Checked)
+            {
+                EnableBrushControl();
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.FillCells;
+                (Parent as EditorForm).SurfacePanel.SelectionSize = new Point(1, 1);
+            }
+            else
+            {
+                DisableBrushControl();
+            }
+        }
+
         #region Brush Resize Helpers
 
         private void EnableBrushResize()
@@ -268,5 +282,6 @@ namespace SurfaceEditor
         }
 
         #endregion
+
     }
 }

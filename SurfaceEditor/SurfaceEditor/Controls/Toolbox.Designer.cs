@@ -37,6 +37,7 @@
             this.textButton = new System.Windows.Forms.RadioButton();
             this.placeInfoButton = new System.Windows.Forms.RadioButton();
             this.toggleOpacityButton = new System.Windows.Forms.RadioButton();
+            this.fillCellsButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.fillCellsButton);
             this.groupBox1.Controls.Add(this.shiftButton);
             this.groupBox1.Controls.Add(this.resizeButton);
             this.groupBox1.Controls.Add(this.longTextButton);
@@ -84,7 +86,7 @@
             // shiftButton
             // 
             this.shiftButton.AutoSize = true;
-            this.shiftButton.Location = new System.Drawing.Point(6, 182);
+            this.shiftButton.Location = new System.Drawing.Point(6, 204);
             this.shiftButton.Name = "shiftButton";
             this.shiftButton.Size = new System.Drawing.Size(86, 17);
             this.shiftButton.TabIndex = 8;
@@ -96,7 +98,7 @@
             // resizeButton
             // 
             this.resizeButton.AutoSize = true;
-            this.resizeButton.Location = new System.Drawing.Point(6, 159);
+            this.resizeButton.Location = new System.Drawing.Point(6, 181);
             this.resizeButton.Name = "resizeButton";
             this.resizeButton.Size = new System.Drawing.Size(97, 17);
             this.resizeButton.TabIndex = 7;
@@ -108,7 +110,7 @@
             // longTextButton
             // 
             this.longTextButton.AutoSize = true;
-            this.longTextButton.Location = new System.Drawing.Point(6, 136);
+            this.longTextButton.Location = new System.Drawing.Point(6, 158);
             this.longTextButton.Name = "longTextButton";
             this.longTextButton.Size = new System.Drawing.Size(103, 17);
             this.longTextButton.TabIndex = 6;
@@ -119,7 +121,7 @@
             // textButton
             // 
             this.textButton.AutoSize = true;
-            this.textButton.Location = new System.Drawing.Point(6, 113);
+            this.textButton.Location = new System.Drawing.Point(6, 135);
             this.textButton.Name = "textButton";
             this.textButton.Size = new System.Drawing.Size(76, 17);
             this.textButton.TabIndex = 5;
@@ -130,7 +132,7 @@
             // placeInfoButton
             // 
             this.placeInfoButton.AutoSize = true;
-            this.placeInfoButton.Location = new System.Drawing.Point(6, 90);
+            this.placeInfoButton.Location = new System.Drawing.Point(6, 112);
             this.placeInfoButton.Name = "placeInfoButton";
             this.placeInfoButton.Size = new System.Drawing.Size(111, 17);
             this.placeInfoButton.TabIndex = 3;
@@ -141,13 +143,25 @@
             // toggleOpacityButton
             // 
             this.toggleOpacityButton.AutoSize = true;
-            this.toggleOpacityButton.Location = new System.Drawing.Point(6, 66);
+            this.toggleOpacityButton.Location = new System.Drawing.Point(6, 88);
             this.toggleOpacityButton.Name = "toggleOpacityButton";
             this.toggleOpacityButton.Size = new System.Drawing.Size(97, 17);
             this.toggleOpacityButton.TabIndex = 2;
             this.toggleOpacityButton.Text = "Toggle Opacity";
             this.toggleOpacityButton.UseVisualStyleBackColor = true;
             this.toggleOpacityButton.CheckedChanged += new System.EventHandler(this.toggleOpacityButton_CheckedChanged);
+            // 
+            // fillCellsButton
+            // 
+            this.fillCellsButton.AutoSize = true;
+            this.fillCellsButton.Location = new System.Drawing.Point(6, 65);
+            this.fillCellsButton.Name = "fillCellsButton";
+            this.fillCellsButton.Size = new System.Drawing.Size(62, 17);
+            this.fillCellsButton.TabIndex = 9;
+            this.fillCellsButton.TabStop = true;
+            this.fillCellsButton.Text = "Fill Cells";
+            this.fillCellsButton.UseVisualStyleBackColor = true;
+            this.fillCellsButton.CheckedChanged += new System.EventHandler(this.fillCellsButton_CheckedChanged);
             // 
             // Toolbox
             // 
@@ -173,5 +187,6 @@
         private System.Windows.Forms.RadioButton toggleOpacityButton;
         private System.Windows.Forms.RadioButton resizeButton;
         private System.Windows.Forms.RadioButton shiftButton;
+        private System.Windows.Forms.RadioButton fillCellsButton;
     }
 }
