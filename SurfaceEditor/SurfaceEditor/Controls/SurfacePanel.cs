@@ -146,8 +146,6 @@ namespace SurfaceEditor
                 //Draw the loaded surface
 
                 RefreshRect(new Rectangle(0, 0, surface.Width, surface.Height));
-
-                //UpdateScrollBars();
             }
         }
 
@@ -268,21 +266,23 @@ namespace SurfaceEditor
 
         #region Methods
 
-        //public void UpdateScrollBars()
-        //{
-        //    HScroll = false;
-        //    VScroll = false;
+        public void UpdateScrollBars()
+        {
+            hScrollBar1.Visible = false;
+            vScrollBar1.Visible = false;
 
-        //    if (surface.PixelWidth > this.Width)
-        //    {
-        //        HScroll = true;
-        //    }
+            if (surface.PixelWidth > this.Width)
+            {
+                hScrollBar1.Visible = true;
+                hScrollBar1.Maximum = surface.PixelWidth - this.Width;
+            }
 
-        //    if (surface.PixelHeight > this.Height)
-        //    {
-        //        VScroll = true;
-        //    }
-        //}
+            if (surface.PixelHeight > this.Height)
+            {
+                vScrollBar1.Visible = true;
+                vScrollBar1.Maximum = surface.PixelHeight - this.Height;
+            }
+        }
 
         #endregion
 
@@ -297,7 +297,8 @@ namespace SurfaceEditor
         {
             Brush brush = new SolidBrush(color);
 
-            graphics.FillRectangle(brush, rectangle);
+            graphics.FillRectangle(brush, 
+                new Rectangle(rectangle.X - hScrollBar1.Value, rectangle.Y - vScrollBar1.Value, rectangle.Width, rectangle.Height));
 
             brush.Dispose();
         }
@@ -388,7 +389,7 @@ namespace SurfaceEditor
                         ++x;
                     } while (x < rect.Right && x < surface.Width && surface.GetCharacterColor(x, y) == characterColor && surface.GetCharacter(x, y) != ' ' && surface.IsCellOpaque(x, y));
 
-                    graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx + CHAR_OFFSET, desty));
+                    graphics.DrawString(text, font, new SolidBrush(characterColor), new PointF(destx + CHAR_OFFSET - hScrollBar1.Value, desty - vScrollBar1.Value));
                 }
             }
 
@@ -411,5 +412,36 @@ namespace SurfaceEditor
         }
 
         #endregion
+
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type == ScrollEventType.EndScroll)
+            {
+                Refresh();
+            }
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type == ScrollEventType.EndScroll)
+            {
+                Refresh();
+            }
+        }
+
+        private void SurfacePanel_Resize(object sender, EventArgs e)
+        {
+            if (surface != null)
+            {
+                UpdateScrollBars();
+            }
+
+            if (graphics != null)
+            {
+                //make a new graphics object
+                graphics.Dispose();
+                graphics = this.CreateGraphics();
+            }
+        }
     }
 }

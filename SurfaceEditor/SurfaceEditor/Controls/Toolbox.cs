@@ -223,7 +223,7 @@ namespace SurfaceEditor
             }
 
             (Parent as EditorForm).SurfacePanel.RefreshRect(refreshRect);
-            //(Parent as EditorForm).SurfacePanel.UpdateScrollBars();
+            (Parent as EditorForm).SurfacePanel.UpdateScrollBars();
         }
 
         private void SurfHeightChanged(object sender, EventArgs e)
@@ -250,7 +250,7 @@ namespace SurfaceEditor
             }
 
             (Parent as EditorForm).SurfacePanel.RefreshRect(refreshRect);
-            //(Parent as EditorForm).SurfacePanel.UpdateScrollBars();
+            (Parent as EditorForm).SurfacePanel.UpdateScrollBars();
         }
 
         #endregion

@@ -67,21 +67,21 @@
             // newSurfaceToolStripMenuItem
             // 
             this.newSurfaceToolStripMenuItem.Name = "newSurfaceToolStripMenuItem";
-            this.newSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.newSurfaceToolStripMenuItem.Text = "&New Surface";
             this.newSurfaceToolStripMenuItem.Click += new System.EventHandler(this.newSurfaceToolStripMenuItem_Click);
             // 
             // openSurfaceToolStripMenuItem
             // 
             this.openSurfaceToolStripMenuItem.Name = "openSurfaceToolStripMenuItem";
-            this.openSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.openSurfaceToolStripMenuItem.Text = "&Open Surface";
             this.openSurfaceToolStripMenuItem.Click += new System.EventHandler(this.openSurfaceToolStripMenuItem_Click);
             // 
             // saveSurfaceToolStripMenuItem
             // 
             this.saveSurfaceToolStripMenuItem.Name = "saveSurfaceToolStripMenuItem";
-            this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             this.saveSurfaceToolStripMenuItem.Click += new System.EventHandler(this.saveSurfaceToolStripMenuItem_Click);
             // 

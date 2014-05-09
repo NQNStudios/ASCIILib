@@ -75,6 +75,7 @@ namespace SurfaceEditor
         private void SetSurface(Surface surface)
         {
             surfacePanel1.Surface = surface;
+            surfacePanel1.UpdateScrollBars();
             surfacePanel1.Refresh();
 
             //prepare the editor now that a new surface has been loaded.
