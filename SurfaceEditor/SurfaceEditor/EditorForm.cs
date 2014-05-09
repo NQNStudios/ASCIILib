@@ -110,17 +110,20 @@ namespace SurfaceEditor
 
         private void saveSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.FileName = "MySurface.srf";
-            dialog.Filter = "Surface File | *.srf";
-
-            DialogResult result = dialog.ShowDialog(this);
-
-            if (result == DialogResult.OK && surfacePanel1.Surface != null)
+            if (surfacePanel1.Surface != null)
             {
-                string path = dialog.FileName;
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.FileName = "MySurface.srf";
+                dialog.Filter = "Surface File | *.srf";
 
-                surfacePanel1.Surface.SaveToFile(path);
+                DialogResult result = dialog.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                {
+                    string path = dialog.FileName;
+
+                    surfacePanel1.Surface.SaveToFile(path);
+                }
             }
         }
     }

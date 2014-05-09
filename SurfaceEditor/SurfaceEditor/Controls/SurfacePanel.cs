@@ -146,10 +146,12 @@ namespace SurfaceEditor
                 //Draw the loaded surface
 
                 RefreshRect(new Rectangle(0, 0, surface.Width, surface.Height));
+
+                //UpdateScrollBars();
             }
         }
 
-        #endregion
+        #endregion 
 
         #region Input Handling
 
@@ -264,6 +266,26 @@ namespace SurfaceEditor
 
         #endregion
 
+        #region Methods
+
+        //public void UpdateScrollBars()
+        //{
+        //    HScroll = false;
+        //    VScroll = false;
+
+        //    if (surface.PixelWidth > this.Width)
+        //    {
+        //        HScroll = true;
+        //    }
+
+        //    if (surface.PixelHeight > this.Height)
+        //    {
+        //        VScroll = true;
+        //    }
+        //}
+
+        #endregion
+
         #region Graphics Helper Methods
 
         private void Clear()
@@ -291,8 +313,12 @@ namespace SurfaceEditor
             FillRectangle(new Rectangle(x, y, CHAR_WIDTH * w, CHAR_HEIGHT * h), CURSOR_COLOR);
         }
 
-        private void RefreshRect(Rectangle rect)
+        public void RefreshRect(Rectangle rect)
         {
+            //draw editor background color
+            Rectangle backRect = new Rectangle(rect.X * CHAR_WIDTH, rect.Y * CHAR_HEIGHT, rect.Width * CHAR_WIDTH, rect.Height * CHAR_HEIGHT);
+            FillRectangle(backRect, BACKGROUND_COLOR);
+
             //draw all background colors
             for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)
             {

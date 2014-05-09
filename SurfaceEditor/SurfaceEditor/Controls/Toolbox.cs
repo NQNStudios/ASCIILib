@@ -194,21 +194,63 @@ namespace SurfaceEditor
             SurfacePanel surfacePanel = (Parent as EditorForm).SurfacePanel;
             surfacePanel.SelectionSize = new Point(surfacePanel.SelectionSize.X, (int)resize.HeightControl.Value);
         }
+        
+        #endregion
+
+        #region Surface Resize Helpers
 
         private void SurfWidthChanged(object sender, EventArgs e)
         {
             ResizeControl resize = (Parent as EditorForm).ResizeControl;
-            (Parent as EditorForm).SurfacePanel.Surface.Width = (int)resize.WidthControl.Value;
 
-            (Parent as EditorForm).SurfacePanel.Refresh();
+            int dw = (int)resize.WidthControl.Value - (Parent as EditorForm).SurfacePanel.Surface.Width;
+
+            (Parent as EditorForm).SurfacePanel.Surface.Width += dw;
+
+            Rectangle refreshRect = new Rectangle();
+            refreshRect.Y = 0;
+            refreshRect.Height = (Parent as EditorForm).SurfacePanel.Surface.Height;
+
+            if (dw < 0)
+            {
+                refreshRect.X = (Parent as EditorForm).SurfacePanel.Surface.Width;
+                refreshRect.Width = -dw;
+            }
+            else if (dw > 0)
+            {
+                refreshRect.X = (Parent as EditorForm).SurfacePanel.Surface.Width - dw;
+                refreshRect.Width = dw;
+            }
+
+            (Parent as EditorForm).SurfacePanel.RefreshRect(refreshRect);
+            //(Parent as EditorForm).SurfacePanel.UpdateScrollBars();
         }
 
         private void SurfHeightChanged(object sender, EventArgs e)
         {
             ResizeControl resize = (Parent as EditorForm).ResizeControl;
-            (Parent as EditorForm).SurfacePanel.Surface.Height = (int)resize.HeightControl.Value;
 
-            (Parent as EditorForm).SurfacePanel.Refresh();
+            int dh = (int)resize.HeightControl.Value - (Parent as EditorForm).SurfacePanel.Surface.Height;
+
+            (Parent as EditorForm).SurfacePanel.Surface.Height += dh;
+
+            Rectangle refreshRect = new Rectangle();
+            refreshRect.X = 0;
+            refreshRect.Width = (Parent as EditorForm).SurfacePanel.Surface.Width;
+
+            if (dh < 0)
+            {
+                refreshRect.Y = (Parent as EditorForm).SurfacePanel.Surface.Height;
+                refreshRect.Height = -dh;
+            }
+            else if (dh > 0)
+            {
+                refreshRect.Y = (Parent as EditorForm).SurfacePanel.Surface.Height - dh;
+                refreshRect.Height = dh;
+            }
+
+            (Parent as EditorForm).SurfacePanel.RefreshRect(refreshRect);
+            //(Parent as EditorForm).SurfacePanel.UpdateScrollBars();
         }
 
         #endregion
