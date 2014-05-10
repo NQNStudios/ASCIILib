@@ -57,6 +57,11 @@ namespace SurfaceEditor
             get { return specialInfoControl1; }
         }
 
+        public ShapesControl ShapesControl
+        {
+            get { return shapesControl1; }
+        }
+
         #endregion
 
         #region File Menu Events

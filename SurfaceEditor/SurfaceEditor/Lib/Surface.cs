@@ -520,15 +520,16 @@ namespace SurfaceEditor
         /// <summary>
         /// Fills a rectangle on the Surface with the given cell info.
         /// </summary>
-        public void FillRect(Rectangle dest, char character, Color backgroundColor, Color characterColor)
+        public void FillRect(Rectangle dest, bool paintChar, bool paintBgColor, bool paintCharColor,
+            char character, Color backgroundColor, Color characterColor)
         {
             for (int x = dest.X; x < dest.Right; ++x)
             {
                 for (int y = dest.Y; y < dest.Bottom; ++y)
                 {
-                    SetCharacter(x, y, character);
-                    SetBackgroundColor(x, y, backgroundColor);
-                    SetCharacterColor(x, y, characterColor);
+                    if (paintChar) SetCharacter(x, y, character);
+                    if (paintBgColor) SetBackgroundColor(x, y, backgroundColor);
+                    if (paintCharColor) SetCharacterColor(x, y, characterColor);
                 }
             }
         }
@@ -536,7 +537,8 @@ namespace SurfaceEditor
         /// <summary>
         /// Draws a hollow rectangle on the Surface with the given cell info.
         /// </summary>
-        public void DrawRect(Rectangle dest, char character, Color backgroundColor, Color characterColor)
+        public void DrawRect(Rectangle dest, bool paintChar, bool paintBgColor, bool paintCharColor,
+            char character, Color backgroundColor, Color characterColor)
         {
             int x1 = dest.Left;
             int x2 = dest.Right - 1;
@@ -547,25 +549,61 @@ namespace SurfaceEditor
             //draw the top and bottom
             for (int x = x1; x <= x2; ++x)
             {
-                SetCharacter(x, y1, character);
-                SetBackgroundColor(x, y1, backgroundColor);
-                SetCharacterColor(x, y1, characterColor);
+                if (paintChar) SetCharacter(x, y1, character);
+                if (paintBgColor) SetBackgroundColor(x, y1, backgroundColor);
+                if (paintCharColor) SetCharacterColor(x, y1, characterColor);
 
-                SetCharacter(x, y2, character);
-                SetBackgroundColor(x, y2, backgroundColor);
-                SetCharacterColor(x, y2, characterColor);
+                if (paintChar) SetCharacter(x, y2, character);
+                if (paintBgColor) SetBackgroundColor(x, y2, backgroundColor);
+                if (paintCharColor) SetCharacterColor(x, y2, characterColor);
             }
 
             //draw the left and right
             for (int y = y1; y <= y2; ++y)
             {
-                SetCharacter(x1, y, character);
-                SetBackgroundColor(x1, y, backgroundColor);
-                SetCharacterColor(x1, y, characterColor);
+                if (paintChar) SetCharacter(x1, y, character);
+                if (paintBgColor) SetBackgroundColor(x1, y, backgroundColor);
+                if (paintCharColor) SetCharacterColor(x1, y, characterColor);
 
-                SetCharacter(x1, y, character);
-                SetBackgroundColor(x1, y, backgroundColor);
-                SetCharacterColor(x1, y, characterColor);
+                if (paintChar) SetCharacter(x2, y, character);
+                if (paintBgColor) SetBackgroundColor(x2, y, backgroundColor);
+                if (paintCharColor) SetCharacterColor(x2, y, characterColor);
+            }
+        }
+
+        public void DrawLine(Point p1, Point p2, bool paintChar, bool paintBgColor, bool paintCharColor,
+            char character, Color backgroundColor, Color characterColor)
+        {
+            if (p2.X < p1.X)
+            {
+                Point temp = p2;
+                p2 = p1;
+                p1 = temp;
+            }
+            int dx = p2.X - p1.X;
+            int dy = p2.Y - p1.Y;
+
+            if (dy == 0)
+            {
+                dy = 1;
+            }
+
+            if (dx == 0)
+            {
+                //vertical line needs special handling
+                FillRect(new Rectangle(p1.X, Math.Min(p1.Y, p2.Y), 1, Math.Abs(dy)), paintChar, paintBgColor, paintCharColor, character, backgroundColor, characterColor);
+                return;
+            }
+
+            float slope = (float)dy / dx;
+
+            int prevY = p1.Y;
+            for (int x = p1.X; x <= p2.X; ++x)
+            {
+                int y = p1.Y + (int)Math.Round(slope * (x - p1.X));
+
+                DrawLine(new Point(x, prevY), new Point(x, y), paintChar, paintBgColor, paintCharColor, character, backgroundColor, characterColor); //recurse to more vertical lines
+                prevY = y;
             }
         }
 

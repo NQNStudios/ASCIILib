@@ -46,7 +46,13 @@ namespace SurfaceEditor
 
         public char Character
         {
-            get { return charTextBox.Text[0]; }
+            get 
+            {
+                if (charTextBox.Text.Length > 0)
+                    return charTextBox.Text[0];
+                else
+                    return ' ';
+            }
             set
             {
                 charTextBox.Text = "" + value;

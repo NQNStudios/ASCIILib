@@ -27,7 +27,8 @@ namespace SurfaceEditor
             SpecialInfo,
             FillCells,
             None,
-            EyeDropper
+            EyeDropper,
+            Shapes
         }
 
         public const int CHAR_WIDTH = 8;
@@ -50,6 +51,8 @@ namespace SurfaceEditor
         bool clicked = false;
 
         public InputMode Mode = InputMode.Inspect;
+        
+        Point firstCorner = new Point(-1, -1); // for shapes
 
         #region Initialization
 
@@ -340,11 +343,63 @@ namespace SurfaceEditor
                                 brushControl.CharacterColor = surface.GetCharacterColor(c, r);
                             }
                             break;
+                        case InputMode.Shapes:
+                            firstCorner = selectedCell;
+                            break;
                     }
                 }
             }
             RefreshRect(new Rectangle(selectedCell.X, selectedCell.Y, selectionSize.X, selectionSize.Y));
             DrawCursor(new Point(selectedCell.X, selectedCell.Y));
+        }
+
+        private void SurfacePanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            //handle one-time mouse release inputs
+            if (e.Button == MouseButtons.Left)
+            {
+                if (surface != null && surface.IsInBounds(SelectedCell))
+                {
+                    //a cell was released over. Handle the appropriate behavior for the selected mode.
+                    switch (Mode)
+                    {
+                        case InputMode.Shapes:
+                            ShapesControl.ShapeType type = (Parent as EditorForm).ShapesControl.ChosenType;
+                            BrushControl brush = (Parent as EditorForm).BrushControl;
+
+                            Rectangle rect = new Rectangle();
+                            rect.X = Math.Min(selectedCell.X, firstCorner.X);
+                            rect.Y = Math.Min(selectedCell.Y, firstCorner.Y);
+                            rect.Width = Math.Abs(selectedCell.X - firstCorner.X) + 1;
+                            rect.Height = Math.Abs(selectedCell.Y - firstCorner.Y) + 1;
+
+                            if (type == ShapesControl.ShapeType.Line)
+                            {
+                                surface.DrawLine(selectedCell, firstCorner, brush.PaintCharacter, brush.PaintBackgroundColor, 
+                                    brush.PaintCharacterColor, brush.Character, brush.BackgroundColor, brush.CharacterColor);
+                            }
+                            else
+                            {
+                                if (type == ShapesControl.ShapeType.EmptyRectangle)
+                                {
+                                    surface.DrawRect(rect, brush.PaintCharacter, brush.PaintBackgroundColor,
+                                        brush.PaintCharacterColor, brush.Character, brush.BackgroundColor, brush.CharacterColor);
+                                }
+                                if (type == ShapesControl.ShapeType.FilledRectangle)
+                                {
+                                    surface.FillRect(rect, brush.PaintCharacter, brush.PaintBackgroundColor,
+                                        brush.PaintCharacterColor, brush.Character, brush.BackgroundColor, brush.CharacterColor);
+                                }
+                            }
+
+                            RefreshRect(rect);
+                            DrawCursor(selectedCell);
+                            firstCorner = new Point(-1, -1);
+
+                            break;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -462,6 +517,20 @@ namespace SurfaceEditor
 
         private void DrawCursor(Point position)
         {
+            if (surface == null) return;
+
+            if (Mode == InputMode.Shapes && firstCorner != new Point(-1, -1))
+            {
+                int x1 = Math.Min(firstCorner.X, selectedCell.X);
+                int y1 = Math.Min(firstCorner.Y, selectedCell.Y);
+                int w1 = Math.Abs(firstCorner.X - selectedCell.X);
+                int h1 = Math.Abs(firstCorner.Y - selectedCell.Y);
+
+                FillRectangle(new Rectangle(x1 * CHAR_WIDTH, y1 * CHAR_HEIGHT, CHAR_WIDTH * w1, CHAR_HEIGHT * h1), CURSOR_COLOR);
+
+                return;
+            }
+
             int x = position.X * CHAR_WIDTH;
             int y = position.Y * CHAR_HEIGHT;
 
@@ -476,6 +545,8 @@ namespace SurfaceEditor
             //draw editor background color
             Rectangle backRect = new Rectangle(rect.X * CHAR_WIDTH, rect.Y * CHAR_HEIGHT, rect.Width * CHAR_WIDTH, rect.Height * CHAR_HEIGHT);
             FillRectangle(backRect, BACKGROUND_COLOR);
+
+            if (surface == null) return;
 
             //draw all background colors
             for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)

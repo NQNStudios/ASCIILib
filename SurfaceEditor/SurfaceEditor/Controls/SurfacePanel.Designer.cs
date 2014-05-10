@@ -67,6 +67,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseDown);
             this.MouseLeave += new System.EventHandler(this.SurfacePanel_MouseLeave);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SurfacePanel_MouseUp);
             this.Resize += new System.EventHandler(this.SurfacePanel_Resize);
             this.ResumeLayout(false);
 

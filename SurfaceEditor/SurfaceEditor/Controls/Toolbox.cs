@@ -197,10 +197,14 @@ namespace SurfaceEditor
         {
             if (shapesButton.Checked)
             {
-
+                EnableBrushControl();
+                (Parent as EditorForm).ShapesControl.Visible = true;
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.Shapes;
             }
             else
             {
+                DisableBrushControl();
+                (Parent as EditorForm).ShapesControl.Visible = false;
             }
         }
 

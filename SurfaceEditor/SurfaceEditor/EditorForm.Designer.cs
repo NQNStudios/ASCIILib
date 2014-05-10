@@ -41,6 +41,7 @@
             this.surfacePanel1 = new SurfaceEditor.SurfacePanel();
             this.shiftControl1 = new SurfaceEditor.ShiftControl();
             this.specialInfoControl1 = new SurfaceEditor.SpecialInfoControl();
+            this.shapesControl1 = new SurfaceEditor.ShapesControl();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +101,8 @@
             // brushControl1
             // 
             this.brushControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.brushControl1.BackgroundColor = System.Drawing.Color.Black;
+            this.brushControl1.CharacterColor = System.Drawing.Color.White;
             this.brushControl1.Location = new System.Drawing.Point(736, 391);
             this.brushControl1.Name = "brushControl1";
             this.brushControl1.Size = new System.Drawing.Size(146, 112);
@@ -168,11 +171,20 @@
             this.specialInfoControl1.TabIndex = 8;
             this.specialInfoControl1.Visible = false;
             // 
+            // shapesControl1
+            // 
+            this.shapesControl1.Location = new System.Drawing.Point(736, 282);
+            this.shapesControl1.Name = "shapesControl1";
+            this.shapesControl1.Size = new System.Drawing.Size(202, 79);
+            this.shapesControl1.TabIndex = 9;
+            this.shapesControl1.Visible = false;
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 567);
+            this.Controls.Add(this.shapesControl1);
             this.Controls.Add(this.specialInfoControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.brushControl1);
@@ -207,6 +219,7 @@
         private System.Windows.Forms.Button button1;
         private ShiftControl shiftControl1;
         private SpecialInfoControl specialInfoControl1;
+        private ShapesControl shapesControl1;
     }
 }
 
