@@ -39,6 +39,7 @@
             this.toggleOpacityButton = new System.Windows.Forms.RadioButton();
             this.fillCellsButton = new System.Windows.Forms.RadioButton();
             this.eyeDropperButton = new System.Windows.Forms.RadioButton();
+            this.shapesButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,6 +69,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.shapesButton);
             this.groupBox1.Controls.Add(this.eyeDropperButton);
             this.groupBox1.Controls.Add(this.fillCellsButton);
             this.groupBox1.Controls.Add(this.shiftButton);
@@ -177,6 +179,18 @@
             this.eyeDropperButton.UseVisualStyleBackColor = true;
             this.eyeDropperButton.CheckedChanged += new System.EventHandler(this.eyeDropperButton_CheckedChanged);
             // 
+            // shapesButton
+            // 
+            this.shapesButton.AutoSize = true;
+            this.shapesButton.Location = new System.Drawing.Point(118, 42);
+            this.shapesButton.Name = "shapesButton";
+            this.shapesButton.Size = new System.Drawing.Size(89, 17);
+            this.shapesButton.TabIndex = 11;
+            this.shapesButton.TabStop = true;
+            this.shapesButton.Text = "Draw Shapes";
+            this.shapesButton.UseVisualStyleBackColor = true;
+            this.shapesButton.CheckedChanged += new System.EventHandler(this.shapesButton_CheckedChanged);
+            // 
             // Toolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -203,5 +217,6 @@
         private System.Windows.Forms.RadioButton shiftButton;
         private System.Windows.Forms.RadioButton fillCellsButton;
         private System.Windows.Forms.RadioButton eyeDropperButton;
+        private System.Windows.Forms.RadioButton shapesButton;
     }
 }

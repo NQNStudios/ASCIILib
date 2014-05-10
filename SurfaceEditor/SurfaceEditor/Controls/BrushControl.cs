@@ -124,5 +124,22 @@ namespace SurfaceEditor
         }
 
         #endregion
+
+        private void useCharacterColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bgColorPicker.Color = charColorPicker.Color;
+        }
+
+        private void switchColorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Color temp = bgColorPicker.Color;
+            bgColorPicker.Color = charColorPicker.Color;
+            charColorPicker.Color = temp;
+        }
+
+        private void useBackgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            charColorPicker.Color = bgColorPicker.Color;
+        }
     }
 }

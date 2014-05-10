@@ -29,7 +29,7 @@ namespace SurfaceEditor
             if (viewCellsButton.Checked)
             {
                 (Parent as EditorForm).SurfacePanel.SelectionSize = new Point(1, 1);
-                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.None;
+                (Parent as EditorForm).SurfacePanel.Mode = SurfacePanel.InputMode.Inspect;
             }
         }
 
@@ -190,6 +190,17 @@ namespace SurfaceEditor
             else
             {
                 DisableDropperBrushControl();
+            }
+        }
+
+        private void shapesButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (shapesButton.Checked)
+            {
+
+            }
+            else
+            {
             }
         }
 

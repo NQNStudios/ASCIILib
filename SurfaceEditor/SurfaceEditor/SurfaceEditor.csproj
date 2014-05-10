@@ -62,6 +62,12 @@
     <Compile Include="Controls\ColorPickerControl.Designer.cs">
       <DependentUpon>ColorPickerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ShapesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ShapesControl.Designer.cs">
+      <DependentUpon>ShapesControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ShiftControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ColorPickerControl.resx">
       <DependentUpon>ColorPickerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ShapesControl.resx">
+      <DependentUpon>ShapesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ShiftControl.resx">
       <DependentUpon>ShiftControl.cs</DependentUpon>

@@ -19,6 +19,7 @@ namespace SurfaceEditor
     {
         public enum InputMode
         {
+            Inspect,
             ToggleOpacity,
             PaintBrush,
             SmallText,
@@ -48,7 +49,7 @@ namespace SurfaceEditor
 
         bool clicked = false;
 
-        public InputMode Mode = InputMode.None;
+        public InputMode Mode = InputMode.Inspect;
 
         #region Initialization
 
@@ -71,6 +72,8 @@ namespace SurfaceEditor
             graphics = this.CreateGraphics();
 
             font = new Font("The One True Font (System 8x12)", 12);
+
+            SelectedCell = new Point(-1, -1);
         }
 
         #endregion
@@ -116,8 +119,12 @@ namespace SurfaceEditor
                     }
                     
                 }
+                int dx = value.X - selectedCell.X;
+                int dy = value.Y - selectedCell.Y;
 
                 selectedCell = value;
+
+                HandleDrag(dx, dy);
             }
         }
 
@@ -174,33 +181,41 @@ namespace SurfaceEditor
             {
                 SelectedCell = cell;
             }
+
         }
 
-        private void SurfacePanel_MouseLeave(object sender, EventArgs e)
+        private void HandleDrag(int dx, int dy)
         {
-            if (Parent.Focused)
-            {
-                SelectedCell = new Point(-1, -1);
-            }
-        }
-
-        private void SurfacePanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e == null || e.Button == MouseButtons.Left)
+            //handle dragging click inputs
+            if (Control.MouseButtons.HasFlag(MouseButtons.Left))
             {
                 if (surface != null && surface.IsInBounds(SelectedCell))
                 {
+                    RefreshRect(new Rectangle(selectedCell.X - dx, selectedCell.Y - dy, selectionSize.X, selectionSize.Y));
+
                     //handle input for all valid selected cells
                     for (int c = SelectedCell.X, i = 0; c < surface.Width && i < SelectionSize.X; ++c, ++i)
                     {
                         for (int r = SelectedCell.Y, j = 0; r < surface.Height && j < SelectionSize.Y; ++r, ++j)
                         {
+                            if (c < 0) continue;
+                            if (r < 0) continue;
+
+                            bool valid = false;
+                            if (dx > 0 && i < selectionSize.X - dx) valid = true;
+                            if (dy > 0 && j < selectionSize.Y - dy) valid = true;
+                            if (dx < 0 && selectionSize.X - i < -dx) valid = true;
+                            if (dy < 0 && selectionSize.Y - j < -dy) valid = true;
+
+                            if (dx == 0 || dy == 0) valid = true;
+
+                            if (selectionSize == new Point(1, 1)) valid = true;
+
+                            if (!valid) continue;
+
                             //a cell was clicked on. Handle the appropriate behavior for the selected mode.
                             switch (Mode)
                             {
-                                case InputMode.ToggleOpacity:
-                                    surface.SetCellOpacity(c, r, !surface.IsCellOpaque(c, r));
-                                    break;
                                 case InputMode.PaintBrush:
                                     EditorForm parent = (Parent as EditorForm);
                                     BrushControl brushControl = parent.BrushControl;
@@ -218,27 +233,6 @@ namespace SurfaceEditor
                                         surface.SetCharacterColor(c, r, brushControl.CharacterColor);
                                     }
                                     break;
-                                case InputMode.SmallText:
-                                    ShortTextForm form = new ShortTextForm();
-                                    DialogResult result = form.ShowDialog(this);
-
-                                    if (result == DialogResult.OK)
-                                    {
-                                        surface.BlitString(form.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, c, r);
-                                        Refresh();
-                                    }
-                                    break;
-                                case InputMode.LongText:
-                                    LongTextForm longTextForm = new LongTextForm();
-                                    DialogResult longResult = longTextForm.ShowDialog(this);
-
-                                    if (longResult == DialogResult.OK)
-                                    {
-                                        surface.BlitStringMultiline(longTextForm.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, 
-                                            c, r, selectionSize.X, selectionSize.Y);
-                                        Refresh();
-                                    }
-                                    break;
                                 case InputMode.SpecialInfo:
                                     string label = (Parent as EditorForm).SpecialInfoControl.SelectedLabel;
                                     if (label == "[Clear Info]")
@@ -247,57 +241,110 @@ namespace SurfaceEditor
                                     }
                                     surface.SetSpecialInfo(c, r, label);
                                     break;
-                                case InputMode.FillCells:
-                                    parent = (Parent as EditorForm);
-                                    brushControl = parent.BrushControl;
-
-                                    if (brushControl.PaintCharacter)
-                                    {
-                                        FloodFillChar(c, r, brushControl.Character);
-                                    }
-                                    if (brushControl.PaintBackgroundColor)
-                                    {
-                                        FloodFillBack(c, r, brushControl.BackgroundColor);
-                                    }
-                                    if (brushControl.PaintCharacterColor)
-                                    {
-                                        FloodFillFore(c, r, brushControl.CharacterColor);
-                                    }
-
-                                    Refresh();
-                                    break;
-                                case InputMode.EyeDropper:
-                                    parent = (Parent as EditorForm);
-                                    brushControl = parent.BrushControl;
-
-                                    if (brushControl.PaintCharacter)
-                                    {
-                                        brushControl.Character = surface.GetCharacter(c, r);
-                                    }
-                                    if (brushControl.PaintBackgroundColor)
-                                    {
-                                        brushControl.BackgroundColor = surface.GetBackgroundColor(c, r);
-                                    }
-                                    if (brushControl.PaintCharacterColor)
-                                    {
-                                        brushControl.CharacterColor = surface.GetCharacterColor(c, r);
-                                    }
-                                    break;
                             }
-                            if (Mode == InputMode.LongText)
-                            {
-                                break; //stop recursing through the whole selection; it only has to happen once
-                            }
-                        }
-                        if (Mode == InputMode.LongText)
-                        {
-                            break; //stop recursing through the whole selection; it only has to happen once
                         }
                     }
-                    RefreshRect(new Rectangle(selectedCell.X, selectedCell.Y, selectionSize.X, selectionSize.Y));
                     DrawCursor(new Point(selectedCell.X, selectedCell.Y));
                 }
             }
+        }
+
+        private void SurfacePanel_MouseLeave(object sender, EventArgs e)
+        {
+            if (Parent.Focused)
+            {
+                SelectedCell = new Point(-1, -1);
+            }
+        }
+
+        private void SurfacePanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            HandleDrag(0, 0);
+
+            //handle one-time click inputs
+            if (e.Button == MouseButtons.Left)
+            {
+                if (surface != null && surface.IsInBounds(SelectedCell))
+                {
+                    //handle input for all valid selected cells
+                    int c = SelectedCell.X;
+                    int r = SelectedCell.Y;
+
+                    //a cell was clicked on. Handle the appropriate behavior for the selected mode.
+                    switch (Mode)
+                    {
+                        case InputMode.ToggleOpacity:
+                            for (int i = 0; i < selectionSize.X; ++i)
+                            {
+                                for (int j = 0; j < selectionSize.Y; ++j)
+                                {
+                                    surface.SetCellOpacity(c + i, r + j, !surface.IsCellOpaque(c + i, r + j));
+                                }
+                            }
+                            break;
+
+                        case InputMode.SmallText:
+                            ShortTextForm form = new ShortTextForm();
+                            DialogResult result = form.ShowDialog(this);
+
+                            if (result == DialogResult.OK)
+                            {
+                                surface.BlitString(form.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, c, r);
+                                Refresh();
+                            }
+                            break;
+                        case InputMode.LongText:
+                            LongTextForm longTextForm = new LongTextForm();
+                            DialogResult longResult = longTextForm.ShowDialog(this);
+
+                            if (longResult == DialogResult.OK)
+                            {
+                                surface.BlitStringMultiline(longTextForm.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor,
+                                    c, r, selectionSize.X, selectionSize.Y);
+                                Refresh();
+                            }
+                            break;
+                        case InputMode.FillCells:
+                            EditorForm parent = (Parent as EditorForm);
+                            BrushControl brushControl = parent.BrushControl;
+
+                            if (brushControl.PaintCharacter)
+                            {
+                                FloodFillChar(c, r, brushControl.Character);
+                            }
+                            if (brushControl.PaintBackgroundColor)
+                            {
+                                FloodFillBack(c, r, brushControl.BackgroundColor);
+                            }
+                            if (brushControl.PaintCharacterColor)
+                            {
+                                FloodFillFore(c, r, brushControl.CharacterColor);
+                            }
+
+                            Refresh();
+                            break;
+                        case InputMode.EyeDropper:
+                            parent = (Parent as EditorForm);
+                            brushControl = parent.BrushControl;
+
+                            if (brushControl.PaintCharacter)
+                            {
+                                brushControl.Character = surface.GetCharacter(c, r);
+                            }
+                            if (brushControl.PaintBackgroundColor)
+                            {
+                                brushControl.BackgroundColor = surface.GetBackgroundColor(c, r);
+                            }
+                            if (brushControl.PaintCharacterColor)
+                            {
+                                brushControl.CharacterColor = surface.GetCharacterColor(c, r);
+                            }
+                            break;
+                    }
+                }
+            }
+            RefreshRect(new Rectangle(selectedCell.X, selectedCell.Y, selectionSize.X, selectionSize.Y));
+            DrawCursor(new Point(selectedCell.X, selectedCell.Y));
         }
 
         #endregion
@@ -433,10 +480,18 @@ namespace SurfaceEditor
             //draw all background colors
             for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)
             {
+                if (y < 0) continue;
+
                 int x = rect.X;
 
                 while (x < rect.Right && x < surface.Width)
                 {
+                    if (x < 0)
+                    {
+                        ++x;
+                        continue;
+                    }
+
                     //chain all adjacent background colors in a row for more efficient rendering
                     Rectangle colorRect = new Rectangle();
 
@@ -467,10 +522,18 @@ namespace SurfaceEditor
             //draw all characters
             for (int y = rect.Y; y < rect.Bottom && y < surface.Height; ++y)
             {
+                if (y < 0) continue;
+
                 int x = rect.X;
 
                 while (x < rect.Right && x < surface.Width)
                 {
+                    if (x < 0)
+                    {
+                        ++x;
+                        continue;
+                    }
+
                     //chain all adjacent characters with the same color into strings for more efficient rendering
 
                     char ch = surface.GetCharacter(x, y);
