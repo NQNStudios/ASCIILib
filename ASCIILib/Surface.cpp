@@ -382,6 +382,7 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 		}
 
 		blitString(tempstr.c_str(), color, x, y);
+		setCharacter(x + tempstr.size(), y, ' '); //fill in spaces
 
 		x += tempstr.size() + 1;
 	}

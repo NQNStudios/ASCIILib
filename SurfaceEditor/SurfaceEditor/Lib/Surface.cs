@@ -643,7 +643,7 @@ namespace SurfaceEditor
                     }
                 }
 
-                BlitString(word, color, x, y);
+                BlitString(word + " ", color, x, y);
 
                 x += word.Length + 1; //move over for the next word
             }
