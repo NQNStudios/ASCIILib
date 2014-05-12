@@ -264,8 +264,9 @@ namespace SurfaceEditor
 
         private void SurfacePanel_MouseLeave(object sender, EventArgs e)
         {
-            if (Parent.Focused)
+            if (!(Parent.Visible && !Parent.CanFocus))
             {
+                // no modal child windows are open
                 SelectedCell = new Point(-1, -1);
             }
         }
