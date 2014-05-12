@@ -81,6 +81,19 @@ namespace ascii
 			void drawRect(Rectangle destination, char character, Color backgroundColor, Color characterColor);
 
 			///<summary>
+			/// Copies all information from a given surface to this one, including transparency.
+			///</summary>
+			///<param name="surface">The surface to copy to this one.</param>
+			void copySurface(Surface* surface, int x, int y);
+
+			///<summary>
+			/// Copies all information from a given surface to this one, including transparency.
+			///</summary>
+			///<param name="surface">The surface to copy to this one.</param>
+			///<param name="source">The source rectangle from which to copy.</param>
+			void copySurface(Surface* surface, Rectangle source, int x, int y);
+			
+			///<summary>
 			/// Blits an entire surface to this surface at the given location.
 			///</summary>
 			///<param name="surface">The surface to blit to this one.</param>

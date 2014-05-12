@@ -297,6 +297,38 @@ void ascii::Surface::drawRect(Rectangle destination, char character, Color backg
 	}
 }
 
+void ascii::Surface::copySurface(Surface* surface, int x, int y)
+{
+	//copy cell info from the other surface
+	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
+	{
+		for (int desty = y, srcy = 0; desty < mWidth && srcy < surface->mHeight; ++desty, ++srcy)
+		{
+			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+			mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+		}
+	}
+}
+
+void ascii::Surface::copySurface(Surface* surface, Rectangle source, int x, int y)
+{
+	//copy cell info from the other surface
+	for (int destx = x, srcx = source.x; destx < mWidth && srcx < source.right(); ++destx, ++srcx)
+	{
+		for (int desty = y, srcy = source.y; desty < mHeight && srcy < source.bottom(); ++desty, ++srcy)
+		{
+			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+			mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+			mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+		}
+	}
+}
+
 void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 {
 	//blit the opaque cells from the other surface
