@@ -99,6 +99,16 @@ namespace SurfaceEditor
             {
                 if (surface == null) return;
 
+                //update the cursor text
+                if (!surface.IsInBounds(value))
+                {
+                    (Parent as EditorForm).CursorLabel.Text = "";
+                }
+                else
+                {
+                    (Parent as EditorForm).CursorLabel.Text = "Selected Cell: " + value.X + ", " + value.Y + "    Selection Size: " + selectionSize.X + ", " + selectionSize.Y;
+                }
+
                 //if a place was previously selected, draw over its highlight
                 if (surface.IsInBounds(selectedCell))
                 {

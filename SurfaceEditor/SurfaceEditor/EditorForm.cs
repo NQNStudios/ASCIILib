@@ -22,6 +22,11 @@ namespace SurfaceEditor
 
         #region Properties
 
+        public Label CursorLabel
+        {
+            get { return cursorLabel; }
+        }
+
         public CellInfo CellInfo
         {
             get { return cellInfo1; }

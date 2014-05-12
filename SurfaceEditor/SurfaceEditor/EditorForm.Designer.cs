@@ -42,6 +42,7 @@
             this.shiftControl1 = new SurfaceEditor.ShiftControl();
             this.specialInfoControl1 = new SurfaceEditor.SpecialInfoControl();
             this.shapesControl1 = new SurfaceEditor.ShapesControl();
+            this.cursorLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,6 +103,7 @@
             // 
             this.brushControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.brushControl1.BackgroundColor = System.Drawing.Color.Black;
+            this.brushControl1.Character = ' ';
             this.brushControl1.CharacterColor = System.Drawing.Color.White;
             this.brushControl1.Location = new System.Drawing.Point(736, 391);
             this.brushControl1.Name = "brushControl1";
@@ -140,8 +142,7 @@
             // 
             // surfacePanel1
             // 
-            this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.surfacePanel1.AutoScroll = true;
             this.surfacePanel1.Clicked = false;
@@ -179,11 +180,20 @@
             this.shapesControl1.TabIndex = 9;
             this.shapesControl1.Visible = false;
             // 
+            // cursorLabel
+            // 
+            this.cursorLabel.AutoSize = true;
+            this.cursorLabel.Location = new System.Drawing.Point(13, 568);
+            this.cursorLabel.Name = "cursorLabel";
+            this.cursorLabel.Size = new System.Drawing.Size(0, 13);
+            this.cursorLabel.TabIndex = 10;
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(965, 567);
+            this.ClientSize = new System.Drawing.Size(965, 587);
+            this.Controls.Add(this.cursorLabel);
             this.Controls.Add(this.shapesControl1);
             this.Controls.Add(this.specialInfoControl1);
             this.Controls.Add(this.button1);
@@ -220,6 +230,7 @@
         private ShiftControl shiftControl1;
         private SpecialInfoControl specialInfoControl1;
         private ShapesControl shapesControl1;
+        private System.Windows.Forms.Label cursorLabel;
     }
 }
 
