@@ -183,8 +183,7 @@
             // 
             // cursorLabel
             // 
-            this.cursorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.cursorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cursorLabel.AutoSize = true;
             this.cursorLabel.Location = new System.Drawing.Point(13, 568);
             this.cursorLabel.Name = "cursorLabel";

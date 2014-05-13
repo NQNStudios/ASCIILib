@@ -99,6 +99,9 @@ namespace SurfaceEditor
             {
                 if (surface == null) return;
 
+                value.X += hScrollBar1.Value / CHAR_WIDTH;
+                value.Y += vScrollBar1.Value / CHAR_HEIGHT;
+
                 //update the cursor text
                 if (!surface.IsInBounds(value))
                 {
