@@ -42,6 +42,7 @@
             this.charColorMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.useBackgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.switchWithBackgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.bgColorMenuStrip.SuspendLayout();
             this.charColorMenuStrip.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.charColorCheckBox);
             this.groupBox1.Controls.Add(this.bgColorCheckBox);
             this.groupBox1.Controls.Add(this.charCheckBox);
@@ -66,7 +68,7 @@
             this.groupBox1.Controls.Add(this.charColorPicker);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(154, 101);
+            this.groupBox1.Size = new System.Drawing.Size(187, 101);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Brush";
@@ -159,7 +161,7 @@
             this.useBackgroundColorToolStripMenuItem,
             this.switchWithBackgroundColorToolStripMenuItem});
             this.charColorMenuStrip.Name = "charColorMenuStrip";
-            this.charColorMenuStrip.Size = new System.Drawing.Size(193, 70);
+            this.charColorMenuStrip.Size = new System.Drawing.Size(193, 48);
             // 
             // useBackgroundColorToolStripMenuItem
             // 
@@ -175,13 +177,21 @@
             this.switchWithBackgroundColorToolStripMenuItem.Text = "Switch Colors";
             this.switchWithBackgroundColorToolStripMenuItem.Click += new System.EventHandler(this.switchColorsToolStripMenuItem_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(123, 20);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(47, 20);
+            this.textBox1.TabIndex = 7;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            // 
             // BrushControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "BrushControl";
-            this.Size = new System.Drawing.Size(160, 112);
+            this.Size = new System.Drawing.Size(193, 112);
             this.Load += new System.EventHandler(this.BrushControl_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -206,5 +216,6 @@
         private System.Windows.Forms.ContextMenuStrip charColorMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem useBackgroundColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem switchWithBackgroundColorToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

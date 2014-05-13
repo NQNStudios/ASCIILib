@@ -24,7 +24,16 @@ namespace SurfaceEditor
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            charCheckBox.Checked = charTextBox.Text != "";
+            if (charTextBox.Text.Length > 0)
+            {
+                textBox1.Text = "" + (int)charTextBox.Text[0];
+                charCheckBox.Checked = true;
+            }
+            else
+            {
+                textBox1.Text = "";
+                charCheckBox.Checked = false;
+            }
         }
 
         #region Properties
@@ -146,6 +155,14 @@ namespace SurfaceEditor
         private void useBackgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             charColorPicker.Color = bgColorPicker.Color;
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Length > 0)
+            {
+                charTextBox.Text = "" + (char)int.Parse(textBox1.Text);
+            }
         }
     }
 }

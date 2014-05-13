@@ -107,7 +107,7 @@
             this.brushControl1.CharacterColor = System.Drawing.Color.White;
             this.brushControl1.Location = new System.Drawing.Point(736, 391);
             this.brushControl1.Name = "brushControl1";
-            this.brushControl1.Size = new System.Drawing.Size(146, 112);
+            this.brushControl1.Size = new System.Drawing.Size(202, 112);
             this.brushControl1.TabIndex = 5;
             this.brushControl1.Visible = false;
             // 
@@ -194,8 +194,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 587);
             this.Controls.Add(this.cursorLabel);
-            this.Controls.Add(this.shapesControl1);
-            this.Controls.Add(this.specialInfoControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.brushControl1);
             this.Controls.Add(this.resizeControl1);
@@ -204,6 +202,8 @@
             this.Controls.Add(this.surfacePanel1);
             this.Controls.Add(this.shiftControl1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.shapesControl1);
+            this.Controls.Add(this.specialInfoControl1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "EditorForm";
             this.Text = "ASCIILib Surface Editor";
