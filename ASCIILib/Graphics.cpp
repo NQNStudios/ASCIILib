@@ -12,7 +12,7 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 ascii::Graphics::Graphics(const char* title)
-	: Surface(kBufferWidth, kBufferHeight)
+	: Surface(kBufferWidth, kBufferHeight), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
@@ -27,10 +27,12 @@ ascii::Graphics::Graphics(const char* title)
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
 }
 
 ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight)
+	: Surface(bufferWidth, bufferHeight), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
@@ -45,6 +47,8 @@ ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
 }
 
 ascii::Graphics::~Graphics(void)
@@ -63,14 +67,25 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
-ascii::ImageCache* ascii::Graphics::createImageCache()
-{
-	return new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
-}
-
 void ascii::Graphics::update()
 {
-	//draw all background colors
+	//draw background color
+	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
+	SDL_RenderFillRect(mRenderer, NULL);
+	
+	//draw background images
+	for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
+	{
+		SDL_Rect dest;
+		
+		dest.x = it->second.second.x * mCharWidth;
+		dest.y = it->second.second.y * mCharHeight;
+		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+
+		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+	}
+
+	//draw all buffer background colors
 	for (int y = 0; y < height(); ++y)
 	{
 		int x = 0;
@@ -168,7 +183,45 @@ void ascii::Graphics::update()
 		}
 	}
 
+	//draw foreground images
+	for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
+	{
+		SDL_Rect dest;
+		
+		dest.x = it->second.second.x * mCharWidth;
+		dest.y = it->second.second.y * mCharHeight;
+		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+
+		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+	}
+
 	SDL_RenderPresent(mRenderer);
+}
+
+void ascii::Graphics::addBackgroundImage(const char* key, const char* textureKey, int x, int y)
+{
+	mBackgroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+}
+
+void ascii::Graphics::removeBackgroundImage(const char* key)
+{
+	mBackgroundImages.erase(key);
+}
+
+void ascii::Graphics::addForegroundImage(const char* key, const char* textureKey, int x, int y)
+{
+	mForegroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+}
+
+void ascii::Graphics::removeForegroundImage(const char* key)
+{
+	mForegroundImages.erase(key);
+}
+
+void ascii::Graphics::clearImages()
+{
+	mBackgroundImages.clear();
+	mForegroundImages.clear();
 }
 
 void ascii::Graphics::checkSize()

@@ -1,5 +1,6 @@
 #include "ImageCache.h"
 
+#include <SDL_image.h>
 
 ascii::ImageCache::ImageCache(SDL_Renderer* renderer, int charWidth, int charHeight)
 	: mRenderer(renderer), mCharWidth(charWidth), mCharHeight(charHeight)
@@ -14,7 +15,7 @@ ascii::ImageCache::~ImageCache()
 
 void ascii::ImageCache::loadTexture(const char* key, const char* path, ascii::Color colorKey)
 {
-	SDL_Surface* imageSurface = SDL_LoadBMP(path);
+	SDL_Surface* imageSurface = IMG_Load(path);
 
 	//Make sure the image dimensions will align to the buffer
 	SDL_assert(imageSurface->w % mCharWidth == 0);

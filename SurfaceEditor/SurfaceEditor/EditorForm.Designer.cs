@@ -142,7 +142,8 @@
             // 
             // surfacePanel1
             // 
-            this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.surfacePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.surfacePanel1.AutoScroll = true;
             this.surfacePanel1.Clicked = false;
@@ -182,6 +183,8 @@
             // 
             // cursorLabel
             // 
+            this.cursorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.cursorLabel.AutoSize = true;
             this.cursorLabel.Location = new System.Drawing.Point(13, 568);
             this.cursorLabel.Name = "cursorLabel";

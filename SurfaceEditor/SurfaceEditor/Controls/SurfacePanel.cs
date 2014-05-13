@@ -292,7 +292,10 @@ namespace SurfaceEditor
                             {
                                 for (int j = 0; j < selectionSize.Y; ++j)
                                 {
-                                    surface.SetCellOpacity(c + i, r + j, !surface.IsCellOpaque(c + i, r + j));
+                                    if (c + i < surface.Width && r + j < surface.Height)
+                                    {
+                                        surface.SetCellOpacity(c + i, r + j, !surface.IsCellOpaque(c + i, r + j));
+                                    }
                                 }
                             }
                             break;

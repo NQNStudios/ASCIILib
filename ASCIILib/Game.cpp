@@ -30,7 +30,7 @@ void ascii::Game::Run()
 		graphics = new ascii::Graphics(mWindowTitle);
 	}
 
-	mCache = graphics->createImageCache();
+	mCache = graphics->imageCache();
 	mLoadContent(mCache);
 
 	ascii::Input input;

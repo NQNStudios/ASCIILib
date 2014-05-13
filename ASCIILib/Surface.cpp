@@ -302,7 +302,7 @@ void ascii::Surface::copySurface(Surface* surface, int x, int y)
 	//copy cell info from the other surface
 	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
 	{
-		for (int desty = y, srcy = 0; desty < mWidth && srcy < surface->mHeight; ++desty, ++srcy)
+		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->mHeight; ++desty, ++srcy)
 		{
 			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];

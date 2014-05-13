@@ -44,9 +44,9 @@ namespace ascii
 			~Graphics();
 
 			///<summary>
-			/// Creates an image cache for this Graphics instance.
+			/// Returns the image cache for this Graphics instance.
 			///</summary>
-			ImageCache* createImageCache();
+			ImageCache* imageCache() { return mCache; }
 
 			int charWidth() { return mCharWidth; }
 			int charHeight() { return mCharHeight; }
@@ -55,6 +55,39 @@ namespace ascii
 			/// Renders the rendering buffer in its current state.
 			///</summary>
 			void update();
+
+			void setBackgroundColor(Color color) { mBackgroundColor = color; }
+
+			///<summary>
+			/// Adds an image in the background of the game window.
+			///</summary>
+			///<param name="key">The key with which this image should be stored.</param>
+			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
+			void addBackgroundImage(const char* key, const char* textureKey, int x, int y);
+
+			///<summary>
+			/// Removes an image from the background of the game window.
+			///</summary>
+			///<param name="key">The key with which this image was stored.</param>
+			void removeBackgroundImage(const char* key);
+
+			///<summary>
+			/// Adds an image in the foreground of the game window.
+			///</summary>
+			///<param name="key">The key with which this image should be stored.</param>
+			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
+			void addForegroundImage(const char* key, const char* textureKey, int x, int y);
+
+			///<summary>
+			/// Removes an image from the foreground of the game window.
+			///</summary>
+			///<param name="key">The key with which this image was stored.</param>
+			void removeForegroundImage(const char* key);
+
+			///<summary>
+			/// Clears all images from the window.
+			///</summary>
+			void clearImages();
 		private:
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
@@ -62,14 +95,21 @@ namespace ascii
 			void checkSize();
 
 			typedef std::pair<std::string, Color> Glyph;
+			typedef std::pair<SDL_Texture*, Point> Image;
 
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;
+			ImageCache* mCache;
 
 			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
 
 			std::map<Glyph, SDL_Texture*> mStringTextures;
+
+			Color mBackgroundColor;
+
+			std::map<const char*, Image> mBackgroundImages;
+			std::map<const char*, Image> mForegroundImages;
 	};
 
 };
