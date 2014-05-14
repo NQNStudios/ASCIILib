@@ -103,7 +103,7 @@ namespace SurfaceEditor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            surfacePanel1.Surface.ClearTransparency();
+            surfacePanel1.ClearTransparency();
             surfacePanel1.Refresh();
         }
 
@@ -136,6 +136,16 @@ namespace SurfaceEditor
                     surfacePanel1.Surface.SaveToFile(path);
                 }
             }
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            surfacePanel1.Undo();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            surfacePanel1.Redo();
         }
     }
 }

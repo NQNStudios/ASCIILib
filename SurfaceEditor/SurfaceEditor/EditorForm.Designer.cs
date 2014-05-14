@@ -43,13 +43,17 @@
             this.specialInfoControl1 = new SurfaceEditor.SpecialInfoControl();
             this.shapesControl1 = new SurfaceEditor.ShapesControl();
             this.cursorLabel = new System.Windows.Forms.Label();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(965, 24);
@@ -69,21 +73,21 @@
             // newSurfaceToolStripMenuItem
             // 
             this.newSurfaceToolStripMenuItem.Name = "newSurfaceToolStripMenuItem";
-            this.newSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.newSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newSurfaceToolStripMenuItem.Text = "&New Surface";
             this.newSurfaceToolStripMenuItem.Click += new System.EventHandler(this.newSurfaceToolStripMenuItem_Click);
             // 
             // openSurfaceToolStripMenuItem
             // 
             this.openSurfaceToolStripMenuItem.Name = "openSurfaceToolStripMenuItem";
-            this.openSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.openSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openSurfaceToolStripMenuItem.Text = "&Open Surface";
             this.openSurfaceToolStripMenuItem.Click += new System.EventHandler(this.openSurfaceToolStripMenuItem_Click);
             // 
             // saveSurfaceToolStripMenuItem
             // 
             this.saveSurfaceToolStripMenuItem.Name = "saveSurfaceToolStripMenuItem";
-            this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.saveSurfaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveSurfaceToolStripMenuItem.Text = "&Save Surface";
             this.saveSurfaceToolStripMenuItem.Click += new System.EventHandler(this.saveSurfaceToolStripMenuItem_Click);
             // 
@@ -190,6 +194,31 @@
             this.cursorLabel.Size = new System.Drawing.Size(0, 13);
             this.cursorLabel.TabIndex = 10;
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.undoToolStripMenuItem,
+            this.redoToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
+            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -233,6 +262,9 @@
         private SpecialInfoControl specialInfoControl1;
         private ShapesControl shapesControl1;
         private System.Windows.Forms.Label cursorLabel;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
     }
 }
 

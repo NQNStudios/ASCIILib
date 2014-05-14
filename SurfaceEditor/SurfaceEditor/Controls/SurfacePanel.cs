@@ -54,6 +54,9 @@ namespace SurfaceEditor
         
         Point firstCorner = new Point(-1, -1); // for shapes
 
+        Stack<List<CellChange>> actions = new Stack<List<CellChange>>();
+        Stack<List<CellChange>> undoneActions = new Stack<List<CellChange>>();
+
         #region Initialization
 
         public SurfacePanel()
@@ -209,6 +212,8 @@ namespace SurfaceEditor
                 {
                     RefreshRect(new Rectangle(selectedCell.X - dx, selectedCell.Y - dy, selectionSize.X, selectionSize.Y));
 
+                    List<CellChange> changes = new List<CellChange>();
+
                     //handle input for all valid selected cells
                     for (int c = SelectedCell.X, i = 0; c < surface.Width && i < SelectionSize.X; ++c, ++i)
                     {
@@ -230,6 +235,23 @@ namespace SurfaceEditor
                             if (!valid) continue;
 
                             //a cell was clicked on. Handle the appropriate behavior for the selected mode.
+
+                            bool changed = false;
+                            CellChange change = new CellChange();
+                            change.X = c;
+                            change.Y = r;
+                            change.OldCharacter = surface.GetCharacter(c, r);
+                            change.OldBackgroundColor = surface.GetBackgroundColor(c, r);
+                            change.OldCharacterColor = surface.GetCharacterColor(c, r);
+                            change.OldOpacity = surface.IsCellOpaque(c, r);
+                            change.OldSpecialInfo = surface.GetSpecialInfo(c, r);
+
+                            change.NewCharacter = change.OldCharacter;
+                            change.NewBackgroundColor = change.OldBackgroundColor;
+                            change.NewCharacterColor = change.OldCharacterColor;
+                            change.NewOpacity = change.OldOpacity;
+                            change.NewSpecialInfo = change.OldSpecialInfo;
+
                             switch (Mode)
                             {
                                 case InputMode.PaintBrush:
@@ -238,15 +260,21 @@ namespace SurfaceEditor
 
                                     if (brushControl.PaintCharacter)
                                     {
+                                        change.NewCharacter = brushControl.Character;
                                         surface.SetCharacter(c, r, brushControl.Character);
+                                        changed = true;
                                     }
                                     if (brushControl.PaintBackgroundColor)
                                     {
+                                        change.NewBackgroundColor = brushControl.BackgroundColor;
                                         surface.SetBackgroundColor(c, r, brushControl.BackgroundColor);
+                                        changed = true;
                                     }
                                     if (brushControl.PaintCharacterColor)
                                     {
+                                        change.NewCharacterColor = brushControl.CharacterColor;
                                         surface.SetCharacterColor(c, r, brushControl.CharacterColor);
+                                        changed = true;
                                     }
                                     break;
                                 case InputMode.SpecialInfo:
@@ -255,12 +283,18 @@ namespace SurfaceEditor
                                     {
                                         label = "";
                                     }
+                                    change.NewSpecialInfo = label;
                                     surface.SetSpecialInfo(c, r, label);
+                                    changed = true;
                                     break;
                             }
+
+                            if (changed) changes.Add(change);
                         }
                     }
                     DrawCursor(new Point(selectedCell.X, selectedCell.Y));
+
+                    AddAction(changes);
                 }
             }
         }
@@ -287,6 +321,8 @@ namespace SurfaceEditor
                     int c = SelectedCell.X;
                     int r = SelectedCell.Y;
 
+                    List<CellChange> changes = new List<CellChange>();
+
                     //a cell was clicked on. Handle the appropriate behavior for the selected mode.
                     switch (Mode)
                     {
@@ -295,10 +331,30 @@ namespace SurfaceEditor
                             {
                                 for (int j = 0; j < selectionSize.Y; ++j)
                                 {
+                                    int x = c + i;
+                                    int y = r + j;
+                                    CellChange change = new CellChange();
+                                    change.X = x;
+                                    change.Y = y;
+                                    change.OldCharacter = surface.GetCharacter(c, r);
+                                    change.OldBackgroundColor = surface.GetBackgroundColor(c, r);
+                                    change.OldCharacterColor = surface.GetCharacterColor(c, r);
+                                    change.OldOpacity = surface.IsCellOpaque(c, r);
+                                    change.OldSpecialInfo = surface.GetSpecialInfo(c, r);
+
+                                    change.NewCharacter = change.OldCharacter;
+                                    change.NewBackgroundColor = change.OldBackgroundColor;
+                                    change.NewCharacterColor = change.OldCharacterColor;
+                                    change.NewOpacity = change.OldOpacity;
+                                    change.NewSpecialInfo = change.OldSpecialInfo;
+
                                     if (c + i < surface.Width && r + j < surface.Height)
                                     {
+                                        change.NewOpacity = !surface.IsCellOpaque(x, y);
                                         surface.SetCellOpacity(c + i, r + j, !surface.IsCellOpaque(c + i, r + j));
                                     }
+
+                                    changes.Add(change);
                                 }
                             }
                             break;
@@ -309,7 +365,7 @@ namespace SurfaceEditor
 
                             if (result == DialogResult.OK)
                             {
-                                surface.BlitString(form.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, c, r);
+                                surface.BlitString(changes, form.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor, c, r);
                                 Refresh();
                             }
                             break;
@@ -319,7 +375,7 @@ namespace SurfaceEditor
 
                             if (longResult == DialogResult.OK)
                             {
-                                surface.BlitStringMultiline(longTextForm.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor,
+                                surface.BlitStringMultiline(changes, longTextForm.ChosenText, (Parent as EditorForm).BrushControl.CharacterColor,
                                     c, r, selectionSize.X, selectionSize.Y);
                                 Refresh();
                             }
@@ -330,15 +386,15 @@ namespace SurfaceEditor
 
                             if (brushControl.PaintCharacter)
                             {
-                                FloodFillChar(c, r, brushControl.Character);
+                                FloodFillChar(changes, c, r, brushControl.Character);
                             }
                             if (brushControl.PaintBackgroundColor)
                             {
-                                FloodFillBack(c, r, brushControl.BackgroundColor);
+                                FloodFillBack(changes, c, r, brushControl.BackgroundColor);
                             }
                             if (brushControl.PaintCharacterColor)
                             {
-                                FloodFillFore(c, r, brushControl.CharacterColor);
+                                FloodFillFore(changes, c, r, brushControl.CharacterColor);
                             }
 
                             Refresh();
@@ -364,6 +420,8 @@ namespace SurfaceEditor
                             firstCorner = selectedCell;
                             break;
                     }
+
+                    AddAction(changes);
                 }
             }
             RefreshRect(new Rectangle(selectedCell.X, selectedCell.Y, selectionSize.X, selectionSize.Y));
@@ -421,95 +479,228 @@ namespace SurfaceEditor
 
         #endregion
 
+        #region Surface Editing Methods
+
+        public void ClearTransparency()
+        {
+            //add cell changes to stack
+            List<CellChange> changes = new List<CellChange>();
+
+            for (int x = 0; x < surface.Width; ++x)
+            {
+                for (int y = 0; y < surface.Height; ++y)
+                {
+                    CellChange change = new CellChange();
+                    change.X = x;
+                    change.Y = y;
+
+                    change.OldCharacter = surface.GetCharacter(x, y);
+                    change.OldBackgroundColor = surface.GetBackgroundColor(x, y);
+                    change.OldCharacterColor = surface.GetCharacterColor(x, y);
+                    change.OldOpacity = surface.IsCellOpaque(x, y);
+                    change.OldSpecialInfo = surface.GetSpecialInfo(x, y);
+
+                    change.NewCharacter = change.OldCharacter;
+                    change.NewBackgroundColor = change.OldBackgroundColor;
+                    change.NewCharacterColor = change.OldCharacterColor;
+                    change.NewOpacity = true;
+                    change.NewSpecialInfo = change.OldSpecialInfo;
+
+                    changes.Add(change);
+                }
+            }
+
+            AddAction(changes); 
+
+            surface.ClearTransparency();
+        }
+
+        #endregion
+
+        #region Undo/Redo Methods
+
+        void AddAction(List<CellChange> changes)
+        {
+            if (changes.Count() > 0)
+            {
+                actions.Push(changes);
+                undoneActions.Clear();
+            }
+        }
+
+        public void Undo()
+        {
+            if (actions.Count() > 0)
+            {
+                List<CellChange> changes = actions.Pop();
+                surface.UndoChanges(changes);
+                undoneActions.Push(changes);
+
+                Refresh();
+            }
+        }
+
+        public void Redo()
+        {
+            if (undoneActions.Count() > 0)
+            {
+                List<CellChange> changes = undoneActions.Pop();
+                surface.RedoChanges(changes);
+                actions.Push(changes);
+
+                Refresh();
+            }
+        }
+
+        #endregion
+
         #region Flood Fill Helpers
 
-        private void FloodFillChar(int x, int y, char value)
+        private void FloodFillChar(List<CellChange> changes, int x, int y, char value)
         {
             char prevValue = surface.GetCharacter(x, y);
 
             if (prevValue == value)
                 return;
-                
+
+
+            CellChange change = new CellChange();
+            change.X = x;
+            change.Y = y;
+            int c = x;
+            int r = y;
+            change.OldCharacter = surface.GetCharacter(c, r);
+            change.OldBackgroundColor = surface.GetBackgroundColor(c, r);
+            change.OldCharacterColor = surface.GetCharacterColor(c, r);
+            change.OldOpacity = surface.IsCellOpaque(c, r);
+            change.OldSpecialInfo = surface.GetSpecialInfo(c, r);
+
+            change.NewCharacter = value;
+            change.NewBackgroundColor = change.OldBackgroundColor;
+            change.NewCharacterColor = change.OldCharacterColor;
+            change.NewOpacity = change.OldOpacity;
+            change.NewSpecialInfo = change.OldSpecialInfo;
+
+            changes.Add(change);
+
             surface.SetCharacter(x, y, value);
 
             if (x > 0 && surface.GetCharacter(x - 1, y) == prevValue)
             {
-                FloodFillChar(x - 1, y, value);
+                FloodFillChar(changes, x - 1, y, value);
             }
 
             if (y > 0 && surface.GetCharacter(x, y - 1) == prevValue)
             {
-                FloodFillChar(x, y - 1, value);
+                FloodFillChar(changes, x, y - 1, value);
             }
 
             if (x < surface.Width - 1 && surface.GetCharacter(x + 1, y) == prevValue)
             {
-                FloodFillChar(x + 1, y, value);
+                FloodFillChar(changes, x + 1, y, value);
             }
 
             if (y < surface.Height - 1 && surface.GetCharacter(x, y + 1) == prevValue)
             {
-                FloodFillChar(x, y + 1, value);
+                FloodFillChar(changes, x, y + 1, value);
             }
         }
 
-        private void FloodFillBack(int x, int y, Color value)
+        private void FloodFillBack(List<CellChange> changes, int x, int y, Color value)
         {
             Color prevValue = surface.GetBackgroundColor(x, y);
 
-            if (prevValue == value)
+            if (prevValue.R == value.R && prevValue.G == value.G && prevValue.B == value.B)
                 return;
+
+            CellChange change = new CellChange();
+            change.X = x;
+            change.Y = y;
+            int c = x;
+            int r = y;
+            change.OldCharacter = surface.GetCharacter(c, r);
+            change.OldBackgroundColor = surface.GetBackgroundColor(c, r);
+            change.OldCharacterColor = surface.GetCharacterColor(c, r);
+            change.OldOpacity = surface.IsCellOpaque(c, r);
+            change.OldSpecialInfo = surface.GetSpecialInfo(c, r);
+
+            change.NewCharacter = change.OldCharacter;
+            change.NewBackgroundColor = value;
+            change.NewCharacterColor = change.OldCharacterColor;
+            change.NewOpacity = change.OldOpacity;
+            change.NewSpecialInfo = change.OldSpecialInfo;
+
+            changes.Add(change);
 
             surface.SetBackgroundColor(x, y, value);
 
             if (x > 0 && surface.GetBackgroundColor(x - 1, y) == prevValue)
             {
-                FloodFillBack(x - 1, y, value);
+                FloodFillBack(changes, x - 1, y, value);
             }
 
             if (y > 0 && surface.GetBackgroundColor(x, y - 1) == prevValue)
             {
-                FloodFillBack(x, y - 1, value);
+                FloodFillBack(changes, x, y - 1, value);
             }
 
             if (x < surface.Width - 1 && surface.GetBackgroundColor(x + 1, y) == prevValue)
             {
-                FloodFillBack(x + 1, y, value);
+                FloodFillBack(changes, x + 1, y, value);
             }
 
             if (y < surface.Height - 1 && surface.GetBackgroundColor(x, y + 1) == prevValue)
             {
-                FloodFillBack(x, y + 1, value);
+                FloodFillBack(changes, x, y + 1, value);
             }
         }
 
-        private void FloodFillFore(int x, int y, Color value)
+        private void FloodFillFore(List<CellChange> changes, int x, int y, Color value)
         {
             Color prevValue = surface.GetCharacterColor(x, y);
 
-            if (prevValue == value)
+            if (prevValue.R == value.R && prevValue.G == value.G && prevValue.B == value.B)
                 return;
+
+            CellChange change = new CellChange();
+            change.X = x;
+            change.Y = y;
+            int c = x;
+            int r = y;
+            change.OldCharacter = surface.GetCharacter(c, r);
+            change.OldBackgroundColor = surface.GetBackgroundColor(c, r);
+            change.OldCharacterColor = surface.GetCharacterColor(c, r);
+            change.OldOpacity = surface.IsCellOpaque(c, r);
+            change.OldSpecialInfo = surface.GetSpecialInfo(c, r);
+
+            change.NewCharacter = change.OldCharacter;
+            change.NewBackgroundColor = change.OldBackgroundColor;
+            change.NewCharacterColor = value;
+            change.NewOpacity = change.OldOpacity;
+            change.NewSpecialInfo = change.OldSpecialInfo;
+
+            changes.Add(change);
 
             surface.SetCharacterColor(x, y, value);
 
             if (x > 0 && surface.GetCharacterColor(x - 1, y) == prevValue)
             {
-                FloodFillFore(x - 1, y, value);
+                FloodFillFore(changes, x - 1, y, value);
             }
 
             if (y > 0 && surface.GetCharacterColor(x, y - 1) == prevValue)
             {
-                FloodFillFore(x, y - 1, value);
+                FloodFillFore(changes, x, y - 1, value);
             }
 
             if (x < surface.Width - 1 && surface.GetCharacterColor(x + 1, y) == prevValue)
             {
-                FloodFillFore(x + 1, y, value);
+                FloodFillFore(changes, x + 1, y, value);
             }
 
             if (y < surface.Height - 1 && surface.GetCharacterColor(x, y + 1) == prevValue)
             {
-                FloodFillFore(x, y + 1, value);
+                FloodFillFore(changes, x, y + 1, value);
             }
         }
 

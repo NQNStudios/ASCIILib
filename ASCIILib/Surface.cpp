@@ -42,7 +42,7 @@ ascii::Surface::Surface(char character, Color backgroundColor, Color characterCo
 	mCellOpacity.push_back(new bool[1]);
 }
 
-ascii::Surface* ascii::Surface::FromFile(char* filepath, ascii::ImageCache* cache)
+ascii::Surface* ascii::Surface::FromFile(char* filepath)
 {
 	std::ifstream file;
 	file.open(filepath);

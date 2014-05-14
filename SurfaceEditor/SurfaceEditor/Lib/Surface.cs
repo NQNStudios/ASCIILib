@@ -55,7 +55,7 @@ namespace SurfaceEditor
 
         #endregion
 
-        #region IO
+        #region File IO
 
         public static Surface FromFile(string path)
         {
@@ -199,7 +199,7 @@ namespace SurfaceEditor
             writer.WriteLine("COLORS");
 
             Dictionary<Color, char> colorKeys = new Dictionary<Color, char>();
-            char key = (char)0;
+            char key = (char)1;
 
             for (int x = 0; x < width; ++x)
             {
@@ -228,7 +228,7 @@ namespace SurfaceEditor
             writer.WriteLine("INFO CODES");
 
             Dictionary<string, char> infoKeys = new Dictionary<string, char>();
-            key = (char)0;
+            key = (char)1;
 
             for (int x = 0; x < width; ++x)
             {
@@ -513,6 +513,22 @@ namespace SurfaceEditor
             }
         }
 
+        public void UndoChanges(List<CellChange> changes)
+        {
+            foreach (CellChange change in changes)
+            {
+                UndoChange(change);
+            }
+        }
+
+        public void RedoChanges(List<CellChange> changes)
+        {
+            foreach (CellChange change in changes)
+            {
+                RedoChange(change);
+            }
+        }
+
         #endregion
 
         #region Draw Methods
@@ -611,19 +627,39 @@ namespace SurfaceEditor
 
         #region Blit Methods
 
-        public void BlitString(string text, Color color, int x, int y)
+        public void BlitString(List<CellChange> changes, string text, Color color, int x, int y)
         {
             for (int i = 0; i < text.Length; ++i)
             {
-                if (x + i < width)
+                if (x + i < width && y < height)
                 {
+                    CellChange change = new CellChange();
+                    change.X = x + i;
+                    change.Y = y;
+
+                    int c = x + i;
+                    int r = y;
+                    change.OldCharacter = GetCharacter(c, r);
+                    change.OldBackgroundColor = GetBackgroundColor(c, r);
+                    change.OldCharacterColor = GetCharacterColor(c, r);
+                    change.OldOpacity = IsCellOpaque(c, r);
+                    change.OldSpecialInfo = GetSpecialInfo(c, r);
+
+                    change.NewCharacter = text[i];
+                    change.NewBackgroundColor = change.OldBackgroundColor;
+                    change.NewCharacterColor = color;
+                    change.NewOpacity = change.OldOpacity;
+                    change.NewSpecialInfo = change.OldSpecialInfo;
+
+                    changes.Add(change);
+
                     SetCharacter(x + i, y, text[i]);
                     SetCharacterColor(x + i, y, color);
                 }
             }
         }
 
-        public void BlitStringMultiline(string text, Color color, int x, int y, int maxWidth, int maxHeight)
+        public void BlitStringMultiline(List<CellChange> changes, string text, Color color, int x, int y, int maxWidth, int maxHeight)
         {
             string[] words = text.Split(' ');
 
@@ -643,7 +679,7 @@ namespace SurfaceEditor
                     }
                 }
 
-                BlitString(word + " ", color, x, y);
+                BlitString(changes, word + " ", color, x, y);
 
                 x += word.Length + 1; //move over for the next word
             }
@@ -652,6 +688,24 @@ namespace SurfaceEditor
         #endregion
 
         #region Helpers
+
+        void UndoChange(CellChange change)
+        {
+            SetCharacter(change.X, change.Y, change.OldCharacter);
+            SetBackgroundColor(change.X, change.Y, change.OldBackgroundColor);
+            SetCharacterColor(change.X, change.Y, change.OldCharacterColor);
+            SetCellOpacity(change.X, change.Y, change.OldOpacity);
+            SetSpecialInfo(change.X, change.Y, change.OldSpecialInfo);
+        }
+
+        void RedoChange(CellChange change)
+        {
+            SetCharacter(change.X, change.Y, change.NewCharacter);
+            SetBackgroundColor(change.X, change.Y, change.NewBackgroundColor);
+            SetCharacterColor(change.X, change.Y, change.NewCharacterColor);
+            SetCellOpacity(change.X, change.Y, change.NewOpacity);
+            SetSpecialInfo(change.X, change.Y, change.NewSpecialInfo);
+        }
 
         void SetWidth(int value)
         {

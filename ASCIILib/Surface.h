@@ -38,7 +38,7 @@ namespace ascii
 			///<summary>
 			/// Loads a surface from a text file.
 			///</summary>
-			static Surface* FromFile(char* filepath, ascii::ImageCache* cache);
+			static Surface* FromFile(char* filepath);
 
 			int width() { return mWidth; }
 			int height() { return mHeight; }
