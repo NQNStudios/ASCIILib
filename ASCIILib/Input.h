@@ -44,18 +44,34 @@ namespace ascii
 			///<param name="key">SDL_Keycode of the key to check.</param>
 			bool isKeyHeld(SDL_Keycode key);
 
+			///<summary>The x-coordinate of the mouse.</summary>
 			int mouseX() { return mMouseX; }
+
+			///<summary>The y-coordinate of the mouse.</summary>
 			int mouseY() { return mMouseY; }
+
+			///<summary>The change in the mouse's x-coordinate since the last frame.</summary>
 			int mouseChangeX() { return mMouseX - mLastMouseX; }
+			
+			///<summary>The change in the mouse's y-coordinate since the last frame.</summary>
 			int mouseChangeY() { return mMouseY - mLastMouseY; }
 
+			///<summary>Checks whether a mouse button is pressed.</summary>
 			bool mouseButtonDown(MouseButton button) { return mMouseState & SDL_BUTTON(button); }
+
+			///<summary>Checks whether a mouse button is currently released.</summary>
 			bool mouseButtonUp(MouseButton button) { return !(mMouseState & SDL_BUTTON(button)); }
 
+			///<summary>Checks whether a mouse button was clicked this frame.</summary>
 			bool mouseButtonClicked(MouseButton button) { return mMouseState & SDL_BUTTON(button) && !(mLastMouseState & SDL_BUTTON(button)); }
+			
+			///<summary>Checks whether a mouse button was released this frame.</summary>
 			bool mouseButtonReleased(MouseButton button) { return !(mMouseState & SDL_BUTTON(button)) && (mLastMouseState & SDL_BUTTON(button)); }
 
+			///<summary>The amount the scroll bar was moved horizontally this frame.</summary>
 			int scrollX() { return mScrollX; }
+
+			///<summary>The amount the scroll bar was moved vertically this frame.</summary>
 			int scrollY() { return mScrollY; }
 		private:
 			friend class Game;
