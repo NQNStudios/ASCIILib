@@ -61,6 +61,11 @@ namespace ascii
 			void clear();
 
 			///<summary>
+			/// Clears the surface of all cell opacity.
+			///</summary>
+			void clearTransparent();
+
+			///<summary>
 			/// Fills the entire surface with the given character and background color.
 			///</summary>
 			void fill(char character, Color backgroundColor, Color characterColor);

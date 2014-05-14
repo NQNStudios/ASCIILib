@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ImageCache.h"
+#include "SoundManager.h"
 #include "Input.h"
 #include "Graphics.h"
 
@@ -23,7 +24,11 @@ namespace ascii
 			///<param name="update">The Update function of the game's functioning loop.</param>
 			///<param name="handleInput">The HandleInput function of the game's functioning loop.</param>
 			///<param name="draw">The Draw function of the game's functioning loop.</param>
-			Game(const char* title, const int bufferWidth, const int bufferHeight, void (*loadContent)(ImageCache*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&));
+			Game(const char* title, const int bufferWidth, const int bufferHeight, 
+				void (*loadContent)(ImageCache*, SoundManager*), 
+				void (*update)(Game*, int), 
+				void (*handleInput)(Game*, Input&), 
+				void (*draw)(Game*));
 
 			///<summary>
 			/// Creates an ASCIILib game.
@@ -33,7 +38,21 @@ namespace ascii
 			///<param name="update">The Update function of the game's functioning loop.</param>
 			///<param name="handleInput">The HandleInput function of the game's functioning loop.</param>
 			///<param name="draw">The Draw function of the game's functioning loop.</param>
-			Game(const char* title, void (*loadContent)(ImageCache*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&));
+			Game(const char* title, 
+				void (*loadContent)(ImageCache*, SoundManager*), 
+				void (*update)(Game*, int),
+				void (*handleInput)(Game*, Input&), 
+				void (*draw)(Game*));
+
+			///<summary>
+			/// The game's SoundManager.
+			///</summary>
+			ascii::SoundManager* soundManager() { return mSoundManager; }
+
+			///<summary>
+			/// The game's Graphics.
+			///</summary>
+			ascii::Graphics* graphics() { return mGraphics; }
 
 			///<summary>
 			/// Runs the game's event loop.
@@ -45,15 +64,17 @@ namespace ascii
 			///</summary>
 			void Quit();
 		private:
-			void (*mLoadContent)(ImageCache*);
+			void (*mLoadContent)(ImageCache*, SoundManager*);
 			void (*mUpdate)(Game*, int);
 			void (*mHandleInput)(Game*, Input&);
-			void (*mDraw)(Graphics&);
+			void (*mDraw)(Game*);
 
 			const char* mWindowTitle;
 			const int mBufferWidth, mBufferHeight;
 
 			ascii::ImageCache* mCache;
+			ascii::SoundManager* mSoundManager;
+			ascii::Graphics* mGraphics;
 
 			bool mRunning;
 	};

@@ -5,33 +5,33 @@
 const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
-ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight, void (*loadContent)(ImageCache*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&))
+ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Game*))
 	: mLoadContent(loadContent), mUpdate(update), mHandleInput(handleInput), mDraw(draw), mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mCache(NULL), mRunning(false)
 {
+	mSoundManager = new SoundManager();
 }
 
-ascii::Game::Game(const char* title, void (*loadContent)(ImageCache*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&))
+ascii::Game::Game(const char* title, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Game*))
 	: mLoadContent(loadContent), mUpdate(update), mHandleInput(handleInput), mDraw(draw), mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mCache(NULL), mRunning(false)
 {
+	mSoundManager = new SoundManager();
 }
 
 void ascii::Game::Run()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	ascii::Graphics* graphics;
-
 	if (mBufferWidth != 0 && mBufferHeight != 0)
 	{
-		graphics = new ascii::Graphics(mWindowTitle, mBufferWidth, mBufferHeight);
+		mGraphics = new ascii::Graphics(mWindowTitle, mBufferWidth, mBufferHeight);
 	}
 	else
 	{
-		graphics = new ascii::Graphics(mWindowTitle);
+		mGraphics = new ascii::Graphics(mWindowTitle);
 	}
 
-	mCache = graphics->imageCache();
-	mLoadContent(mCache);
+	mCache = mGraphics->imageCache();
+	mLoadContent(mCache, mSoundManager);
 
 	ascii::Input input;
 
@@ -70,7 +70,7 @@ void ascii::Game::Run()
 		mUpdate(this, std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
-		mDraw(*graphics);
+		mDraw(this);
 
 		const int msPerFrame = 1000 / kFPS;
 		const int elapsedTimeMS = SDL_GetTicks() - initialTime;
@@ -85,6 +85,7 @@ void ascii::Game::Run()
 void ascii::Game::Quit()
 {
 	delete mCache;
+	delete mSoundManager;
 
 	SDL_Quit();
 }

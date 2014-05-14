@@ -205,6 +205,17 @@ void ascii::Surface::clear()
 	fill(' ', Color::Black, Color::White);
 }
 
+void ascii::Surface::clearTransparent()
+{
+	for (int x = 0; x < mWidth; ++x)
+	{
+		for (int y = 0; y < mHeight; ++y)
+		{
+			setCellOpacity(x, y, false);
+		}
+	}
+}
+
 void ascii::Surface::fill(char character, Color backgroundColor, Color characterColor)
 {
 	for (int x = 0; x < mWidth; ++x)
