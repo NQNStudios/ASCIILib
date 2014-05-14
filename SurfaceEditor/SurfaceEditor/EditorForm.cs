@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace SurfaceEditor
         {
             InitializeComponent();
         }
+
+        string openFile = "";
 
         #region Properties
 
@@ -78,7 +81,47 @@ namespace SurfaceEditor
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                openFile = dialog.FileName;
                 SetSurface(Surface.FromFile(dialog.FileName));
+            }
+        }
+
+        private void newSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewSurfaceForm dialog = new NewSurfaceForm();
+
+            DialogResult result = dialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                SetSurface(new Surface(dialog.SurfaceWidth, dialog.SurfaceHeight));
+            }
+
+            openFile = "";
+        }
+
+        private void saveSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (surfacePanel1.Surface != null)
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                if (openFile.Length > 0)
+                {
+                    dialog.InitialDirectory = Path.GetDirectoryName(openFile);
+                    dialog.FileName = Path.GetFileName(openFile);
+                }
+                dialog.Filter = "Surface File | *.srf";
+
+                DialogResult result = dialog.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                {
+                    string path = dialog.FileName;
+
+                    surfacePanel1.Surface.SaveToFile(path);
+
+                    openFile = path;
+                }
             }
         }
 
@@ -105,37 +148,6 @@ namespace SurfaceEditor
         {
             surfacePanel1.ClearTransparency();
             surfacePanel1.Refresh();
-        }
-
-        private void newSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            NewSurfaceForm dialog = new NewSurfaceForm();
-
-            DialogResult result = dialog.ShowDialog(this);
-
-            if (result == DialogResult.OK)
-            {
-                SetSurface(new Surface(dialog.SurfaceWidth, dialog.SurfaceHeight));
-            }
-        }
-
-        private void saveSurfaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (surfacePanel1.Surface != null)
-            {
-                SaveFileDialog dialog = new SaveFileDialog();
-                dialog.FileName = "MySurface.srf";
-                dialog.Filter = "Surface File | *.srf";
-
-                DialogResult result = dialog.ShowDialog(this);
-
-                if (result == DialogResult.OK)
-                {
-                    string path = dialog.FileName;
-
-                    surfacePanel1.Surface.SaveToFile(path);
-                }
-            }
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
