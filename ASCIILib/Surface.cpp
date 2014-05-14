@@ -345,7 +345,7 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 	//blit the opaque cells from the other surface
 	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
 	{
-		for (int desty = y, srcy = 0; desty < mWidth && srcy < surface->mHeight; ++desty, ++srcy)
+		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->mHeight; ++desty, ++srcy)
 		{
 			if (surface->isCellOpaque(srcx, srcy))
 			{

@@ -59,6 +59,9 @@ void ascii::Game::Run()
 				case SDL_KEYUP:
 					input.keyUpEvent(event);
 					break;
+				case SDL_MOUSEWHEEL:
+					input.scrollEvent(event);
+					break;
 			}
 		}
 

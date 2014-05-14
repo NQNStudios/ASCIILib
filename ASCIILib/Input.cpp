@@ -3,36 +3,52 @@
 
 void ascii::Input::beginNewFrame()
 {
-	pressed_keys_.clear();
-	released_keys_.clear();
+	mPressedKeys.clear();
+	mReleasedKeys.clear();
+
+	//take mouse input and update last mouse input
+	mLastMouseX = mMouseX;
+	mLastMouseY = mMouseY;
+	mLastMouseState = mMouseState;
+
+	mMouseState = SDL_GetMouseState(&mMouseX, &mMouseY);
+
+	mScrollX = 0;
+	mScrollY = 0;
 }
 
 void ascii::Input::keyDownEvent(const SDL_Event& event)
 {
 	if (!event.key.repeat)
 	{
-		pressed_keys_[event.key.keysym.sym] = true;
-		held_keys_[event.key.keysym.sym] = true;
+		mPressedKeys[event.key.keysym.sym] = true;
+		mHeldKeys[event.key.keysym.sym] = true;
 	}
 }
 
 void ascii::Input::keyUpEvent(const SDL_Event& event)
 {
-	released_keys_[event.key.keysym.sym] = true;
-	held_keys_[event.key.keysym.sym] = false;
+	mReleasedKeys[event.key.keysym.sym] = true;
+	mHeldKeys[event.key.keysym.sym] = false;
+}
+
+void ascii::Input::scrollEvent(const SDL_Event& event)
+{
+	mScrollX = event.wheel.x;
+	mScrollY = event.wheel.y;
 }
 
 bool ascii::Input::wasKeyPressed(SDL_Keycode key)
 {
-	return pressed_keys_[key];
+	return mPressedKeys[key];
 }
 
 bool ascii::Input::wasKeyReleased(SDL_Keycode key)
 {
-	return released_keys_[key];
+	return mReleasedKeys[key];
 }
 
 bool ascii::Input::isKeyHeld(SDL_Keycode key)
 {
-	return held_keys_[key];
+	return mHeldKeys[key];
 }

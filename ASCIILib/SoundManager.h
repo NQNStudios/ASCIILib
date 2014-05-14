@@ -35,6 +35,8 @@ namespace ascii
 			///<summary>Sets the current sound volume, from 0 to 1.</summary>
 			void setSoundVolume(float value);
 
+
+
 			///<summary>
 			/// Loads and stores a music track in the SoundManager.
 			///</summary>
@@ -60,9 +62,7 @@ namespace ascii
 			///<param name="position">The position at which to start the track.</param>
 			void fadeInTrack(const char* key, int ms, int loops = -1, double position = 0.0);
 			
-			///<summary>
-			/// Stops the current music track.
-			///</summary>
+			///<summary>Stops the current music track.</summary>
 			void stopTrack();
 
 			///<summary>
@@ -71,50 +71,31 @@ namespace ascii
 			///<param name="ms">The number of milliseconds the fade effect will take.</param>
 			void fadeOutTrack(int ms);
 
-			///<summary>
-			/// Pauses the current music track.
-			///</summary>
+			///<summary>Pauses the current music track.</summary>
 			void pauseTrack();
 
-			///<summary>
-			/// Resumes the current music track.
-			///</summary>
+			///<summary>Resumes the current music track.</summary>
 			void resumeTrack();
 
-			///<summary>
-			/// Rewinds the current music track to the beginning.
-			///</summary>
+			///<summary>Rewinds the current music track to the beginning.</summary>
 			void rewindTrack();
 
-			///<summary>
-			/// Sets the position of the track currently playing.
-			///</summary>
+			///<summary>Sets the position of the track currently playing.</summary>
 			void setTrackPosition(double position);
 
-
-			///<summary>
-			/// The current music volume, from 0 to 1.
-			///</summary>
+			///<summary>The current music volume, from 0 to 1.</summary>
 			float getMusicVolume();
 
-			///<summary>
-			/// Sets the current music volume, from 0 to 1.
-			///</summary>
+			///<summary>Sets the current music volume, from 0 to 1.</summary>
 			void setMusicVolume(float volume);
 
-			///<summary>
-			/// Whether a music track is currently playing.
-			///</summary>
+			///<summary>Whether a music track is currently playing.</summary>
 			bool trackPlaying() { return Mix_PlayingMusic() != 0; }
 
-			///<summary>
-			/// Whether a music track is currently paused.
-			///</summary>
+			///<summary>Whether a music track is currently paused.</summary>
 			bool trackPaused() { return Mix_PausedMusic() != 0; }
 
-			///<summary>
-			/// The status of the current music fade effect.
-			///</summary>
+			///<summary>The status of the current music fade effect.</summary>
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
 		private:
 			std::map<const char*, Mix_Chunk*> mSounds;
