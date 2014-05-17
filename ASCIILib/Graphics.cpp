@@ -53,10 +53,7 @@ ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
 
 ascii::Graphics::~Graphics(void)
 {
-	for (std::map<Glyph, SDL_Texture*>::iterator it = mStringTextures.begin(); it != mStringTextures.end(); ++it)
-	{
-		SDL_DestroyTexture(it->second); //destroy all stored string textures
-	}
+	clearGlyphs();
 
 	SDL_DestroyRenderer(mRenderer);
 	
@@ -166,16 +163,16 @@ void ascii::Graphics::update()
 
 			SDL_Texture* texture = NULL;
 
-			if (mStringTextures[glyph])
+			if (mGlyphTextures[glyph])
 			{
-				texture = mStringTextures[glyph];
+				texture = mGlyphTextures[glyph];
 			}
 			else
 			{
 				SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
 				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
-				mStringTextures[glyph] = texture;
+				mGlyphTextures[glyph] = texture;
 				
 				SDL_FreeSurface(surface);
 			}
@@ -199,22 +196,22 @@ void ascii::Graphics::update()
 	SDL_RenderPresent(mRenderer);
 }
 
-void ascii::Graphics::addBackgroundImage(const char* key, const char* textureKey, int x, int y)
+void ascii::Graphics::addBackgroundImage(std::string key, std::string textureKey, int x, int y)
 {
 	mBackgroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
-void ascii::Graphics::removeBackgroundImage(const char* key)
+void ascii::Graphics::removeBackgroundImage(std::string key)
 {
 	mBackgroundImages.erase(key);
 }
 
-void ascii::Graphics::addForegroundImage(const char* key, const char* textureKey, int x, int y)
+void ascii::Graphics::addForegroundImage(std::string key, std::string textureKey, int x, int y)
 {
 	mForegroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
-void ascii::Graphics::removeForegroundImage(const char* key)
+void ascii::Graphics::removeForegroundImage(std::string key)
 {
 	mForegroundImages.erase(key);
 }
@@ -223,6 +220,16 @@ void ascii::Graphics::clearImages()
 {
 	mBackgroundImages.clear();
 	mForegroundImages.clear();
+}
+
+void ascii::Graphics::clearGlyphs()
+{
+	for (std::map<Glyph, SDL_Texture*>::iterator it = mGlyphTextures.begin(); it != mGlyphTextures.end(); ++it)
+	{
+		SDL_DestroyTexture(it->second); //destroy all stored string textures
+	}
+
+	mGlyphTextures.clear();
 }
 
 void ascii::Graphics::checkSize()

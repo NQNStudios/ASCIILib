@@ -13,7 +13,7 @@ ascii::ImageCache::~ImageCache()
 	clearTextures();
 }
 
-void ascii::ImageCache::loadTexture(const char* key, const char* path, ascii::Color colorKey)
+void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Color colorKey)
 {
 	SDL_Surface* imageSurface = IMG_Load(path);
 
@@ -30,7 +30,7 @@ void ascii::ImageCache::loadTexture(const char* key, const char* path, ascii::Co
 	SDL_FreeSurface(imageSurface);
 }
 
-void ascii::ImageCache::loadTexture(const char* key, const char* path)
+void ascii::ImageCache::loadTexture(std::string key, const char* path)
 {
 	SDL_Surface* imageSurface = IMG_Load(path);
 
@@ -45,14 +45,16 @@ void ascii::ImageCache::loadTexture(const char* key, const char* path)
 	SDL_FreeSurface(imageSurface);
 }
 
-void ascii::ImageCache::freeTexture(const char* key)
+void ascii::ImageCache::freeTexture(std::string key)
 {
 	SDL_Texture* imageTexture = mTextures[key];
 
 	SDL_DestroyTexture(imageTexture);
+
+	mTextures.erase(key);
 }
 
-SDL_Texture* ascii::ImageCache::getTexture(const char* key)
+SDL_Texture* ascii::ImageCache::getTexture(std::string key)
 {
 	return mTextures[key];
 }

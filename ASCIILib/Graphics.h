@@ -63,31 +63,36 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which this image should be stored.</param>
 			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
-			void addBackgroundImage(const char* key, const char* textureKey, int x, int y);
+			void addBackgroundImage(std::string key, std::string textureKey, int x, int y);
 
 			///<summary>
 			/// Removes an image from the background of the game window.
 			///</summary>
 			///<param name="key">The key with which this image was stored.</param>
-			void removeBackgroundImage(const char* key);
+			void removeBackgroundImage(std::string key);
 
 			///<summary>
 			/// Adds an image in the foreground of the game window.
 			///</summary>
 			///<param name="key">The key with which this image should be stored.</param>
 			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
-			void addForegroundImage(const char* key, const char* textureKey, int x, int y);
+			void addForegroundImage(std::string key, std::string textureKey, int x, int y);
 
 			///<summary>
 			/// Removes an image from the foreground of the game window.
 			///</summary>
 			///<param name="key">The key with which this image was stored.</param>
-			void removeForegroundImage(const char* key);
+			void removeForegroundImage(std::string key);
 
 			///<summary>
 			/// Clears all images from the window.
 			///</summary>
 			void clearImages();
+
+			///<summary>
+			/// Clears all glyph textures stored in Graphics.
+			///</summary>
+			void clearGlyphs();
 		private:
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
@@ -104,12 +109,12 @@ namespace ascii
 			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
 
-			std::map<Glyph, SDL_Texture*> mStringTextures;
+			std::map<Glyph, SDL_Texture*> mGlyphTextures;
 
 			Color mBackgroundColor;
 
-			std::map<const char*, Image> mBackgroundImages;
-			std::map<const char*, Image> mForegroundImages;
+			std::map<std::string, Image> mBackgroundImages;
+			std::map<std::string, Image> mForegroundImages;
 	};
 
 };

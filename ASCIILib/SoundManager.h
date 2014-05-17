@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 #include <SDL_mixer.h>
 
@@ -21,13 +22,19 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which to store the sound.</param>
 			///<param name="path">The file path of the WAV file.</param>
-			void addSound(const char* key, const char* path);
+			void loadSound(std::string key, const char* path);
+
+			///<summary>
+			/// Frees a sound effect from memory.
+			///</summary>
+			///<param name="key">The key with which the sound is stored.</param>
+			void freeSound(std::string key);
 
 			///<summary>
 			/// Plays a sound effect.
 			///</summary>
 			///<param name="key">The key with which the sound is stored.</param>
-			void playSound(const char* key);
+			void playSound(std::string key);
 
 			///<summary>The current sound volume, from 0 to 1.</summary>
 			float getSoundVolume();
@@ -42,7 +49,13 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which to store the track.</param>
 			///<param name="path">The file path of the track.</param>
-			void addTrack(const char* key, const char* path);
+			void loadTrack(std::string key, const char* path);
+
+			///<summary>
+			/// Frees a music track from memory.
+			///</summary>
+			///<param name="key">The key with which the track is stored.</param>
+			void freeTrack(std::string key);
 
 			///<summary>
 			/// Begins playing a music track from the SoundManager.
@@ -50,7 +63,7 @@ namespace ascii
 			///<param name="key">The key with which the track is stored.</param>
 			///<param name="loops">The number of times to loop the track. 
 			///If -1, the track will loop infinitely. If 0, the track will play once.</param>
-			void playTrack(const char* key, int loops = -1);
+			void playTrack(std::string key, int loops = -1);
 
 			///<summary>
 			/// Fades in a music track from the SoundManager.
@@ -60,7 +73,7 @@ namespace ascii
 			///<param name="loops">The number of times to loop the track. 
 			///If -1, the track will loop infinitely. If 0, the track will play once.</param>
 			///<param name="position">The position at which to start the track.</param>
-			void fadeInTrack(const char* key, int ms, int loops = -1, double position = 0.0);
+			void fadeInTrack(std::string key, int ms, int loops = -1, double position = 0.0);
 			
 			///<summary>Stops the current music track.</summary>
 			void stopTrack();
@@ -98,8 +111,8 @@ namespace ascii
 			///<summary>The status of the current music fade effect.</summary>
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
 		private:
-			std::map<const char*, Mix_Chunk*> mSounds;
-			std::map<const char*, Mix_Music*> mTracks;
+			std::map<std::string, Mix_Chunk*> mSounds;
+			std::map<std::string, Mix_Music*> mTracks;
 	};
 
 };

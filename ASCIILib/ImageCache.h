@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 #include <SDL.h>
 
@@ -27,26 +28,26 @@ namespace ascii
 			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
 			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
 			/// <param name="colorKey">The transparent color of the texture to load.</param>
-			void loadTexture(const char* key, const char* path, Color colorKey);
+			void loadTexture(std::string key, const char* path, Color colorKey);
 
 			/// <summary>
 			/// Loads a texture and stores it in the cache. Ensures that the texture will align with the "Console" buffer.
 			/// </summary>
 			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
 			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
-			void loadTexture(const char* key, const char* path);
+			void loadTexture(std::string key, const char* path);
 
 			/// <summary>
 			/// Frees the texture in the cache associated with the given key string.
 			/// </summary>
-			void freeTexture(const char* key);
+			void freeTexture(std::string key);
 
 			/// <summary>
 			/// Gets a texture from the cache.
 			/// </summary>
 			/// <param name="key">The unique key with which this texture was loaded.</param>
 			/// <returns>The texture associated with the given key.</returns>
-			SDL_Texture* getTexture(const char* key);
+			SDL_Texture* getTexture(std::string key);
 
 			/// <summary>
 			/// Frees all textures currently held in the cache.
@@ -56,7 +57,7 @@ namespace ascii
 			SDL_Renderer* mRenderer;
 			int mCharWidth, mCharHeight;
 
-			std::map<const char*, SDL_Texture*> mTextures;
+			std::map<std::string, SDL_Texture*> mTextures;
 	};
 
 };

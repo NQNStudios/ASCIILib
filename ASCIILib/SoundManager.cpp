@@ -22,12 +22,18 @@ ascii::SoundManager::~SoundManager(void)
 	Mix_CloseAudio();
 }
 
-void ascii::SoundManager::addSound(const char* key, const char* path)
+void ascii::SoundManager::loadSound(std::string key, const char* path)
 {
 	mSounds[key] = Mix_LoadWAV(path);
 }
 
-void ascii::SoundManager::playSound(const char* key)
+void ascii::SoundManager::freeSound(std::string key)
+{
+	Mix_FreeChunk(mSounds[key]);
+	mSounds.erase(key);
+}
+
+void ascii::SoundManager::playSound(std::string key)
 {
 	Mix_PlayChannel(-1, mSounds[key], 0);
 }
@@ -42,17 +48,23 @@ void ascii::SoundManager::setSoundVolume(float value)
 	Mix_Volume(-1, MIX_MAX_VOLUME * value);
 }
 
-void ascii::SoundManager::addTrack(const char* key, const char* path)
+void ascii::SoundManager::loadTrack(std::string key, const char* path)
 {
 	mTracks[key] = Mix_LoadMUS(path);
 }
 
-void ascii::SoundManager::playTrack(const char* key, int loops)
+void ascii::SoundManager::freeTrack(std::string key)
+{
+	Mix_FreeMusic(mTracks[key]);
+	mTracks.erase(key);
+}
+
+void ascii::SoundManager::playTrack(std::string key, int loops)
 {
 	Mix_PlayMusic(mTracks[key], loops);
 }
 
-void ascii::SoundManager::fadeInTrack(const char* key, int loops, int ms, double position)
+void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
 {
 	Mix_FadeInMusicPos(mTracks[key], loops, ms, position);
 }
