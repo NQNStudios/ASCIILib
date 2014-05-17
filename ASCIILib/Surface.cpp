@@ -326,11 +326,14 @@ void ascii::Surface::copySurface(Surface* surface, int x, int y)
 	{
 		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->mHeight; ++desty, ++srcy)
 		{
-			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
-			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
-			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
-			mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
-			mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+			if (destx >= 0 && desty >= 0)
+			{
+				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+				mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+			}
 		}
 	}
 }
@@ -342,11 +345,14 @@ void ascii::Surface::copySurface(Surface* surface, Rectangle source, int x, int 
 	{
 		for (int desty = y, srcy = source.y; desty < mHeight && srcy < source.bottom(); ++desty, ++srcy)
 		{
-			mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
-			mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
-			mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
-			mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
-			mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+			if (destx >= 0 && desty >= 0)
+			{
+				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
+				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
+				mCharacterColors[destx][desty] = surface->mCharacterColors[srcx][srcy];
+				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+				mCellOpacity[destx][desty] = surface->mCellOpacity[srcx][srcy];
+			}
 		}
 	}
 }
@@ -358,7 +364,7 @@ void ascii::Surface::blitSurface(Surface* surface, int x, int y)
 	{
 		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->mHeight; ++desty, ++srcy)
 		{
-			if (surface->isCellOpaque(srcx, srcy))
+			if (destx >= 0 && desty >= 0 && surface->isCellOpaque(srcx, srcy))
 			{
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];
@@ -378,7 +384,7 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 	{
 		for (int desty = y, srcy = source.y; desty < mHeight && srcy < source.bottom(); ++desty, ++srcy)
 		{
-			if (surface->isCellOpaque(srcx, srcy))
+			if (destx >= 0 && desty >= 0 && surface->isCellOpaque(srcx, srcy))
 			{
 				mCharacters[destx][desty] = surface->mCharacters[srcx][srcy];
 				mBackgroundColors[destx][desty] = surface->mBackgroundColors[srcx][srcy];

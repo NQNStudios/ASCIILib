@@ -199,7 +199,7 @@ namespace SurfaceEditor
             writer.WriteLine("COLORS");
 
             Dictionary<Color, char> colorKeys = new Dictionary<Color, char>();
-            char key = (char)1;
+            char key = (char)33;
 
             for (int x = 0; x < width; ++x)
             {
@@ -228,7 +228,7 @@ namespace SurfaceEditor
             writer.WriteLine("INFO CODES");
 
             Dictionary<string, char> infoKeys = new Dictionary<string, char>();
-            key = (char)1;
+            key = (char)33;
 
             for (int x = 0; x < width; ++x)
             {
