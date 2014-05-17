@@ -2,16 +2,18 @@
 
 #include <stdio.h>
 
+#include <SDL_image.h>
+
 const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
-ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Game*))
+ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&))
 	: mLoadContent(loadContent), mUpdate(update), mHandleInput(handleInput), mDraw(draw), mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mCache(NULL), mRunning(false)
 {
 	mSoundManager = new SoundManager();
 }
 
-ascii::Game::Game(const char* title, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Game*))
+ascii::Game::Game(const char* title, void (*loadContent)(ImageCache*, SoundManager*), void (*update)(Game*, int), void (*handleInput)(Game*, Input&), void (*draw)(Graphics&))
 	: mLoadContent(loadContent), mUpdate(update), mHandleInput(handleInput), mDraw(draw), mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mCache(NULL), mRunning(false)
 {
 	mSoundManager = new SoundManager();
@@ -20,6 +22,7 @@ ascii::Game::Game(const char* title, void (*loadContent)(ImageCache*, SoundManag
 void ascii::Game::Run()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP);
 
 	if (mBufferWidth != 0 && mBufferHeight != 0)
 	{
@@ -73,7 +76,7 @@ void ascii::Game::Run()
 		mUpdate(this, std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
-		mDraw(this);
+		mDraw(*mGraphics);
 
 		const int msPerFrame = 1000 / kFPS;
 		const int elapsedTimeMS = SDL_GetTicks() - initialTime;

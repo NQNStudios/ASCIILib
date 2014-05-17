@@ -30,6 +30,21 @@ void ascii::ImageCache::loadTexture(const char* key, const char* path, ascii::Co
 	SDL_FreeSurface(imageSurface);
 }
 
+void ascii::ImageCache::loadTexture(const char* key, const char* path)
+{
+	SDL_Surface* imageSurface = IMG_Load(path);
+
+	//Make sure the image dimensions will align to the buffer
+	SDL_assert(imageSurface->w % mCharWidth == 0);
+	SDL_assert(imageSurface->h % mCharHeight == 0);
+
+	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
+
+	mTextures[key] = imageTexture;
+
+	SDL_FreeSurface(imageSurface);
+}
+
 void ascii::ImageCache::freeTexture(const char* key)
 {
 	SDL_Texture* imageTexture = mTextures[key];

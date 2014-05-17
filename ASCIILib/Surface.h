@@ -38,7 +38,7 @@ namespace ascii
 			///<summary>
 			/// Loads a surface from a text file.
 			///</summary>
-			static Surface* FromFile(char* filepath);
+			static Surface* FromFile(const char* filepath);
 
 			int width() { return mWidth; }
 			int height() { return mHeight; }

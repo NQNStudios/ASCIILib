@@ -80,6 +80,7 @@ void ascii::Graphics::update()
 		
 		dest.x = it->second.second.x * mCharWidth;
 		dest.y = it->second.second.y * mCharHeight;
+
 		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
 		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);

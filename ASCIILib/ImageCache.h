@@ -30,6 +30,13 @@ namespace ascii
 			void loadTexture(const char* key, const char* path, Color colorKey);
 
 			/// <summary>
+			/// Loads a texture and stores it in the cache. Ensures that the texture will align with the "Console" buffer.
+			/// </summary>
+			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
+			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
+			void loadTexture(const char* key, const char* path);
+
+			/// <summary>
 			/// Frees the texture in the cache associated with the given key string.
 			/// </summary>
 			void freeTexture(const char* key);

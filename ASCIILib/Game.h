@@ -28,7 +28,7 @@ namespace ascii
 				void (*loadContent)(ImageCache*, SoundManager*), 
 				void (*update)(Game*, int), 
 				void (*handleInput)(Game*, Input&), 
-				void (*draw)(Game*));
+				void (*draw)(Graphics&));
 
 			///<summary>
 			/// Creates an ASCIILib game.
@@ -42,12 +42,17 @@ namespace ascii
 				void (*loadContent)(ImageCache*, SoundManager*), 
 				void (*update)(Game*, int),
 				void (*handleInput)(Game*, Input&), 
-				void (*draw)(Game*));
+				void (*draw)(Graphics&));
 
 			///<summary>
 			/// The game's SoundManager.
 			///</summary>
 			ascii::SoundManager* soundManager() { return mSoundManager; }
+
+			///<summary>
+			/// The game's ImageCache.
+			///</summary>
+			ascii::ImageCache* imageCache() { return mCache; }
 
 			///<summary>
 			/// The game's Graphics.
@@ -67,7 +72,7 @@ namespace ascii
 			void (*mLoadContent)(ImageCache*, SoundManager*);
 			void (*mUpdate)(Game*, int);
 			void (*mHandleInput)(Game*, Input&);
-			void (*mDraw)(Game*);
+			void (*mDraw)(Graphics&);
 
 			const char* mWindowTitle;
 			const int mBufferWidth, mBufferHeight;
