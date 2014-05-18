@@ -44,6 +44,11 @@ namespace ascii
 			///<param name="key">SDL_Keycode of the key to check.</param>
 			bool isKeyHeld(SDL_Keycode key);
 
+			///<summary>
+			/// Checks if any key at all was pressed.
+			///</summary>
+			bool anyKeyPressed();
+
 			///<summary>The x-coordinate of the mouse.</summary>
 			int mouseX() { return mMouseX; }
 

@@ -52,3 +52,8 @@ bool ascii::Input::isKeyHeld(SDL_Keycode key)
 {
 	return mHeldKeys[key];
 }
+
+bool ascii::Input::anyKeyPressed()
+{
+	return mPressedKeys.size() > 0;
+}
