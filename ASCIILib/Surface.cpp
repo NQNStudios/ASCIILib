@@ -449,7 +449,7 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 
 }
 
-int ascii::Surface::measureStringMultilineX(const char* text, Rectangle destination)
+int ascii::Surface::stringMultilineEndX(const char* text, Rectangle destination)
 {
 	std::stringstream sstream(text);
 	std::string tempstr;
