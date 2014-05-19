@@ -852,11 +852,15 @@ namespace SurfaceEditor
                 {
                     for (int r = rect.Y; r < rect.Bottom && r < surface.Height; ++r)
                     {
-                        string label = surface.GetSpecialInfo(c, r);
-
-                        if (label.Length > 0)
+                        if (c >= 0 && r >= 0)
                         {
-                            FillRectangle(new Rectangle(c * CHAR_WIDTH, r * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT), INFO_COLOR);
+
+                            string label = surface.GetSpecialInfo(c, r);
+
+                            if (label.Length > 0)
+                            {
+                                FillRectangle(new Rectangle(c * CHAR_WIDTH, r * CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT), INFO_COLOR);
+                            }
                         }
                     }
                 }

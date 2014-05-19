@@ -95,6 +95,8 @@ namespace SurfaceEditor
                 char key = split[0][0];
                 string code = split[1];
 
+                if (code == ".") code = "";
+
                 infoCodes[key] = code;
             }
 
@@ -236,6 +238,8 @@ namespace SurfaceEditor
                 {
                     string label = GetSpecialInfo(x, y);
 
+                    if (label == "") label = ".";
+
                     if (!infoKeys.Keys.Contains(label))
                     {
                         infoKeys[label] = key++;
@@ -307,7 +311,9 @@ namespace SurfaceEditor
             {
                 for (int x = 0; x < width; ++x)
                 {
-                    writer.Write(infoKeys[GetSpecialInfo(x, y)]);
+                    string info = GetSpecialInfo(x, y);
+                    if (info == "") info = ".";
+                    writer.Write(infoKeys[info]);
                 }
 
                 writer.WriteLine();

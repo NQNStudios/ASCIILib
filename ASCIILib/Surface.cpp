@@ -6,6 +6,8 @@
 #include <map>
 #include <sstream>
 
+const std::string kEmptyInfo(".");
+
 ascii::Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), 
 		mCharacters(width, std::vector<char>(height, ' ')),
@@ -87,6 +89,11 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		
 		sstream >> infoCode;
 		sstream >> infoVal;
+
+		if (!infoVal.compare(kEmptyInfo))
+		{
+			infoVal = "";
+		}
 
 		infoCodes[infoCode[0]] = infoVal;
 
