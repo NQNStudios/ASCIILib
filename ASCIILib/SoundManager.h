@@ -66,7 +66,12 @@ namespace ascii
 			void loopSoundGroup(std::string group);
 
 			///<summary>
-			/// Stops looping the current looping sound group.
+			/// Stops looping a sound group.
+			///</summary>
+			void stopLoopingGroup(std::string group);
+
+			///<summary>
+			/// Stops looping all current looping sound groups.
 			///</summary>
 			void stopLoopingGroup();
 
@@ -152,8 +157,7 @@ namespace ascii
 
 			std::map<std::string, Mix_Music*> mTracks;
 
-			std::string mLoopingGroup;
-			int mLoopingChannel;
+			std::map<std::string, int> mLoopingChannels;
 	};
 
 };
