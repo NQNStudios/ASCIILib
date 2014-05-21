@@ -1,10 +1,17 @@
 #include "SoundManager.h"
 
+#include <cstdlib>
+#include <time.h>
+#include <iostream>
+
 const int kChunkSize = 1024;
 
 ascii::SoundManager::SoundManager(void)
+	: mLoopingGroup(""), mLoopingChannel(-1)
 {
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize);
+
+	srand(time(NULL));
 }
 
 ascii::SoundManager::~SoundManager(void)
@@ -22,9 +29,22 @@ ascii::SoundManager::~SoundManager(void)
 	Mix_CloseAudio();
 }
 
+void ascii::SoundManager::update()
+{
+	if (mLoopingGroup.compare(""))
+	{
+		if (!Mix_Playing(mLoopingChannel))
+		{
+			mLoopingChannel = playSoundGroup(mLoopingGroup);
+		}
+	}
+}
+
 void ascii::SoundManager::loadSound(std::string key, const char* path)
 {
 	mSounds[key] = Mix_LoadWAV(path);
+
+	std::cout << "Sound load error: " << Mix_GetError() << std::endl;
 }
 
 void ascii::SoundManager::freeSound(std::string key)
@@ -36,6 +56,48 @@ void ascii::SoundManager::freeSound(std::string key)
 void ascii::SoundManager::playSound(std::string key)
 {
 	Mix_PlayChannel(-1, mSounds[key], 0);
+}
+
+void ascii::SoundManager::loadGroupSound(std::string group, const char* path)
+{
+	mSoundGroups[group].push_back(Mix_LoadWAV(path));
+
+	std::cout << "Group sound load error: " << Mix_GetError() << std::endl;
+}
+
+void ascii::SoundManager::freeSoundGroup(std::string group)
+{
+	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+
+	for (auto it = soundGroup.begin(); it != soundGroup.end(); ++it)
+	{
+		Mix_FreeChunk(*it);
+	}
+
+	mSoundGroups.erase(group);
+}
+
+int ascii::SoundManager::playSoundGroup(std::string group)
+{
+	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+
+	int n = rand() % soundGroup.size();
+
+	return Mix_PlayChannel(-1, mSoundGroups[group][n], 0);
+}
+
+void ascii::SoundManager::loopSoundGroup(std::string group)
+{
+	mLoopingGroup = group;
+	mLoopingChannel = playSoundGroup(group);
+}
+
+void ascii::SoundManager::stopLoopingGroup()
+{
+	Mix_HaltChannel(mLoopingChannel);
+
+	mLoopingGroup = "";
+	mLoopingChannel = -1;
 }
 
 float ascii::SoundManager::getSoundVolume()

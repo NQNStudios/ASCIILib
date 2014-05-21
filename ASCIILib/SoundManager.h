@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include <SDL_mixer.h>
 
@@ -17,6 +18,11 @@ namespace ascii
 			SoundManager();
 			~SoundManager();
 			
+			///<summary>
+			/// Handles looping sound groups.
+			///</summary>
+			void update();
+
 			///<summary>
 			/// Loads and stores a sound effect in the SoundManager.
 			///</summary>
@@ -35,6 +41,34 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which the sound is stored.</param>
 			void playSound(std::string key);
+			
+			///<summary>
+			/// Loads and stores a sound effect in a sound group of the SoundManager.
+			///</summary>
+			///<param name="key">The group in which to store the sound.</param>
+			///<param name="path">The file path of the WAV file.</param>
+			void loadGroupSound(std::string group, const char* path);
+
+			///<summary>
+			/// Frees all sounds from a sound group.
+			///</summary>
+			void freeSoundGroup(std::string group);
+			
+			///<summary>
+			/// Plays a random sound from the given sound group.
+			///</summary>
+			///<returns>The channel on which the sound group was played.</returns>
+			int playSoundGroup(std::string group);
+
+			///<summary>
+			/// Starts looping a sound group, randomly selecting sounds from it to play one after the other.
+			///</summary>
+			void loopSoundGroup(std::string group);
+
+			///<summary>
+			/// Stops looping the current looping sound group.
+			///</summary>
+			void stopLoopingGroup();
 
 			///<summary>The current sound volume, from 0 to 1.</summary>
 			float getSoundVolume();
@@ -111,8 +145,15 @@ namespace ascii
 			///<summary>The status of the current music fade effect.</summary>
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
 		private:
+			typedef std::vector<Mix_Chunk*> SoundGroup;
+
 			std::map<std::string, Mix_Chunk*> mSounds;
+			std::map<std::string, SoundGroup> mSoundGroups;
+
 			std::map<std::string, Mix_Music*> mTracks;
+
+			std::string mLoopingGroup;
+			int mLoopingChannel;
 	};
 
 };
