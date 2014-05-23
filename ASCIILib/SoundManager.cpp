@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <time.h>
-#include <iostream>
 
 const int kChunkSize = 1024;
 
@@ -42,8 +41,6 @@ void ascii::SoundManager::update()
 void ascii::SoundManager::loadSound(std::string key, const char* path)
 {
 	mSounds[key] = Mix_LoadWAV(path);
-
-	std::cout << "Sound load error: " << Mix_GetError() << std::endl;
 }
 
 void ascii::SoundManager::freeSound(std::string key)
@@ -60,8 +57,6 @@ void ascii::SoundManager::playSound(std::string key)
 void ascii::SoundManager::loadGroupSound(std::string group, const char* path)
 {
 	mSoundGroups[group].push_back(Mix_LoadWAV(path));
-
-	std::cout << "Group sound load error: " << Mix_GetError() << std::endl;
 }
 
 void ascii::SoundManager::freeSoundGroup(std::string group)
@@ -119,8 +114,6 @@ void ascii::SoundManager::setSoundVolume(float value)
 void ascii::SoundManager::loadTrack(std::string key, const char* path)
 {
 	mTracks[key] = Mix_LoadMUS(path);
-
-	std::cout << "Music load error: " << Mix_GetError() << std::endl;
 }
 
 void ascii::SoundManager::freeTrack(std::string key)
