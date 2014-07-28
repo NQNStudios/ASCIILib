@@ -1,0 +1,73 @@
+SRCDIR=ASCIILib
+# The C++ source files (but not the headers)
+SRCS=$(wildcard $(SRCDIR)/*.cpp)
+
+# The directory to store the compiled .o files.
+OBJDIR=obj
+
+# The .o files. One per cc file. Put them in the obj directory.
+OBJECTS=$(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
+
+# The flags you want to use when compiling individual objects (.o files)
+# -g=generate information for debugging (used with debugging tools such as gdb
+#  or valgrind)
+# -Wall=Give me all warnings!
+# -Wextra=Give me extra warnings!
+# -std=c++11=Enforce C++11 standard compliance.
+# -MMD=Create a .d file to store the rule for the header dependencies of each object.
+CFLAGS=-g -Wall -Wextra -std=c++11 -MMD `sdl2-config --cflags`
+
+# LDLIBS (Load Libraries)
+# External libraries you are using that need to be linked.
+# ``=run a shell command (command substitution)
+# sdl2-config=a command that generates the load libs/cflags necessary depending
+# on the platform (OS/Linux/Win)
+LDLIBS=`sdl2-config --libs` -lSDL2_mixer -lSDL2_ttf -lSDL2_image
+
+# LDFLAGS (Load/linker flags)
+LDFLAGS=
+
+# The C++ compiler you are using.
+CC=clang++
+
+# The directory to put the executable.
+BINDIR=bin
+
+# What you run to play the game!
+OUTPUT=libASCIILib.a
+
+# If files named all/clean/run exist in the directory, then
+# Make will not run these commands (because they will be "Up-to-Date")
+# .PHONY is a special way of telling Make to run these no matter what.
+.PHONY: all clean
+
+all: $(OUTPUT)
+
+# Pastes in all of the Make rules inside of the generated .d files.
+# Rules are of the format (file.o: file.cc header1.h header2.h)
+# Each .d file gets generated whenever its .o file is compiled.
+# Special thanks to /u/yuriks for pointing this out to me!
+-include $(OBJECTS:.o=.d)
+
+# Links the objects into a "cavestory" executable.
+# Also links the libs in $(LDLIBS) (SDL1.2 in our case)
+# Puts the Executable in the bindir.
+# re-link when an object or dependency has changed.
+$(OUTPUT): $(OBJECTS)
+	@mkdir -p $(BINDIR)
+	ar rcs $(BINDIR)/$(OUTPUT) $(OBJECTS)
+
+# The rule for how to compile an .o (object) file from a .cc (C++ source) file
+# "-c" creates a .o file
+# "-o" says to create an object file (.o)
+# "$@" in this case is the name of the object file (.o). MUST FOLLOW -o
+# "$<" in this case is the .cc file
+# Make the directory if it doesn't exist
+$(OBJDIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+# Deletes all .o/.d files and the executable. This helps when you want to
+# force recompilation.
+clean:
+	rm -rf $(OBJDIR) $(BINDIR)

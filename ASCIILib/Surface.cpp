@@ -65,7 +65,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	do
 	{
-		sstream = std::stringstream(str);
+		sstream.str(str);
 
 		sstream >> symbol;
 		sstream >> red;
@@ -85,7 +85,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	while (str.compare("SIZE")) //while loop used because INFO CODES may be empty section
 	{
-		sstream = std::stringstream(str);
+		sstream.str(str);
 		
 		sstream >> infoCode;
 		sstream >> infoVal;
@@ -102,7 +102,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	//SIZE
 	std::getline(file, str);
-	sstream = std::stringstream(str);
+	sstream.str(str);
 	char width[3+1];
 	char height[3+1];
 	sstream >> width;
