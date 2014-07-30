@@ -22,7 +22,7 @@ namespace ascii
 	{
 		public:
 			Input()
-				: mMouseX(0), mMouseY(0), mLastMouseX(0), mLastMouseY(0), mMouseState(0), mLastMouseState(0), mScrollX(0), mScrollY(0)
+				: mMouseState(0), mLastMouseState(0), mMouseX(0), mMouseY(0), mLastMouseX(0), mLastMouseY(0), mScrollX(0), mScrollY(0)
 			{
 			}
 

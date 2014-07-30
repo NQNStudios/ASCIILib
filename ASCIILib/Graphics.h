@@ -32,7 +32,7 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title);
+			Graphics(const char* title, const char* fontpath);
 
 			///<summary>
 			/// Creates a game window and sets up the Graphics instance.
@@ -40,7 +40,7 @@ namespace ascii
 			///<param name="title">The title of the game window.</param>
 			///<param name="bufferWidth">The width of the game window's buffer.</param>
 			///<param name="bufferHeight">The height of the game window's buffer.</param>
-			Graphics(const char* title, int bufferWidth, int bufferHeight);
+			Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight);
 			~Graphics();
 
 			///<summary>

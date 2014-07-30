@@ -15,7 +15,7 @@ OBJECTS=$(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 # -Wextra=Give me extra warnings!
 # -std=c++11=Enforce C++11 standard compliance.
 # -MMD=Create a .d file to store the rule for the header dependencies of each object.
-CFLAGS=-g -Wall -Wextra -std=c++11 -MMD `sdl2-config --cflags`
+CFLAGS=-g -Wall -std=c++11 -MMD `sdl2-config --cflags`
 
 # LDLIBS (Load Libraries)
 # External libraries you are using that need to be linked.

@@ -3,7 +3,6 @@
 #include <sstream>
 
 const int kFontSize = 12;
-const char* kFontPath = "terminal.fon";
 
 //static
 const unsigned int ascii::Graphics::kBufferWidth = 80;
@@ -11,12 +10,12 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 //static
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
-ascii::Graphics::Graphics(const char* title)
+ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
-	mFont = TTF_OpenFont(kFontPath, kFontSize);
+	mFont = TTF_OpenFont(fontpath, kFontSize);
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
     
 	mWindow = SDL_CreateWindow(title, 
@@ -31,12 +30,12 @@ ascii::Graphics::Graphics(const char* title)
 	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
 }
 
-ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
+ascii::Graphics::Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
-	mFont = TTF_OpenFont(kFontPath, kFontSize);
+	mFont = TTF_OpenFont(fontpath, kFontSize);
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
 
 	mWindow = SDL_CreateWindow(title,
