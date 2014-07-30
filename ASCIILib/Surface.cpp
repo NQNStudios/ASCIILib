@@ -18,6 +18,11 @@ ascii::Surface::Surface(int width, int height)
 	for (int x = 0; x < width; ++x)
 	{
 		mCellOpacity.push_back(new bool[height]);
+        
+        for (int y = 0; y < height; ++y)
+        {
+            mCellOpacity.back()[y] = true;
+        }
 	}
 }
 
@@ -31,6 +36,11 @@ ascii::Surface::Surface(int width, int height, char character, Color backgroundC
 	for (int x = 0; x < width; ++x)
 	{
 		mCellOpacity.push_back(new bool[height]);
+
+        for (int y = 0; y < height; ++y)
+        {
+            mCellOpacity.back()[y] = true;
+        }
 	}
 }
 

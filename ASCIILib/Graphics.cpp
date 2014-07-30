@@ -18,7 +18,7 @@ ascii::Graphics::Graphics(const char* title)
 
 	mFont = TTF_OpenFont(kFontPath, kFontSize);
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
-
+    
 	mWindow = SDL_CreateWindow(title, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
 		kBufferWidth * mCharWidth, kBufferHeight * mCharHeight, 
@@ -43,7 +43,7 @@ ascii::Graphics::Graphics(const char* title, int bufferWidth, int bufferHeight)
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		bufferWidth * mCharWidth, bufferHeight * mCharHeight,
 		SDL_WINDOW_SHOWN);
-
+    
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
