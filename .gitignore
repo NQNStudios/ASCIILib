@@ -27,3 +27,11 @@
 *.db
 *.unsuccessfulbuild
 *.user
+
+# CMake files
+ASCIILib/CMakeFiles/
+ASCIILib/cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile

@@ -9,7 +9,7 @@ namespace ascii
 {
 
 	///<summary>
-	/// A generic ASCIILib game whose functioning loop is provided in the constructor as callback functions.
+	/// A generic ASCIILib game
 	///</summary>
 	class Game
 	{
