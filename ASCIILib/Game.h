@@ -54,8 +54,8 @@ namespace ascii
 			void Quit();
         protected:
             virtual void LoadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
-            virtual void Update(Game* game, int deltaMS)=0;
-            virtual void HandleInput(Game* game, Input& input)=0;
+            virtual void Update(int deltaMS)=0;
+            virtual void HandleInput(Input& input)=0;
             virtual void Draw(Graphics& graphics)=0;
 		private:
 			const char* mWindowTitle;
