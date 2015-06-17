@@ -68,13 +68,13 @@ void ascii::Game::Run()
 			}
 		}
 
-		HandleInput(this, input);
+		HandleInput(input);
 
 		const int currentTime = SDL_GetTicks();
 		const int elapsedTime = currentTime - lastUpdateTime;
 
 		mSoundManager->update();
-		Update(this, std::min(elapsedTime, kMaxFrameTime));
+		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
 		Draw(*mGraphics);
