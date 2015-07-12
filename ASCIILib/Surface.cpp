@@ -88,14 +88,18 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	do
 	{
-		sstream.str(str);
+        stringstream sstreamb(str);
 
-		sstream >> symbol;
-		sstream >> red;
-		sstream >> green;
-		sstream >> blue;
+		sstreamb >> symbol;
+		sstreamb >> red;
+		sstreamb >> green;
+		sstreamb >> blue;
 
-		colors[symbol[0]] = Color(atoi(red), atoi(green), atoi(blue));
+        int rval = atoi(red);
+        int gval = atoi(green);
+        int bval = atoi(blue);
+
+		colors[symbol[0]] = Color(rval, gval, bval);
 		
 		readLine(&file, str);
 	} while (str.compare("INFO CODES")); //do-while loop used because COLORS will never be empty section
@@ -108,10 +112,10 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	while (str.compare("SIZE")) //while loop used because INFO CODES may be empty section
 	{
-		sstream.str(str);
+        stringstream sstreamb(str);
 		
-		sstream >> infoCode;
-		sstream >> infoVal;
+		sstreamb >> infoCode;
+		sstreamb >> infoVal;
 
 		if (!infoVal.compare(kEmptyInfo))
 		{
