@@ -1,19 +1,21 @@
 #include "Surface.h"
 
-#include <string>
-#include <fstream>
 #include <iostream>
+using std::cout;
+using std::endl;
 #include <map>
+using std::map;
 #include <sstream>
+using std::stringstream;
 
-const std::string kEmptyInfo(".");
+const string kEmptyInfo(".");
 
 ascii::Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), 
-		mCharacters(width, std::vector<char>(height, ' ')),
-		mBackgroundColors(width, std::vector<Color>(height, Color::Black)),
-		mCharacterColors(width, std::vector<Color>(height, Color::White)),
-		mSpecialInfo(width, std::vector<std::string>(height, ""))
+		mCharacters(width, vector<char>(height, ' ')),
+		mBackgroundColors(width, vector<Color>(height, Color::Black)),
+		mCharacterColors(width, vector<Color>(height, Color::White)),
+		mSpecialInfo(width, vector<string>(height, ""))
 {
 	for (int x = 0; x < width; ++x)
 	{
@@ -28,10 +30,10 @@ ascii::Surface::Surface(int width, int height)
 
 ascii::Surface::Surface(int width, int height, char character, Color backgroundColor, Color characterColor)
 	: mWidth(width), mHeight(height),
-		mCharacters(width, std::vector<char>(height, character)),
-		mBackgroundColors(width, std::vector<Color>(height, backgroundColor)),
-		mCharacterColors(width, std::vector<Color>(height, characterColor)),
-		mSpecialInfo(width, std::vector<std::string>(height, ""))
+		mCharacters(width, vector<char>(height, character)),
+		mBackgroundColors(width, vector<Color>(height, backgroundColor)),
+		mCharacterColors(width, vector<Color>(height, characterColor)),
+		mSpecialInfo(width, vector<string>(height, ""))
 {
 	for (int x = 0; x < width; ++x)
 	{
@@ -46,27 +48,38 @@ ascii::Surface::Surface(int width, int height, char character, Color backgroundC
 
 ascii::Surface::Surface(char character, Color backgroundColor, Color characterColor)
 	: mWidth(1), mHeight(1),
-		mCharacters(1, std::vector<char>(1, character)),
-		mBackgroundColors(1, std::vector<Color>(1, backgroundColor)),
-		mCharacterColors(1, std::vector<Color>(1, characterColor)),
-		mSpecialInfo(1, std::vector<std::string>(1, ""))
+		mCharacters(1, vector<char>(1, character)),
+		mBackgroundColors(1, vector<Color>(1, backgroundColor)),
+		mCharacterColors(1, vector<Color>(1, characterColor)),
+		mSpecialInfo(1, vector<string>(1, ""))
 {
 	mCellOpacity.push_back(new bool[1]);
 }
 
+void ascii::Surface::readLine(ifstream* file, string& str)
+{
+    getline(*file, str);
+
+    // remove pesky '\r' ending
+    if (str.back() == '\r')
+    {
+        str.pop_back();
+    }
+}
+
 ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 {
-	std::ifstream file;
+	ifstream file;
 	file.open(filepath);
 
-	std::map<char, Color> colors;
-	std::map<char, std::string> infoCodes;
+	map<char, Color> colors;
+	map<char, string> infoCodes;
 
-	std::string str;
-	std::stringstream sstream;
+	string str;
+	stringstream sstream;
 
-	std::getline(file, str); //COLORS
-	std::getline(file, str);
+	readLine(&file, str); //COLORS
+    readLine(&file, str);
 
 	char symbol[1+1];
 	char red[3+1];
@@ -84,14 +97,14 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 		colors[symbol[0]] = Color(atoi(red), atoi(green), atoi(blue));
 		
-		std::getline(file, str);
+		readLine(&file, str);
 	} while (str.compare("INFO CODES")); //do-while loop used because COLORS will never be empty section
 
 	//INFO CODES
-	std::getline(file, str);
+	readLine(&file, str);
 
 	char infoCode[1+1];
-	std::string infoVal;
+	string infoVal;
 
 	while (str.compare("SIZE")) //while loop used because INFO CODES may be empty section
 	{
@@ -107,11 +120,11 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 		infoCodes[infoCode[0]] = infoVal;
 
-		std::getline(file, str);
+		readLine(&file, str);
 	}
 
 	//SIZE
-	std::getline(file, str);
+	readLine(&file, str);
 	sstream.str(str);
 	char width[3+1];
 	char height[3+1];
@@ -120,15 +133,15 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	Surface* surface = new Surface(atoi(width), atoi(height));
 
-	std::getline(file, str); //CHARACTERS
+	readLine(&file, str); //CHARACTERS
 	
 	char character = ' ';
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
-		std::getline(file, str);
+		readLine(&file, str);
 
 		int c = 0;
-		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
 			character = *it;
 
@@ -138,15 +151,15 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	std::getline(file, str); //BACKGROUND COLORS
+	readLine(&file, str); //BACKGROUND COLORS
 	
 	char colorsymbol = ' ';
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
-		std::getline(file, str);
+		readLine(&file, str);
 
 		int c = 0;
-		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
 			colorsymbol = *it;
 
@@ -156,14 +169,14 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	std::getline(file, str); //CHARACTER COLORS
+	readLine(&file, str); //CHARACTER COLORS
 	
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
-		std::getline(file, str);
+		readLine(&file, str);
 
 		int c = 0;
-		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
 			colorsymbol = *it;
 
@@ -173,14 +186,14 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	std::getline(file, str); //OPACITY
+	readLine(&file, str); //OPACITY
 
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
-		std::getline(file, str);
+		readLine(&file, str);
 
 		int c = 0;
-		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
 			colorsymbol = *it;
 
@@ -192,14 +205,14 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	std::getline(file, str); //SPECIAL INFO
+	readLine(&file, str); //SPECIAL INFO
 
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
-		std::getline(file, str);
+		readLine(&file, str);
 
 		int c = 0;
-		for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
 			colorsymbol = *it;
 
@@ -416,10 +429,10 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 
 void ascii::Surface::blitString(const char* text, Color color, int x, int y)
 {
-	std::string str(text);
+	string str(text);
 
 	int destx = x, desty = y;
-	std::string::iterator it = str.begin();
+	string::iterator it = str.begin();
 	while (destx < mWidth && desty < mHeight && it != str.end())
 	{
 		mCharacters[destx][desty] = *it;
@@ -431,10 +444,10 @@ void ascii::Surface::blitString(const char* text, Color color, int x, int y)
 
 void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangle destination)
 {
-	std::stringstream sstream(text);
-	std::string tempstr;
+	stringstream sstream(text);
+	string tempstr;
 
-	std::vector<std::string> words;
+	vector<string> words;
 
 	while (sstream >> tempstr)
 	{
@@ -444,7 +457,7 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 	int x = destination.left();
 	int y = destination.top();
 
-	for (std::vector<std::string>::iterator it = words.begin(); it != words.end(); ++it)
+	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
 	{
 		//blit each word
 		tempstr = *it;
@@ -468,10 +481,10 @@ void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangl
 
 int ascii::Surface::stringMultilineEndX(const char* text, Rectangle destination)
 {
-	std::stringstream sstream(text);
-	std::string tempstr;
+	stringstream sstream(text);
+	string tempstr;
 
-	std::vector<std::string> words;
+	vector<string> words;
 
 	while (sstream >> tempstr)
 	{
@@ -481,7 +494,7 @@ int ascii::Surface::stringMultilineEndX(const char* text, Rectangle destination)
 	int x = destination.left();
 	int y = destination.top();
 
-	for (std::vector<std::string>::iterator it = words.begin(); it != words.end(); ++it)
+	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
 	{
 		tempstr = *it;
 		
@@ -502,10 +515,10 @@ int ascii::Surface::stringMultilineEndX(const char* text, Rectangle destination)
 
 int ascii::Surface::measureStringMultilineY(const char* text, Rectangle destination)
 {
-	std::stringstream sstream(text);
-	std::string tempstr;
+	stringstream sstream(text);
+	string tempstr;
 
-	std::vector<std::string> words;
+	vector<string> words;
 
 	while (sstream >> tempstr)
 	{
@@ -517,7 +530,7 @@ int ascii::Surface::measureStringMultilineY(const char* text, Rectangle destinat
 
 	int lines = 1;
 
-	for (std::vector<std::string>::iterator it = words.begin(); it != words.end(); ++it)
+	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
 	{
 		tempstr = *it;
 		
@@ -535,4 +548,17 @@ int ascii::Surface::measureStringMultilineY(const char* text, Rectangle destinat
 	}
 
 	return lines;
+}
+
+void ascii::Surface::printContents()
+{
+    for (int y = 0; y < height(); ++y)
+    {
+        for (int x = 0; x < width(); ++x)
+        {
+            cout << getCharacter(x, y);
+        }
+
+        cout << endl;
+    }
 }

@@ -1,8 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <map>
+using std::vector;
 #include <string>
+#include <fstream>
+using std::ifstream;
+using std::getline;
+#include <string>
+using std::string;
 
 #include <SDL.h>
 
@@ -47,13 +52,13 @@ namespace ascii
 			Color getBackgroundColor(int x, int y) { return mBackgroundColors[x][y]; }
 			Color getCharacterColor(int x, int y) { return mCharacterColors[x][y]; }
 			bool isCellOpaque(int x, int y) { return mCellOpacity[x][y]; }
-			std::string getSpecialInfo(int x, int y) { return mSpecialInfo[x][y]; }
+			string getSpecialInfo(int x, int y) { return mSpecialInfo[x][y]; }
 
 			void setCharacter(int x, int y, char value) { mCharacters[x][y] = value; }
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
 			void setCellOpacity(int x, int y, bool value) { mCellOpacity[x][y] = value; }
-			void setSpecialInfo(int x, int y, std::string value) { mSpecialInfo[x][y] = value; }
+			void setSpecialInfo(int x, int y, string value) { mSpecialInfo[x][y] = value; }
 
 			///<summary>
 			/// Clears the surface of all characters and non-black colors.
@@ -137,17 +142,27 @@ namespace ascii
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
 			int measureStringMultilineY(const char* text, Rectangle destination);
+
+            ///<summary>
+            /// Prints out the characters stored in the graphics buffer to
+            /// the debug console.
+            ///</summary>
+            void printContents();
 		private:
+            // HELPERS
+            static void readLine(ifstream* file, string& str);
+
+            // FIELDS
 			int mWidth, mHeight;
 
-			std::vector<std::vector<char> > mCharacters;
+			vector<vector<char> > mCharacters;
 
-			std::vector<std::vector<Color> > mBackgroundColors;
-			std::vector<std::vector<Color> > mCharacterColors;
+			vector<vector<Color> > mBackgroundColors;
+			vector<vector<Color> > mCharacterColors;
 
-			std::vector<bool*> mCellOpacity;
+			vector<bool*> mCellOpacity;
 
-			std::vector<std::vector<std::string> > mSpecialInfo;
+			vector<vector<string> > mSpecialInfo;
 	};
 
 }
