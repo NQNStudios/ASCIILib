@@ -11,43 +11,25 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
-	: Surface(kBufferWidth, kBufferHeight), mBackgroundColor(ascii::Color::Black)
+	: Surface(kBufferWidth, kBufferHeight), mTitle(title), mScale(1.0f), mFullscreen(false), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
     
-	mWindow = SDL_CreateWindow(title, 
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		kBufferWidth * mCharWidth, kBufferHeight * mCharHeight, 
-		SDL_WINDOW_SHOWN);
-
-	checkSize();
-
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
-
-	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
+    SetVideoMode(mScale, mFullscreen);
 }
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mBackgroundColor(ascii::Color::Black)
+	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f), mFullscreen(false), mBackgroundColor(ascii::Color::Black)
 {
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
 
-	mWindow = SDL_CreateWindow(title,
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		bufferWidth * mCharWidth, bufferHeight * mCharHeight,
-		SDL_WINDOW_SHOWN);
-    
-	checkSize();
-
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
-
-	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
+    SetVideoMode(mScale, mFullscreen);
 }
 
 ascii::Graphics::~Graphics(void)
@@ -63,6 +45,52 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
+void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
+{
+    // If Graphics has already been initialized, delete everything
+    if (mWindow != NULL)
+    {
+        clearGlyphs();
+
+        SDL_DestroyRenderer(mRenderer);
+
+        SDL_DestroyWindow(mWindow);
+
+        delete mCache;
+    }
+
+    mScale = scale;
+    mFullscreen = fullscreen;
+
+    int flags = SDL_WINDOW_SHOWN;
+
+    if (fullscreen)
+    {
+        flags = flags | SDL_WINDOW_FULLSCREEN;
+    }
+
+	mWindow = SDL_CreateWindow(mTitle, 
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+		width() * mCharWidth * mScale, height() * mCharHeight * mScale, 
+		flags);
+
+	checkSize();
+
+	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
+}
+
+int ascii::Graphics::pixelToCellX(int pixelX)
+{
+    return pixelX / mCharWidth / mScale;
+}
+
+int ascii::Graphics::pixelToCellY(int pixelY)
+{
+    return pixelY / mCharHeight / mScale;
+}
+
 void ascii::Graphics::update()
 {
 	//draw background color
@@ -74,10 +102,12 @@ void ascii::Graphics::update()
 	{
 		SDL_Rect dest;
 		
-		dest.x = it->second.second.x * mCharWidth;
-		dest.y = it->second.second.y * mCharHeight;
+		dest.x = it->second.second.x * mCharWidth * mScale;
+		dest.y = it->second.second.y * mCharHeight * mScale;
 
 		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+        dest.w *= mScale;
+        dest.h *= mScale;
 
 		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
 	}
@@ -92,10 +122,10 @@ void ascii::Graphics::update()
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = x * mCharWidth;
-			colorRect.y = y * mCharHeight;
+			colorRect.x = x * mCharWidth * mScale;
+			colorRect.y = y * mCharHeight * mScale;
 			colorRect.w = 0;
-			colorRect.h = mCharHeight;
+			colorRect.h = mCharHeight * mScale;
 
 			Color backgroundColor = getBackgroundColor(x, y);
 
@@ -107,7 +137,7 @@ void ascii::Graphics::update()
                     break;
                 }
 
-				colorRect.w += mCharWidth;
+				colorRect.w += mCharWidth * mScale;
 				++x;
 			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
 
@@ -135,10 +165,10 @@ void ascii::Graphics::update()
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
-			textRect.x = x * mCharWidth;
-			textRect.y = y * mCharHeight;
+			textRect.x = x * mCharWidth * mScale;
+			textRect.y = y * mCharHeight * mScale;
 			textRect.w = 0;
-			textRect.h = mCharHeight;
+			textRect.h = mCharHeight * mScale;
 			Color characterColor = getCharacterColor(x, y);
 
 			do
@@ -151,7 +181,7 @@ void ascii::Graphics::update()
 
 				char ch = getCharacter(x, y);
 				charstream << ch;
-				textRect.w += mCharWidth;
+				textRect.w += mCharWidth * mScale;
 				++x;
 			} while (x < width() && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
 
@@ -185,9 +215,13 @@ void ascii::Graphics::update()
 	{
 		SDL_Rect dest;
 		
-		dest.x = it->second.second.x * mCharWidth;
-		dest.y = it->second.second.y * mCharHeight;
+		dest.x = it->second.second.x * mCharWidth * mScale;
+		dest.y = it->second.second.y * mCharHeight * mScale;
+
 		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+        dest.w *= mScale;
+        dest.h *= mScale;
+
 
 		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
 	}
@@ -236,5 +270,5 @@ void ascii::Graphics::checkSize()
 	int w, h;
 	SDL_GetWindowSize(mWindow, &w, &h);
 
-	SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+	SDL_assert(width() * mCharWidth * mScale == w && height() * mCharHeight * mScale == h);
 }

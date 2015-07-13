@@ -8,15 +8,23 @@ const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
 ascii::Game::Game(const char* title, const char* fontpath, const int bufferWidth, const int bufferHeight)
-	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mFontpath(fontpath), mCache(NULL), mRunning(false)
+	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
 {
 	mSoundManager = new SoundManager();
 }
 
 ascii::Game::Game(const char* title, const char* fontpath)
-	: mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mFontpath(fontpath), mCache(NULL), mRunning(false)
+	: mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
 {
 	mSoundManager = new SoundManager();
+}
+
+ascii::Game::~Game()
+{
+    delete mGraphics;
+	delete mSoundManager;
+
+	SDL_Quit();
 }
 
 void ascii::Game::Run()
@@ -33,8 +41,7 @@ void ascii::Game::Run()
 		mGraphics = new ascii::Graphics(mWindowTitle, mFontpath);
 	}
 
-	mCache = mGraphics->imageCache();
-	LoadContent(mCache, mSoundManager);
+	LoadContent(imageCache(), mSoundManager);
 
 	ascii::Input input;
 
@@ -91,8 +98,5 @@ void ascii::Game::Run()
 
 void ascii::Game::Quit()
 {
-	delete mCache;
-	delete mSoundManager;
-
-	SDL_Quit();
+    mRunning = false;
 }

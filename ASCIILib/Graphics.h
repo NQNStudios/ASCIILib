@@ -43,6 +43,13 @@ namespace ascii
 			Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight);
 			~Graphics();
 
+            ///<summary>
+            /// Modifies the graphics video mode, even after construction.
+            /// Warning: This rebuilds the image cache. All images will need
+            /// to be reloaded.
+            ///</summary>
+            void SetVideoMode(float scale, bool fullscreen);
+
 			///<summary>
 			/// Returns the image cache for this Graphics instance.
 			///</summary>
@@ -51,12 +58,15 @@ namespace ascii
 			int charWidth() { return mCharWidth; }
 			int charHeight() { return mCharHeight; }
 
+            int pixelToCellX(int pixelX);
+            int pixelToCellY(int pixelY);
+
 			///<summary>
 			/// Renders the rendering buffer in its current state.
 			///</summary>
 			void update();
 
-			void setBackgroundColor(Color color) { mBackgroundColor = color; }
+			void setWindowBackgroundColor(Color color) { mBackgroundColor = color; }
 
 			///<summary>
 			/// Adds an image in the background of the game window.
@@ -111,6 +121,9 @@ namespace ascii
 
 			std::map<Glyph, SDL_Texture*> mGlyphTextures;
 
+            const char* mTitle;
+            float mScale;
+            bool mFullscreen;
 			Color mBackgroundColor;
 
 			std::map<std::string, Image> mBackgroundImages;

@@ -28,20 +28,22 @@ namespace ascii
 			///<param name="title">The title of the game's window.</param>
 			Game(const char* title, const char* fontpath);
 
+            ~Game();
+
 			///<summary>
 			/// The game's SoundManager.
 			///</summary>
 			ascii::SoundManager* soundManager() { return mSoundManager; }
 
 			///<summary>
-			/// The game's ImageCache.
-			///</summary>
-			ascii::ImageCache* imageCache() { return mCache; }
-
-			///<summary>
 			/// The game's Graphics.
 			///</summary>
 			ascii::Graphics* graphics() { return mGraphics; }
+
+            ///<summary>
+            /// Accesses the game's image cache.
+            ///</summary>
+            ascii::ImageCache* imageCache() { return mGraphics->imageCache(); }
 
 			///<summary>
 			/// Runs the game's event loop.
@@ -62,7 +64,6 @@ namespace ascii
             const char* mFontpath;
 			const int mBufferWidth, mBufferHeight;
 
-			ascii::ImageCache* mCache;
 			ascii::SoundManager* mSoundManager;
 			ascii::Graphics* mGraphics;
 
