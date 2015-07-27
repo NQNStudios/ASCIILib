@@ -11,7 +11,9 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
-	: Surface(kBufferWidth, kBufferHeight), mTitle(title), mScale(1.0f), mFullscreen(false), mBackgroundColor(ascii::Color::Black)
+	: Surface(kBufferWidth, kBufferHeight),
+    mTitle(title), mScale(1.0f), mFullscreen(false),
+    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL)
 {
 	TTF_Init();
 
@@ -21,8 +23,11 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
     SetVideoMode(mScale, mFullscreen);
 }
 
-ascii::Graphics::Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f), mFullscreen(false), mBackgroundColor(ascii::Color::Black)
+ascii::Graphics::Graphics(const char* title, const char* fontpath,
+        int bufferWidth, int bufferHeight)
+	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
+    mFullscreen(false), mBackgroundColor(ascii::Color::Black),
+    mWindow(NULL), mRenderer(NULL)
 {
 	TTF_Init();
 
