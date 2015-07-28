@@ -10,9 +10,11 @@ namespace ascii
 	///</summary>
 	enum MouseButton
 	{
+        MB_BEGIN = 1,
 		LEFT = 1,
 		MIDDLE = 2,
-		RIGHT = 3
+		RIGHT = 3,
+        MB_END = 3
 	};
 
 	///<summary>
