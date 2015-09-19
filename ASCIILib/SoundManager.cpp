@@ -54,6 +54,15 @@ void ascii::SoundManager::playSound(std::string key)
 	Mix_PlayChannel(-1, mSounds[key], 0);
 }
 
+int ascii::SoundManager::soundDuration(std::string key)
+{
+    Mix_Chunk* chunk = mSounds[key];
+
+    int ms = chunk->alen / ((44100*2)/1000);
+
+    return ms;
+}
+
 void ascii::SoundManager::loadGroupSound(std::string group, const char* path)
 {
 	mSoundGroups[group].push_back(Mix_LoadWAV(path));

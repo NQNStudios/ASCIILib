@@ -41,6 +41,12 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which the sound is stored.</param>
 			void playSound(std::string key);
+
+            ///<summary>
+            /// Return the length in milliseconds of a sound effect recorded in
+            /// Mono 44k 16-bit
+            ///</summary>
+            int soundDuration(std::string key);
 			
 			///<summary>
 			/// Loads and stores a sound effect in a sound group of the SoundManager.
