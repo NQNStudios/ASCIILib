@@ -43,6 +43,11 @@ void ascii::SoundManager::loadSound(std::string key, const char* path)
 	mSounds[key] = Mix_LoadWAV(path);
 }
 
+bool ascii::SoundManager::hasSound(std::string key)
+{
+    return mSounds.find(key) != mSounds.end();
+}
+
 void ascii::SoundManager::freeSound(std::string key)
 {
 	Mix_FreeChunk(mSounds[key]);
@@ -61,6 +66,21 @@ int ascii::SoundManager::soundDuration(std::string key)
     int ms = chunk->alen / ((44100*2)/1000);
 
     return ms;
+}
+
+int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
+{
+    int sum = 0;
+
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        if (hasSound(*it))
+        {
+            sum += this->soundDuration(*it);
+        }
+    }
+
+    return sum;
 }
 
 void ascii::SoundManager::loadGroupSound(std::string group, const char* path)

@@ -30,6 +30,12 @@ namespace ascii
 			///<param name="path">The file path of the WAV file.</param>
 			void loadSound(std::string key, const char* path);
 
+            ///<summary>
+            /// Check if the SoundManager has loaded a sound corresponding
+            /// to the given key
+            ///</summary>
+            bool hasSound(std::string key);
+
 			///<summary>
 			/// Frees a sound effect from memory.
 			///</summary>
@@ -47,6 +53,12 @@ namespace ascii
             /// Mono 44k 16-bit
             ///</summary>
             int soundDuration(std::string key);
+
+            ///<summary>
+            /// Return the summation of the lengths of every sound effect
+            /// referenced by a key in the given collection
+            ///</summary>
+            int totalSoundDuration(std::vector<std::string> keys);
 			
 			///<summary>
 			/// Loads and stores a sound effect in a sound group of the SoundManager.
