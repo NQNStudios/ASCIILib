@@ -79,6 +79,13 @@ namespace ascii
 			int playSoundGroup(std::string group);
 
 			///<summary>
+			/// Play a random sound from the given sound group and return its
+            /// sound duration
+			///</summary>
+			///<returns>The duration of the sound which was played.</returns>
+            int playSoundGroupGetDuration(std::string group);
+
+			///<summary>
 			/// Starts looping a sound group, randomly selecting sounds from it to play one after the other.
 			///</summary>
 			void loopSoundGroup(std::string group);
@@ -168,6 +175,12 @@ namespace ascii
 			///<summary>The status of the current music fade effect.</summary>
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
 		private:
+            ///<summary>
+            /// Return the length in milliseconds of a sound effect recorded in
+            /// Mono 44k 16-bit
+            ///</summary>
+            int soundDuration(Mix_Chunk* sound);
+
 			typedef std::vector<Mix_Chunk*> SoundGroup;
 
 			std::map<std::string, Mix_Chunk*> mSounds;

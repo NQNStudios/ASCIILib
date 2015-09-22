@@ -68,6 +68,13 @@ int ascii::SoundManager::soundDuration(std::string key)
     return ms;
 }
 
+int ascii::SoundManager::soundDuration(Mix_Chunk* sound)
+{
+    int ms = sound->alen / ((44100*2)/1000);
+
+    return ms;
+}
+
 int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
 {
     int sum = 0;
@@ -107,6 +114,19 @@ int ascii::SoundManager::playSoundGroup(std::string group)
 	int n = rand() % soundGroup.size();
 
 	return Mix_PlayChannel(-1, mSoundGroups[group][n], 0);
+}
+
+int ascii::SoundManager::playSoundGroupGetDuration(std::string group)
+{
+	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+
+	int n = rand() % soundGroup.size();
+
+    Mix_Chunk* groupSound = mSoundGroups[group][n];
+
+	Mix_PlayChannel(-1, groupSound, 0);
+
+    return soundDuration(groupSound);
 }
 
 void ascii::SoundManager::loopSoundGroup(std::string group)
