@@ -55,5 +55,13 @@ bool ascii::Input::isKeyHeld(SDL_Keycode key)
 
 bool ascii::Input::anyKeyPressed()
 {
-	return mPressedKeys.size() > 0;
+    for (auto it = mPressedKeys.begin(); it != mPressedKeys.end(); ++it)
+    {
+        if (it->second == true)
+        {
+            return true;
+        }
+    }
+
+	return false;
 }
