@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SURFACE_H
+#define SURFACE_H
 
 #include <vector>
 using std::vector;
@@ -166,3 +167,5 @@ namespace ascii
 	};
 
 }
+
+#endif

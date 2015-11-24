@@ -1,4 +1,5 @@
-#pragma once
+#ifndef POINT_H
+#define POINT_H
 
 namespace ascii
 {
@@ -46,3 +47,5 @@ namespace ascii
 	}
 
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SOUND_MANAGER_H
+#define SOUND_MANAGER_H
 
 #include <map>
 #include <string>
@@ -192,3 +193,5 @@ namespace ascii
 	};
 
 };
+
+#endif

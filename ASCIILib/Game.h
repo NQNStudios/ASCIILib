@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
 #include "ImageCache.h"
 #include "SoundManager.h"
@@ -71,3 +72,5 @@ namespace ascii
 	};
 
 };
+
+#endif

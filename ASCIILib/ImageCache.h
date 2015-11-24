@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMAGE_CACHE_H
+#define IMAGE_CACHE_H
 
 #include <map>
 #include <string>
@@ -61,3 +62,5 @@ namespace ascii
 	};
 
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INPUT_H
+#define INPUT_H
 
 #include <map>
 #include <SDL.h>
@@ -105,3 +106,5 @@ namespace ascii
 	};
 
 };
+
+#endif
