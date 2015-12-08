@@ -282,10 +282,13 @@ void ascii::Graphics::clearGlyphs()
 
 void ascii::Graphics::checkSize()
 {
-	int w, h;
-	SDL_GetWindowSize(mWindow, &w, &h);
+    if (!mFullscreen)
+    {
+        int w, h;
+        SDL_GetWindowSize(mWindow, &w, &h);
 
-	SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+        SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+    }
 }
 
 void ascii::Graphics::UpdateCharSize()
