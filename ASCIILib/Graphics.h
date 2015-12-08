@@ -50,6 +50,19 @@ namespace ascii
             ///</summary>
             void SetVideoMode(float scale, bool fullscreen);
 
+            ///<summary>
+            /// Changes the scale of the viewing window
+            /// Modifies the graphics video mode, even after construction.
+            ///</summary>
+            void SetScale(float scale);
+
+            ///<summary>
+            /// Toggles fullscreen rendering (but does not cause scaling to
+            /// fit). Modifies the graphics video mode, even after
+            /// construction.
+            ///</summary>
+            void ToggleFullscreen();
+
 			///<summary>
 			/// Returns the image cache for this Graphics instance.
 			///</summary>
@@ -108,6 +121,12 @@ namespace ascii
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
 			///</summary>
 			void checkSize();
+
+            ///<summary>
+            /// Update the values of mCharWidth and mCharHeight to reflect
+            /// scale
+            ///</summary>
+            void UpdateCharSize();
 
 			typedef std::pair<std::string, Color> Glyph;
 			typedef std::pair<SDL_Texture*, Point> Image;

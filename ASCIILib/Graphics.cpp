@@ -18,7 +18,6 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
     
     SetVideoMode(mScale, mFullscreen);
 }
@@ -32,7 +31,6 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
 
     SetVideoMode(mScale, mFullscreen);
 }
@@ -67,6 +65,8 @@ void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
     mScale = scale;
     mFullscreen = fullscreen;
 
+    UpdateCharSize();
+
     int flags = SDL_WINDOW_SHOWN;
 
     if (fullscreen)
@@ -76,14 +76,26 @@ void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
 
 	mWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth * mScale, height() * mCharHeight * mScale, 
+		width() * mCharWidth, height() * mCharHeight, 
 		flags);
 
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
+	mCache = new ascii::ImageCache(mRenderer,
+            mCharWidth / mScale,
+            mCharHeight / mScale);
+}
+
+void ascii::Graphics::SetScale(float scale)
+{
+    SetVideoMode(scale, mFullscreen);
+}
+
+void ascii::Graphics::ToggleFullscreen()
+{
+    SetVideoMode(mScale, !mFullscreen);
 }
 
 int ascii::Graphics::pixelToCellX(int pixelX)
@@ -107,12 +119,10 @@ void ascii::Graphics::update()
 	{
 		SDL_Rect dest;
 		
-		dest.x = it->second.second.x * mCharWidth * mScale;
-		dest.y = it->second.second.y * mCharHeight * mScale;
+		dest.x = it->second.second.x * mCharWidth;
+		dest.y = it->second.second.y * mCharHeight;
 
 		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-        dest.w *= mScale;
-        dest.h *= mScale;
 
 		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
 	}
@@ -127,10 +137,10 @@ void ascii::Graphics::update()
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = x * mCharWidth * mScale;
-			colorRect.y = y * mCharHeight * mScale;
+			colorRect.x = x * mCharWidth;
+			colorRect.y = y * mCharHeight;
 			colorRect.w = 0;
-			colorRect.h = mCharHeight * mScale;
+			colorRect.h = mCharHeight;
 
 			Color backgroundColor = getBackgroundColor(x, y);
 
@@ -142,7 +152,7 @@ void ascii::Graphics::update()
                     break;
                 }
 
-				colorRect.w += mCharWidth * mScale;
+				colorRect.w += mCharWidth;
 				++x;
 			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
 
@@ -170,10 +180,10 @@ void ascii::Graphics::update()
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
-			textRect.x = x * mCharWidth * mScale;
-			textRect.y = y * mCharHeight * mScale;
+			textRect.x = x * mCharWidth;
+			textRect.y = y * mCharHeight;
 			textRect.w = 0;
-			textRect.h = mCharHeight * mScale;
+			textRect.h = mCharHeight;
 			Color characterColor = getCharacterColor(x, y);
 
 			do
@@ -186,7 +196,7 @@ void ascii::Graphics::update()
 
 				char ch = getCharacter(x, y);
 				charstream << ch;
-				textRect.w += mCharWidth * mScale;
+				textRect.w += mCharWidth;
 				++x;
 			} while (x < width() && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
 
@@ -220,8 +230,8 @@ void ascii::Graphics::update()
 	{
 		SDL_Rect dest;
 		
-		dest.x = it->second.second.x * mCharWidth * mScale;
-		dest.y = it->second.second.y * mCharHeight * mScale;
+		dest.x = it->second.second.x * mCharWidth;
+		dest.y = it->second.second.y * mCharHeight;
 
 		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
         dest.w *= mScale;
@@ -275,5 +285,12 @@ void ascii::Graphics::checkSize()
 	int w, h;
 	SDL_GetWindowSize(mWindow, &w, &h);
 
-	SDL_assert(width() * mCharWidth * mScale == w && height() * mCharHeight * mScale == h);
+	SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+}
+
+void ascii::Graphics::UpdateCharSize()
+{
+	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
+    mCharWidth *= mScale;
+    mCharHeight *= mScale;
 }
