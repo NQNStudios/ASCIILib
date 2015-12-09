@@ -1,5 +1,8 @@
 #include "SoundManager.h"
 
+#include <iostream>
+using namespace std;
+
 #include <cstdlib>
 #include <time.h>
 
@@ -162,7 +165,13 @@ void ascii::SoundManager::setSoundVolume(float value)
 
 void ascii::SoundManager::loadTrack(std::string key, const char* path)
 {
-	mTracks[key] = Mix_LoadMUS(path);
+    Mix_Music* track = Mix_LoadMUS(path);
+    if (!track)
+    {
+        cout << "Failed to load music file " << path << " with error:" << endl;
+        cout << Mix_GetError() << endl;
+    }
+	mTracks[key] = track;
 }
 
 void ascii::SoundManager::freeTrack(std::string key)
@@ -173,7 +182,8 @@ void ascii::SoundManager::freeTrack(std::string key)
 
 void ascii::SoundManager::playTrack(std::string key, int loops)
 {
-	Mix_PlayMusic(mTracks[key], loops);
+    Mix_Music* track = mTracks[key];
+	Mix_PlayMusic(track, loops);
 }
 
 void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
