@@ -17,9 +17,6 @@ ascii::SoundManager::SoundManager(void)
         cout << Mix_GetError() << endl;
     }
 
-    cout << SDL_MIXER_MAJOR_VERSION << "." << SDL_MIXER_MINOR_VERSION << "." <<
-        SDL_MIXER_PATCHLEVEL << endl;
-
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize);
 
 	srand(time(NULL));
@@ -167,6 +164,7 @@ void ascii::SoundManager::loopSoundGroup(std::string group, float volume)
     int channel = firstOpenChannel();
     Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
 	Mix_PlayChannel(channel, groupSound, -1);
+    mLoopingChannels[group] = channel;
 }
 
 void ascii::SoundManager::stopLoopingGroup(std::string group)
