@@ -17,6 +17,7 @@ file(GLOB ASCIILib_src
 
 add_library(${PROJECT_NAME} ${ASCIILib_src})
 
+# include SDL2
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -34,3 +35,18 @@ target_link_libraries(${PROJECT_NAME}
     ${SDL2_IMAGE_LIBRARY}
     ${SDL2_TTF_LIBRARY}
     )
+
+# Include OGG and Vorbis libraries
+find_package(LibOGG REQUIRED)
+find_package(LibVorbis REQUIRED)
+
+include_directories(
+    ${OGG_INCLUDE_DIR}
+    ${VORBIS_INCLUDE_DIR}
+    )
+
+target_link_libraries(${PROJECT_NAME}
+    ${OGG_LIBRARY}
+    ${VORBIS_LIBRARY}
+    )
+
