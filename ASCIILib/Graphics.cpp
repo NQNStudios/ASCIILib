@@ -100,12 +100,12 @@ void ascii::Graphics::ToggleFullscreen()
 
 int ascii::Graphics::pixelToCellX(int pixelX)
 {
-    return pixelX / mCharWidth / mScale;
+    return pixelX / mCharWidth;
 }
 
 int ascii::Graphics::pixelToCellY(int pixelY)
 {
-    return pixelY / mCharHeight / mScale;
+    return pixelY / mCharHeight;
 }
 
 void ascii::Graphics::update()
