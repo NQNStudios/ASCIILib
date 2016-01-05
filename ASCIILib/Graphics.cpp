@@ -1,6 +1,9 @@
 #include "Graphics.h"
 
 #include <sstream>
+#include <iostream>
+using std::cout;
+using std::endl;
 
 const int kFontSize = 12;
 
@@ -19,7 +22,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
     
-    SetVideoMode(mScale, mFullscreen);
+    Initialize(mScale);
 }
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath,
@@ -32,47 +35,26 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 
-    SetVideoMode(mScale, mFullscreen);
+    Initialize(mScale);
 }
 
 ascii::Graphics::~Graphics(void)
 {
-	clearGlyphs();
-
-	SDL_DestroyRenderer(mRenderer);
-	
-	SDL_DestroyWindow(mWindow);
+    Dispose();
 
 	TTF_CloseFont(mFont);
 
 	TTF_Quit();
 }
 
-void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
+void ascii::Graphics::Initialize(float scale)
 {
-    // If Graphics has already been initialized, delete everything
-    if (mWindow != NULL)
-    {
-        clearGlyphs();
-
-        SDL_DestroyRenderer(mRenderer);
-
-        SDL_DestroyWindow(mWindow);
-
-        delete mCache;
-    }
-
     mScale = scale;
-    mFullscreen = fullscreen;
+    mFullscreen = false;
 
     UpdateCharSize();
 
     int flags = SDL_WINDOW_SHOWN;
-
-    if (fullscreen)
-    {
-        flags = flags | SDL_WINDOW_FULLSCREEN;
-    }
 
 	mWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
@@ -88,14 +70,53 @@ void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
             mCharHeight / mScale);
 }
 
+void ascii::Graphics::Dispose()
+{
+    clearGlyphs();
+    SDL_DestroyRenderer(mRenderer);
+    SDL_DestroyWindow(mWindow);
+    delete mCache;
+}
+
 void ascii::Graphics::SetScale(float scale)
 {
-    SetVideoMode(scale, mFullscreen);
+    if (mFullscreen)
+    {
+        ToggleFullscreen();
+    }
+    else
+    {
+        Dispose();
+    }
+    Initialize(scale);
+}
+
+void ascii::Graphics::SetFullscreen(bool fullscreen)
+{
+    mFullscreen = fullscreen;
+
+    // Delete the old window if its scale is not 1, so fullscreen can scale
+    // automatically
+    if (mScale != 1.0f)
+    {
+        SetScale(1.0f);
+    }
+
+    Uint32 flags = 0; 
+    if (fullscreen)
+    {
+        flags = flags | SDL_WINDOW_FULLSCREEN;
+    }
+
+    if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
+    {
+        cout << SDL_GetError() << endl;
+    }
 }
 
 void ascii::Graphics::ToggleFullscreen()
 {
-    SetVideoMode(mScale, !mFullscreen);
+    SetFullscreen(!mFullscreen);
 }
 
 int ascii::Graphics::pixelToCellX(int pixelX)

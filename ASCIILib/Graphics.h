@@ -48,13 +48,24 @@ namespace ascii
             /// Warning: This rebuilds the image cache. All images will need
             /// to be reloaded.
             ///</summary>
-            void SetVideoMode(float scale, bool fullscreen);
+            void Initialize(float scale=1.0f);
+
+            ///<summary>
+            /// Cleans up everything created by Graphics, allowing a new
+            /// call to Initialize()
+            ///</summary>
+            void Dispose();
 
             ///<summary>
             /// Changes the scale of the viewing window
             /// Modifies the graphics video mode, even after construction.
             ///</summary>
             void SetScale(float scale);
+
+            ///<summary>
+            /// Sets the window to fullscreen or not
+            ///</summary>
+            void SetFullscreen(bool fullscreen);
 
             ///<summary>
             /// Toggles fullscreen rendering (but does not cause scaling to
