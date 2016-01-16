@@ -55,13 +55,20 @@ bool ascii::Input::isKeyHeld(SDL_Keycode key)
 
 bool ascii::Input::anyKeyPressed()
 {
+    return !allPressedKeys().empty();
+}
+
+std::vector<SDL_Keycode> ascii::Input::allPressedKeys()
+{
+    std::vector<SDL_Keycode> keyList;
+
     for (auto it = mPressedKeys.begin(); it != mPressedKeys.end(); ++it)
     {
         if (it->second == true)
         {
-            return true;
+            keyList.push_back(it->first);
         }
     }
 
-	return false;
+    return keyList;
 }
