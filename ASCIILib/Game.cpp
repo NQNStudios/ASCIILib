@@ -80,6 +80,7 @@ void ascii::Game::Run()
 		const int currentTime = SDL_GetTicks();
 		const int elapsedTime = currentTime - lastUpdateTime;
 
+		mSoundManager->update();
 		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
