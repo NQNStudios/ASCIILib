@@ -37,6 +37,19 @@ ascii::SoundManager::~SoundManager(void)
 	Mix_CloseAudio();
 }
 
+void ascii::SoundManager::update()
+{
+	for (auto it = mLoopingChannels.begin(); it != mLoopingChannels.end(); ++it)
+	{
+		if (!Mix_Playing(it->second.first))
+		{
+			mLoopingChannels[it->first] = std::make_pair(
+                    playSoundGroup(it->first, it->second.second),
+                    it->second.second);
+		}
+	}
+}
+
 void ascii::SoundManager::loadSound(std::string key, const char* path)
 {
     Mix_Chunk* sound = Mix_LoadWAV(path);
@@ -155,21 +168,11 @@ int ascii::SoundManager::playSoundGroupGetDuration(std::string group, float volu
 
 void ascii::SoundManager::loopSoundGroup(std::string group, float volume)
 {
-	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
-
-	int n = rand() % soundGroup.size();
-
-    Mix_Chunk* groupSound = mSoundGroups[group][n];
-
-    int channel = firstOpenChannel();
-    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
-	Mix_PlayChannel(channel, groupSound, -1);
-    mLoopingChannels[group] = channel;
+    mLoopingChannels[group] = std::make_pair(playSoundGroup(group, volume), volume);
 }
 
 void ascii::SoundManager::stopLoopingGroup(std::string group)
 {
-	Mix_HaltChannel(mLoopingChannels[group]);
 	mLoopingChannels.erase(group);
 }
 
@@ -177,7 +180,7 @@ void ascii::SoundManager::stopLoopingGroup()
 {
 	for (auto it = mLoopingChannels.begin(); it != mLoopingChannels.end(); ++it)
 	{
-		Mix_HaltChannel(it->second);
+		Mix_HaltChannel(it->second.first);
 	}
 
 	mLoopingChannels.clear();

@@ -83,6 +83,8 @@ void ascii::Game::Run()
 		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
+        mSoundManager->update();
+
 		Draw(*mGraphics);
 
 		const int msPerFrame = 1000 / kFPS;

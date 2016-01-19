@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 #include <SDL_mixer.h>
 
@@ -18,6 +19,8 @@ namespace ascii
 			SoundManager();
 			~SoundManager();
 			
+            void update();
+
 			///<summary>
 			/// Loads and stores a sound effect in the SoundManager.
 			///</summary>
@@ -200,7 +203,7 @@ namespace ascii
 
 			std::map<std::string, Mix_Music*> mTracks;
 
-			std::map<std::string, int> mLoopingChannels;
+			std::map<std::string, std::pair<int, float> > mLoopingChannels;
 
             float mSoundVolume;
 	};
