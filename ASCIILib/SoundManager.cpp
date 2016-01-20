@@ -144,6 +144,11 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 {
 	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
 
+    if (soundGroup.empty())
+    {
+        std::cout << "Error! Tried to play empty sound group: " << group << std::endl;
+    }
+
 	int n = rand() % soundGroup.size();
 
     int channel = firstOpenChannel();
