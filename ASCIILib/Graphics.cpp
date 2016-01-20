@@ -16,7 +16,8 @@ const unsigned int ascii::Graphics::kBufferHeight = 25;
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
     mTitle(title), mScale(1.0f), mFullscreen(false),
-    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL)
+    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
+    mHidingImages(false)
 {
 	TTF_Init();
 
@@ -29,7 +30,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL)
+    mWindow(NULL), mRenderer(NULL), mHidingImages(false)
 {
 	TTF_Init();
 
@@ -136,17 +137,20 @@ void ascii::Graphics::update()
 	SDL_RenderFillRect(mRenderer, NULL);
 	
 	//draw background images
-	for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
-	{
-		SDL_Rect dest;
-		
-		dest.x = it->second.second.x * mCharWidth;
-		dest.y = it->second.second.y * mCharHeight;
+    if (!mHidingImages)
+    {
+        for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
+        {
+            SDL_Rect dest;
+            
+            dest.x = it->second.second.x * mCharWidth;
+            dest.y = it->second.second.y * mCharHeight;
 
-		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+            SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
-		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
-	}
+            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+        }
+    }
 
 	//draw all buffer background colors
 	for (int y = 0; y < height(); ++y)
@@ -247,20 +251,23 @@ void ascii::Graphics::update()
 	}
 
 	//draw foreground images
-	for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
-	{
-		SDL_Rect dest;
-		
-		dest.x = it->second.second.x * mCharWidth;
-		dest.y = it->second.second.y * mCharHeight;
+    if (!mHidingImages)
+    {
+        for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
+        {
+            SDL_Rect dest;
+            
+            dest.x = it->second.second.x * mCharWidth;
+            dest.y = it->second.second.y * mCharHeight;
 
-		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-        dest.w *= mScale;
-        dest.h *= mScale;
+            SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+            dest.w *= mScale;
+            dest.h *= mScale;
 
 
-		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
-	}
+            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+        }
+    }
 
 	SDL_RenderPresent(mRenderer);
 }
@@ -289,6 +296,16 @@ void ascii::Graphics::clearImages()
 {
 	mBackgroundImages.clear();
 	mForegroundImages.clear();
+}
+
+void ascii::Graphics::hideImages()
+{
+    mHidingImages = true;
+}
+
+void ascii::Graphics::showImages()
+{
+    mHidingImages = false;
 }
 
 void ascii::Graphics::clearGlyphs()

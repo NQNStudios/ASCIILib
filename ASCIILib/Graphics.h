@@ -123,10 +123,21 @@ namespace ascii
 			///</summary>
 			void clearImages();
 
+            ///<summary>
+            /// Temporarily hides images
+            ///</summary>
+            void hideImages();
+
+            ///<summary>
+            /// Shows all images after hiding them
+            ///</summary>
+            void showImages();
+
 			///<summary>
 			/// Clears all glyph textures stored in Graphics.
 			///</summary>
 			void clearGlyphs();
+
 		private:
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
@@ -158,6 +169,8 @@ namespace ascii
 
 			std::map<std::string, Image> mBackgroundImages;
 			std::map<std::string, Image> mForegroundImages;
+
+            bool mHidingImages;
 	};
 
 };
