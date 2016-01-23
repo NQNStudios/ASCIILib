@@ -1,7 +1,7 @@
 #include "Game.h"
 
 #include <stdio.h>
-
+#include <algorithm>
 #include <SDL_image.h>
 
 const int kFPS = 60;
