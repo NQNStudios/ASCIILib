@@ -12,6 +12,7 @@
 *.lai
 *.la
 *.a
+*.lib
 
 # Visual Studio files
 *.tlog
@@ -27,6 +28,9 @@
 *.db
 *.unsuccessfulbuild
 *.user
+*.vcxproj
+*.filters
+*.sln
 
 # CMake files
 ASCIILib/CMakeFiles/
@@ -36,4 +40,5 @@ CMakeFiles/
 cmake_install.cmake
 Makefile
 
+# Vim swap files
 *.swp
