@@ -46,6 +46,9 @@ namespace ascii
 			///<param name="key">The key with which the sound is stored.</param>
 			void playSound(std::string key, float volume=1.0f);
 
+            void loopSound(std::string key, float volume=1.0f);
+            void stopLoopingSound(std::string key);
+
             ///<summary>
             /// Return the length in milliseconds of a sound effect recorded in
             /// Mono 44k 16-bit
@@ -204,6 +207,7 @@ namespace ascii
 			std::map<std::string, Mix_Music*> mTracks;
 
 			std::map<std::string, std::pair<int, float> > mLoopingChannels;
+            std::map<std::string, int> mLoopingSoundChannels;
 
             float mSoundVolume;
 	};

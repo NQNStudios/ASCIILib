@@ -80,6 +80,28 @@ void ascii::SoundManager::playSound(std::string key, float volume)
 	Mix_PlayChannel(channel, mSounds[key], 0);
 }
 
+void ascii::SoundManager::loopSound(std::string key, float volume)
+{
+    int channel = firstOpenChannel();
+
+    // Store which channel it's looping on
+    mLoopingSoundChannels[key] = channel;
+
+    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
+    Mix_PlayChannel(channel, mSounds[key], -1);
+}
+
+void ascii::SoundManager::stopLoopingSound(std::string key)
+{
+    // Check which channel it's looping on
+    int channel = mLoopingSoundChannels[key];
+
+    Mix_HaltChannel(channel);
+
+    // Forget which channel it was looping on
+    mLoopingSoundChannels.erase(key);
+}
+
 int ascii::SoundManager::soundDuration(std::string key)
 {
     Mix_Chunk* chunk = mSounds[key];
