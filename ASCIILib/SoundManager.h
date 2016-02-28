@@ -199,6 +199,8 @@ namespace ascii
             ///</summary>
             int firstOpenChannel();
 
+            Mix_Chunk* getSound(std::string key);
+
 			typedef std::vector<Mix_Chunk*> SoundGroup;
 
 			std::map<std::string, Mix_Chunk*> mSounds;

@@ -76,8 +76,8 @@ void ascii::SoundManager::playSound(std::string key, float volume)
 {
     int channel = firstOpenChannel();
 
-    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
-	Mix_PlayChannel(channel, mSounds[key], 0);
+    Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
+	Mix_PlayChannel(channel, getSound(key), 0);
 }
 
 void ascii::SoundManager::loopSound(std::string key, float volume)
@@ -87,8 +87,8 @@ void ascii::SoundManager::loopSound(std::string key, float volume)
     // Store which channel it's looping on
     mLoopingSoundChannels[key] = channel;
 
-    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
-    Mix_PlayChannel(channel, mSounds[key], -1);
+    Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
+    Mix_PlayChannel(channel, getSound(key), -1);
 }
 
 void ascii::SoundManager::stopLoopingSound(std::string key)
@@ -174,7 +174,7 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 	int n = rand() % soundGroup.size();
 
     int channel = firstOpenChannel();
-    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
+    Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
 	return Mix_PlayChannel(channel, mSoundGroups[group][n], 0);
 }
 
@@ -187,7 +187,7 @@ int ascii::SoundManager::playSoundGroupGetDuration(std::string group, float volu
     Mix_Chunk* groupSound = mSoundGroups[group][n];
 
     int channel = firstOpenChannel();
-    Mix_Volume(channel, MIX_MAX_VOLUME * mSoundVolume * volume);
+    Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
 	Mix_PlayChannel(channel, groupSound, 0);
 
     return soundDuration(groupSound);
@@ -299,4 +299,16 @@ float ascii::SoundManager::getMusicVolume()
 void ascii::SoundManager::setMusicVolume(float value)
 {
 	Mix_VolumeMusic(MIX_MAX_VOLUME * value);
+}
+
+Mix_Chunk* ascii::SoundManager::getSound(std::string key)
+{
+    Mix_Chunk* sound = mSounds[key];
+
+    if (!sound)
+    {
+        cout << "Error! Tried to access nonexistent sound " << key << endl;
+    }
+
+    return sound;
 }
