@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include <map>
+#include <vector>
 #include <SDL.h>
 
 namespace ascii
@@ -51,6 +52,11 @@ namespace ascii
 			/// Checks if any key at all was pressed.
 			///</summary>
 			bool anyKeyPressed();
+
+            ///<summary>
+            /// Return the list of keys that were newly pressed this frame
+            ///</summary>
+            std::vector<SDL_Keycode> allPressedKeys();
 
 			///<summary>The x-coordinate of the mouse.</summary>
 			int mouseX() { return mMouseX; }

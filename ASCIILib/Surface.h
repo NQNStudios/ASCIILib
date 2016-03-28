@@ -115,6 +115,12 @@ namespace ascii
 			///<param name="surface">The surface to blit to this one.</param>
 			void blitSurface(Surface* surface, int x, int y);
 
+            ///<summary>
+            /// Set every cell opaque in this surface on which the given surface's
+            /// opaque cells would lay when blitted
+            ///</summary
+            void applyMask(Surface* surface, int x, int y);
+
 			///<summary>
 			/// Blits part of another surface to this surface at the given location.
 			///</summary>

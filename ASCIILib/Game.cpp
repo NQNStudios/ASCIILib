@@ -1,7 +1,7 @@
 #include "Game.h"
 
 #include <stdio.h>
-
+#include <algorithm>
 #include <SDL_image.h>
 
 const int kFPS = 60;
@@ -80,9 +80,10 @@ void ascii::Game::Run()
 		const int currentTime = SDL_GetTicks();
 		const int elapsedTime = currentTime - lastUpdateTime;
 
-		mSoundManager->update();
 		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
+
+        mSoundManager->update();
 
 		Draw(*mGraphics);
 

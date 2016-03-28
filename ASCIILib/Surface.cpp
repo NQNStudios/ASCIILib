@@ -431,6 +431,22 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 	}
 }
 
+void ascii::Surface::applyMask(Surface* surface, int x, int y)
+{
+	// Set cells on this surface opaque if an opaque cell from the given
+    // surface would cover them
+	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->width(); ++destx, ++srcx)
+	{
+		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->height(); ++desty, ++srcy)
+		{
+			if (destx >= 0 && desty >= 0 && surface->isCellOpaque(srcx, srcy))
+			{
+				mCellOpacity[destx][desty] = true;
+			}
+		}
+	}
+}
+
 void ascii::Surface::blitString(const char* text, Color color, int x, int y)
 {
 	string str(text);

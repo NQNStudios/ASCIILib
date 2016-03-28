@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 #include <SDL_mixer.h>
 
@@ -19,10 +20,7 @@ namespace ascii
 			SoundManager();
 			~SoundManager();
 			
-			///<summary>
-			/// Handles looping sound groups.
-			///</summary>
-			void update();
+            void update();
 
 			///<summary>
 			/// Loads and stores a sound effect in the SoundManager.
@@ -47,7 +45,10 @@ namespace ascii
 			/// Plays a sound effect.
 			///</summary>
 			///<param name="key">The key with which the sound is stored.</param>
-			void playSound(std::string key);
+			void playSound(std::string key, float volume=1.0f);
+
+            void loopSound(std::string key, float volume=1.0f);
+            void stopLoopingSound(std::string key);
 
             ///<summary>
             /// Return the length in milliseconds of a sound effect recorded in
@@ -77,19 +78,19 @@ namespace ascii
 			/// Plays a random sound from the given sound group.
 			///</summary>
 			///<returns>The channel on which the sound group was played.</returns>
-			int playSoundGroup(std::string group);
+			int playSoundGroup(std::string group, float volume=1.0f);
 
 			///<summary>
 			/// Play a random sound from the given sound group and return its
             /// sound duration
 			///</summary>
 			///<returns>The duration of the sound which was played.</returns>
-            int playSoundGroupGetDuration(std::string group);
+            int playSoundGroupGetDuration(std::string group, float volume=1.0f);
 
 			///<summary>
 			/// Starts looping a sound group, randomly selecting sounds from it to play one after the other.
 			///</summary>
-			void loopSoundGroup(std::string group);
+			void loopSoundGroup(std::string group, float volume=1.0f);
 
 			///<summary>
 			/// Stops looping a sound group.
@@ -100,6 +101,17 @@ namespace ascii
 			/// Stops looping all current looping sound groups.
 			///</summary>
 			void stopLoopingGroup();
+
+            ///<summary>
+            /// Pauses all sound effects currently playing
+            ///</summary>
+            void pauseSounds();
+
+            ///<summary>
+            /// Resumes all sound effects currently paused
+            ///</summary>
+            void resumeSounds();
+
 
 			///<summary>The current sound volume, from 0 to 1.</summary>
 			float getSoundVolume();
@@ -182,6 +194,14 @@ namespace ascii
             ///</summary>
             int soundDuration(Mix_Chunk* sound);
 
+            ///<summary>
+            /// Return the number of the first channel that's free to play
+            /// audio
+            ///</summary>
+            int firstOpenChannel();
+
+            Mix_Chunk* getSound(std::string key);
+
 			typedef std::vector<Mix_Chunk*> SoundGroup;
 
 			std::map<std::string, Mix_Chunk*> mSounds;
@@ -189,7 +209,10 @@ namespace ascii
 
 			std::map<std::string, Mix_Music*> mTracks;
 
-			std::map<std::string, int> mLoopingChannels;
+			std::map<std::string, std::pair<int, float> > mLoopingChannels;
+            std::map<std::string, int> mLoopingSoundChannels;
+
+            float mSoundVolume;
 	};
 
 };

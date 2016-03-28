@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 2.8)
 
-# use C++ 11
-set(CMAKE_CXX_STANDARD 11)
-
 set(PROJECT_NAME "ASCIILib")
 set(SRC_DIR "ASCIILib")
 
+if (UNIX)
+    # Use C++11
+    set(CMAKE_CXX_FLAGS "-std=c++11")
+    set(CMAKE_CXX_STANDARD 11)
+else()
+    # Define windows variables
+    SET(ENV{SDL2DIR} "${ASCIILib_SOURCE_DIR}")
+    SET(ENV{SDL2_IMAGE} "${ASCIILib_SOURCE_DIR}")
+    SET(ENV{SDL2_TTF} "${ASCIILib_SOURCE_DIR}")
+    SET(ENV{SDL2_MIXER_HOME} "${ASCIILib_SOURCE_DIR}")
+endif(UNIX)
+
 project(${PROJECT_NAME})
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ASCIILib_SOURCE_DIR}/cmake")
 
 # find all sources in the source directory
 file(GLOB ASCIILib_src
@@ -17,6 +25,9 @@ file(GLOB ASCIILib_src
 
 add_library(${PROJECT_NAME} ${ASCIILib_src})
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ASCIILib_SOURCE_DIR}/cmake")
+
+# Include SDL2 and extension libraries
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_image REQUIRED)

@@ -49,7 +49,31 @@ namespace ascii
             /// Warning: This rebuilds the image cache. All images will need
             /// to be reloaded.
             ///</summary>
-            void SetVideoMode(float scale, bool fullscreen);
+            void Initialize(float scale=1.0f);
+
+            ///<summary>
+            /// Cleans up everything created by Graphics, allowing a new
+            /// call to Initialize()
+            ///</summary>
+            void Dispose();
+
+            ///<summary>
+            /// Changes the scale of the viewing window
+            /// Modifies the graphics video mode, even after construction.
+            ///</summary>
+            void SetScale(float scale);
+
+            ///<summary>
+            /// Sets the window to fullscreen or not
+            ///</summary>
+            void SetFullscreen(bool fullscreen);
+
+            ///<summary>
+            /// Toggles fullscreen rendering (but does not cause scaling to
+            /// fit). Modifies the graphics video mode, even after
+            /// construction.
+            ///</summary>
+            void ToggleFullscreen();
 
 			///<summary>
 			/// Returns the image cache for this Graphics instance.
@@ -100,15 +124,32 @@ namespace ascii
 			///</summary>
 			void clearImages();
 
+            ///<summary>
+            /// Temporarily hides images
+            ///</summary>
+            void hideImages();
+
+            ///<summary>
+            /// Shows all images after hiding them
+            ///</summary>
+            void showImages();
+
 			///<summary>
 			/// Clears all glyph textures stored in Graphics.
 			///</summary>
 			void clearGlyphs();
+
 		private:
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
 			///</summary>
 			void checkSize();
+
+            ///<summary>
+            /// Update the values of mCharWidth and mCharHeight to reflect
+            /// scale
+            ///</summary>
+            void UpdateCharSize();
 
 			typedef std::pair<std::string, Color> Glyph;
 			typedef std::pair<SDL_Texture*, Point> Image;
@@ -129,6 +170,8 @@ namespace ascii
 
 			std::map<std::string, Image> mBackgroundImages;
 			std::map<std::string, Image> mForegroundImages;
+
+            bool mHidingImages;
 	};
 
 };

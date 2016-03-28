@@ -1,6 +1,9 @@
 #include "Graphics.h"
 
 #include <sstream>
+#include <iostream>
+using std::cout;
+using std::endl;
 
 const int kFontSize = 12;
 
@@ -13,87 +16,118 @@ const unsigned int ascii::Graphics::kBufferHeight = 25;
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
     mTitle(title), mScale(1.0f), mFullscreen(false),
-    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL)
+    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
+    mHidingImages(false)
 {
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
     
-    SetVideoMode(mScale, mFullscreen);
+    Initialize(mScale);
 }
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL)
+    mWindow(NULL), mRenderer(NULL), mHidingImages(false)
 {
 	TTF_Init();
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
 
-    SetVideoMode(mScale, mFullscreen);
+    Initialize(mScale);
 }
 
 ascii::Graphics::~Graphics(void)
 {
-	clearGlyphs();
-
-	SDL_DestroyRenderer(mRenderer);
-	
-	SDL_DestroyWindow(mWindow);
+    Dispose();
 
 	TTF_CloseFont(mFont);
 
 	TTF_Quit();
 }
 
-void ascii::Graphics::SetVideoMode(float scale, bool fullscreen)
+void ascii::Graphics::Initialize(float scale)
 {
-    // If Graphics has already been initialized, delete everything
-    if (mWindow != NULL)
-    {
-        clearGlyphs();
-
-        SDL_DestroyRenderer(mRenderer);
-
-        SDL_DestroyWindow(mWindow);
-
-        delete mCache;
-    }
-
     mScale = scale;
-    mFullscreen = fullscreen;
+    mFullscreen = false;
+
+    UpdateCharSize();
 
     int flags = SDL_WINDOW_SHOWN;
 
-    if (fullscreen)
-    {
-        flags = flags | SDL_WINDOW_FULLSCREEN;
-    }
-
 	mWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth * mScale, height() * mCharHeight * mScale, 
+		width() * mCharWidth, height() * mCharHeight, 
 		flags);
 
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	mCache = new ascii::ImageCache(mRenderer, mCharWidth, mCharHeight);
+	mCache = new ascii::ImageCache(mRenderer,
+            mCharWidth / mScale,
+            mCharHeight / mScale);
+}
+
+void ascii::Graphics::Dispose()
+{
+    clearGlyphs();
+    SDL_DestroyRenderer(mRenderer);
+    SDL_DestroyWindow(mWindow);
+    delete mCache;
+}
+
+void ascii::Graphics::SetScale(float scale)
+{
+    if (mFullscreen)
+    {
+        ToggleFullscreen();
+    }
+    else
+    {
+        Dispose();
+    }
+    Initialize(scale);
+}
+
+void ascii::Graphics::SetFullscreen(bool fullscreen)
+{
+    mFullscreen = fullscreen;
+
+    // Delete the old window if its scale is not 1, so fullscreen can scale
+    // automatically
+    if (mScale != 1.0f)
+    {
+        SetScale(1.0f);
+    }
+
+    Uint32 flags = 0; 
+    if (fullscreen)
+    {
+        flags = flags | SDL_WINDOW_FULLSCREEN;
+    }
+
+    if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
+    {
+        cout << SDL_GetError() << endl;
+    }
+}
+
+void ascii::Graphics::ToggleFullscreen()
+{
+    SetFullscreen(!mFullscreen);
 }
 
 int ascii::Graphics::pixelToCellX(int pixelX)
 {
-    return pixelX / mCharWidth / mScale;
+    return pixelX / mCharWidth;
 }
 
 int ascii::Graphics::pixelToCellY(int pixelY)
 {
-    return pixelY / mCharHeight / mScale;
+    return pixelY / mCharHeight;
 }
 
 void ascii::Graphics::update()
@@ -103,19 +137,20 @@ void ascii::Graphics::update()
 	SDL_RenderFillRect(mRenderer, NULL);
 	
 	//draw background images
-	for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
-	{
-		SDL_Rect dest;
-		
-		dest.x = it->second.second.x * mCharWidth * mScale;
-		dest.y = it->second.second.y * mCharHeight * mScale;
+    if (!mHidingImages)
+    {
+        for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
+        {
+            SDL_Rect dest;
+            
+            dest.x = it->second.second.x * mCharWidth;
+            dest.y = it->second.second.y * mCharHeight;
 
-		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-        dest.w *= mScale;
-        dest.h *= mScale;
+            SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
-		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
-	}
+            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+        }
+    }
 
 	//draw all buffer background colors
 	for (int y = 0; y < height(); ++y)
@@ -127,10 +162,10 @@ void ascii::Graphics::update()
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = x * mCharWidth * mScale;
-			colorRect.y = y * mCharHeight * mScale;
+			colorRect.x = x * mCharWidth;
+			colorRect.y = y * mCharHeight;
 			colorRect.w = 0;
-			colorRect.h = mCharHeight * mScale;
+			colorRect.h = mCharHeight;
 
 			Color backgroundColor = getBackgroundColor(x, y);
 
@@ -142,7 +177,7 @@ void ascii::Graphics::update()
                     break;
                 }
 
-				colorRect.w += mCharWidth * mScale;
+				colorRect.w += mCharWidth;
 				++x;
 			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
 
@@ -170,10 +205,10 @@ void ascii::Graphics::update()
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
-			textRect.x = x * mCharWidth * mScale;
-			textRect.y = y * mCharHeight * mScale;
+			textRect.x = x * mCharWidth;
+			textRect.y = y * mCharHeight;
 			textRect.w = 0;
-			textRect.h = mCharHeight * mScale;
+			textRect.h = mCharHeight;
 			Color characterColor = getCharacterColor(x, y);
 
 			do
@@ -186,7 +221,7 @@ void ascii::Graphics::update()
 
 				char ch = getCharacter(x, y);
 				charstream << ch;
-				textRect.w += mCharWidth * mScale;
+				textRect.w += mCharWidth;
 				++x;
 			} while (x < width() && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
 
@@ -216,20 +251,23 @@ void ascii::Graphics::update()
 	}
 
 	//draw foreground images
-	for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
-	{
-		SDL_Rect dest;
-		
-		dest.x = it->second.second.x * mCharWidth * mScale;
-		dest.y = it->second.second.y * mCharHeight * mScale;
+    if (!mHidingImages)
+    {
+        for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
+        {
+            SDL_Rect dest;
+            
+            dest.x = it->second.second.x * mCharWidth;
+            dest.y = it->second.second.y * mCharHeight;
 
-		SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-        dest.w *= mScale;
-        dest.h *= mScale;
+            SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+            dest.w *= mScale;
+            dest.h *= mScale;
 
 
-		SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
-	}
+            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+        }
+    }
 
 	SDL_RenderPresent(mRenderer);
 }
@@ -260,6 +298,16 @@ void ascii::Graphics::clearImages()
 	mForegroundImages.clear();
 }
 
+void ascii::Graphics::hideImages()
+{
+    mHidingImages = true;
+}
+
+void ascii::Graphics::showImages()
+{
+    mHidingImages = false;
+}
+
 void ascii::Graphics::clearGlyphs()
 {
 	for (std::map<Glyph, SDL_Texture*>::iterator it = mGlyphTextures.begin(); it != mGlyphTextures.end(); ++it)
@@ -272,8 +320,18 @@ void ascii::Graphics::clearGlyphs()
 
 void ascii::Graphics::checkSize()
 {
-	int w, h;
-	SDL_GetWindowSize(mWindow, &w, &h);
+    if (!mFullscreen)
+    {
+        int w, h;
+        SDL_GetWindowSize(mWindow, &w, &h);
 
-	SDL_assert(width() * mCharWidth * mScale == w && height() * mCharHeight * mScale == h);
+        SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+    }
+}
+
+void ascii::Graphics::UpdateCharSize()
+{
+	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
+    mCharWidth *= mScale;
+    mCharHeight *= mScale;
 }
