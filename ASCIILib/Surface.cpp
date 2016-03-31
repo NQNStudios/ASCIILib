@@ -72,6 +72,12 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	ifstream file;
 	file.open(filepath);
 
+    if (!file.is_open())
+    {
+        cout << "Error! Tried to open nonexistent surface file: "
+            << filepath << endl;
+    }
+
 	map<char, Color> colors;
 	map<char, string> infoCodes;
 
