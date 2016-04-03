@@ -30,6 +30,9 @@ namespace ascii
 
             ~Game();
 
+            void ShowMouseCursor();
+            void HideMouseCursor();
+
 			///<summary>
 			/// The game's SoundManager.
 			///</summary>

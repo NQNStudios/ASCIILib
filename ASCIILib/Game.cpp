@@ -27,6 +27,16 @@ ascii::Game::~Game()
 	SDL_Quit();
 }
 
+void ascii::Game::ShowMouseCursor()
+{
+    SDL_ShowCursor(SDL_ENABLE);
+}
+
+void ascii::Game::HideMouseCursor()
+{
+    SDL_ShowCursor(SDL_DISABLE);
+}
+
 void ascii::Game::Run()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
