@@ -1,12 +1,9 @@
 #include "Surface.h"
 
 #include <iostream>
-using std::cout;
-using std::endl;
 #include <map>
-using std::map;
 #include <sstream>
-using std::stringstream;
+using namespace std;
 
 const string kEmptyInfo(".");
 
@@ -574,6 +571,63 @@ int ascii::Surface::measureStringMultilineY(const char* text, Rectangle destinat
 	}
 
 	return lines;
+}
+
+ascii::Point ascii::Surface::findString(string text)
+{
+    int textLength = text.size();
+
+    // Check each point in the Surface to see if it marks the beginning of
+    // a complete appearance of the desired string
+    for (int y = 0; y < height(); ++y)
+    {
+        for (int x = 0; x + textLength <= width(); ++x)
+        {
+            string possibleMatch;
+
+            for (int c = 0; c < textLength; ++c)
+            {
+                possibleMatch += getCharacter(x+c, y);
+            }
+
+            if (!possibleMatch.compare(text))
+            {
+                return ascii::Point(x, y);
+            }
+        }
+    }
+
+    // If the string is not found, return an undefined point
+    return ascii::Point::Undefined;
+}
+
+void ascii::Surface::highlightString(string text, ascii::Color color)
+{
+    // Find the given string
+    Point startingPosition = findString(text);
+
+    // If it is found...
+    if (startingPosition.defined)
+    {
+        // ...Set the character color of each cell to the highlight
+        for (int x = startingPosition.x; x < startingPosition.x + text.size(); ++x)
+        {
+            setCharacterColor(x, startingPosition.y, color);
+        }
+    }
+}
+
+void ascii::Surface::highlightTokens(string text, ascii::Color color)
+{
+    // Use a stringstream to tokenize the given string
+    stringstream tokens(text);
+    string token;
+
+    // Highlight each token
+    while (tokens >> token)
+    {
+        highlightString(token, color);
+    }
 }
 
 void ascii::Surface::printContents()
