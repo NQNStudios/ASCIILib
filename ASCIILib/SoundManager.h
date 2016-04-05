@@ -178,6 +178,8 @@ namespace ascii
 			///<summary>Sets the current music volume, from 0 to 1.</summary>
 			void setMusicVolume(float volume);
 
+            std::string currentTrackName() { return mCurrentTrack; }
+
 			///<summary>Whether a music track is currently playing.</summary>
 			bool trackPlaying() { return Mix_PlayingMusic() != 0; }
 
@@ -210,6 +212,8 @@ namespace ascii
 
 			std::map<std::string, std::pair<int, float> > mLoopingChannels;
             std::map<std::string, int> mLoopingSoundChannels;
+
+            std::string mCurrentTrack;
 
             float mSoundVolume;
 	};
