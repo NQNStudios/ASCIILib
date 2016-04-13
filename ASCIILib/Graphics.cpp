@@ -83,13 +83,14 @@ void ascii::Graphics::SetScale(float scale)
 {
     if (mFullscreen)
     {
-        ToggleFullscreen();
+        mScale = scale;
+        UpdateCharSize();
     }
     else
     {
         Dispose();
+        Initialize(scale);
     }
-    Initialize(scale);
 }
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
@@ -106,7 +107,12 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
     Uint32 flags = 0; 
     if (fullscreen)
     {
-        flags = flags | SDL_WINDOW_FULLSCREEN;
+        flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP;
+    }
+    else
+    {
+        Dispose();
+        Initialize(1.0f);
     }
 
     if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
@@ -136,6 +142,20 @@ void ascii::Graphics::update()
 	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
 	SDL_RenderFillRect(mRenderer, NULL);
 	
+    // Calculate the top-left corner of the rendering region
+    int drawX = 0;
+    int drawY = 0;
+
+    Point actualRes = actualResolution();
+    Point drawRes = drawResolution();
+
+    if (actualRes.x > drawRes.x || actualRes.y > drawRes.y)
+    {
+        // Dealing with a fullscreen window
+        drawX = actualRes.x / 2 - drawRes.x / 2;
+        drawY = actualRes.y / 2 - drawRes.y / 2;
+    }
+
 	//draw background images
     if (!mHidingImages)
     {
@@ -143,10 +163,13 @@ void ascii::Graphics::update()
         {
             SDL_Rect dest;
             
-            dest.x = it->second.second.x * mCharWidth;
-            dest.y = it->second.second.y * mCharHeight;
+            dest.x = drawX + it->second.second.x * mCharWidth;
+            dest.y = drawY + it->second.second.y * mCharHeight;
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+
+            dest.w *= mScale;
+            dest.h *= mScale;
 
             SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
         }
@@ -162,8 +185,8 @@ void ascii::Graphics::update()
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = x * mCharWidth;
-			colorRect.y = y * mCharHeight;
+			colorRect.x = drawX + x * mCharWidth;
+			colorRect.y = drawY + y * mCharHeight;
 			colorRect.w = 0;
 			colorRect.h = mCharHeight;
 
@@ -205,8 +228,8 @@ void ascii::Graphics::update()
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
-			textRect.x = x * mCharWidth;
-			textRect.y = y * mCharHeight;
+			textRect.x = drawX + x * mCharWidth;
+			textRect.y = drawY + y * mCharHeight;
 			textRect.w = 0;
 			textRect.h = mCharHeight;
 			Color characterColor = getCharacterColor(x, y);
@@ -257,8 +280,8 @@ void ascii::Graphics::update()
         {
             SDL_Rect dest;
             
-            dest.x = it->second.second.x * mCharWidth;
-            dest.y = it->second.second.y * mCharHeight;
+            dest.x = drawX + it->second.second.x * mCharWidth;
+            dest.y = drawY + it->second.second.y * mCharHeight;
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
             dest.w *= mScale;
@@ -316,6 +339,18 @@ void ascii::Graphics::clearGlyphs()
 	}
 
 	mGlyphTextures.clear();
+}
+
+ascii::Point ascii::Graphics::drawResolution()
+{
+    return ascii::Point(mCharWidth * width(), mCharHeight * height());
+}
+
+ascii::Point ascii::Graphics::actualResolution()
+{
+    int w, h;
+    SDL_GetWindowSize(mWindow, &w, &h);
+    return ascii::Point(w, h);
 }
 
 void ascii::Graphics::checkSize()
