@@ -99,7 +99,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
 
     // Delete the old window if its scale is not 1, so fullscreen can scale
     // automatically
-    if (mScale != 1.0f)
+    if (fullscreen && mScale != 1.0f)
     {
         SetScale(1.0f);
     }
