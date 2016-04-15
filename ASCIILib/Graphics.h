@@ -139,6 +139,7 @@ namespace ascii
 			///</summary>
 			void clearGlyphs();
 
+            Point drawOrigin();
             Point drawResolution();
             Point actualResolution();
 		private:

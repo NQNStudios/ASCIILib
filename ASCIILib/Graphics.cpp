@@ -128,20 +128,24 @@ void ascii::Graphics::ToggleFullscreen()
 
 int ascii::Graphics::pixelToCellX(int pixelX)
 {
+    if (drawOrigin().x > 0)
+    {
+        pixelX -= drawOrigin().x;
+    }
     return pixelX / mCharWidth;
 }
 
 int ascii::Graphics::pixelToCellY(int pixelY)
 {
+    if (drawOrigin().y > 0)
+    {
+        pixelY -= drawOrigin().y;
+    }
     return pixelY / mCharHeight;
 }
 
-void ascii::Graphics::update()
+ascii::Point ascii::Graphics::drawOrigin()
 {
-	//draw background color
-	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
-	SDL_RenderFillRect(mRenderer, NULL);
-	
     // Calculate the top-left corner of the rendering region
     int drawX = 0;
     int drawY = 0;
@@ -155,6 +159,18 @@ void ascii::Graphics::update()
         drawX = actualRes.x / 2 - drawRes.x / 2;
         drawY = actualRes.y / 2 - drawRes.y / 2;
     }
+
+    return Point(drawX, drawY);
+}
+
+void ascii::Graphics::update()
+{
+	//draw background color
+	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
+	SDL_RenderFillRect(mRenderer, NULL);
+
+    int drawX = drawOrigin().x;
+    int drawY = drawOrigin().y;
 
 	//draw background images
     if (!mHidingImages)
