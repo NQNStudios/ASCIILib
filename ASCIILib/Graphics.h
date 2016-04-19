@@ -9,6 +9,7 @@
 
 #include "Surface.h"
 #include "Rectangle.h"
+#include "Point.h"
 
 namespace ascii
 {
@@ -139,6 +140,9 @@ namespace ascii
 			///</summary>
 			void clearGlyphs();
 
+            Point drawOrigin();
+            Point drawResolution();
+            Point actualResolution();
 		private:
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit

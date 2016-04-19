@@ -2,13 +2,9 @@
 #define SURFACE_H
 
 #include <vector>
-using std::vector;
-#include <string>
 #include <fstream>
-using std::ifstream;
-using std::getline;
 #include <string>
-using std::string;
+using namespace std;
 
 #include <SDL.h>
 
@@ -149,6 +145,24 @@ namespace ascii
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
 			int measureStringMultilineY(const char* text, Rectangle destination);
+
+            ///<summary>
+            /// Locate the first appearance of the given string on one line of
+            /// the graphics buffer
+            ///</summary>
+            ascii::Point findString(string text);
+
+            ///<summary>
+            /// Highlight the given string on one line of the Surface using the
+            /// given color
+            ///</summary>
+            void highlightString(string text, ascii::Color color);
+
+            ///<summary>
+            /// Highlight the tokens of the given string on whichever lines
+            /// where they first appear given color
+            ///</summary>
+            void highlightTokens(string text, ascii::Color color);
 
             ///<summary>
             /// Prints out the characters stored in the graphics buffer to

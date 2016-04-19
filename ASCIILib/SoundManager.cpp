@@ -254,21 +254,25 @@ void ascii::SoundManager::playTrack(std::string key, int loops)
 {
     Mix_Music* track = mTracks[key];
 	Mix_PlayMusic(track, loops);
+    mCurrentTrack = key;
 }
 
 void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
 {
 	Mix_FadeInMusicPos(mTracks[key], loops, ms, position);
+    mCurrentTrack = key;
 }
 
 void ascii::SoundManager::stopTrack()
 {
 	Mix_HaltMusic();
+    mCurrentTrack = "";
 }
 			
 void ascii::SoundManager::fadeOutTrack(int ms)
 {
 	Mix_FadeOutMusic(ms);
+    mCurrentTrack = "";
 }
 
 void ascii::SoundManager::pauseTrack()
