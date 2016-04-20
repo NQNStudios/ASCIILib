@@ -47,3 +47,9 @@ Makefile
 
 include/*
 lib/*
+
+# Ninja files
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja

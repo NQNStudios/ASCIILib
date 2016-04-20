@@ -33,23 +33,11 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-message(
-    ${SDL2_INCLUDE_DIR}\n
-    ${SDLMIXER_INCLUDE_DIR}\n
-    ${SDL2_IMAGE_INCLUDE_DIR}\n
-    ${SDL2_TTF_INCLUDE_DIR}\n
-    )
 include_directories(
     ${SDL2_INCLUDE_DIR}
     ${SDLMIXER_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
     ${SDL2_TTF_INCLUDE_DIR}
-    )
-message(
-    ${SDL2_LIBRARY}\n
-    ${SDLMIXER_LIBRARY}\n
-    ${SDL2_IMAGE_LIBRARY}\n
-    ${SDL2_TTF_LIBRARY}\n
     )
 target_link_libraries(${PROJECT_NAME}
     ${SDL2_LIBRARY}
