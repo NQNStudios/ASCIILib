@@ -43,3 +43,7 @@ Makefile
 
 # Vim swap files
 *.swp
+*.swo
+
+include/*
+lib/*
