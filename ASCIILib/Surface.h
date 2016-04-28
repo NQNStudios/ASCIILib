@@ -144,7 +144,7 @@ namespace ascii
 			///<summary>
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
-			int measureStringMultilineY(const char* text, Rectangle destination);
+			static int measureStringMultilineY(const char* text, Rectangle destination);
 
             ///<summary>
             /// Locate the first appearance of the given string on one line of
