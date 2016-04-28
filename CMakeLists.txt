@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 set(PROJECT_NAME "ASCIILib")
 set(SRC_DIR "ASCIILib")
 
+project(${PROJECT_NAME})
+
 if (UNIX)
     # Use C++11
     set(CMAKE_CXX_FLAGS "-std=c++11")
@@ -15,7 +17,6 @@ else()
     SET(ENV{SDL2_MIXER_HOME} "${ASCIILib_SOURCE_DIR}")
 endif(UNIX)
 
-project(${PROJECT_NAME})
 
 # find all sources in the source directory
 file(GLOB ASCIILib_src
