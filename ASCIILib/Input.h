@@ -87,6 +87,7 @@ namespace ascii
 
 			///<summary>The amount the scroll bar was moved vertically this frame.</summary>
 			int scrollY() { return mScrollY; }
+
 		private:
 			friend class Game;
 
