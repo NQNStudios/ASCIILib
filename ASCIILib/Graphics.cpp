@@ -340,6 +340,10 @@ void ascii::Graphics::update()
 
 void ascii::Graphics::directRenderSurface(ascii::Surface* surface, int x, int y)
 {
+    clearScreen();
+    drawImages(&mBackgroundImages);
+    drawSurface(this, 0, 0);
+    drawImages(&mForegroundImages);
     drawSurface(surface, x, y);
     refresh();
 }
