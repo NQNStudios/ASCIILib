@@ -95,6 +95,12 @@ namespace ascii
 			void setWindowBackgroundColor(Color color) { mBackgroundColor = color; }
 
 			///<summary>
+			/// Directly render a surface to the window at the given position,
+            /// then refresh the screen.
+			///</summary>
+            void directRenderSurface(Surface* surface, int x, int y);
+
+			///<summary>
 			/// Adds an image in the background of the game window.
 			///</summary>
 			///<param name="key">The key with which this image should be stored.</param>
@@ -143,7 +149,18 @@ namespace ascii
             Point drawOrigin();
             Point drawResolution();
             Point actualResolution();
+
 		private:
+			typedef std::pair<std::string, Color> Glyph;
+			typedef std::pair<SDL_Texture*, Point> Image;
+
+            void clearScreen();
+            void drawImages(std::map<std::string, Image>* images);
+            void drawBackgroundColors(Surface* surface, int x, int y);
+            void drawCharacters(Surface* surface, int x, int y);
+            void drawSurface(Surface* surface, int x, int y);
+            void refresh();
+
 			///<summary>
 			/// Ensures that this Graphics instance was not created with dimensions too small to fit
 			///</summary>
@@ -154,9 +171,6 @@ namespace ascii
             /// scale
             ///</summary>
             void UpdateCharSize();
-
-			typedef std::pair<std::string, Color> Glyph;
-			typedef std::pair<SDL_Texture*, Point> Image;
 
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;

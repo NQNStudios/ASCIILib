@@ -163,19 +163,24 @@ ascii::Point ascii::Graphics::drawOrigin()
     return Point(drawX, drawY);
 }
 
-void ascii::Graphics::update()
+void ascii::Graphics::clearScreen()
 {
 	//draw background color
 	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
 	SDL_RenderFillRect(mRenderer, NULL);
+}
 
-    int drawX = drawOrigin().x;
-    int drawY = drawOrigin().y;
-
-	//draw background images
+void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
+{
+    // Don't draw any images if they're currently being hidden
     if (!mHidingImages)
     {
-        for (auto it = mBackgroundImages.begin(); it != mBackgroundImages.end(); ++it)
+        int drawX = drawOrigin().x;
+        int drawY = drawOrigin().y;
+
+        // Draw every image in the given map otherwise, using their specified
+        // positions
+        for (auto it = images->begin(); it != images->end(); ++it)
         {
             SDL_Rect dest;
             
@@ -190,79 +195,90 @@ void ascii::Graphics::update()
             SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
         }
     }
+}
 
-	//draw all buffer background colors
-	for (int y = 0; y < height(); ++y)
-	{
-		int x = 0;
+void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y)
+{
+    int drawX = drawOrigin().x;
+    int drawY = drawOrigin().y;
 
-		while (x < width())
+	for (int ySrc = 0; ySrc < surface->height(); ++ySrc) 
+    {
+		int xSrc = 0;
+
+		while (xSrc < surface->width())
 		{
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = drawX + x * mCharWidth;
-			colorRect.y = drawY + y * mCharHeight;
+			colorRect.x = drawX + (x + xSrc) * mCharWidth;
+			colorRect.y = drawY + (y + ySrc) * mCharHeight;
 			colorRect.w = 0;
 			colorRect.h = mCharHeight;
 
-			Color backgroundColor = getBackgroundColor(x, y);
+			Color backgroundColor = surface->getBackgroundColor(xSrc, ySrc);
 
 			do
 			{
-				if (!isCellOpaque(x, y))
+				if (!isCellOpaque(xSrc, ySrc))
                 {
-                    ++x;
+                    ++xSrc;
                     break;
                 }
 
 				colorRect.w += mCharWidth;
-				++x;
-			} while (x < width() && getBackgroundColor(x, y) == backgroundColor);
+				++xSrc;
+			} while (xSrc < surface->width() && surface->getBackgroundColor(xSrc, ySrc) == backgroundColor);
 
 			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
 			SDL_RenderFillRect(mRenderer, &colorRect);
 		}
 	}
+}
+
+void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
+{
+    int drawX = drawOrigin().x;
+    int drawY = drawOrigin().y;
 
 	//draw all characters
-	for (int y = 0; y < height(); ++y)
+	for (int ySrc = 0; ySrc < surface->height(); ++ySrc)
 	{
-		int x = 0;
+		int xSrc = 0;
 
-		while (x < width())
+		while (xSrc < surface->width())
 		{
 			//chain all adjacent characters with the same color into strings for more efficient rendering
 
-			char ch = getCharacter(x, y);
+			char ch = surface->getCharacter(xSrc, ySrc);
 			if (ch == ' ')
 			{
-				++x;
+				++xSrc;
 				continue;
 			}
 
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
-			textRect.x = drawX + x * mCharWidth;
-			textRect.y = drawY + y * mCharHeight;
+			textRect.x = drawX + (x + xSrc) * mCharWidth;
+			textRect.y = drawY + (y + ySrc) * mCharHeight;
 			textRect.w = 0;
 			textRect.h = mCharHeight;
-			Color characterColor = getCharacterColor(x, y);
+			Color characterColor = surface->getCharacterColor(xSrc, ySrc);
 
 			do
 			{
-				if (!isCellOpaque(x, y))
+				if (!surface->isCellOpaque(xSrc, ySrc))
 				{
-					++x;
+					++xSrc;
 					break;
 				}
 
-				char ch = getCharacter(x, y);
+				char ch = surface->getCharacter(xSrc, ySrc);
 				charstream << ch;
 				textRect.w += mCharWidth;
-				++x;
-			} while (x < width() && getCharacterColor(x, y) == characterColor && getCharacter(x, y) != ' ');
+				++xSrc;
+			} while (xSrc < surface->width() && surface->getCharacterColor(xSrc, ySrc) == characterColor && surface->getCharacter(xSrc, ySrc) != ' ');
 
 			std::string str;
 			charstream >> str;
@@ -288,27 +304,44 @@ void ascii::Graphics::update()
 			SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
 		}
 	}
+}
+
+void ascii::Graphics::drawSurface(ascii::Surface* surface, int x, int y)
+{
+	// Draw all background colors
+    drawBackgroundColors(surface, x, y);
+
+    // Draw all characters
+    drawCharacters(surface, x, y);
+}
+
+void ascii::Graphics::refresh()
+{
+    SDL_RenderPresent(mRenderer);
+}
+
+void ascii::Graphics::update()
+{
+    // Clear the screen for drawing
+    clearScreen();
+
+	// Draw background images
+    drawImages(&mBackgroundImages);
+
+    // Draw the buffer surface in between
+    drawSurface(this, 0, 0);
 
 	//draw foreground images
-    if (!mHidingImages)
-    {
-        for (auto it = mForegroundImages.begin(); it != mForegroundImages.end(); ++it)
-        {
-            SDL_Rect dest;
-            
-            dest.x = drawX + it->second.second.x * mCharWidth;
-            dest.y = drawY + it->second.second.y * mCharHeight;
+    drawImages(&mForegroundImages);
 
-            SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-            dest.w *= mScale;
-            dest.h *= mScale;
+    // Refresh the window to show all changes
+    refresh();
+}
 
-
-            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
-        }
-    }
-
-	SDL_RenderPresent(mRenderer);
+void ascii::Graphics::directRenderSurface(ascii::Surface* surface, int x, int y)
+{
+    drawSurface(surface, x, y);
+    refresh();
 }
 
 void ascii::Graphics::addBackgroundImage(std::string key, std::string textureKey, int x, int y)
