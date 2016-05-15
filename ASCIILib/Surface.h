@@ -6,6 +6,9 @@
 #include <string>
 using namespace std;
 
+#include "unicode/unistr.h"
+using namespace icu;
+
 #include <SDL.h>
 
 #include "Color.h"
@@ -30,12 +33,12 @@ namespace ascii
 			///<summary>
 			/// Constructs a surface of the given dimensions filled with the given character and background color.
 			///</summary>
-			Surface(int width, int height, char character, Color backgroundColor, Color characterColor);
+			Surface(int width, int height, UChar32 character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Constructs a 1x1 surface with the given character and background color.
 			///</summary>
-			Surface(char character, Color backgroundColor, Color characterColor);
+			Surface(UChar32 character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Loads a surface from a text file.
@@ -45,13 +48,13 @@ namespace ascii
 			int width() { return mWidth; }
 			int height() { return mHeight; }
 
-			char getCharacter(int x, int y) { return mCharacters[x][y]; }
+			UChar32 getCharacter(int x, int y) { return mCharacters[x][y]; }
 			Color getBackgroundColor(int x, int y) { return mBackgroundColors[x][y]; }
 			Color getCharacterColor(int x, int y) { return mCharacterColors[x][y]; }
 			bool isCellOpaque(int x, int y) { return mCellOpacity[x][y]; }
 			string getSpecialInfo(int x, int y) { return mSpecialInfo[x][y]; }
 
-			void setCharacter(int x, int y, char value) { mCharacters[x][y] = value; }
+			void setCharacter(int x, int y, UChar32 value) { mCharacters[x][y] = value; }
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
 			void setCellOpacity(int x, int y, bool value) { mCellOpacity[x][y] = value; }
@@ -75,12 +78,12 @@ namespace ascii
 			///<summary>
 			/// Fills the entire surface with the given character and background color.
 			///</summary>
-			void fill(char character, Color backgroundColor, Color characterColor);
+			void fill(UChar32 character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Fills a rectangle on this surface with the given character and background color.
 			///</summary>
-			void fillRect(Rectangle destination, char character, Color backgroundColor, Color characterColor);
+			void fillRect(Rectangle destination, UChar32 character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Draws a border around the entire surface using the given character and background color.
@@ -129,40 +132,40 @@ namespace ascii
 			///</summary>
 			///<param name="text">The string to blit to this surface.</param>
 			///<param name="color">The color of the text.</param>
-			void blitString(const char* text, Color color, int x, int y);
+			void blitString(UnicodeString text, Color color, int x, int y);
 
 			///<summary>
 			/// Blits a large string to this surface, wrapping it across multiple lines to fit the given destination rectangle.
 			///</summary>
-			void blitStringMultiline(const char* text, Color color, Rectangle destination);
+			void blitStringMultiline(UnicodeString text, Color color, Rectangle destination);
 
 			///<summary>
 			/// Finds the final x position of the text drawn across multiple lines.
 			///</summary>
-			int stringMultilineEndX(const char* text, Rectangle destination);
+			int stringMultilineEndX(UnicodeString text, Rectangle destination);
 
 			///<summary>
 			/// Measures the number of lines needed to blit the given string across multiple lines.
 			///</summary>
-			static int measureStringMultilineY(const char* text, Rectangle destination);
+			static int measureStringMultilineY(UnicodeString text, Rectangle destination);
 
             ///<summary>
             /// Locate the first appearance of the given string on one line of
             /// the graphics buffer
             ///</summary>
-            ascii::Point findString(string text);
+            ascii::Point findString(UnicodeString text);
 
             ///<summary>
             /// Highlight the given string on one line of the Surface using the
             /// given color
             ///</summary>
-            void highlightString(string text, ascii::Color color);
+            void highlightString(UnicodeString text, ascii::Color color);
 
             ///<summary>
             /// Highlight the tokens of the given string on whichever lines
             /// where they first appear given color
             ///</summary>
-            void highlightTokens(string text, ascii::Color color);
+            void highlightTokens(UnicodeString text, ascii::Color color);
 
             ///<summary>
             /// Prints out the characters stored in the graphics buffer to
@@ -176,13 +179,11 @@ namespace ascii
             // FIELDS
 			int mWidth, mHeight;
 
-			vector<vector<char> > mCharacters;
-
+            // Buffer
+			vector<vector<UChar32> > mCharacters;
 			vector<vector<Color> > mBackgroundColors;
 			vector<vector<Color> > mCharacterColors;
-
 			vector<bool*> mCellOpacity;
-
 			vector<vector<string> > mSpecialInfo;
 	};
 

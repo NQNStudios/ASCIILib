@@ -5,6 +5,9 @@
 #include <sstream>
 using namespace std;
 
+#include "unicode/brkiter.h"
+
+
 const string kEmptyInfo(".");
 
 ascii::Surface::Surface(int width, int height)
@@ -450,22 +453,33 @@ void ascii::Surface::applyMask(Surface* surface, int x, int y)
 	}
 }
 
-void ascii::Surface::blitString(const char* text, Color color, int x, int y)
+void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 {
-	string str(text);
-
 	int destx = x, desty = y;
-	string::iterator it = str.begin();
-	while (destx < mWidth && desty < mHeight && it != str.end())
+
+    // Iterate through actual characters in the given string
+    BreakIterator* it = BreakIterator::createCharacterInstance();
+    it->setText(text);
+    int32_t p = it->first();
+
+	while (destx < mWidth && desty < mHeight && p != BreakIterator::DONE)
 	{
-		mCharacters[destx][desty] = *it;
+        // TODO process the character (whether it has multiple code points or
+        // not)
+		mCharacters[destx][desty] = it.next32();
+
+        // Blit the character color to the space
 		mCharacterColors[destx][desty] = color;
 
-		++it, ++destx;
+		++destx;
+        // Find the next actual character
+        p = it->next();
 	}
+
+    delete it;
 }
 
-void ascii::Surface::blitStringMultiline(const char* text, Color color, Rectangle destination)
+void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
 {
 	stringstream sstream(text);
 	string tempstr;
