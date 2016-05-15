@@ -165,7 +165,7 @@ ascii::Point ascii::Graphics::drawOrigin()
 
 void ascii::Graphics::clearScreen()
 {
-	//draw background color
+	// Draw background color
 	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
 	SDL_RenderFillRect(mRenderer, NULL);
 }
@@ -220,7 +220,7 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 
 			do
 			{
-				if (!isCellOpaque(xSrc, ySrc))
+				if (!surface->isCellOpaque(xSrc, ySrc))
                 {
                     ++xSrc;
                     break;
@@ -331,21 +331,28 @@ void ascii::Graphics::update()
     // Draw the buffer surface in between
     drawSurface(this, 0, 0);
 
-	//draw foreground images
+	// Draw foreground images
     drawImages(&mForegroundImages);
+
+    // Draw foreground surfaces
+    for (int i = 0; i < mForegroundSurfaces.size(); ++i)
+    {
+        Surface* surface = mForegroundSurfaces[i].first;
+        Point position = mForegroundSurfaces[i].second;
+
+        drawSurface(surface, position.x, position.y);
+    }
+
+    // Clear any surfaces from the foreground
+    mForegroundSurfaces.clear();
 
     // Refresh the window to show all changes
     refresh();
 }
 
-void ascii::Graphics::directRenderSurface(ascii::Surface* surface, int x, int y)
+void ascii::Graphics::drawForegroundSurface(ascii::Surface* surface, int x, int y)
 {
-    clearScreen();
-    drawImages(&mBackgroundImages);
-    drawSurface(this, 0, 0);
-    drawImages(&mForegroundImages);
-    drawSurface(surface, x, y);
-    refresh();
+    mForegroundSurfaces.push_back(make_pair(surface, Point(x, y)));
 }
 
 void ascii::Graphics::addBackgroundImage(std::string key, std::string textureKey, int x, int y)

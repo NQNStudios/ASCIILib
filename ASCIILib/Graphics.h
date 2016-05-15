@@ -95,10 +95,9 @@ namespace ascii
 			void setWindowBackgroundColor(Color color) { mBackgroundColor = color; }
 
 			///<summary>
-			/// Directly render a surface to the window at the given position,
-            /// then refresh the screen.
+			/// Draw a surface in the VERY foreground of the screen
 			///</summary>
-            void directRenderSurface(Surface* surface, int x, int y);
+            void drawForegroundSurface(Surface* surface, int x, int y);
 
 			///<summary>
 			/// Adds an image in the background of the game window.
@@ -153,6 +152,7 @@ namespace ascii
 		private:
 			typedef std::pair<std::string, Color> Glyph;
 			typedef std::pair<SDL_Texture*, Point> Image;
+            typedef std::pair<Surface*, Point> ForegroundSurface;
 
             void clearScreen();
             void drawImages(std::map<std::string, Image>* images);
@@ -188,6 +188,7 @@ namespace ascii
 
 			std::map<std::string, Image> mBackgroundImages;
 			std::map<std::string, Image> mForegroundImages;
+            std::vector<ForegroundSurface> mForegroundSurfaces;
 
             bool mHidingImages;
 	};
