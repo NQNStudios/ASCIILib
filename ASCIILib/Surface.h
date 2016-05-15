@@ -177,7 +177,7 @@ namespace ascii
             // HELPERS
             static void readLine(ifstream* file, string& str);
 
-            static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY);
+            static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo, Color color);
 
             // FIELDS
 			int mWidth, mHeight;

@@ -250,6 +250,8 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 		{
 			//chain all adjacent characters with the same color into strings for more efficient rendering
 
+            // TODO handle accented unicode characters!
+            // TODO process them as UChar
 			char ch = surface->getCharacter(xSrc, ySrc);
 			if (ch == ' ')
 			{

@@ -479,60 +479,13 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 
 void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
 {
-    UErrorCode error = U_ZERO_ERROR;
-    BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
-    it->setText(text);
+    int d1;
+    int d2;
 
-	vector<UnicodeString> sections;
-
-    // Split the string based on places a line break could go
-    int32_t p = it->first();
-	while (p != BreakIterator::DONE)
-	{
-        int32_t start = p;
-        p = it->next();
-        int32_t end = p;
-
-        UnicodeString section = text.tempSubStringBetween(start, end);
-        cout << "STarting " << start;
-        if (p != BreakIterator::DONE)
-        {
-            cout << " Ending " << end << endl;
-        }
-        else
-        {
-            cout << "ends string" << endl;
-        }
-
-		sections.push_back(section); //collect the individual sections
-	}
-
-	int x = destination.left();
-	int y = destination.top();
-
-	for (int i = 0; i < sections.size(); ++i)
-	{
-		//blit each section
-		UnicodeString section = sections[i];
-		
-		if (x + section.length() > destination.right())
-		{
-			//if there's not enough room on this line, move to the next one
-			++y;
-			x = destination.left();
-
-			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
-		}
-
-        cout << "Happening" << endl;
-		blitString(section, color, x, y);
-		x += section.length();
-	}
-
-    delete it;
+    processMultilineString(text, destination, &d1, &d2, this, color);
 }
 
-void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY)
+void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo=NULL, Color color=Color::Black)
 {
     UErrorCode error = U_ZERO_ERROR;
     BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
@@ -547,7 +500,7 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
         p = it->next();
         int32_t end = p;
 
-        UnicodeString section(text, start, end);
+        UnicodeString section = text.tempSubStringBetween(start, end);
         sections.push_back(section);
     }
 
@@ -555,9 +508,10 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 	int y = destination.top();
 
     int lines = 1;
-	for (auto it = sections.begin(); it != sections.end(); ++it)
+	for (int i = 0; i < sections.size(); ++i)
 	{
-		UnicodeString section = *it;
+		//blit each section
+		UnicodeString section = sections[i];
 		
 		if (x + section.length() > destination.right())
 		{
@@ -569,11 +523,15 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
 		}
 
-		x += section.length() + 1;
+        if (blitTo)
+        {
+            blitTo->blitString(section, color, x, y);
+        }
+		x += section.length();
 	}
 
 	*outEndX = x;
-    *outHeightY = y;
+    *outHeightY = lines;
 
     delete it;
 }
@@ -581,14 +539,16 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 int ascii::Surface::stringMultilineEndX(UnicodeString text, Rectangle destination)
 {
     int result;
-    processMultilineString(text, destination, &result, NULL);
+    int discard;
+    processMultilineString(text, destination, &result, &discard);
     return result;
 }
 
 int ascii::Surface::measureStringMultilineY(UnicodeString text, Rectangle destination)
 {
     int result;
-    processMultilineString(text, destination, NULL, &result);
+    int discard;
+    processMultilineString(text, destination, &discard, &result);
     return result;
 }
 
