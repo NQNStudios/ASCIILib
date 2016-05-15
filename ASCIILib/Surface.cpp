@@ -5,14 +5,16 @@
 #include <sstream>
 using namespace std;
 
+#include "unicode/schriter.h"
 #include "unicode/brkiter.h"
+#include "unicode/locid.h"
 
 
 const string kEmptyInfo(".");
 
 ascii::Surface::Surface(int width, int height)
 	: mWidth(width), mHeight(height), 
-		mCharacters(width, vector<char>(height, ' ')),
+		mCharacters(width, vector<UChar>(height, ' ')),
 		mBackgroundColors(width, vector<Color>(height, Color::Black)),
 		mCharacterColors(width, vector<Color>(height, Color::White)),
 		mSpecialInfo(width, vector<string>(height, ""))
@@ -28,9 +30,9 @@ ascii::Surface::Surface(int width, int height)
 	}
 }
 
-ascii::Surface::Surface(int width, int height, char character, Color backgroundColor, Color characterColor)
+ascii::Surface::Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor)
 	: mWidth(width), mHeight(height),
-		mCharacters(width, vector<char>(height, character)),
+		mCharacters(width, vector<UChar>(height, character)),
 		mBackgroundColors(width, vector<Color>(height, backgroundColor)),
 		mCharacterColors(width, vector<Color>(height, characterColor)),
 		mSpecialInfo(width, vector<string>(height, ""))
@@ -46,14 +48,15 @@ ascii::Surface::Surface(int width, int height, char character, Color backgroundC
 	}
 }
 
-ascii::Surface::Surface(char character, Color backgroundColor, Color characterColor)
+ascii::Surface::Surface(UChar character, Color backgroundColor, Color characterColor)
 	: mWidth(1), mHeight(1),
-		mCharacters(1, vector<char>(1, character)),
+		mCharacters(1, vector<UChar>(1, character)),
 		mBackgroundColors(1, vector<Color>(1, backgroundColor)),
 		mCharacterColors(1, vector<Color>(1, characterColor)),
 		mSpecialInfo(1, vector<string>(1, ""))
 {
 	mCellOpacity.push_back(new bool[1]);
+    mCellOpacity[0][0] = true;
 }
 
 void ascii::Surface::readLine(ifstream* file, string& str)
@@ -267,7 +270,7 @@ void ascii::Surface::clearOpaque()
 	}
 }
 
-void ascii::Surface::fill(char character, Color backgroundColor, Color characterColor)
+void ascii::Surface::fill(UChar character, Color backgroundColor, Color characterColor)
 {
 	for (int x = 0; x < mWidth; ++x)
 	{
@@ -280,7 +283,7 @@ void ascii::Surface::fill(char character, Color backgroundColor, Color character
 	}
 }
 
-void ascii::Surface::fillRect(Rectangle destination, char character, Color backgroundColor, Color characterColor)
+void ascii::Surface::fillRect(Rectangle destination, UChar character, Color backgroundColor, Color characterColor)
 {
 	for (int x = destination.left(); x < destination.right(); ++x)
 	{
@@ -293,7 +296,7 @@ void ascii::Surface::fillRect(Rectangle destination, char character, Color backg
 	}
 }
 
-void ascii::Surface::drawBorder(char character, Color backgroundColor, Color characterColor)
+void ascii::Surface::drawBorder(UChar character, Color backgroundColor, Color characterColor)
 {
 	int x1 = 0;
 	int x2 = mWidth - 1;
@@ -326,7 +329,7 @@ void ascii::Surface::drawBorder(char character, Color backgroundColor, Color cha
 	}
 }
 
-void ascii::Surface::drawRect(Rectangle destination, char character, Color backgroundColor, Color characterColor)
+void ascii::Surface::drawRect(Rectangle destination, UChar character, Color backgroundColor, Color characterColor)
 {
 	int x1 = destination.left();
 	int x2 = destination.right() - 1;
@@ -458,138 +461,127 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 	int destx = x, desty = y;
 
     // Iterate through actual characters in the given string
-    BreakIterator* it = BreakIterator::createCharacterInstance();
-    it->setText(text);
-    int32_t p = it->first();
+    StringCharacterIterator it(text);
 
-	while (destx < mWidth && desty < mHeight && p != BreakIterator::DONE)
+	while (destx < mWidth && desty < mHeight && it.hasNext())
 	{
-        // TODO process the character (whether it has multiple code points or
-        // not)
-		mCharacters[destx][desty] = it.next32();
+		mCharacters[destx][desty] = it.next();
 
         // Blit the character color to the space
 		mCharacterColors[destx][desty] = color;
 
 		++destx;
-        // Find the next actual character
+	}
+}
+
+void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
+{
+    UErrorCode error;
+    BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
+    it->setText(text);
+
+	vector<UnicodeString> sections;
+
+    // Split the string based on places a line break could go
+    int32_t p = it->first();
+	while (p != BreakIterator::DONE)
+	{
+        int start = p;
         p = it->next();
+        int end = p;
+
+        UnicodeString section(text, start, end);
+
+		sections.push_back(section); //collect the individual sections
+	}
+
+	int x = destination.left();
+	int y = destination.top();
+
+	for (auto it = sections.begin(); it != sections.end(); ++it)
+	{
+		//blit each section
+		UnicodeString section = *it;
+		
+		if (x + section.length() > destination.right())
+		{
+			//if there's not enough room on this line, move to the next one
+			++y;
+			x = destination.left();
+
+			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
+		}
+
+		blitString(section, color, x, y);
+		setCharacter(x + section.length(), y, u' '); //fill in spaces
+
+		x += section.length() + 1;
 	}
 
     delete it;
 }
 
-void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
+void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY)
 {
-	stringstream sstream(text);
-	string tempstr;
+    UErrorCode error;
+    BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
+    it->setText(text);
 
-	vector<string> words;
+    vector<UnicodeString> sections;
 
-	while (sstream >> tempstr)
-	{
-		words.push_back(tempstr); //collect the individual words in a vector
-	}
+    int32_t p = it->first();
+    while (p != BreakIterator::DONE)
+    {
+        int32_t start = p;
+        p = it->next();
+        int32_t end = p;
+
+        UnicodeString section(text, start, end);
+        sections.push_back(section);
+    }
 
 	int x = destination.left();
 	int y = destination.top();
 
-	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
+    int lines = 1;
+	for (auto it = sections.begin(); it != sections.end(); ++it)
 	{
-		//blit each word
-		tempstr = *it;
+		UnicodeString section = *it;
 		
-		if (x + tempstr.size() > destination.right())
+		if (x + section.length() > destination.right())
 		{
 			//if there's not enough room on this line, move to the next one
 			++y;
+            ++lines;
 			x = destination.left();
 
 			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
 		}
 
-		blitString(tempstr.c_str(), color, x, y);
-		setCharacter(x + tempstr.size(), y, ' '); //fill in spaces
-
-		x += tempstr.size() + 1;
+		x += section.length() + 1;
 	}
 
+	*outEndX = x;
+    *outHeightY = y;
 }
 
-int ascii::Surface::stringMultilineEndX(const char* text, Rectangle destination)
+int ascii::Surface::stringMultilineEndX(UnicodeString text, Rectangle destination)
 {
-	stringstream sstream(text);
-	string tempstr;
-
-	vector<string> words;
-
-	while (sstream >> tempstr)
-	{
-		words.push_back(tempstr); //collect the individual words in a vector
-	}
-
-	int x = destination.left();
-	int y = destination.top();
-
-	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
-	{
-		tempstr = *it;
-		
-		if (x + tempstr.size() > destination.right())
-		{
-			//if there's not enough room on this line, move to the next one
-			++y;
-			x = destination.left();
-
-			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
-		}
-
-		x += tempstr.size() + 1;
-	}
-
-	return x;
+    int result;
+    processMultilineString(text, destination, &result, NULL);
+    return result;
 }
 
-int ascii::Surface::measureStringMultilineY(const char* text, Rectangle destination)
+int ascii::Surface::measureStringMultilineY(UnicodeString text, Rectangle destination)
 {
-	stringstream sstream(text);
-	string tempstr;
-
-	vector<string> words;
-
-	while (sstream >> tempstr)
-	{
-		words.push_back(tempstr); //collect the individual words in a vector
-	}
-
-	int x = destination.left();
-	int y = destination.top();
-
-	int lines = 1;
-
-	for (vector<string>::iterator it = words.begin(); it != words.end(); ++it)
-	{
-		tempstr = *it;
-		
-		if (x + tempstr.size() > destination.right())
-		{
-			//if there's not enough room on this line, move to the next one
-			++y;
-			++lines;
-			x = destination.left();
-
-			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
-		}
-
-		x += tempstr.size() + 1;
-	}
-
-	return lines;
+    int result;
+    processMultilineString(text, destination, NULL, &result);
+    return result;
 }
 
-ascii::Point ascii::Surface::findString(string text)
+ascii::Point ascii::Surface::findString(UnicodeString text)
 {
-    int textLength = text.size();
+    int textLength = text.length();
 
     // Check each point in the Surface to see if it marks the beginning of
     // a complete appearance of the desired string
@@ -597,7 +589,7 @@ ascii::Point ascii::Surface::findString(string text)
     {
         for (int x = 0; x + textLength <= width(); ++x)
         {
-            string possibleMatch;
+            UnicodeString possibleMatch;
 
             for (int c = 0; c < textLength; ++c)
             {
@@ -615,7 +607,7 @@ ascii::Point ascii::Surface::findString(string text)
     return ascii::Point::Undefined;
 }
 
-void ascii::Surface::highlightString(string text, ascii::Color color)
+void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
 {
     // Find the given string
     Point startingPosition = findString(text);
@@ -624,22 +616,29 @@ void ascii::Surface::highlightString(string text, ascii::Color color)
     if (startingPosition.defined)
     {
         // ...Set the character color of each cell to the highlight
-        for (int x = startingPosition.x; x < startingPosition.x + text.size(); ++x)
+        for (int x = startingPosition.x; x < startingPosition.x + text.length(); ++x)
         {
             setCharacterColor(x, startingPosition.y, color);
         }
     }
 }
 
-void ascii::Surface::highlightTokens(string text, ascii::Color color)
+void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
 {
-    // Use a stringstream to tokenize the given string
-    stringstream tokens(text);
-    string token;
+    // Use a BreakIterator to tokenize the given string
+    UErrorCode error;
+    BreakIterator* it = BreakIterator::createWordInstance(Locale::getUS(), error);
+    it->setText(text);
 
     // Highlight each token
-    while (tokens >> token)
+    int32_t p = it->first();
+    while (p != BreakIterator::DONE)
     {
+        int32_t start = p;
+        p = it->next();
+        int32_t end = p;
+
+        UnicodeString token(text, start, end);
         highlightString(token, color);
     }
 }

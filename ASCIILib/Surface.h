@@ -33,12 +33,12 @@ namespace ascii
 			///<summary>
 			/// Constructs a surface of the given dimensions filled with the given character and background color.
 			///</summary>
-			Surface(int width, int height, UChar32 character, Color backgroundColor, Color characterColor);
+			Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Constructs a 1x1 surface with the given character and background color.
 			///</summary>
-			Surface(UChar32 character, Color backgroundColor, Color characterColor);
+			Surface(UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Loads a surface from a text file.
@@ -48,13 +48,13 @@ namespace ascii
 			int width() { return mWidth; }
 			int height() { return mHeight; }
 
-			UChar32 getCharacter(int x, int y) { return mCharacters[x][y]; }
+			UChar getCharacter(int x, int y) { return mCharacters[x][y]; }
 			Color getBackgroundColor(int x, int y) { return mBackgroundColors[x][y]; }
 			Color getCharacterColor(int x, int y) { return mCharacterColors[x][y]; }
 			bool isCellOpaque(int x, int y) { return mCellOpacity[x][y]; }
 			string getSpecialInfo(int x, int y) { return mSpecialInfo[x][y]; }
 
-			void setCharacter(int x, int y, UChar32 value) { mCharacters[x][y] = value; }
+			void setCharacter(int x, int y, UChar value) { mCharacters[x][y] = value; }
 			void setBackgroundColor(int x, int y, Color value) { mBackgroundColors[x][y] = value; }
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
 			void setCellOpacity(int x, int y, bool value) { mCellOpacity[x][y] = value; }
@@ -78,22 +78,22 @@ namespace ascii
 			///<summary>
 			/// Fills the entire surface with the given character and background color.
 			///</summary>
-			void fill(UChar32 character, Color backgroundColor, Color characterColor);
+			void fill(UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Fills a rectangle on this surface with the given character and background color.
 			///</summary>
-			void fillRect(Rectangle destination, UChar32 character, Color backgroundColor, Color characterColor);
+			void fillRect(Rectangle destination, UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Draws a border around the entire surface using the given character and background color.
 			///</summary>
-			void drawBorder(char character, Color backgroundColor, Color characterColor);
+			void drawBorder(UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Draws an empty rectangle on this surface with the given character and background color.
 			///</summary>
-			void drawRect(Rectangle destination, char character, Color backgroundColor, Color characterColor);
+			void drawRect(Rectangle destination, UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Copies all information from a given surface to this one, including transparency.
@@ -142,7 +142,7 @@ namespace ascii
 			///<summary>
 			/// Finds the final x position of the text drawn across multiple lines.
 			///</summary>
-			int stringMultilineEndX(UnicodeString text, Rectangle destination);
+			static int stringMultilineEndX(UnicodeString text, Rectangle destination);
 
 			///<summary>
 			/// Measures the number of lines needed to blit the given string across multiple lines.
@@ -176,11 +176,13 @@ namespace ascii
             // HELPERS
             static void readLine(ifstream* file, string& str);
 
+            static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY);
+
             // FIELDS
 			int mWidth, mHeight;
 
             // Buffer
-			vector<vector<UChar32> > mCharacters;
+			vector<vector<UChar> > mCharacters;
 			vector<vector<Color> > mBackgroundColors;
 			vector<vector<Color> > mCharacterColors;
 			vector<bool*> mCellOpacity;
