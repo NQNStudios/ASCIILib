@@ -7,6 +7,7 @@
 using namespace std;
 
 #include "unicode/unistr.h"
+#include "unicode/brkiter.h"
 using namespace icu;
 
 #include <SDL.h>

@@ -8,6 +8,7 @@ using namespace std;
 #include "unicode/schriter.h"
 #include "unicode/brkiter.h"
 #include "unicode/locid.h"
+#include "unicode/ustdio.h"
 
 
 const string kEmptyInfo(".");
@@ -463,20 +464,22 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
     // Iterate through actual characters in the given string
     StringCharacterIterator it(text);
 
+    UChar next = it.first();
 	while (destx < mWidth && desty < mHeight && it.hasNext())
 	{
-		mCharacters[destx][desty] = it.next();
+		setCharacter(destx, desty, next);
 
         // Blit the character color to the space
-		mCharacterColors[destx][desty] = color;
+		setCharacterColor(destx, desty, color);
 
 		++destx;
+        next = it.next();
 	}
 }
 
 void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
 {
-    UErrorCode error;
+    UErrorCode error = U_ZERO_ERROR;
     BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
     it->setText(text);
 
@@ -486,11 +489,20 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
     int32_t p = it->first();
 	while (p != BreakIterator::DONE)
 	{
-        int start = p;
+        int32_t start = p;
         p = it->next();
-        int end = p;
+        int32_t end = p;
 
-        UnicodeString section(text, start, end);
+        UnicodeString section = text.tempSubStringBetween(start, end);
+        cout << "STarting " << start;
+        if (p != BreakIterator::DONE)
+        {
+            cout << " Ending " << end << endl;
+        }
+        else
+        {
+            cout << "ends string" << endl;
+        }
 
 		sections.push_back(section); //collect the individual sections
 	}
@@ -498,10 +510,10 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 	int x = destination.left();
 	int y = destination.top();
 
-	for (auto it = sections.begin(); it != sections.end(); ++it)
+	for (int i = 0; i < sections.size(); ++i)
 	{
 		//blit each section
-		UnicodeString section = *it;
+		UnicodeString section = sections[i];
 		
 		if (x + section.length() > destination.right())
 		{
@@ -512,10 +524,9 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 			if (y >= destination.bottom()) break; //make sure not to write on any rows outside of the destination rectangle
 		}
 
+        cout << "Happening" << endl;
 		blitString(section, color, x, y);
-		setCharacter(x + section.length(), y, u' '); //fill in spaces
-
-		x += section.length() + 1;
+		x += section.length();
 	}
 
     delete it;
@@ -523,7 +534,7 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 
 void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY)
 {
-    UErrorCode error;
+    UErrorCode error = U_ZERO_ERROR;
     BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
     it->setText(text);
 
@@ -563,6 +574,8 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 
 	*outEndX = x;
     *outHeightY = y;
+
+    delete it;
 }
 
 int ascii::Surface::stringMultilineEndX(UnicodeString text, Rectangle destination)
@@ -626,7 +639,7 @@ void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
 void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
 {
     // Use a BreakIterator to tokenize the given string
-    UErrorCode error;
+    UErrorCode error = U_ZERO_ERROR;
     BreakIterator* it = BreakIterator::createWordInstance(Locale::getUS(), error);
     it->setText(text);
 
@@ -641,6 +654,8 @@ void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
         UnicodeString token(text, start, end);
         highlightString(token, color);
     }
+
+    delete it;
 }
 
 void ascii::Surface::printContents()
