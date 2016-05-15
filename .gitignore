@@ -53,3 +53,5 @@ lib/*
 .ninja_log
 build.ninja
 rules.ninja
+
+*.DS_Store
