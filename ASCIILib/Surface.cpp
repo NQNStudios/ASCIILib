@@ -479,10 +479,18 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 
 void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
 {
-    int d1;
-    int d2;
+    int discard;
 
-    processMultilineString(text, destination, &d1, &d2, this, color);
+    // First clear all characters out of the destination rectangle
+    for (int x = destination.left(); x < destination.right(); ++x)
+    {
+        for (int y = destination.top(); y < destination.bottom(); ++y)
+        {
+            setCharacter(x, y, ' ');
+        }
+    }
+
+    processMultilineString(text, destination, &discard, &discard, this, color);
 }
 
 void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo=NULL, Color color=Color::Black)
@@ -510,10 +518,15 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
     int lines = 1;
 	for (int i = 0; i < sections.size(); ++i)
 	{
-		//blit each section
+        // Process each section
 		UnicodeString section = sections[i];
-		
-		if (x + section.length() > destination.right())
+
+        // Trim it of leading and trailing whitespace
+        UnicodeString trimmed = section;
+        trimmed.trim();
+
+        // Wrap to a new line if the section is too large
+		if (x + trimmed.length() > destination.right())
 		{
 			//if there's not enough room on this line, move to the next one
 			++y;
@@ -525,9 +538,13 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 
         if (blitTo)
         {
-            blitTo->blitString(section, color, x, y);
+            // Blit the section on the line where it belongs
+            blitTo->blitString(trimmed, color, x, y);
+
+            // Bump x over to where this section terminates (counting included
+            // whitespace)
+            x += section.length();
         }
-		x += section.length();
 	}
 
 	*outEndX = x;
