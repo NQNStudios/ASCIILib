@@ -356,15 +356,26 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                             mCharWidth, mCharHeight);
                     SDL_Rect dest = Rectangle(xSrc * mCharWidth, ySrc * mCharHeight,
                             mCharWidth, mCharHeight);
+
+                    // Using the proper color
+                    SDL_SetTextureColorMod(mpFlairSheet,
+                            characterColor.r,
+                            characterColor.g,
+                            characterColor.b);
+
                     SDL_RenderCopy(mRenderer, mpFlairSheet, &src, &dest);
                 }
 
 				charstream << ch;
 				textRect.w += mCharWidth;
 				++xSrc;
-			} while (xSrc < surface->width()
-                    && surface->getCharacterColor(xSrc, ySrc) == characterColor
-                    && !isspace((char)surface->getCharacter(xSrc, ySrc)));
+			} while (
+                // Stop when we reach the end of the row
+                xSrc < surface->width()
+                // Stop if the next character has a different color
+                && surface->getCharacterColor(xSrc, ySrc) == characterColor
+                // Stop if the next character is another space
+                && !isspace((char)surface->getCharacter(xSrc, ySrc)));
 
 			std::string str;
 			charstream >> str;
