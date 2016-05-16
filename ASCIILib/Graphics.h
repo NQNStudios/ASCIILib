@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+using namespace std;
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -51,6 +52,8 @@ namespace ascii
             /// to be reloaded.
             ///</summary>
             void Initialize(float scale=1.0f);
+
+            void LoadSpecialCharTable(const char* path);
 
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
@@ -104,26 +107,26 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which this image should be stored.</param>
 			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
-			void addBackgroundImage(std::string key, std::string textureKey, int x, int y);
+			void addBackgroundImage(string key, string textureKey, int x, int y);
 
 			///<summary>
 			/// Removes an image from the background of the game window.
 			///</summary>
 			///<param name="key">The key with which this image was stored.</param>
-			void removeBackgroundImage(std::string key);
+			void removeBackgroundImage(string key);
 
 			///<summary>
 			/// Adds an image in the foreground of the game window.
 			///</summary>
 			///<param name="key">The key with which this image should be stored.</param>
 			///<param name="textureKey">The key with which this image has been stored in the image cache.</param>
-			void addForegroundImage(std::string key, std::string textureKey, int x, int y);
+			void addForegroundImage(string key, string textureKey, int x, int y);
 
 			///<summary>
 			/// Removes an image from the foreground of the game window.
 			///</summary>
 			///<param name="key">The key with which this image was stored.</param>
-			void removeForegroundImage(std::string key);
+			void removeForegroundImage(string key);
 
 			///<summary>
 			/// Clears all images from the window.
@@ -150,12 +153,13 @@ namespace ascii
             Point actualResolution();
 
 		private:
-			typedef std::pair<std::string, Color> Glyph;
-			typedef std::pair<SDL_Texture*, Point> Image;
-            typedef std::pair<Surface*, Point> ForegroundSurface;
+			typedef pair<string, Color> Glyph;
+			typedef pair<SDL_Texture*, Point> Image;
+            typedef pair<Surface*, Point> ForegroundSurface;
+            typedef pair<char, int> ComboChar;
 
             void clearScreen();
-            void drawImages(std::map<std::string, Image>* images);
+            void drawImages(map<string, Image>* images);
             void drawBackgroundColors(Surface* surface, int x, int y);
             void drawCharacters(Surface* surface, int x, int y);
             void drawSurface(Surface* surface, int x, int y);
@@ -179,16 +183,19 @@ namespace ascii
 			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
 
-			std::map<Glyph, SDL_Texture*> mGlyphTextures;
+			map<Glyph, SDL_Texture*> mGlyphTextures;
 
             const char* mTitle;
             float mScale;
             bool mFullscreen;
 			Color mBackgroundColor;
 
-			std::map<std::string, Image> mBackgroundImages;
-			std::map<std::string, Image> mForegroundImages;
-            std::vector<ForegroundSurface> mForegroundSurfaces;
+			map<string, Image> mBackgroundImages;
+			map<string, Image> mForegroundImages;
+            vector<ForegroundSurface> mForegroundSurfaces;
+
+            map<UChar, ComboCar> mSpecialCharTable;
+            SDL_Texture* mFlairSheet;
 
             bool mHidingImages;
 	};

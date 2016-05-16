@@ -173,6 +173,7 @@ namespace ascii
             /// the debug console.
             ///</summary>
             void printContents();
+
 		private:
             // HELPERS
             static void readLine(ifstream* file, string& str);

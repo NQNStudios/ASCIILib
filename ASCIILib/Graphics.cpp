@@ -2,8 +2,7 @@
 
 #include <sstream>
 #include <iostream>
-using std::cout;
-using std::endl;
+#include <fstream>
 
 const int kFontSize = 12;
 
@@ -69,6 +68,19 @@ void ascii::Graphics::Initialize(float scale)
 	mCache = new ascii::ImageCache(mRenderer,
             mCharWidth / mScale,
             mCharHeight / mScale);
+}
+
+void ascii::Graphics::LoadSpecialCharTable(const char* path)
+{
+    ifstream file(path);
+
+    if (file.is_open())
+    {
+    }
+    else
+    {
+        cout << "Error! Tried to load a nonexistent special character table." << endl;
+    }
 }
 
 void ascii::Graphics::Dispose()
@@ -252,7 +264,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 
             // TODO handle accented unicode characters!
             // TODO process them as UChar
-			char ch = surface->getCharacter(xSrc, ySrc);
+			UChar ch = surface->getCharacter(xSrc, ySrc);
 			if (ch == ' ')
 			{
 				++xSrc;
@@ -276,7 +288,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 					break;
 				}
 
-				char ch = surface->getCharacter(xSrc, ySrc);
+				UChar ch = surface->getCharacter(xSrc, ySrc);
 				charstream << ch;
 				textRect.w += mCharWidth;
 				++xSrc;
