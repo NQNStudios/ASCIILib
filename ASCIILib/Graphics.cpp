@@ -2,7 +2,10 @@
 
 #include <sstream>
 #include <iostream>
-#include <fstream>
+
+#include "unicode/uchar.h"
+
+#include "SDL_image.h"
 
 const int kFontSize = 12;
 
@@ -16,7 +19,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
     mTitle(title), mScale(1.0f), mFullscreen(false),
     mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
-    mHidingImages(false)
+    mHidingImages(false), mHasSpecialCharTable(false)
 {
 	TTF_Init();
 
@@ -29,7 +32,8 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL), mHidingImages(false)
+    mWindow(NULL), mRenderer(NULL), mHidingImages(false),
+    mHasSpecialCharTable(false)
 {
 	TTF_Init();
 
@@ -70,25 +74,66 @@ void ascii::Graphics::Initialize(float scale)
             mCharHeight / mScale);
 }
 
-void ascii::Graphics::LoadSpecialCharTable(const char* path)
-{
-    ifstream file(path);
-
-    if (file.is_open())
-    {
-    }
-    else
-    {
-        cout << "Error! Tried to load a nonexistent special character table." << endl;
-    }
-}
-
 void ascii::Graphics::Dispose()
 {
     clearGlyphs();
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     delete mCache;
+}
+
+void ascii::Graphics::LoadSpecialCharTable(const char* path)
+{
+    if (mHasSpecialCharTable)
+    {
+        DisposeSpecialCharTable();
+    }
+
+    // Open the Unicode file
+    ifstream file(path);
+
+    // Make sure it opened properly
+    if (file.is_open())
+    {
+        // Read the first line, which holds the path to the flair sheet
+        string line;
+        getline(file, line);
+
+        // Load the sheet as a texture
+        SDL_Surface* surface = IMG_Load(line.c_str());
+        mpFlairSheet = SDL_CreateTextureFromSurface(mRenderer, surface);
+        SDL_FreeSurface(surface);
+
+        // Parse each line of the special char table
+        while (getline(file, line))
+        {
+            // Parse in Unicode for special characters
+            UnicodeString lineUnicode(line.c_str());
+
+            // The line will be structured as follows:
+            // [Unicode char] [ASCII char] [flair index]
+            UChar specialChar = lineUnicode[0];
+            UChar normalChar = lineUnicode[2];
+            UnicodeString indexString = lineUnicode.tempSubString(4);
+            string temp;
+            int flairIndex = atoi(indexString.toUTF8String(temp).c_str());
+
+            mSpecialCharTable[specialChar] = make_pair(normalChar, flairIndex);
+        }
+
+        mHasSpecialCharTable = true;
+    }
+    else
+    {
+        cout << "Error loading special character table " << path << endl;
+    }
+}
+
+void ascii::Graphics::DisposeSpecialCharTable()
+{
+    SDL_DestroyTexture(mpFlairSheet);
+    mSpecialCharTable.clear();
+    mHasSpecialCharTable = false;
 }
 
 void ascii::Graphics::SetScale(float scale)
@@ -260,17 +305,20 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 
 		while (xSrc < surface->width())
 		{
-			//chain all adjacent characters with the same color into strings for more efficient rendering
+			// Chain all adjacent characters with the same color into strings
+            // for more efficient rendering
 
-            // TODO handle accented unicode characters!
-            // TODO process them as UChar
-			UChar ch = surface->getCharacter(xSrc, ySrc);
-			if (ch == ' ')
+            // Don't bother chaining spaces together
+			char ch = getCharacter(xSrc, ySrc);
+
+			if (isspace(ch))
 			{
 				++xSrc;
 				continue;
 			}
 
+            // If the character is not a space, start chaining with its
+            // neighbors
 			std::stringstream charstream;
 			SDL_Rect textRect;
 
@@ -288,11 +336,35 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 					break;
 				}
 
-				UChar ch = surface->getCharacter(xSrc, ySrc);
+                // First process each character as unicode to see if it must be
+                // rendered as a combo of a normal character and a flair
+				UChar uch = surface->getCharacter(xSrc, ySrc);
+                ch = (char)uch;
+
+                if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
+                        != mSpecialCharTable.end())
+                {
+                    // Must process as a special character
+                    // Adopt a normal character as base
+                    ch = mSpecialCharTable[uch].first;
+
+                    // Retrieve the index of the flair to draw in conjunction
+                    int flairIndex = mSpecialCharTable[uch].second;
+
+                    // Draw the flair
+                    SDL_Rect src = Rectangle(flairIndex * mCharWidth, 0,
+                            mCharWidth, mCharHeight);
+                    SDL_Rect dest = Rectangle(xSrc * mCharWidth, ySrc * mCharHeight,
+                            mCharWidth, mCharHeight);
+                    SDL_RenderCopy(mRenderer, mpFlairSheet, &src, &dest);
+                }
+
 				charstream << ch;
 				textRect.w += mCharWidth;
 				++xSrc;
-			} while (xSrc < surface->width() && surface->getCharacterColor(xSrc, ySrc) == characterColor && surface->getCharacter(xSrc, ySrc) != ' ');
+			} while (xSrc < surface->width()
+                    && surface->getCharacterColor(xSrc, ySrc) == characterColor
+                    && !isspace((char)surface->getCharacter(xSrc, ySrc)));
 
 			std::string str;
 			charstream >> str;

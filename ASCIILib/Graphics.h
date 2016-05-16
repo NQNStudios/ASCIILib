@@ -53,13 +53,14 @@ namespace ascii
             ///</summary>
             void Initialize(float scale=1.0f);
 
-            void LoadSpecialCharTable(const char* path);
-
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
             /// call to Initialize()
             ///</summary>
             void Dispose();
+
+            void LoadSpecialCharTable(const char* path);
+            void DisposeSpecialCharTable();
 
             ///<summary>
             /// Changes the scale of the viewing window
@@ -194,8 +195,9 @@ namespace ascii
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
 
-            map<UChar, ComboCar> mSpecialCharTable;
-            SDL_Texture* mFlairSheet;
+            map<UChar, ComboChar> mSpecialCharTable;
+            SDL_Texture* mpFlairSheet;
+            bool mHasSpecialCharTable;
 
             bool mHidingImages;
 	};
