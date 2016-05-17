@@ -15,6 +15,14 @@ using namespace std;
 namespace ascii
 {
 
+    struct ComboChar
+    {
+        public:
+            UChar base;
+            int flairIndex;
+            int flairOffset;
+    };
+
 	///<summary>
 	/// Handles all rendering for an ASCIILib game.
 	///</summary>
@@ -157,7 +165,6 @@ namespace ascii
 			typedef pair<string, Color> Glyph;
 			typedef pair<SDL_Texture*, Point> Image;
             typedef pair<Surface*, Point> ForegroundSurface;
-            typedef pair<char, int> ComboChar;
 
             void clearScreen();
             void drawImages(map<string, Image>* images);

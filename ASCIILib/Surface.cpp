@@ -496,7 +496,7 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo=NULL, Color color=Color::Black)
 {
     UErrorCode error = U_ZERO_ERROR;
-    BreakIterator* it = BreakIterator::createLineInstance(Locale::getUS(), error);
+    BreakIterator* it = BreakIterator::createLineInstance(Locale::getDefault(), error);
     it->setText(text);
 
     vector<UnicodeString> sections;
@@ -617,7 +617,7 @@ void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
 {
     // Use a BreakIterator to tokenize the given string
     UErrorCode error = U_ZERO_ERROR;
-    BreakIterator* it = BreakIterator::createWordInstance(Locale::getUS(), error);
+    BreakIterator* it = BreakIterator::createWordInstance(Locale::getDefault(), error);
     it->setText(text);
 
     // Highlight each token

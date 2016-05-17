@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "unicode/uchar.h"
+#include "unicode/schriter.h"
+#include "unicode/locid.h"
 
 #include "SDL_image.h"
 
@@ -95,6 +97,9 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     // Make sure it opened properly
     if (file.is_open())
     {
+        // Make a reusable word break iterator
+        StringCharacterIterator charIt("");
+
         // Read the first line, which holds the path to the flair sheet
         string line;
         getline(file, line);
@@ -110,15 +115,59 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             // Parse in Unicode for special characters
             UnicodeString lineUnicode(line.c_str());
 
+            // Split the line into tokens
+            charIt.setText(lineUnicode);
+            vector<UnicodeString> tokens;
+
+            UnicodeString token;
+            UChar c = charIt.first();
+            UChar lastc = ' ';
+            while (charIt.hasNext())
+            {
+                if (isspace((char)c) && !isspace((char)lastc))
+                {
+                    tokens.push_back(token);
+                    token = "";
+                }
+                else
+                {
+                    token += c;
+                }
+
+                // Skip the white-space between tokens
+                lastc= c;
+                c = charIt.next();
+            }
+            tokens.push_back(token);
+
             // The line will be structured as follows:
-            // [Unicode char] [ASCII char] [flair index]
-            UChar specialChar = lineUnicode[0];
-            UChar normalChar = lineUnicode[2];
-            UnicodeString indexString = lineUnicode.tempSubString(4);
+            // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
+            UChar specialChar = tokens[0][0];
+
+            // Don't read a normal char if that token has more than one
+            // character i.e. "NONE"
+            UChar normalChar = ' ';
+            if (tokens[1].length() == 1)
+                normalChar = tokens[1][0];
+
+            UnicodeString indexString = tokens[2];
             string temp;
             int flairIndex = atoi(indexString.toUTF8String(temp).c_str());
 
-            mSpecialCharTable[specialChar] = make_pair(normalChar, flairIndex);
+            int flairOffset = 0;
+            if (tokens.size() > 3)
+            {
+                UnicodeString offsetString = tokens[3];
+                temp = "";
+                flairOffset = atoi(offsetString.toUTF8String(temp).c_str());
+                cout << "Changing flair offset: " << flairOffset << endl;
+            }
+
+            ComboChar comboChar;
+            comboChar.base = normalChar;
+            comboChar.flairIndex = flairIndex;
+            comboChar.flairOffset = flairOffset;
+            mSpecialCharTable[specialChar] = comboChar;
         }
 
         mHasSpecialCharTable = true;
@@ -345,17 +394,27 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                         != mSpecialCharTable.end())
                 {
                     // Must process as a special character
+                    ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
-                    ch = mSpecialCharTable[uch].first;
-
+                    ch = combo.base;
                     // Retrieve the index of the flair to draw in conjunction
-                    int flairIndex = mSpecialCharTable[uch].second;
+                    int flairIndex = combo.flairIndex;
+                    // Retrieve the y offset for drawing the flair
+                    int flairOffset = combo.flairOffset;
+
+                    cout << "Flair offset: " << flairOffset << endl;
 
                     // Draw the flair
-                    SDL_Rect src = Rectangle(flairIndex * mCharWidth, 0,
-                            mCharWidth, mCharHeight);
-                    SDL_Rect dest = Rectangle(xSrc * mCharWidth, ySrc * mCharHeight,
-                            mCharWidth, mCharHeight);
+                    SDL_Rect src = Rectangle(
+                            flairIndex * mCharWidth,
+                            0,
+                            mCharWidth,
+                            mCharHeight);
+                    SDL_Rect dest = Rectangle(
+                            xSrc * mCharWidth,
+                            ySrc * mCharHeight + flairOffset,
+                            mCharWidth,
+                            mCharHeight);
 
                     // Using the proper color
                     SDL_SetTextureColorMod(mpFlairSheet,
@@ -366,8 +425,15 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     SDL_RenderCopy(mRenderer, mpFlairSheet, &src, &dest);
                 }
 
-				charstream << ch;
-				textRect.w += mCharWidth;
+                // Don't chain empty space in a word. Empty space can exist
+                // here if it is used as the base for a non-space character
+                // combo
+                if (!isspace(ch))
+                {
+                    charstream << ch;
+                    textRect.w += mCharWidth;
+                }
+
 				++xSrc;
 			} while (
                 // Stop when we reach the end of the row
