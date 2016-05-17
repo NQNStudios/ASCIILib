@@ -445,11 +445,9 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
-            int32_t start = 0;
-            uint32_t size = 0;
-            int32_t charsNeeded = charChain.extract(start, charChain.length(), NULL, size);
+            int32_t charsNeeded = charChain.extract(0, charChain.length(), NULL, (uint32_t)0);
             char cstr[charsNeeded + 1];
-            charChain.extract(start, charChain.length(), cstr, charsNeeded + 1);
+            charChain.extract(0, charChain.length(), cstr, charsNeeded + 1);
             string str(cstr);
 
 			Glyph glyph = std::make_pair(str, characterColor);

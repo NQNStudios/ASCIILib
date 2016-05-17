@@ -541,11 +541,11 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
         {
             // Blit the section on the line where it belongs
             blitTo->blitString(trimmed, color, x, y);
-
-            // Bump x over to where this section terminates (counting included
-            // whitespace)
-            x += section.length();
         }
+
+        // Bump x over to where this section terminates (counting included
+        // whitespace)
+        x += section.length();
 	}
 
 	*outEndX = x;
