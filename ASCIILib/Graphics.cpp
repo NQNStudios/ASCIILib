@@ -358,7 +358,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             // for more efficient rendering
 
             // Don't bother chaining spaces together
-			char ch = getCharacter(xSrc, ySrc);
+			char ch = surface->getCharacter(xSrc, ySrc);
 
 			if (isspace(ch))
 			{
