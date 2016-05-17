@@ -368,7 +368,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 
             // If the character is not a space, start chaining with its
             // neighbors
-			std::stringstream charstream;
+            UnicodeString charChain;
 			SDL_Rect textRect;
 
 			textRect.x = drawX + (x + xSrc) * mCharWidth;
@@ -430,7 +430,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // combo
                 if (!isspace(ch))
                 {
-                    charstream << ch;
+                    charChain += uch;
                     textRect.w += mCharWidth;
                 }
 
@@ -443,8 +443,14 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // Stop if the next character is another space
                 && !isspace((char)surface->getCharacter(xSrc, ySrc)));
 
-			std::string str;
-			charstream >> str;
+            // Convert the unicode into an appropriate string encoding for
+            // TTF_RenderText()
+            int32_t start = 0;
+            uint32_t size = 0;
+            int32_t charsNeeded = charChain.extract(start, charChain.length(), NULL, size);
+            char cstr[charsNeeded + 1];
+            charChain.extract(start, charChain.length(), cstr, charsNeeded + 1);
+            string str(cstr);
 
 			Glyph glyph = std::make_pair(str, characterColor);
 
@@ -456,7 +462,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 			}
 			else
 			{
-				SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
+				SDL_Surface* surface = TTF_RenderText_Solid(mFont, cstr, characterColor);
 				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
 				mGlyphTextures[glyph] = texture;

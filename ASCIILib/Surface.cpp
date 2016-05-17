@@ -149,15 +149,16 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	readLine(&file, str); //CHARACTERS
 	
-	char character = ' ';
+	UChar character = ' ';
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 
+        UnicodeString ustr = UnicodeString::fromUTF8(str);
 		int c = 0;
-		for (string::iterator it = str.begin(); it != str.end(); ++it)
+		for (int i = 0; i < ustr.length(); ++i)
 		{
-			character = *it;
+			character = ustr[i];
 
 			surface->setCharacter(c, r, character);
 
