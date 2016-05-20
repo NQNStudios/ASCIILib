@@ -9,6 +9,7 @@ using namespace std;
 #include "unicode/brkiter.h"
 #include "unicode/locid.h"
 #include "unicode/ustdio.h"
+#include "unicode/ustream.h"
 
 
 const string kEmptyInfo(".");
@@ -480,6 +481,9 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 
 void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
 {
+    //if (text.length() > 70)
+        //cout << text[70] << endl;
+
     int discard;
 
     // First clear all characters out of the destination rectangle
@@ -496,6 +500,12 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 
 void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo=NULL, Color color=Color::Black)
 {
+    if (text.length() > 70)
+    {
+        cout << text << endl;
+        cout << UnicodeString(text[70]) << endl;
+    }
+
     UErrorCode error = U_ZERO_ERROR;
     BreakIterator* it = BreakIterator::createLineInstance(Locale::getDefault(), error);
     it->setText(text);

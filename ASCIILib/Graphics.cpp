@@ -6,6 +6,8 @@
 #include "unicode/uchar.h"
 #include "unicode/schriter.h"
 #include "unicode/locid.h"
+#include "unicode/ustdio.h"
+#include "unicode/ustream.h"
 
 #include "SDL_image.h"
 
@@ -16,6 +18,13 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 
 //static
 const unsigned int ascii::Graphics::kBufferHeight = 25;
+
+namespace
+{
+    // Needs to be big enough for the file path of the flair sheet
+    const int32_t MAX_FLAIR_TABLE_LINE_SIZE = 30;
+}
+
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
@@ -92,28 +101,30 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     }
 
     // Open the Unicode file
-    ifstream file(path);
+    UFILE* file = u_fopen(path, "r", NULL, NULL);
 
     // Make sure it opened properly
-    if (file.is_open())
+    if (file)
     {
         // Make a reusable word break iterator
         StringCharacterIterator charIt("");
 
         // Read the first line, which holds the path to the flair sheet
-        string line;
-        getline(file, line);
+        UChar line[MAX_FLAIR_TABLE_LINE_SIZE];
+
+        u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE - 1, file);
 
         // Load the sheet as a texture
-        SDL_Surface* surface = IMG_Load(line.c_str());
+        string sheetPath = UnicodeString(line).toUTF8String(sheetPath);
+        SDL_Surface* surface = IMG_Load(sheetPath.c_str());
         mpFlairSheet = SDL_CreateTextureFromSurface(mRenderer, surface);
         SDL_FreeSurface(surface);
 
         // Parse each line of the special char table
-        while (getline(file, line))
+        while(u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE - 1, file))
         {
             // Parse in Unicode for special characters
-            UnicodeString lineUnicode(line.c_str());
+            UnicodeString lineUnicode(line);
 
             // Split the line into tokens
             charIt.setText(lineUnicode);
@@ -135,7 +146,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
                 }
 
                 // Skip the white-space between tokens
-                lastc= c;
+                lastc = c;
                 c = charIt.next();
             }
             tokens.push_back(token);
@@ -143,6 +154,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
             UChar specialChar = tokens[0][0];
+            cout << UnicodeString(specialChar) << endl;
 
             // Don't read a normal char if that token has more than one
             // character i.e. "NONE"
@@ -165,6 +177,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
 
             ComboChar comboChar;
             comboChar.base = normalChar;
+            cout << "Flair index: " << flairIndex << endl;
             comboChar.flairIndex = flairIndex;
             comboChar.flairOffset = flairOffset;
             mSpecialCharTable[specialChar] = comboChar;
@@ -393,6 +406,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
                         != mSpecialCharTable.end())
                 {
+                    cout << "Processing special character" << endl;
                     // Must process as a special character
                     ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
@@ -402,6 +416,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     // Retrieve the y offset for drawing the flair
                     int flairOffset = combo.flairOffset;
 
+                    cout << "Flair index: " << flairIndex << endl;
                     cout << "Flair offset: " << flairOffset << endl;
 
                     // Draw the flair
@@ -415,6 +430,8 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                             ySrc * mCharHeight + flairOffset,
                             mCharWidth,
                             mCharHeight);
+
+                    cout << "Character color: " << characterColor.r << characterColor.g << characterColor.b << endl;
 
                     // Using the proper color
                     SDL_SetTextureColorMod(mpFlairSheet,
@@ -432,6 +449,10 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 {
                     charChain += uch;
                     textRect.w += mCharWidth;
+                }
+                else
+                {
+                    charChain += ch;
                 }
 
 				++xSrc;
@@ -468,7 +489,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 				SDL_FreeSurface(surface);
 			}
 
-			SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
+			//SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
 		}
 	}
 }
