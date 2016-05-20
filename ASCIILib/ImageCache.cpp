@@ -1,5 +1,8 @@
 #include "ImageCache.h"
 
+#include <iostream>
+using namespace std;
+
 #include <SDL_image.h>
 
 ascii::ImageCache::ImageCache(SDL_Renderer* renderer, int charWidth, int charHeight)
@@ -16,14 +19,27 @@ ascii::ImageCache::~ImageCache()
 void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Color colorKey)
 {
 	SDL_Surface* imageSurface = IMG_Load(path);
+    if (!imageSurface)
+    {
+        cout << "Error! Failed to load texture " << path << " because of error: "
+            << SDL_GetError() << endl;
+    }
 
 	//Make sure the image dimensions will align to the buffer
-	SDL_assert(imageSurface->w % mCharWidth == 0);
-	SDL_assert(imageSurface->h % mCharHeight == 0);
+	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight == 0)
+    {
+        cout << "Warning! Loaded a texture which does not align with buffer"
+            << endl;
+    }
 
 	SDL_SetColorKey(imageSurface, SDL_ENABLE, colorKey.ToUint32(imageSurface->format));
 
 	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
+    if (!imageTexture)
+    {
+        cout << "Error! Failed to create texture " << path << " because of error: "
+            << SDL_GetError() << endl;
+    }
 
 	mTextures[key] = imageTexture;
 
@@ -33,12 +49,25 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
 void ascii::ImageCache::loadTexture(std::string key, const char* path)
 {
 	SDL_Surface* imageSurface = IMG_Load(path);
+    if (!imageSurface)
+    {
+        cout << "Error! Failed to load texture " << path << " because of error: "
+            << SDL_GetError() << endl;
+    }
 
 	//Make sure the image dimensions will align to the buffer
-	SDL_assert(imageSurface->w % mCharWidth == 0);
-	SDL_assert(imageSurface->h % mCharHeight == 0);
+	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight == 0)
+    {
+        cout << "Warning! Loaded a texture which does not align with buffer"
+            << endl;
+    }
 
 	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
+    if (!imageTexture)
+    {
+        cout << "Error! Failed to create texture " << path << " because of error: "
+            << SDL_GetError() << endl;
+    }
 
 	mTextures[key] = imageTexture;
 
@@ -47,6 +76,7 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path)
 
 void ascii::ImageCache::freeTexture(std::string key)
 {
+    //cout << "Freeing texture " << key << endl;
 	SDL_Texture* imageTexture = mTextures[key];
 
 	SDL_DestroyTexture(imageTexture);
@@ -56,7 +86,16 @@ void ascii::ImageCache::freeTexture(std::string key)
 
 SDL_Texture* ascii::ImageCache::getTexture(std::string key)
 {
-	return mTextures[key];
+    if (mTextures.find(key) == mTextures.end())
+    {
+        cout << "Error! Tried to retrieve a texture with a key that does not "
+            << "exist: " << key << endl;
+        return NULL;
+    }
+    else
+    {
+        return mTextures[key];
+    }
 }
 
 void ascii::ImageCache::clearTextures()

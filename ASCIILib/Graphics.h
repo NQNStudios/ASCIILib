@@ -203,7 +203,7 @@ namespace ascii
             vector<ForegroundSurface> mForegroundSurfaces;
 
             map<UChar, ComboChar> mSpecialCharTable;
-            SDL_Texture* mpFlairSheet;
+            string mFlairTablePath;
             bool mHasSpecialCharTable;
 
             bool mHidingImages;

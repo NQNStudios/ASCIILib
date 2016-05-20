@@ -9,7 +9,7 @@
 #include "unicode/ustdio.h"
 #include "unicode/ustream.h"
 
-#include "SDL_image.h"
+#include <SDL_image.h>
 
 const int kFontSize = 12;
 
@@ -23,6 +23,7 @@ namespace
 {
     // Needs to be big enough for the file path of the flair sheet
     const int32_t MAX_FLAIR_TABLE_LINE_SIZE = 30;
+    const string FLAIR_SHEET_KEY("FLAIR_SHEET");
 }
 
 
@@ -83,6 +84,11 @@ void ascii::Graphics::Initialize(float scale)
 	mCache = new ascii::ImageCache(mRenderer,
             mCharWidth / mScale,
             mCharHeight / mScale);
+
+    if (mHasSpecialCharTable)
+    {
+        LoadSpecialCharTable(mFlairTablePath.c_str());
+    }
 }
 
 void ascii::Graphics::Dispose()
@@ -100,6 +106,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         DisposeSpecialCharTable();
     }
 
+    mFlairTablePath = path;
     // Open the Unicode file
     UFILE* file = u_fopen(path, "r", NULL, NULL);
 
@@ -112,26 +119,14 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         // Read the first line, which holds the path to the flair sheet
         UChar line[MAX_FLAIR_TABLE_LINE_SIZE];
 
-        u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE - 1, file);
+        u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE, file);
 
         // Load the sheet as a texture
         // Strip the trailing newline
-        string sheetPath = UnicodeString(line).trim().toUTF8String(sheetPath);
-        const char* pathcstr = sheetPath.c_str();
-        cout << "Path c string: " << pathcstr << endl;
-        SDL_Surface* surface = IMG_Load(pathcstr);
-        if (!surface)
-        {
-            cout << "Failed to load flair sheet " << sheetPath
-                << "because of error: " << SDL_GetError() << endl;
-        }
-        mpFlairSheet = SDL_CreateTextureFromSurface(mRenderer, surface);
-        if (!mpFlairSheet)
-        {
-            cout << "Failed to create flair sheet texture " << sheetPath
-                << "because of error: " << SDL_GetError() << endl;
-        }
-        SDL_FreeSurface(surface);
+        string temp;
+        string sheetPath = UnicodeString(line).trim().toUTF8String(temp);
+        //cout << "Loading texture " << sheetPath << endl;
+        mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
         while(u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE - 1, file))
@@ -167,7 +162,6 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
             UChar specialChar = tokens[0][0];
-            //cout << UnicodeString(specialChar) << endl;
 
             // Don't read a normal char if that token has more than one
             // character i.e. "NONE"
@@ -206,7 +200,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
 
 void ascii::Graphics::DisposeSpecialCharTable()
 {
-    SDL_DestroyTexture(mpFlairSheet);
+    mCache->freeTexture(FLAIR_SHEET_KEY);
     mSpecialCharTable.clear();
     mHasSpecialCharTable = false;
 }
@@ -419,7 +413,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
                         != mSpecialCharTable.end())
                 {
-                    cout << "Processing special character" << endl;
+                    //cout << "Processing special character" << endl;
                     // Must process as a special character
                     ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
@@ -429,8 +423,8 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     // Retrieve the y offset for drawing the flair
                     int flairOffset = combo.flairOffset;
 
-                    cout << "Flair index: " << flairIndex << endl;
-                    cout << "Flair offset: " << flairOffset << endl;
+                    //cout << "Flair index: " << flairIndex << endl;
+                    //cout << "Flair offset: " << flairOffset << endl;
 
                     // Draw the flair
                     SDL_Rect src = Rectangle(
@@ -444,24 +438,14 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                             mCharWidth,
                             mCharHeight);
 
-                    cout << "Dest rect: [" << dest.x << ", " << dest.y << ", "
-                        << dest.w << ", " << dest.h << "]" << endl;
-
-                    cout << "Character color: " << (int)characterColor.r
-                        << ", " << (int)characterColor.g << ", " <<
-                        (int)characterColor.b << endl;
-
+                    SDL_Texture* flairSheet = mCache->getTexture(FLAIR_SHEET_KEY);
                     // Using the proper color
-                    //SDL_SetTextureColorMod(mpFlairSheet,
-                            //characterColor.r,
-                            //characterColor.g,
-                            //characterColor.b);
+                    SDL_SetTextureColorMod(flairSheet,
+                            characterColor.r,
+                            characterColor.g,
+                            characterColor.b);
 
-                    if (!mpFlairSheet)
-                    {
-                        cout << "Flair sheet is null again somehow!" << endl;
-                    }
-                    SDL_RenderCopy(mRenderer, mpFlairSheet, &src, &dest);
+                    SDL_RenderCopy(mRenderer, flairSheet, &src, &dest);
                 }
 
                 // Don't chain empty space in a word. Empty space can exist
@@ -516,7 +500,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 		}
 	}
 
-    SDL_RenderCopy(mRenderer, mpFlairSheet, NULL, NULL);
+    //SDL_RenderCopy(mRenderer, mpFlairSheet, NULL, NULL);
 }
 
 void ascii::Graphics::drawSurface(ascii::Surface* surface, int x, int y)
@@ -539,28 +523,29 @@ void ascii::Graphics::update()
     clearScreen();
 
 	// Draw background images
-    //drawImages(&mBackgroundImages);
+    drawImages(&mBackgroundImages);
 
     // Draw the buffer surface in between
-    //drawSurface(this, 0, 0);
-    drawCharacters(this, 0, 0);
+    drawSurface(this, 0, 0);
 
 	// Draw foreground images
-    //drawImages(&mForegroundImages);
+    drawImages(&mForegroundImages);
 
     // Draw foreground surfaces
-    //for (int i = 0; i < mForegroundSurfaces.size(); ++i)
-    //{
-        //Surface* surface = mForegroundSurfaces[i].first;
-        //Point position = mForegroundSurfaces[i].second;
+    for (int i = 0; i < mForegroundSurfaces.size(); ++i)
+    {
+        Surface* surface = mForegroundSurfaces[i].first;
+        Point position = mForegroundSurfaces[i].second;
 
-        //drawSurface(surface, position.x, position.y);
-    //}
+        drawSurface(surface, position.x, position.y);
+    }
 
     // Clear any surfaces from the foreground
-    //mForegroundSurfaces.clear();
+    mForegroundSurfaces.clear();
 
     // Refresh the window to show all changes
+    //cout << "Drawing flair sheet everywhere" << endl;
+    //SDL_RenderCopy(mRenderer, mpFlairSheet, NULL, NULL);
     refresh();
 }
 
