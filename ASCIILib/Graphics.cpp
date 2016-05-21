@@ -417,7 +417,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     // Must process as a special character
                     ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
-                    ch = combo.base;
+                    uch = ch = combo.base;
                     // Retrieve the index of the flair to draw in conjunction
                     int flairIndex = combo.flairIndex;
                     // Retrieve the y offset for drawing the flair
