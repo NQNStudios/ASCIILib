@@ -26,7 +26,7 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
     }
 
 	//Make sure the image dimensions will align to the buffer
-	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight == 0)
+	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight != 0)
     {
         cout << "Warning! Loaded a texture which does not align with buffer"
             << endl;
