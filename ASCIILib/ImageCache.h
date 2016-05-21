@@ -28,7 +28,8 @@ namespace ascii
 			/// </summary>
 			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
 			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
-			/// <param name="colorKey">The transparent color of the texture to load.</param>
+			/// <param name="colorKey">The transparent color of the texture to load.
+            //                              THIS PARAMETER MAY BE Color::None</param>
 			void loadTexture(std::string key, const char* path, Color colorKey);
 
 			/// <summary>

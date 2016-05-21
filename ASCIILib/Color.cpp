@@ -3,17 +3,23 @@
 const int kMaxColorValue = 255;
 
 ascii::Color::Color(int r, int g, int b)
-	: r(r), g(g), b(b)
+	: r(r), g(g), b(b), isNone(false)
 {
 }
 
 ascii::Color::Color(float r, float g, float b)
-	: r(r * kMaxColorValue), g(g * kMaxColorValue), b(b * kMaxColorValue)
+	: r(r * kMaxColorValue), g(g * kMaxColorValue), b(b * kMaxColorValue),
+    isNone(false)
 {
 }
 
 ascii::Color::Color()
-	: r(0), g(0), b(0)
+	: r(0), g(0), b(0), isNone(false)
+{
+}
+
+ascii::Color::Color(void* ptr)
+    : r(0), g(0), b(0), isNone(true)
 {
 }
 
@@ -21,6 +27,8 @@ ascii::Color::Color()
 const Uint8 ascii::Color::kAlpha = 255;
 
 //Color constants
+const ascii::Color ascii::Color::None = ascii::Color(NULL);
+
 const ascii::Color ascii::Color::Red = ascii::Color(255, 0, 0);
 const ascii::Color ascii::Color::DarkRed = ascii::Color(139, 0, 0);
 const ascii::Color ascii::Color::Crimson = ascii::Color(220, 20, 60);

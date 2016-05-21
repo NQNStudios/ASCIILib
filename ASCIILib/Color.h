@@ -27,6 +27,11 @@ namespace ascii
 			/// </summary>
 			Color();
 
+        private:
+            // Create a "none" color
+            Color(void* ptr);
+
+        public:
 			/// <summary>
 			/// Maps this Color to an SDL Uint32 using the given pixel format.
 			/// </summary>
@@ -38,6 +43,11 @@ namespace ascii
 			static const Uint8 kAlpha;
 
 			//Color constants
+
+            // NOTE: DON'T USE THIS ONE EXCEPT IN A SITUATION WHERE YOU
+            // EXPLICITLY KNOW ITS USAGE IS VALID
+            static const Color None;
+
 			static const Color Red;
 			static const Color DarkRed;
 			static const Color Crimson;
@@ -70,6 +80,7 @@ namespace ascii
 			operator SDL_Color();
 
 			Uint8 r, g, b;
+            bool isNone;
 	};
 
 	inline bool operator==(const Color& c1, const Color& c2)

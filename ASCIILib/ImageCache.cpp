@@ -28,11 +28,14 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
 	//Make sure the image dimensions will align to the buffer
 	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight != 0)
     {
-        cout << "Warning! Loaded a texture which does not align with buffer"
-            << endl;
+        cout << "Warning! Loaded a texture which does not align with buffer: "
+            << path << endl;
     }
 
-	SDL_SetColorKey(imageSurface, SDL_ENABLE, colorKey.ToUint32(imageSurface->format));
+    if (!colorKey.isNone)
+    {
+        SDL_SetColorKey(imageSurface, SDL_ENABLE, colorKey.ToUint32(imageSurface->format));
+    }
 
 	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
     if (!imageTexture)
@@ -48,31 +51,9 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
 
 void ascii::ImageCache::loadTexture(std::string key, const char* path)
 {
-	SDL_Surface* imageSurface = IMG_Load(path);
-    if (!imageSurface)
-    {
-        cout << "Error! Failed to load texture " << path << " because of error: "
-            << SDL_GetError() << endl;
-    }
-
-	//Make sure the image dimensions will align to the buffer
-	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight == 0)
-    {
-        cout << "Warning! Loaded a texture which does not align with buffer"
-            << endl;
-    }
-
-	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
-    if (!imageTexture)
-    {
-        cout << "Error! Failed to create texture " << path << " because of error: "
-            << SDL_GetError() << endl;
-    }
-
-	mTextures[key] = imageTexture;
-
-	SDL_FreeSurface(imageSurface);
+    loadTexture(key, path, Color::None);
 }
+
 
 void ascii::ImageCache::freeTexture(std::string key)
 {
