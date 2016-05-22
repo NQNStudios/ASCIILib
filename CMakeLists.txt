@@ -33,7 +33,8 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
-find_package(ICU REQUIRED)
+
+find_package(ICU COMPONENTS uc io REQUIRED)
 
 include_directories(
     ${SDL2_INCLUDE_DIR}
