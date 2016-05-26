@@ -37,17 +37,23 @@ namespace ascii
 			///<summary>
 			/// The game's SoundManager.
 			///</summary>
-			ascii::SoundManager* soundManager() { return mSoundManager; }
+			ascii::SoundManager* soundManager() { return mpSoundManager; }
 
 			///<summary>
 			/// The game's Graphics.
 			///</summary>
-			ascii::Graphics* graphics() { return mGraphics; }
+			ascii::Graphics* graphics() { return mpGraphics; }
 
             ///<summary>
             /// Accesses the game's image cache.
             ///</summary>
-            ascii::ImageCache* imageCache() { return mGraphics->imageCache(); }
+            ascii::ImageCache* imageCache() { return mpGraphics->imageCache(); }
+
+            ///<summary>
+            /// Accesses the game's Input object
+            ///</summary>
+            ascii::Input* input() { return mpInput; }
+
 
 			///<summary>
 			/// Runs the game's event loop.
@@ -68,8 +74,9 @@ namespace ascii
             const char* mFontpath;
 			const int mBufferWidth, mBufferHeight;
 
-			ascii::SoundManager* mSoundManager;
-			ascii::Graphics* mGraphics;
+			ascii::SoundManager* mpSoundManager;
+			ascii::Graphics* mpGraphics;
+            ascii::Input* mpInput;
 
 			bool mRunning;
 	};

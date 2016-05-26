@@ -10,19 +10,20 @@ const int kMaxFrameTime = 5 * 1000 / 60;
 ascii::Game::Game(const char* title, const char* fontpath, const int bufferWidth, const int bufferHeight)
 	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
 {
-	mSoundManager = new SoundManager();
+	mpSoundManager = new SoundManager();
 }
 
 ascii::Game::Game(const char* title, const char* fontpath)
 	: mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
 {
-	mSoundManager = new SoundManager();
+	mpSoundManager = new SoundManager();
 }
 
 ascii::Game::~Game()
 {
-    delete mGraphics;
-	delete mSoundManager;
+    delete mpGraphics;
+	delete mpSoundManager;
+    delete mpInput;
 
 	SDL_Quit();
 }
@@ -44,16 +45,16 @@ void ascii::Game::Run()
 
 	if (mBufferWidth != 0 && mBufferHeight != 0)
 	{
-		mGraphics = new ascii::Graphics(mWindowTitle, mFontpath, mBufferWidth, mBufferHeight);
+		mpGraphics = new ascii::Graphics(mWindowTitle, mFontpath, mBufferWidth, mBufferHeight);
 	}
 	else
 	{
-		mGraphics = new ascii::Graphics(mWindowTitle, mFontpath);
+		mpGraphics = new ascii::Graphics(mWindowTitle, mFontpath);
 	}
 
-	LoadContent(imageCache(), mSoundManager);
+	LoadContent(imageCache(), mpSoundManager);
 
-	ascii::Input input;
+    mpInput = new Input();
 
 	mRunning = true;
 
@@ -63,7 +64,7 @@ void ascii::Game::Run()
 	{
 		const int initialTime = SDL_GetTicks();
 
-		input.beginNewFrame();
+		mpInput->beginNewFrame();
 
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
@@ -74,18 +75,18 @@ void ascii::Game::Run()
 					Quit();
 					return;
 				case SDL_KEYDOWN:
-					input.keyDownEvent(event);
+					mpInput->keyDownEvent(event);
 					break;
 				case SDL_KEYUP:
-					input.keyUpEvent(event);
+					mpInput->keyUpEvent(event);
 					break;
 				case SDL_MOUSEWHEEL:
-					input.scrollEvent(event);
+					mpInput->scrollEvent(event);
 					break;
 			}
 		}
 
-		HandleInput(input);
+		HandleInput(*mpInput);
 
 		const int currentTime = SDL_GetTicks();
 		const int elapsedTime = currentTime - lastUpdateTime;
@@ -93,9 +94,9 @@ void ascii::Game::Run()
 		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
-        mSoundManager->update();
+        mpSoundManager->update();
 
-		Draw(*mGraphics);
+		Draw(*mpGraphics);
 
 		const int msPerFrame = 1000 / kFPS;
 		const int elapsedTimeMS = SDL_GetTicks() - initialTime;
