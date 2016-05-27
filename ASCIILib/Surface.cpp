@@ -459,7 +459,7 @@ void ascii::Surface::applyMask(Surface* surface, int x, int y)
 	}
 }
 
-void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
+void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y, Color backgroundColor)
 {
 	int destx = x, desty = y;
 
@@ -473,13 +473,18 @@ void ascii::Surface::blitString(UnicodeString text, Color color, int x, int y)
 
         // Blit the character color to the space
 		setCharacterColor(destx, desty, color);
+        // If a background color was specified, apply it to the cell
+        if (!backgroundColor.isNone)
+        {
+            setBackgroundColor(destx, desty, backgroundColor);
+        }
 
 		++destx;
         next = it.next();
 	}
 }
 
-void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination)
+void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectangle destination, Color backgroundColor)
 {
     int discard;
 
@@ -489,6 +494,12 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
         for (int y = destination.top(); y < destination.bottom(); ++y)
         {
             setCharacter(x, y, ' ');
+            // If a background color was provided, apply it to every cell in
+            // the bounding rectangle
+            if (!backgroundColor.isNone)
+            {
+                setBackgroundColor(x, y, backgroundColor);
+            }
         }
     }
 

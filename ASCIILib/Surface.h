@@ -133,12 +133,12 @@ namespace ascii
 			///</summary>
 			///<param name="text">The string to blit to this surface.</param>
 			///<param name="color">The color of the text.</param>
-			void blitString(UnicodeString text, Color color, int x, int y);
+			void blitString(UnicodeString text, Color color, int x, int y, Color backgroundColor=Color::None);
 
 			///<summary>
 			/// Blits a large string to this surface, wrapping it across multiple lines to fit the given destination rectangle.
 			///</summary>
-			void blitStringMultiline(UnicodeString text, Color color, Rectangle destination);
+			void blitStringMultiline(UnicodeString text, Color color, Rectangle destination, Color backgroundColor=Color::None);
 
 			///<summary>
 			/// Finds the final x position of the text drawn across multiple lines.
