@@ -204,6 +204,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	readLine(&file, str); //OPACITY
 
+    char codesymbol;
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
@@ -211,9 +212,9 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
-			colorsymbol = *it;
+			codesymbol = *it;
 
-			bool opaque = colorsymbol == '1';
+			bool opaque = codesymbol == '1';
 
 			surface->setCellOpacity(c, r, opaque);
 
@@ -223,6 +224,8 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	readLine(&file, str); //SPECIAL INFO
 
+    map<string, vector<Point> > rectanglePoints;
+
 	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
@@ -230,16 +233,53 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
 		{
-			colorsymbol = *it;
+			codesymbol = *it;
 
-			if (colorsymbol != ' ')
+			if (codesymbol != ' ')
 			{
-				surface->setSpecialInfo(c, r, infoCodes[colorsymbol]);
+                string specialInfo = infoCodes[codesymbol];
+
+                // Store points which define special rectangles
+                if (!specialInfo.substr(0, 6).compare("POINT_"))
+                {
+                    string rectangleKey = specialInfo.substr(6);
+                    if (rectanglePoints.find(rectangleKey) == rectanglePoints.end())
+                    {
+                        rectanglePoints[rectangleKey] = vector<Point>();
+                    }
+
+                    Point p(c, r);
+                    rectanglePoints[rectangleKey].push_back(p);
+                }
+
+				surface->setSpecialInfo(c, r, specialInfo);
 			}
 
 			++c;
 		}
 	}
+
+    // Process and construct special rectangles from points given
+    for (auto it = rectanglePoints.begin(); it != rectanglePoints.end(); ++it)
+    {
+        string rectangleKey = it->first;
+        vector<Point> points = it->second;
+
+        //cout << "Constructing rectangle with " << points.size() << " points." << endl;
+
+        Point p1 = points[0];
+        Point p2 = points[1];
+
+        //cout << "Point 1: (" << p1.x << ", " << p1.y << ")" << endl;
+        //cout << "Point 2: (" << p2.x << ", " << p2.y << ")" << endl;
+
+        int x = p1.x;
+        int y = p1.y;
+        int width = p2.x - p1.x + 1;
+        int height = p2.y - p1.y + 1;
+
+        surface->mSpecialRectangles[rectangleKey] =  Rectangle(x, y, width, height);
+    }
 
 	file.close();
 

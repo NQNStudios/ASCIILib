@@ -174,6 +174,10 @@ namespace ascii
             ///</summary>
             void printContents();
 
+            // Retrieve a rectangle defined by points in this Surface's special
+            // info
+            Rectangle GetSpecialRectangle(string key) { return mSpecialRectangles[key]; }
+
 		private:
             // HELPERS
             static void readLine(ifstream* file, string& str);
@@ -189,6 +193,8 @@ namespace ascii
 			vector<vector<Color> > mCharacterColors;
 			vector<bool*> mCellOpacity;
 			vector<vector<string> > mSpecialInfo;
+            // Special rectangles
+            map<string, Rectangle> mSpecialRectangles;
 	};
 
 }
