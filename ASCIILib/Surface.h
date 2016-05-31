@@ -178,6 +178,10 @@ namespace ascii
             // info
             Rectangle GetSpecialRectangle(string key) { return mSpecialRectangles[key]; }
 
+            // Find the first occurrance of the given character, reading
+            // left to right, top to bottom
+            ascii::Point FindCharacter(UChar character);
+
 		private:
             // HELPERS
             static void readLine(ifstream* file, string& str);

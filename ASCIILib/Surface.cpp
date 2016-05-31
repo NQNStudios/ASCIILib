@@ -688,6 +688,22 @@ void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
     delete it;
 }
 
+ascii::Point ascii::Surface::FindCharacter(UChar character)
+{
+    for (int x = 0; x < width(); ++x)
+    {
+        for (int y = 0; y < height(); ++y)
+        {
+            if (mCharacters[x][y] == character)
+            {
+                return Point(x, y);
+            }
+        }
+    }
+
+    return Point::Undefined;
+}
+
 void ascii::Surface::printContents()
 {
     for (int y = 0; y < height(); ++y)
