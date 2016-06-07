@@ -86,18 +86,39 @@ FIND_PATH(SDL2_INCLUDE_DIR SDL.h
 )
 #MESSAGE("SDL2_INCLUDE_DIR is ${SDL2_INCLUDE_DIR}")
 
-FIND_LIBRARY(SDL2_LIBRARY_TEMP
-  NAMES SDL2
-  HINTS
-  $ENV{SDL2DIR}
-  PATH_SUFFIXES lib64 lib lib/x64
-  PATHS
-  /sw
-  /opt/local
-  /opt/csw
-  /opt
-)
-
+# Lookup the 64 bit libs on x64
+IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	FIND_LIBRARY(SDL2_LIBRARY_TEMP
+		NAMES SDL2
+		HINTS
+		${SDL2}
+        $ENV{SDL2DIR}
+		PATH_SUFFIXES lib64 lib
+		lib/x64
+		x86_64-w64-mingw32/lib
+		PATHS
+		/sw
+		/opt/local
+		/opt/csw
+		/opt
+	)
+# On 32bit build find the 32bit libs
+ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	FIND_LIBRARY(SDL2_LIBRARY_TEMP
+		NAMES SDL2
+		HINTS
+		${SDL2}
+        $ENV{SDL2DIR}
+		PATH_SUFFIXES lib
+		lib/x86
+		i686-w64-mingw32/lib
+		PATHS
+		/sw
+		/opt/local
+		/opt/csw
+		/opt
+	)
+ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 #MESSAGE("SDL2_LIBRARY_TEMP is ${SDL2_LIBRARY_TEMP}")
 
 IF(NOT SDL2_BUILDING_LIBRARY)
