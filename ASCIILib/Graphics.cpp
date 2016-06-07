@@ -473,10 +473,8 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
-            int32_t charsNeeded = charChain.extract(0, charChain.length(), NULL, (uint32_t)0);
-            char cstr[charsNeeded + 1];
-            charChain.extract(0, charChain.length(), cstr, charsNeeded + 1);
-            string str(cstr);
+            string temp;
+            string str = charChain.toUTF8String(temp);
 
 			Glyph glyph = std::make_pair(str, characterColor);
 
@@ -488,7 +486,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 			}
 			else
 			{
-				SDL_Surface* surface = TTF_RenderText_Solid(mFont, cstr, characterColor);
+				SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
 				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
 				mGlyphTextures[glyph] = texture;
