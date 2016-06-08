@@ -119,11 +119,6 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     // Make sure it opened properly
     if (file)
     {
-        // Make a reusable line break iterator
-        UErrorCode error = U_ZERO_ERROR;
-        BreakIterator* lineBreakIt =
-            BreakIterator::createLineInstance(Locale::getDefault(), error);
-
         // Read the first line, which holds the path to the flair sheet
         UChar line[MAX_FLAIR_TABLE_LINE_SIZE + 1];
 
@@ -149,7 +144,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             cout << "Line size: " << lineUnicode.length() << endl;
 
             // Split the line into tokens
-            lineBreakIt->setText(lineUnicode);
+            mpLineBreakIt->setText(lineUnicode);
             vector<UnicodeString> tokens;
 
             int32_t start = lineBreakIt->first();
@@ -198,8 +193,6 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         }
 
         mHasSpecialCharTable = true;
-
-        delete lineBreakIt;
     }
     else
     {
