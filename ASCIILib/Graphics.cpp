@@ -2,11 +2,12 @@
 
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 #include "unicode/uchar.h"
 #include "unicode/locid.h"
-#include "unicode/ustdio.h"
 #include "unicode/ustream.h"
+#include "unicode/ustdio.h"
 
 #include <SDL_image.h>
 
@@ -113,45 +114,65 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     }
 
     mFlairTablePath = path;
-    // Open the Unicode file
-    UFILE* file = u_fopen(path, "r", NULL, NULL);
+
+    // Open the UTF-8 file
+    ifstream file(path);
 
     // Make sure it opened properly
-    if (file)
+    if (file.is_open())
     {
+        // Skip the UTF-8 BOM if one is present
+        char a,b,c;
+        a = file.get();
+        b = file.get();
+        c = file.get();
+        if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
+        {
+            file.seekg(0);
+        }
+        else
+        {
+            cout << "Warning: file " << path << " contains UTF-8 bit order mark" << endl;
+        }
+
         // Read the first line, which holds the path to the flair sheet
-        UChar line[MAX_FLAIR_TABLE_LINE_SIZE + 1];
-
-        u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE, file);
-
-        u_printf("%s\n", line);
+        string line;
+        getline(file, line);
+        // Strip trailing carriage returns
+        line.erase(line.find_last_not_of(" \n\r\t") + 1);
 
         // Load the sheet as a texture
         // Strip the trailing newline
         string temp;
-        string sheetPath = UnicodeString(line).trim().toUTF8String(temp);
+        string sheetPath = line;
         cout << "Loading texture " << sheetPath << endl;
         mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
-        while(u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE, file))
+        while(getline(file, line))
         {
+            // Strip trailing carriage return
+            line.erase(line.find_last_not_of(" \n\r\t") + 1);
+
             // Parse in Unicode for special characters
-            UnicodeString lineUnicode(line);
+            UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
 
             //string lineOutput = lineUnicode.toUTF8String(temp);
-            u_printf("%s\n", line);
+            u_printf("%s\n", lineUnicode.getBuffer());
             cout << "Line size: " << lineUnicode.length() << endl;
 
             // Split the line into tokens
             mpLineBreakIt->setText(lineUnicode);
             vector<UnicodeString> tokens;
 
-            int32_t start = lineBreakIt->first();
+            int32_t start = mpLineBreakIt->first();
             int32_t end = start;
-            do
+            while (true)
             {
-                end = lineBreakIt->next();
+                end = mpLineBreakIt->next();
+
+                if (end == BreakIterator::DONE)
+                    break;
 
                 UnicodeString token = lineUnicode.tempSubStringBetween(start, end);
                 token.trim();
@@ -159,7 +180,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
                 start = end;
 
                 tokens.push_back(token);
-            } while (end != BreakIterator::DONE);
+            }
 
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
