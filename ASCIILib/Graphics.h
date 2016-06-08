@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+#include "unicode/brkiter.h"
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -207,10 +209,11 @@ namespace ascii
             bool mHasSpecialCharTable;
 
             bool mHidingImages;
+
+            BreakIterator* mpLineBreakIt;
+            bool IsWhiteSpace(UChar uch);
 	};
 
 };
-
-bool IsWhiteSpace(UChar uch);
 
 #endif
