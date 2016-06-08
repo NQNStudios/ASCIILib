@@ -211,4 +211,6 @@ namespace ascii
 
 };
 
+bool IsWhiteSpace(UChar uch);
+
 #endif

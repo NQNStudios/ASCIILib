@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "unicode/uchar.h"
-#include "unicode/schriter.h"
+#include "unicode/brkiter.h"
 #include "unicode/locid.h"
 #include "unicode/ustdio.h"
 #include "unicode/ustream.h"
@@ -113,8 +113,10 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     // Make sure it opened properly
     if (file)
     {
-        // Make a reusable word break iterator
-        StringCharacterIterator charIt("");
+        // Make a reusable line break iterator
+        UErrorCode error = U_ZERO_ERROR;
+        BreakIterator* lineBreakIt =
+            BreakIterator::createLineInstance(Locale::getDefault(), error);
 
         // Read the first line, which holds the path to the flair sheet
         UChar line[MAX_FLAIR_TABLE_LINE_SIZE];
@@ -134,30 +136,25 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             // Parse in Unicode for special characters
             UnicodeString lineUnicode(line);
 
+            string lineOutput = lineUnicode.toUTF8String(temp);
+            cout << lineOutput << endl;
+
             // Split the line into tokens
-            charIt.setText(lineUnicode);
+            lineBreakIt->setText(lineUnicode);
+            lineBreakIt->setText(lineUnicode);
             vector<UnicodeString> tokens;
 
-            UnicodeString token;
-            UChar c = charIt.first();
-            UChar lastc = ' ';
-            while (charIt.hasNext())
+            int32_t start = lineBreakIt->first();
+            int32_t end = start;
+            do
             {
-                if (isspace((char)c) && !isspace((char)lastc))
-                {
-                    tokens.push_back(token);
-                    token = "";
-                }
-                else
-                {
-                    token += c;
-                }
+                end = lineBreakIt->next();
 
-                // Skip the white-space between tokens
-                lastc = c;
-                c = charIt.next();
-            }
-            tokens.push_back(token);
+                UnicodeString token = lineUnicode.tempSubStringBetween(start, end);
+                start = end;
+                tokens.push_back(token);
+
+            } while (end != BreakIterator::DONE);
 
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
@@ -191,6 +188,8 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         }
 
         mHasSpecialCharTable = true;
+
+        delete lineBreakIt;
     }
     else
     {
@@ -378,9 +377,9 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             // for more efficient rendering
 
             // Don't bother chaining spaces together
-			char ch = surface->getCharacter(xSrc, ySrc);
+			UChar uch = surface->getCharacter(xSrc, ySrc);
 
-			if (isspace(ch))
+			if (IsWhiteSpace(uch))
 			{
 				++xSrc;
 				continue;
@@ -408,7 +407,6 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // First process each character as unicode to see if it must be
                 // rendered as a combo of a normal character and a flair
 				UChar uch = surface->getCharacter(xSrc, ySrc);
-                ch = (char)uch;
 
                 if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
                         != mSpecialCharTable.end())
@@ -417,7 +415,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     // Must process as a special character
                     ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
-                    uch = ch = combo.base;
+                    uch = combo.base;
                     // Retrieve the index of the flair to draw in conjunction
                     int flairIndex = combo.flairIndex;
                     // Retrieve the y offset for drawing the flair
@@ -451,7 +449,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // Don't chain empty space in a word. Empty space can exist
                 // here if it is used as the base for a non-space character
                 // combo
-                if (!isspace(ch))
+                if (!IsWhiteSpace(uch))
                 {
                     charChain += uch;
                     textRect.w += mCharWidth;
@@ -469,7 +467,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // Stop if the next character has a different color
                 && surface->getCharacterColor(xSrc, ySrc) == characterColor
                 // Stop if the next character is another space
-                && !isspace((char)surface->getCharacter(xSrc, ySrc)));
+                && !IsWhiteSpace(surface->getCharacter(xSrc, ySrc)));
 
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
@@ -626,4 +624,24 @@ void ascii::Graphics::UpdateCharSize()
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
     mCharWidth *= mScale;
     mCharHeight *= mScale;
+}
+
+bool IsWhiteSpace(UChar uch)
+{
+    // Test if the character is white space by stringing it in between two
+    // non-whitespace characters and seeing if it triggers a line break
+    UErrorCode error = U_ZERO_ERROR;
+    BreakIterator* lineBreakIt =
+        BreakIterator::createLineInstance(Locale::getDefault(), error);
+
+    UnicodeString testString;
+    testString += "a";
+    testString += uch;
+    testString += "b";
+    lineBreakIt->setText(testString);
+
+    lineBreakIt->first();
+    int32_t next = lineBreakIt->next();
+    delete lineBreakIt;
+    return next != 3;
 }
