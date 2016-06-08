@@ -496,6 +496,11 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
             string temp;
+
+            // TODO this line creates strings that are incompatible with
+            // rendering certain symbols on Windows, i.e. "-" and "+". The
+            // likely solution is not to convert to UTF-8, but to the system's
+            // default codepage
             string str = charChain.toUTF8String(temp);
 
 			Glyph glyph = std::make_pair(str, characterColor);
