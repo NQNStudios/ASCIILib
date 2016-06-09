@@ -513,7 +513,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 			}
 			else
 			{
-				SDL_Surface* surface = TTF_RenderText_Solid(mFont, str.c_str(), characterColor);
+				SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, str.c_str(), characterColor);
 				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
 				mGlyphTextures[glyph] = texture;
@@ -660,13 +660,5 @@ bool ascii::Graphics::IsWhiteSpace(UChar uch)
     // Test if the character is white space by stringing it in between two
     // non-whitespace characters and seeing if it triggers a line break
 
-    UnicodeString testString;
-    testString += "a";
-    testString += uch;
-    testString += "b";
-    mpLineBreakIt->setText(testString);
-
-    mpLineBreakIt->first();
-    int32_t next = mpLineBreakIt->next();
-    return next != 3;
+	return uch == UnicodeString(" ")[0];
 }
