@@ -29,7 +29,7 @@ namespace
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
-    mTitle(title), mScale(1.0f), mFullscreen(false),
+    mTitle(title), mFullscreen(false),
     mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
     mHidingImages(false), mHasSpecialCharTable(false)
 {
@@ -37,7 +37,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
     
-    Initialize(mScale);
+    Initialize();
 
     UErrorCode error = U_ZERO_ERROR;
     mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
@@ -45,7 +45,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
+	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
     mHasSpecialCharTable(false)
@@ -54,7 +54,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 
-    Initialize(mScale);
+    Initialize();
 
     UErrorCode error = U_ZERO_ERROR;
     mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
@@ -70,9 +70,8 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
-void ascii::Graphics::Initialize(float scale)
+void ascii::Graphics::Initialize()
 {
-    mScale = scale;
     mFullscreen = false;
 
     UpdateCharSize();
@@ -89,8 +88,8 @@ void ascii::Graphics::Initialize(float scale)
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
 	mCache = new ascii::ImageCache(mRenderer,
-            mCharWidth / mScale,
-            mCharHeight / mScale);
+            mCharWidth,
+            mCharHeight);
 
     if (mHasSpecialCharTable)
     {
@@ -228,30 +227,12 @@ void ascii::Graphics::DisposeSpecialCharTable()
     mHasSpecialCharTable = false;
 }
 
-void ascii::Graphics::SetScale(float scale)
-{
-    if (mFullscreen)
-    {
-        mScale = scale;
-        UpdateCharSize();
-    }
-    else
-    {
-        Dispose();
-        Initialize(scale);
-    }
-}
-
 void ascii::Graphics::SetFullscreen(bool fullscreen)
 {
-    mFullscreen = fullscreen;
+    // Don't go into any of these operations if unnecessary
+    if (fullscreen == mFullscreen) return;
 
-    // Delete the old window if its scale is not 1, so fullscreen can scale
-    // automatically
-    if (fullscreen && mScale != 1.0f)
-    {
-        SetScale(1.0f);
-    }
+    mFullscreen = fullscreen;
 
     Uint32 flags = 0; 
     if (fullscreen)
@@ -261,7 +242,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
     else
     {
         Dispose();
-        Initialize(1.0f);
+        Initialize();
     }
 
     if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
@@ -337,9 +318,6 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
             dest.y = drawY + it->second.second.y * mCharHeight;
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
-
-            dest.w *= mScale;
-            dest.h *= mScale;
 
             SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
         }
@@ -651,8 +629,6 @@ void ascii::Graphics::checkSize()
 void ascii::Graphics::UpdateCharSize()
 {
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
-    mCharWidth *= mScale;
-    mCharHeight *= mScale;
 }
 
 bool ascii::Graphics::IsWhiteSpace(UChar uch)

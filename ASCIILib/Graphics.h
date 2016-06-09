@@ -61,7 +61,7 @@ namespace ascii
             /// Warning: This rebuilds the image cache. All images will need
             /// to be reloaded.
             ///</summary>
-            void Initialize(float scale=1.0f);
+            void Initialize();
 
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
@@ -71,12 +71,6 @@ namespace ascii
 
             void LoadSpecialCharTable(const char* path);
             void DisposeSpecialCharTable();
-
-            ///<summary>
-            /// Changes the scale of the viewing window
-            /// Modifies the graphics video mode, even after construction.
-            ///</summary>
-            void SetScale(float scale);
 
             ///<summary>
             /// Sets the window to fullscreen or not
@@ -196,7 +190,6 @@ namespace ascii
 			map<Glyph, SDL_Texture*> mGlyphTextures;
 
             const char* mTitle;
-            float mScale;
             bool mFullscreen;
 			Color mBackgroundColor;
 
