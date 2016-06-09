@@ -657,8 +657,5 @@ void ascii::Graphics::UpdateCharSize()
 
 bool ascii::Graphics::IsWhiteSpace(UChar uch)
 {
-    // Test if the character is white space by stringing it in between two
-    // non-whitespace characters and seeing if it triggers a line break
-
 	return uch == UnicodeString(" ")[0];
 }
