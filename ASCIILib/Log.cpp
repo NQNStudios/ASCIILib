@@ -1,11 +1,14 @@
 #include "Log.h"
 
-#include "unicode/ustream.h"
-#include "unicode/unistr.h"
-using namespace icu;
+#include "SDL.h"
 
 #include "GlobalArgs.h"
 
+
+void ascii::Log::SDLError()
+{
+    Log::Print(SDL_GetError());
+}
 
 bool ascii::Log::Enabled()
 {

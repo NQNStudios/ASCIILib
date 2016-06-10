@@ -6,6 +6,10 @@ using namespace std;
 #include <cstdlib>
 #include <time.h>
 
+#include "Log.h"
+using ascii::Log;
+
+
 const int kChunkSize = 1024;
 
 ascii::SoundManager::SoundManager(void)
@@ -13,8 +17,8 @@ ascii::SoundManager::SoundManager(void)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
-        cout << "Error! Failed to init with OGG support" << endl;
-        cout << Mix_GetError() << endl;
+        Log::Print("Error! Failed to init with OGG support");
+        Log::SDLError();
     }
 
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize);
@@ -55,8 +59,9 @@ void ascii::SoundManager::loadSound(std::string key, const char* path)
     Mix_Chunk* sound = Mix_LoadWAV(path);
     if (!sound)
     {
-        cout << "Error! Failed to load sound " << path << endl;
-        cout << Mix_GetError() << endl;
+        Log::Print("Error! Failed to load sound ", false);
+        Log::Print(path);
+        Log::SDLError();
     }
 	mSounds[key] = sound;
 }
@@ -168,7 +173,8 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 
     if (soundGroup.empty())
     {
-        std::cout << "Error! Tried to play empty sound group: " << group << std::endl;
+        Log::Print("Error! Tried to play empty sound group: ", false);
+        Log::Print(group);
     }
 
 	int n = rand() % soundGroup.size();
@@ -238,8 +244,10 @@ void ascii::SoundManager::loadTrack(std::string key, const char* path)
     Mix_Music* track = Mix_LoadMUS(path);
     if (!track)
     {
-        cout << "Failed to load music file " << path << " with error:" << endl;
-        cout << Mix_GetError() << endl;
+        Log::Print("Failed to load music file ", false);
+        Log::Print(path, false);
+        Log::Print(" with error:");
+        Log::SDLError();
     }
 	mTracks[key] = track;
 }
@@ -311,7 +319,8 @@ Mix_Chunk* ascii::SoundManager::getSound(std::string key)
 
     if (!sound)
     {
-        cout << "Error! Tried to access nonexistent sound " << key << endl;
+        Log::Print("Error! Tried to access nonexistent sound ", false);
+        Log::Print(key);
     }
 
     return sound;

@@ -1,7 +1,6 @@
 #include "Graphics.h"
 
 #include <sstream>
-#include <iostream>
 #include <fstream>
 
 #include "unicode/uchar.h"
@@ -10,6 +9,9 @@
 #include "unicode/ustdio.h"
 
 #include <SDL_image.h>
+
+#include "Log.h"
+using ascii::Log;
 
 const int kFontSize = 12;
 
@@ -131,7 +133,8 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         }
         else
         {
-            cout << "Warning: file " << path << " contains UTF-8 bit order mark" << endl;
+            Log::Print("Warning! file contains UTF-8 bit order mark:");
+            Log::Print(path);
         }
 
         // Read the first line, which holds the path to the flair sheet
@@ -144,7 +147,7 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
         // Strip the trailing newline
         string temp;
         string sheetPath = line;
-        cout << "Loading texture " << sheetPath << endl;
+        Log::Print("Loading texture " + sheetPath);
         mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
@@ -157,8 +160,9 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
             UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
 
             //string lineOutput = lineUnicode.toUTF8String(temp);
-            u_printf("%s\n", lineUnicode.getBuffer());
-            cout << "Line size: " << lineUnicode.length() << endl;
+            Log::Print(lineUnicode);
+            Log::Print("Line size:");
+            Log::Print(lineUnicode.length());
 
             // Split the line into tokens
             mpLineBreakIt->setText(lineUnicode);
@@ -216,7 +220,8 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     }
     else
     {
-        cout << "Error loading special character table " << path << endl;
+        Log::Print("Error loading special character table:");
+        Log::Print(path);
     }
 }
 
@@ -247,7 +252,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
 
     if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
     {
-        cout << SDL_GetError() << endl;
+        Log::SDLError();
     }
 }
 

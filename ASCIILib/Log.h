@@ -14,13 +14,19 @@ namespace ascii
     class Log
     {
         public:
-            template<typename T> static void Print(T message)
+            template<typename T> static void Print(T message, bool newLine=true)
             {
                 if (Enabled())
                 {
-                    cout << message << endl;
+                    cout << message;
+                    if (newLine)
+                    {
+                        cout << endl;
+                    }
                 }
             }
+
+            static void SDLError();
 
         private:
             static bool Enabled();
