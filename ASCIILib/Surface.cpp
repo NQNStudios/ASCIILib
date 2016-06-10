@@ -92,10 +92,10 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	readLine(&file, str); //COLORS
     readLine(&file, str);
 
-	char symbol[1+1];
-	char red[3+1];
-	char green[3+1];
-	char blue[3+1];
+    string symbol;
+    string red;
+    string green;
+    string blue;
 
 	do
 	{
@@ -106,9 +106,9 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		sstreamb >> green;
 		sstreamb >> blue;
 
-        int rval = atoi(red);
-        int gval = atoi(green);
-        int bval = atoi(blue);
+        int rval = atoi(red.c_str());
+        int gval = atoi(green.c_str());
+        int bval = atoi(blue.c_str());
 
 		colors[symbol[0]] = Color(rval, gval, bval);
 		
@@ -141,21 +141,21 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	//SIZE
 	readLine(&file, str);
 	sstream.str(str);
-	char width[3+1];
-	char height[3+1];
+    string width;
+    string height;
 	sstream >> width;
 	sstream >> height;
 
-	Surface* surface = new Surface(atoi(width), atoi(height));
+	Surface* surface = new Surface(atoi(width.c_str()), atoi(height.c_str()));
 
 	readLine(&file, str); //CHARACTERS
 	
 	UChar character = ' ';
-	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 
-        UnicodeString ustr = UnicodeString::fromUTF8(str);
+        UnicodeString ustr = UnicodeString::fromUTF8(StringPiece(str.c_str()));
 		int c = 0;
 		for (int i = 0; i < ustr.length(); ++i)
 		{
@@ -170,7 +170,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	readLine(&file, str); //BACKGROUND COLORS
 	
 	char colorsymbol = ' ';
-	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 
@@ -187,7 +187,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	readLine(&file, str); //CHARACTER COLORS
 	
-	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 
@@ -205,7 +205,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	readLine(&file, str); //OPACITY
 
     char codesymbol;
-	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 
@@ -226,7 +226,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
     map<string, vector<Point> > rectanglePoints;
 
-	for (int r = 0; r < atoi(height); ++r) //for loop used because this section will have fixed size
+	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
 		readLine(&file, str);
 

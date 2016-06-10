@@ -2,12 +2,12 @@
 
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 #include "unicode/uchar.h"
-#include "unicode/schriter.h"
 #include "unicode/locid.h"
-#include "unicode/ustdio.h"
 #include "unicode/ustream.h"
+#include "unicode/ustdio.h"
 
 #include <SDL_image.h>
 
@@ -29,7 +29,7 @@ namespace
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath)
 	: Surface(kBufferWidth, kBufferHeight),
-    mTitle(title), mScale(1.0f), mFullscreen(false),
+    mTitle(title), mFullscreen(false),
     mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
     mHidingImages(false), mHasSpecialCharTable(false)
 {
@@ -37,12 +37,15 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath)
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
     
-    Initialize(mScale);
+    Initialize();
+
+    UErrorCode error = U_ZERO_ERROR;
+    mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
 }
 
 ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mTitle(title), mScale(1.0f),
+	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
     mHasSpecialCharTable(false)
@@ -51,11 +54,15 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 
-    Initialize(mScale);
+    Initialize();
+
+    UErrorCode error = U_ZERO_ERROR;
+    mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
 }
 
 ascii::Graphics::~Graphics(void)
 {
+    delete mpLineBreakIt;
     Dispose();
 
 	TTF_CloseFont(mFont);
@@ -63,9 +70,8 @@ ascii::Graphics::~Graphics(void)
 	TTF_Quit();
 }
 
-void ascii::Graphics::Initialize(float scale)
+void ascii::Graphics::Initialize()
 {
-    mScale = scale;
     mFullscreen = false;
 
     UpdateCharSize();
@@ -82,8 +88,8 @@ void ascii::Graphics::Initialize(float scale)
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
 	mCache = new ascii::ImageCache(mRenderer,
-            mCharWidth / mScale,
-            mCharHeight / mScale);
+            mCharWidth,
+            mCharHeight);
 
     if (mHasSpecialCharTable)
     {
@@ -107,57 +113,73 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     }
 
     mFlairTablePath = path;
-    // Open the Unicode file
-    UFILE* file = u_fopen(path, "r", NULL, NULL);
+
+    // Open the UTF-8 file
+    ifstream file(path);
 
     // Make sure it opened properly
-    if (file)
+    if (file.is_open())
     {
-        // Make a reusable word break iterator
-        StringCharacterIterator charIt("");
+        // Skip the UTF-8 BOM if one is present
+        char a,b,c;
+        a = file.get();
+        b = file.get();
+        c = file.get();
+        if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
+        {
+            file.seekg(0);
+        }
+        else
+        {
+            cout << "Warning: file " << path << " contains UTF-8 bit order mark" << endl;
+        }
 
         // Read the first line, which holds the path to the flair sheet
-        UChar line[MAX_FLAIR_TABLE_LINE_SIZE];
-
-        u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE, file);
+        string line;
+        getline(file, line);
+        // Strip trailing carriage returns
+        line.erase(line.find_last_not_of(" \n\r\t") + 1);
 
         // Load the sheet as a texture
         // Strip the trailing newline
         string temp;
-        string sheetPath = UnicodeString(line).trim().toUTF8String(temp);
-        //cout << "Loading texture " << sheetPath << endl;
+        string sheetPath = line;
+        cout << "Loading texture " << sheetPath << endl;
         mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
-        while(u_fgets(line, MAX_FLAIR_TABLE_LINE_SIZE - 1, file))
+        while(getline(file, line))
         {
+            // Strip trailing carriage return
+            line.erase(line.find_last_not_of(" \n\r\t") + 1);
+
             // Parse in Unicode for special characters
-            UnicodeString lineUnicode(line);
+            UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
+
+            //string lineOutput = lineUnicode.toUTF8String(temp);
+            u_printf("%s\n", lineUnicode.getBuffer());
+            cout << "Line size: " << lineUnicode.length() << endl;
 
             // Split the line into tokens
-            charIt.setText(lineUnicode);
+            mpLineBreakIt->setText(lineUnicode);
             vector<UnicodeString> tokens;
 
-            UnicodeString token;
-            UChar c = charIt.first();
-            UChar lastc = ' ';
-            while (charIt.hasNext())
+            int32_t start = mpLineBreakIt->first();
+            int32_t end = start;
+            while (true)
             {
-                if (isspace((char)c) && !isspace((char)lastc))
-                {
-                    tokens.push_back(token);
-                    token = "";
-                }
-                else
-                {
-                    token += c;
-                }
+                end = mpLineBreakIt->next();
 
-                // Skip the white-space between tokens
-                lastc = c;
-                c = charIt.next();
+                if (end == BreakIterator::DONE)
+                    break;
+
+                UnicodeString token = lineUnicode.tempSubStringBetween(start, end);
+                token.trim();
+
+                start = end;
+
+                tokens.push_back(token);
             }
-            tokens.push_back(token);
 
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
@@ -205,30 +227,12 @@ void ascii::Graphics::DisposeSpecialCharTable()
     mHasSpecialCharTable = false;
 }
 
-void ascii::Graphics::SetScale(float scale)
-{
-    if (mFullscreen)
-    {
-        mScale = scale;
-        UpdateCharSize();
-    }
-    else
-    {
-        Dispose();
-        Initialize(scale);
-    }
-}
-
 void ascii::Graphics::SetFullscreen(bool fullscreen)
 {
-    mFullscreen = fullscreen;
+    // Don't go into any of these operations if unnecessary
+    if (fullscreen == mFullscreen) return;
 
-    // Delete the old window if its scale is not 1, so fullscreen can scale
-    // automatically
-    if (fullscreen && mScale != 1.0f)
-    {
-        SetScale(1.0f);
-    }
+    mFullscreen = fullscreen;
 
     Uint32 flags = 0; 
     if (fullscreen)
@@ -238,7 +242,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
     else
     {
         Dispose();
-        Initialize(1.0f);
+        Initialize();
     }
 
     if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
@@ -315,9 +319,6 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
-            dest.w *= mScale;
-            dest.h *= mScale;
-
             SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
         }
     }
@@ -378,9 +379,9 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             // for more efficient rendering
 
             // Don't bother chaining spaces together
-			char ch = surface->getCharacter(xSrc, ySrc);
+			UChar uch = surface->getCharacter(xSrc, ySrc);
 
-			if (isspace(ch))
+			if (IsWhiteSpace(uch))
 			{
 				++xSrc;
 				continue;
@@ -408,7 +409,6 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // First process each character as unicode to see if it must be
                 // rendered as a combo of a normal character and a flair
 				UChar uch = surface->getCharacter(xSrc, ySrc);
-                ch = (char)uch;
 
                 if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
                         != mSpecialCharTable.end())
@@ -417,7 +417,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                     // Must process as a special character
                     ComboChar combo = mSpecialCharTable[uch];
                     // Adopt a normal character as base
-                    uch = ch = combo.base;
+                    uch = combo.base;
                     // Retrieve the index of the flair to draw in conjunction
                     int flairIndex = combo.flairIndex;
                     // Retrieve the y offset for drawing the flair
@@ -451,7 +451,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // Don't chain empty space in a word. Empty space can exist
                 // here if it is used as the base for a non-space character
                 // combo
-                if (!isspace(ch))
+                if (!IsWhiteSpace(uch))
                 {
                     charChain += uch;
                     textRect.w += mCharWidth;
@@ -469,14 +469,17 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // Stop if the next character has a different color
                 && surface->getCharacterColor(xSrc, ySrc) == characterColor
                 // Stop if the next character is another space
-                && !isspace((char)surface->getCharacter(xSrc, ySrc)));
+                && !IsWhiteSpace(surface->getCharacter(xSrc, ySrc)));
 
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
-            int32_t charsNeeded = charChain.extract(0, charChain.length(), NULL, (uint32_t)0);
-            char cstr[charsNeeded + 1];
-            charChain.extract(0, charChain.length(), cstr, charsNeeded + 1);
-            string str(cstr);
+            string temp;
+
+            // TODO this line creates strings that are incompatible with
+            // rendering certain symbols on Windows, i.e. "-" and "+". The
+            // likely solution is not to convert to UTF-8, but to the system's
+            // default codepage
+            string str = charChain.toUTF8String(temp);
 
 			Glyph glyph = std::make_pair(str, characterColor);
 
@@ -488,7 +491,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 			}
 			else
 			{
-				SDL_Surface* surface = TTF_RenderText_Solid(mFont, cstr, characterColor);
+				SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, str.c_str(), characterColor);
 				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
 
 				mGlyphTextures[glyph] = texture;
@@ -626,6 +629,9 @@ void ascii::Graphics::checkSize()
 void ascii::Graphics::UpdateCharSize()
 {
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
-    mCharWidth *= mScale;
-    mCharHeight *= mScale;
+}
+
+bool ascii::Graphics::IsWhiteSpace(UChar uch)
+{
+	return uch == UnicodeString(" ")[0];
 }
