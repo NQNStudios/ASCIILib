@@ -34,7 +34,7 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
-    mHasFlairTable(false)
+    mHasFlairTable(false), mHasInversionTable(false)
 {
 	TTF_Init();
 
@@ -85,7 +85,10 @@ void ascii::Graphics::Initialize()
 
 void ascii::Graphics::Dispose()
 {
+    // Free textures we've created for rendering tokens
     clearGlyphs();
+    // Free the texture of the flair table
+    DisposeFlairTable();
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     delete mCache;
@@ -213,6 +216,10 @@ void ascii::Graphics::DisposeFlairTable()
     mCache->freeTexture(FLAIR_SHEET_KEY);
     mFlairTable.clear();
     mHasFlairTable = false;
+}
+
+void ascii::Graphics::LoadInversionTable(const char* path)
+{
 }
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
