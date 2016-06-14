@@ -17,12 +17,19 @@ using namespace std;
 namespace ascii
 {
 
-    struct ComboChar
+    struct FlairChar
     {
         public:
             UChar base;
             int flairIndex;
             int flairOffset;
+    };
+
+    struct InvertedChar
+    {
+        public:
+            UChar base;
+            string inversionAxes;
     };
 
 	///<summary>
@@ -45,15 +52,7 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, const char* fontpath);
-
-			///<summary>
-			/// Creates a game window and sets up the Graphics instance.
-			///</summary>
-			///<param name="title">The title of the game window.</param>
-			///<param name="bufferWidth">The width of the game window's buffer.</param>
-			///<param name="bufferHeight">The height of the game window's buffer.</param>
-			Graphics(const char* title, const char* fontpath, int bufferWidth, int bufferHeight);
+			Graphics(const char* title, const char* fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
             ///<summary>
@@ -69,8 +68,9 @@ namespace ascii
             ///</summary>
             void Dispose();
 
-            void LoadSpecialCharTable(const char* path);
-            void DisposeSpecialCharTable();
+            void LoadFlairTable(const char* path);
+            void LoadInversionTable(const char* path);
+            void DisposeFlairTable();
 
             ///<summary>
             /// Sets the window to fullscreen or not
@@ -197,9 +197,13 @@ namespace ascii
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
 
-            map<UChar, ComboChar> mSpecialCharTable;
+            map<UChar, FlairChar> mFlairTable;
             string mFlairTablePath;
-            bool mHasSpecialCharTable;
+            bool mHasFlairTable;
+
+            map<UChar, InvertedChar> mInversionTable;
+            string mInversionTablePath;
+            bool mHasInversionTable;
 
             bool mHidingImages;
 

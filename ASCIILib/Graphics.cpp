@@ -29,28 +29,12 @@ namespace
 }
 
 
-ascii::Graphics::Graphics(const char* title, const char* fontpath)
-	: Surface(kBufferWidth, kBufferHeight),
-    mTitle(title), mFullscreen(false),
-    mBackgroundColor(ascii::Color::Black), mWindow(NULL), mRenderer(NULL),
-    mHidingImages(false), mHasSpecialCharTable(false)
-{
-	TTF_Init();
-
-	mFont = TTF_OpenFont(fontpath, kFontSize);
-    
-    Initialize();
-
-    UErrorCode error = U_ZERO_ERROR;
-    mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
-}
-
 ascii::Graphics::Graphics(const char* title, const char* fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
-    mHasSpecialCharTable(false)
+    mHasFlairTable(false)
 {
 	TTF_Init();
 
@@ -93,9 +77,9 @@ void ascii::Graphics::Initialize()
             mCharWidth,
             mCharHeight);
 
-    if (mHasSpecialCharTable)
+    if (mHasFlairTable)
     {
-        LoadSpecialCharTable(mFlairTablePath.c_str());
+        LoadFlairTable(mFlairTablePath.c_str());
     }
 }
 
@@ -107,11 +91,11 @@ void ascii::Graphics::Dispose()
     delete mCache;
 }
 
-void ascii::Graphics::LoadSpecialCharTable(const char* path)
+void ascii::Graphics::LoadFlairTable(const char* path)
 {
-    if (mHasSpecialCharTable)
+    if (mHasFlairTable)
     {
-        DisposeSpecialCharTable();
+        DisposeFlairTable();
     }
 
     mFlairTablePath = path;
@@ -208,15 +192,14 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
                 //cout << "Changing flair offset: " << flairOffset << endl;
             }
 
-            ComboChar comboChar;
-            comboChar.base = normalChar;
-            //cout << "Flair index: " << flairIndex << endl;
-            comboChar.flairIndex = flairIndex;
-            comboChar.flairOffset = flairOffset;
-            mSpecialCharTable[specialChar] = comboChar;
+            FlairChar flairChar;
+            flairChar.base = normalChar;
+            flairChar.flairIndex = flairIndex;
+            flairChar.flairOffset = flairOffset;
+            mFlairTable[specialChar] = flairChar;
         }
 
-        mHasSpecialCharTable = true;
+        mHasFlairTable = true;
     }
     else
     {
@@ -225,11 +208,11 @@ void ascii::Graphics::LoadSpecialCharTable(const char* path)
     }
 }
 
-void ascii::Graphics::DisposeSpecialCharTable()
+void ascii::Graphics::DisposeFlairTable()
 {
     mCache->freeTexture(FLAIR_SHEET_KEY);
-    mSpecialCharTable.clear();
-    mHasSpecialCharTable = false;
+    mFlairTable.clear();
+    mHasFlairTable = false;
 }
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
@@ -415,18 +398,18 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 // rendered as a combo of a normal character and a flair
 				UChar uch = surface->getCharacter(xSrc, ySrc);
 
-                if (mHasSpecialCharTable && mSpecialCharTable.find(uch)
-                        != mSpecialCharTable.end())
+                if (mHasFlairTable && mFlairTable.find(uch)
+                        != mFlairTable.end())
                 {
                     //cout << "Processing special character" << endl;
                     // Must process as a special character
-                    ComboChar combo = mSpecialCharTable[uch];
+                    FlairChar flairChar = mFlairTable[uch];
                     // Adopt a normal character as base
-                    uch = combo.base;
+                    uch = flairChar.base;
                     // Retrieve the index of the flair to draw in conjunction
-                    int flairIndex = combo.flairIndex;
+                    int flairIndex = flairChar.flairIndex;
                     // Retrieve the y offset for drawing the flair
-                    int flairOffset = combo.flairOffset;
+                    int flairOffset = flairChar.flairOffset;
 
                     //cout << "Flair index: " << flairIndex << endl;
                     //cout << "Flair offset: " << flairOffset << endl;
