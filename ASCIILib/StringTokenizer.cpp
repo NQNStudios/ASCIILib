@@ -55,3 +55,8 @@ UnicodeString ascii::StringTokenizer::BufferRemainder()
 {
     return mBuffer.tempSubString(mBufferPosition);
 }
+
+bool ascii::IsWhiteSpace(UChar uch)
+{
+	return uch == UnicodeString(" ")[0];
+}

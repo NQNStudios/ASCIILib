@@ -1,8 +1,5 @@
 #include "Graphics.h"
 
-#include <sstream>
-#include <fstream>
-
 #include "unicode/uchar.h"
 #include "unicode/locid.h"
 #include "unicode/ustream.h"
@@ -11,7 +8,9 @@
 #include <SDL_image.h>
 
 #include "Log.h"
-using ascii::Log;
+#include "StringTokenizer.h"
+#include "FileReader.h"
+using namespace ascii;
 
 const int kFontSize = 12;
 
@@ -41,14 +40,10 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 
     Initialize();
-
-    UErrorCode error = U_ZERO_ERROR;
-    mpLineBreakIt = BreakIterator::createLineInstance(Locale::getDefault(), error);
 }
 
 ascii::Graphics::~Graphics(void)
 {
-    delete mpLineBreakIt;
     Dispose();
 
 	TTF_CloseFont(mFont);
@@ -104,31 +99,15 @@ void ascii::Graphics::LoadFlairTable(const char* path)
     mFlairTablePath = path;
 
     // Open the UTF-8 file
-    ifstream file(path);
+    FileReader file(path);
 
     // Make sure it opened properly
-    if (file.is_open())
+    if (file.Exists())
     {
-        // Skip the UTF-8 BOM if one is present
-        char a,b,c;
-        a = file.get();
-        b = file.get();
-        c = file.get();
-        if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
-        {
-            file.seekg(0);
-        }
-        else
-        {
-            Log::Print("Warning! file contains UTF-8 bit order mark:");
-            Log::Print(path);
-        }
-
         // Read the first line, which holds the path to the flair sheet
         string line;
-        getline(file, line);
-        // Strip trailing carriage returns
-        line.erase(line.find_last_not_of(" \n\r\t") + 1);
+
+        line = file.NextLine();
 
         // Load the sheet as a texture
         // Strip the trailing newline
@@ -138,12 +117,10 @@ void ascii::Graphics::LoadFlairTable(const char* path)
         mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
-        while(getline(file, line))
+        while(file.HasNextLine())
         {
-            // Strip trailing carriage return
-            line.erase(line.find_last_not_of(" \n\r\t") + 1);
-
             // Parse in Unicode for special characters
+            string line = file.NextLine();
             UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
 
             //string lineOutput = lineUnicode.toUTF8String(temp);
@@ -152,44 +129,27 @@ void ascii::Graphics::LoadFlairTable(const char* path)
             Log::Print(lineUnicode.length());
 
             // Split the line into tokens
-            mpLineBreakIt->setText(lineUnicode);
-            vector<UnicodeString> tokens;
-
-            int32_t start = mpLineBreakIt->first();
-            int32_t end = start;
-            while (true)
-            {
-                end = mpLineBreakIt->next();
-
-                if (end == BreakIterator::DONE)
-                    break;
-
-                UnicodeString token = lineUnicode.tempSubStringBetween(start, end);
-                token.trim();
-
-                start = end;
-
-                tokens.push_back(token);
-            }
+            StringTokenizer tokenizer(lineUnicode);
 
             // The line will be structured as follows:
             // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
-            UChar specialChar = tokens[0][0];
+            UChar specialChar = tokenizer.NextToken()[0];
 
             // Don't read a normal char if that token has more than one
             // character i.e. "NONE"
             UChar normalChar = ' ';
-            if (tokens[1].length() == 1)
-                normalChar = tokens[1][0];
+            UnicodeString baseCharToken = tokenizer.NextToken();
+            if (baseCharToken.length() == 1)
+                normalChar = baseCharToken[0];
 
-            UnicodeString indexString = tokens[2];
+            UnicodeString indexString = tokenizer.NextToken();
             string temp;
             int flairIndex = atoi(indexString.toUTF8String(temp).c_str());
 
             int flairOffset = 0;
-            if (tokens.size() > 3)
+            if (tokenizer.HasNextToken())
             {
-                UnicodeString offsetString = tokens[3];
+                UnicodeString offsetString = tokenizer.NextToken();
                 temp = "";
                 flairOffset = atoi(offsetString.toUTF8String(temp).c_str());
                 //cout << "Changing flair offset: " << flairOffset << endl;
@@ -469,11 +429,6 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             // Convert the unicode into an appropriate string encoding for
             // TTF_RenderText()
             string temp;
-
-            // TODO this line creates strings that are incompatible with
-            // rendering certain symbols on Windows, i.e. "-" and "+". The
-            // likely solution is not to convert to UTF-8, but to the system's
-            // default codepage
             string str = charChain.toUTF8String(temp);
 
 			Glyph glyph = std::make_pair(str, characterColor);
@@ -624,9 +579,4 @@ void ascii::Graphics::checkSize()
 void ascii::Graphics::UpdateCharSize()
 {
 	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
-}
-
-bool ascii::Graphics::IsWhiteSpace(UChar uch)
-{
-	return uch == UnicodeString(" ")[0];
 }

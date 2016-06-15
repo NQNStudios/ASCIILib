@@ -2,12 +2,10 @@
 #define SURFACE_H
 
 #include <vector>
-#include <fstream>
 #include <string>
 using namespace std;
 
 #include "unicode/unistr.h"
-#include "unicode/brkiter.h"
 using namespace icu;
 
 #include <SDL.h>
@@ -183,9 +181,6 @@ namespace ascii
             ascii::Point FindCharacter(UChar character);
 
 		private:
-            // HELPERS
-            static void readLine(ifstream* file, string& str);
-
             static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo, Color color);
 
             // FIELDS

@@ -11,6 +11,10 @@ using namespace std;
 #include "unicode/ustdio.h"
 #include "unicode/ustream.h"
 
+#include "FileReader.h"
+#include "StringTokenizer.h"
+using namespace ascii;
+
 
 const string kEmptyInfo(".");
 
@@ -61,27 +65,9 @@ ascii::Surface::Surface(UChar character, Color backgroundColor, Color characterC
     mCellOpacity[0][0] = true;
 }
 
-void ascii::Surface::readLine(ifstream* file, string& str)
-{
-    getline(*file, str);
-
-    // remove pesky '\r' ending
-    if (str.back() == '\r')
-    {
-        str.pop_back();
-    }
-}
-
 ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 {
-	ifstream file;
-	file.open(filepath);
-
-    if (!file.is_open())
-    {
-        cout << "Error! Tried to open nonexistent surface file: "
-            << filepath << endl;
-    }
+    FileReader file(filepath);
 
 	map<char, Color> colors;
 	map<char, string> infoCodes;
@@ -89,8 +75,8 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	string str;
 	stringstream sstream;
 
-	readLine(&file, str); //COLORS
-    readLine(&file, str);
+    str = file.NextLine(); //COLORS
+    str = file.NextLine();
 
     string symbol;
     string red;
@@ -112,11 +98,11 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 		colors[symbol[0]] = Color(rval, gval, bval);
 		
-		readLine(&file, str);
+        str = file.NextLine();
 	} while (str.compare("INFO CODES")); //do-while loop used because COLORS will never be empty section
 
 	//INFO CODES
-	readLine(&file, str);
+    file.NextLine();
 
 	char infoCode[1+1];
 	string infoVal;
@@ -135,11 +121,11 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 		infoCodes[infoCode[0]] = infoVal;
 
-		readLine(&file, str);
+        str = file.NextLine();
 	}
 
 	//SIZE
-	readLine(&file, str);
+    str = file.NextLine();
 	sstream.str(str);
     string width;
     string height;
@@ -148,14 +134,17 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	Surface* surface = new Surface(atoi(width.c_str()), atoi(height.c_str()));
 
-	readLine(&file, str); //CHARACTERS
+    // CHARACTERS
+    str = file.NextLine();
 	
 	UChar character = ' ';
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-		readLine(&file, str);
+        str = file.NextLine();
 
-        UnicodeString ustr = UnicodeString::fromUTF8(StringPiece(str.c_str()));
+
+
+        UnicodeString ustr = UnicodeString::fromUTF8(str);
 		int c = 0;
 		for (int i = 0; i < ustr.length(); ++i)
 		{
@@ -167,12 +156,12 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	readLine(&file, str); //BACKGROUND COLORS
+	file.NextLine(); //BACKGROUND COLORS
 	
 	char colorsymbol = ' ';
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-		readLine(&file, str);
+        str = file.NextLine();
 
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
@@ -185,11 +174,11 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	readLine(&file, str); //CHARACTER COLORS
+	file.NextLine(); //CHARACTER COLORS
 	
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-		readLine(&file, str);
+        str = file.NextLine();
 
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
@@ -202,12 +191,12 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	readLine(&file, str); //OPACITY
+	file.NextLine(); //OPACITY
 
     char codesymbol;
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-		readLine(&file, str);
+        str = file.NextLine();
 
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
@@ -222,13 +211,13 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 		}
 	}
 
-	readLine(&file, str); //SPECIAL INFO
+	file.NextLine(); //SPECIAL INFO
 
     map<string, vector<Point> > rectanglePoints;
 
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-		readLine(&file, str);
+        str = file.NextLine();
 
 		int c = 0;
 		for (string::iterator it = str.begin(); it != str.end(); ++it)
@@ -280,8 +269,6 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
         surface->mSpecialRectangles[rectangleKey] =  Rectangle(x, y, width, height);
     }
-
-	file.close();
 
 	return surface;
 }
@@ -548,20 +535,13 @@ void ascii::Surface::blitStringMultiline(UnicodeString text, Color color, Rectan
 
 void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo=NULL, Color color=Color::Black)
 {
-    UErrorCode error = U_ZERO_ERROR;
-    BreakIterator* it = BreakIterator::createLineInstance(Locale::getDefault(), error);
-    it->setText(text);
+    StringTokenizer tokenizer(text);
 
     vector<UnicodeString> sections;
 
-    int32_t p = it->first();
-    while (p != BreakIterator::DONE)
+    while (tokenizer.HasNextToken())
     {
-        int32_t start = p;
-        p = it->next();
-        int32_t end = p;
-
-        UnicodeString section = text.tempSubStringBetween(start, end);
+        UnicodeString section = tokenizer.NextToken();
         sections.push_back(section);
     }
 
@@ -602,8 +582,6 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 
 	*outEndX = x;
     *outHeightY = lines;
-
-    delete it;
 }
 
 int ascii::Surface::stringMultilineEndX(UnicodeString text, Rectangle destination)
@@ -668,24 +646,14 @@ void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
 
 void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
 {
-    // Use a BreakIterator to tokenize the given string
-    UErrorCode error = U_ZERO_ERROR;
-    BreakIterator* it = BreakIterator::createWordInstance(Locale::getDefault(), error);
-    it->setText(text);
+    StringTokenizer tokenizer(text);
 
     // Highlight each token
-    int32_t p = it->first();
-    while (p != BreakIterator::DONE)
+    while (tokenizer.HasNextToken())
     {
-        int32_t start = p;
-        p = it->next();
-        int32_t end = p;
-
-        UnicodeString token(text, start, end);
+        UnicodeString token = tokenizer.NextToken();
         highlightString(token, color);
     }
-
-    delete it;
 }
 
 ascii::Point ascii::Surface::FindCharacter(UChar character)

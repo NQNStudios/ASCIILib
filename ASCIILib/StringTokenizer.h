@@ -27,4 +27,6 @@ namespace ascii
             int32_t mBufferPosition;
     };
 
+    bool IsWhiteSpace(UChar uch);
+
 }

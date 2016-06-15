@@ -67,7 +67,6 @@ bool ascii::FileReader::HasNextLine()
 string ascii::FileReader::NextLine()
 {
     UnicodeString nextLine = mLines.front();
-    nextLine.trim();
     mLines.pop_front();
 
     string temp;
