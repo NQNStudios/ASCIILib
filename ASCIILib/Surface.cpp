@@ -541,7 +541,7 @@ void ascii::Surface::processMultilineString(UnicodeString text, Rectangle destin
 
     while (tokenizer.HasNextToken())
     {
-        UnicodeString section = tokenizer.NextToken();
+        UnicodeString section = tokenizer.NextToken(false);
         sections.push_back(section);
     }
 
