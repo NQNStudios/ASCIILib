@@ -74,6 +74,13 @@ string ascii::FileReader::NextLine()
     return nextLine.toUTF8String(temp);
 }
 
+UnicodeString ascii::FileReader::NextLineUnicode()
+{
+    UnicodeString nextLine = mLines.front();
+    mLines.pop_front();
+    return nextLine;
+}
+
 string ascii::FileReader::FullContents()
 {
     // Collect the whole contents of the buffer in a new string stream

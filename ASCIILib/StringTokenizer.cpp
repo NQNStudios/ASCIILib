@@ -9,8 +9,8 @@ using namespace ascii;
 ascii::StringTokenizer::StringTokenizer(UnicodeString buffer)
     : mBuffer(buffer), mBufferPosition(0)
 {
-    //Log("Tokenizing string:");
-    //ULog(buffer);
+    Log::Print("Tokenizing string:");
+    Log::Print(buffer);
 }
 
 UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
@@ -39,9 +39,6 @@ UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
     {
         token.trim();
     }
-
-    Log::Print("Extracted token: ");
-    Log::Print(token);
 
     return token;
 }

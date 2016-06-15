@@ -27,7 +27,10 @@ namespace ascii
     {
         public:
             UChar base;
-            string inversionAxes;
+            bool invertX;
+            bool invertY;
+            int offsetX;
+            int offsetY;
     };
 
 	///<summary>

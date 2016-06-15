@@ -1,5 +1,7 @@
 #include "Graphics.h"
 
+#include <algorithm>
+
 #include "unicode/uchar.h"
 #include "unicode/locid.h"
 #include "unicode/ustream.h"
@@ -180,6 +182,56 @@ void ascii::Graphics::DisposeFlairTable()
 
 void ascii::Graphics::LoadInversionTable(const char* path)
 {
+    // Clear out any previously loaded inversion table
+    if (mHasInversionTable)
+    {
+        mInversionTable.clear();
+    }
+
+    // Open the file
+    FileReader file(path);
+
+    // Parse each line
+    while (file.HasNextLine())
+    {
+        UnicodeString lineUnicode = file.NextLineUnicode();
+
+        // The line will be in format:
+        // [original character] [reference character] [inversion axes]
+        //     [(optional) x offset] [(optional) y offset]
+        // Inversion axes are strung together from options "x" and "y"
+        // Ex. "xy" for both
+        StringTokenizer tokenizer(lineUnicode);
+
+        UChar specialChar = tokenizer.NextToken()[0];
+        UChar baseChar = tokenizer.NextToken()[0];
+        UnicodeString axesUnicode = tokenizer.NextToken();
+
+        string temp;
+        string axesString = axesUnicode.toUTF8String(temp);
+
+        InvertedChar invertedChar;
+        invertedChar.base = baseChar;
+        invertedChar.invertX =
+            (find(axesString.begin(), axesString.end(), 'x') != axesString.end());
+        invertedChar.invertY =
+            (find(axesString.begin(), axesString.end(), 'y') != axesString.end());
+
+        invertedChar.offsetX = 0;
+        invertedChar.offsetY = 0;
+        if (tokenizer.HasNextToken())
+        {
+            UnicodeString offsetString;
+            offsetString = tokenizer.NextToken();
+            invertedChar.offsetX = atoi(offsetString.toUTF8String(temp).c_str());
+            offsetString = tokenizer.NextToken();
+            invertedChar.offsetY = atoi(offsetString.toUTF8String(temp).c_str());
+        }
+
+        mInversionTable[specialChar] = invertedChar;
+    }
+
+    mHasInversionTable = true;
 }
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
@@ -362,7 +414,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 				}
 
                 // First process each character as unicode to see if it must be
-                // rendered as a combo of a normal character and a flair
+                // rendered as a FlairChar or InvertedChar
 				UChar uch = surface->getCharacter(xSrc, ySrc);
 
                 if (mHasFlairTable && mFlairTable.find(uch)
@@ -401,6 +453,61 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                             characterColor.b);
 
                     SDL_RenderCopy(mRenderer, flairSheet, &src, &dest);
+                }
+                else if (mHasInversionTable && mInversionTable.find(uch)
+                        != mInversionTable.end())
+                {
+                    // Must process as an Inverted character
+                    InvertedChar invertedChar = mInversionTable[uch];
+
+                    SDL_Rect dest = Rectangle(
+                            drawX + (x + xSrc) * mCharWidth + invertedChar.offsetX,
+                            drawY + (y + ySrc) * mCharHeight + invertedChar.offsetY,
+                            mCharWidth,
+                            mCharHeight);
+
+                    UnicodeString ustr; ustr += uch;
+                    string temp;
+                    string str = ustr.toUTF8String(temp);
+                    Glyph glyph = std::make_pair(str, characterColor);
+
+                    SDL_Texture* texture = NULL;
+
+                    if (mGlyphTextures[glyph])
+                    {
+                        texture = mGlyphTextures[glyph];
+                    }
+                    else
+                    {
+                        UnicodeString baseCharUString = invertedChar.base;
+                        temp = "";
+                        string baseCharString = baseCharUString.toUTF8String(temp);
+                        SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, baseCharString.c_str(), characterColor);
+                        texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+
+                        // TODO flip the texture
+
+                        mGlyphTextures[glyph] = texture;
+                        
+                        SDL_FreeSurface(surface);
+                    }
+                    // Using the proper color
+                    SDL_SetTextureColorMod(texture,
+                            characterColor.r,
+                            characterColor.g,
+                            characterColor.b);
+
+                    SDL_RendererFlip flip = SDL_FLIP_NONE;
+                    if (invertedChar.invertX) flip =
+                        (SDL_RendererFlip)(flip | SDL_FLIP_HORIZONTAL);
+                    if (invertedChar.invertY) flip =
+                        (SDL_RendererFlip)(flip | SDL_FLIP_VERTICAL);
+
+                    SDL_RenderCopyEx(mRenderer, texture, NULL, &dest, 0, NULL, flip);
+                    
+                    // Don't chain this character with the rest or the inverted
+                    // version will be overlapped with the regular version
+                    uch = ' ';
                 }
 
                 // Don't chain empty space in a word. Empty space can exist
