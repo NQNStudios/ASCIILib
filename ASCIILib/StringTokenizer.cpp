@@ -9,8 +9,6 @@ using namespace ascii;
 ascii::StringTokenizer::StringTokenizer(UnicodeString buffer)
     : mBuffer(buffer), mBufferPosition(0)
 {
-    Log::Print("Tokenizing string:");
-    Log::Print(buffer);
 }
 
 UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
@@ -28,8 +26,6 @@ UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
     }
 
     int32_t end = mBufferPosition;
-    Log::Print(start);
-    Log::Print(end);
 
     // Retrieve the next section ending with a line break boundary
     UnicodeString token = mBuffer.tempSubStringBetween(start, end);

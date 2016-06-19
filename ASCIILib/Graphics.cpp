@@ -115,7 +115,7 @@ void ascii::Graphics::LoadFlairTable(const char* path)
         // Strip the trailing newline
         string temp;
         string sheetPath = line;
-        Log::Print("Loading texture " + sheetPath);
+        //Log::Print("Loading texture " + sheetPath);
         mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
 
         // Parse each line of the special char table
@@ -126,9 +126,9 @@ void ascii::Graphics::LoadFlairTable(const char* path)
             UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
 
             //string lineOutput = lineUnicode.toUTF8String(temp);
-            Log::Print(lineUnicode);
-            Log::Print("Line size:");
-            Log::Print(lineUnicode.length());
+            //Log::Print(lineUnicode);
+            //Log::Print("Line size:");
+            //Log::Print(lineUnicode.length());
 
             // Split the line into tokens
             StringTokenizer tokenizer(lineUnicode);
