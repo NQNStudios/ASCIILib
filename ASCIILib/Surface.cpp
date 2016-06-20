@@ -102,7 +102,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	} while (str.compare("INFO CODES")); //do-while loop used because COLORS will never be empty section
 
 	//INFO CODES
-    file.NextLine();
+    str = file.NextLine();
 
 	char infoCode[1+1];
 	string infoVal;
@@ -140,11 +140,7 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 	UChar character = ' ';
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
-        str = file.NextLine();
-
-
-
-        UnicodeString ustr = UnicodeString::fromUTF8(str);
+		UnicodeString ustr = file.NextLineUnicode();
 		int c = 0;
 		for (int i = 0; i < ustr.length(); ++i)
 		{
