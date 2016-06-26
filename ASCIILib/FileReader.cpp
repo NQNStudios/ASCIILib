@@ -1,8 +1,6 @@
 #include "FileReader.h"
 
-#include <iostream>
-#include <fstream>
-
+#include <cstdio>
 #include "unicode/ustdio.h"
 
 #include "Log.h"
@@ -18,9 +16,9 @@ ascii::FileReader::FileReader(string path)
 {
     // Open the file
     //Log("Opening file: " + path);
-    ifstream file(path);
+    UFILE* ufile = u_fopen(path.c_str(), "r", NULL, "UTF-8");
 
-    mExists = (file.is_open());
+    mExists = (ufile != NULL);
 
     // Output a warning if the file wasn't found
     if (!Exists())
@@ -30,33 +28,67 @@ ascii::FileReader::FileReader(string path)
     // Otherwise, extract each line from the file
     else
     {
-        // Skip the UTF-8 BOM if one is present
-        char a,b,c;
-        a = file.get();
-        b = file.get();
-        c = file.get();
-        if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
+        // Retrieve the size of the file
+        long fileSize = 0;
+        FILE* file = u_fgetfile(ufile);
+        fseek(file, 0, SEEK_END);
+        fileSize = ftell(file);
+        u_frewind(ufile);
+
+        // Prepare enough space to read the entire string plus termination
+        UChar* contents = new UChar[fileSize + 1];
+
+        // Read every character
+        long index = 0;
+        while (!u_feof(ufile))
         {
-            file.seekg(0);
+            contents[index++] = u_fgetc(ufile);
         }
-        else
+
+        // Add the string termination
+        contents[index] = 0;
+
+        // Close the file
+        u_fclose(ufile);
+
+        // Check if the UTF-8 BOM is present
+        UChar a,b,c;
+        a = contents[0];
+        b = contents[1];
+        c = contents[2];
+
+        if(!(a!=(UChar)0xEF || b!=(UChar)0xBB || c!=(UChar)0xBF))
         {
             Log::Print("Warning. File contains UTF-8 bit order mark:");
             Log::Print(path);
         }
 
-        string line;
-        while (getline(file, line))
+        // Split the file contents by line endings
+        UnicodeString line = "";
+        for (int i = 0; i < index; ++i)
         {
-            // Strip trailing carriage returns
-            line.erase(line.find_last_not_of("\n\r\t") + 1);
-            mLines.push_back(UnicodeString::fromUTF8(StringPiece(line.c_str())));
-        }
-    }
+            UChar nextChar = contents[i];
 
-    // Close the file
-    //Log("Closing file: " + path);
-    file.close();
+            // Store the characters that are chained together as a line
+            if (nextChar == '\n' || nextChar == 0)
+            {
+                mLines.push_back(line);
+                line = "";
+            }
+            else if (nextChar == '\r')
+            {
+                continue;
+            }
+            else
+            {
+                line += nextChar;
+            }
+        }
+
+        // TODO is it right to do this?
+        // Clean up the memory used to read the UChars
+        delete contents;
+    }
 }
 
 bool ascii::FileReader::HasNextLine()
