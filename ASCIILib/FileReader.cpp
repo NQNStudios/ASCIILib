@@ -87,7 +87,7 @@ ascii::FileReader::FileReader(string path)
 
         // TODO is it right to do this?
         // Clean up the memory used to read the UChars
-        delete contents;
+        delete[] contents;
     }
 }
 
