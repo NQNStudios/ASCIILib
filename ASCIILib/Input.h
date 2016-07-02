@@ -26,7 +26,7 @@ namespace ascii
 	{
 		public:
 			Input()
-				: mMouseState(0), mLastMouseState(0), mMouseX(0), mMouseY(0), mLastMouseX(0), mLastMouseY(0), mScrollX(0), mScrollY(0)
+				: mMouseState(0), mLastMouseState(0), mMouseX(0), mMouseY(0), mLastMouseX(0), mLastMouseY(0), mScrollX(0), mScrollY(0), mFirstFrame(true)
 			{
 			}
 
@@ -65,10 +65,10 @@ namespace ascii
 			int mouseY() { return mMouseY; }
 
 			///<summary>The change in the mouse's x-coordinate since the last frame.</summary>
-			int mouseChangeX() { return mMouseX - mLastMouseX; }
+			int mouseChangeX();
 			
 			///<summary>The change in the mouse's y-coordinate since the last frame.</summary>
-			int mouseChangeY() { return mMouseY - mLastMouseY; }
+			int mouseChangeY();
 
 			///<summary>Checks whether a mouse button is pressed.</summary>
 			bool mouseButtonDown(MouseButton button) { return mMouseState & SDL_BUTTON(button); }
@@ -110,6 +110,8 @@ namespace ascii
 			Uint32 mLastMouseState;
 
 			int mScrollX, mScrollY;
+
+            bool mFirstFrame;
 	};
 
 };

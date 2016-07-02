@@ -6,7 +6,7 @@ void ascii::Input::beginNewFrame()
 	mPressedKeys.clear();
 	mReleasedKeys.clear();
 
-	//take mouse input and update last mouse input
+	// Take mouse input and update last mouse input
 	mLastMouseX = mMouseX;
 	mLastMouseY = mMouseY;
 	mLastMouseState = mMouseState;
@@ -15,6 +15,8 @@ void ascii::Input::beginNewFrame()
 
 	mScrollX = 0;
 	mScrollY = 0;
+
+    mFirstFrame = false;
 }
 
 void ascii::Input::keyDownEvent(const SDL_Event& event)
@@ -71,4 +73,18 @@ std::vector<SDL_Keycode> ascii::Input::allPressedKeys()
     }
 
     return keyList;
+}
+
+int ascii::Input::mouseChangeX()
+{
+    // The mouse's position hasn't actually changed on the first frame
+    if (mFirstFrame) return 0;
+    return mMouseX - mLastMouseX;
+}
+
+int ascii::Input::mouseChangeY()
+{
+    // The mouse's position hasn't actually changed on the first frame
+    if (mFirstFrame) return 0;
+    return mMouseY - mLastMouseY;
 }
