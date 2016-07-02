@@ -22,10 +22,12 @@ ascii::FileReader::FileReader(string path, string forbiddenCharactersPath)
     // Read the list of forbidden characters from the given forbidden
     // characters file, if there is one
     mForbiddenCharacters = ReadContents(forbiddenCharactersPath);
-    Log::Print("Loading file ", false);
-    Log::Print(path, false);
-    Log::Print(" with forbidden characters: ", false);
-    Log::Print(mForbiddenCharacters);
+    mForbiddenCharacters.trim(); // Trim the trailing newline
+
+    //Log::Print("Loading file ", false);
+    //Log::Print(path, false);
+    //Log::Print(" with forbidden characters: ", false);
+    //Log::Print(mForbiddenCharacters);
 
     Initialize(path);
 }
@@ -73,7 +75,17 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         long index = 0;
         while (!u_feof(ufile))
         {
-            contents[index++] = u_fgetc(ufile);
+            UChar nextChar = u_fgetc(ufile);
+            contents[index++] = nextChar;
+
+            // Make sure none of the characters we read are forbidden
+            if (mForbiddenCharacters.indexOf(nextChar) != -1)
+            {
+                Log::Print("Warning! Forbidden character ", false);
+                Log::Print(UnicodeString(nextChar), false);
+                Log::Print(" found in file ", false);
+                Log::Print(path);
+            }
         }
 
         // Add the string termination
@@ -116,15 +128,6 @@ void ascii::FileReader::ParseLines(UnicodeString contents, string path)
         for (int i = 0; i < numChars; ++i)
         {
             UChar nextChar = contents[i];
-
-            // Make sure none of the characters we read are forbidden
-            if (mForbiddenCharacters.indexOf(nextChar) != -1)
-            {
-                Log::Print("Warning! Forbidden character ", false);
-                Log::Print(nextChar, false);
-                Log::Print(" found in file ", false);
-                Log::Print(path);
-            }
 
             // Store the characters that are chained together as a line
             if (nextChar == '\n' || nextChar == 0)
