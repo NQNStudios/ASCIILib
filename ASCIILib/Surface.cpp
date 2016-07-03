@@ -12,6 +12,7 @@ using namespace std;
 #include "unicode/ustream.h"
 
 #include "FileReader.h"
+#include "Log.h"
 #include "StringTokenizer.h"
 using namespace ascii;
 
@@ -209,8 +210,6 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 
 	file.NextLine(); //SPECIAL INFO
 
-    map<string, vector<Point> > rectanglePoints;
-
 	for (int r = 0; r < surface->height(); ++r) //for loop used because this section will have fixed size
 	{
         str = file.NextLine();
@@ -224,47 +223,12 @@ ascii::Surface* ascii::Surface::FromFile(const char* filepath)
 			{
                 string specialInfo = infoCodes[codesymbol];
 
-                // Store points which define special rectangles
-                if (!specialInfo.substr(0, 6).compare("POINT_"))
-                {
-                    string rectangleKey = specialInfo.substr(6);
-                    if (rectanglePoints.find(rectangleKey) == rectanglePoints.end())
-                    {
-                        rectanglePoints[rectangleKey] = vector<Point>();
-                    }
-
-                    Point p(c, r);
-                    rectanglePoints[rectangleKey].push_back(p);
-                }
-
 				surface->setSpecialInfo(c, r, specialInfo);
 			}
 
 			++c;
 		}
 	}
-
-    // Process and construct special rectangles from points given
-    for (auto it = rectanglePoints.begin(); it != rectanglePoints.end(); ++it)
-    {
-        string rectangleKey = it->first;
-        vector<Point> points = it->second;
-
-        //cout << "Constructing rectangle with " << points.size() << " points." << endl;
-
-        Point p1 = points[0];
-        Point p2 = points[1];
-
-        //cout << "Point 1: (" << p1.x << ", " << p1.y << ")" << endl;
-        //cout << "Point 2: (" << p2.x << ", " << p2.y << ")" << endl;
-
-        int x = p1.x;
-        int y = p1.y;
-        int width = p2.x - p1.x + 1;
-        int height = p2.y - p1.y + 1;
-
-        surface->mSpecialRectangles[rectangleKey] =  Rectangle(x, y, width, height);
-    }
 
 	return surface;
 }
@@ -668,6 +632,48 @@ ascii::Point ascii::Surface::FindCharacter(UChar character)
     return Point::Undefined;
 }
 
+ascii::Rectangle ascii::Surface::GetSpecialRectangle(string key)
+{
+    vector<Point> correspondingPoints;
+
+    // Find the cells that correspond to the given special key
+    for (int x = 0; x < width(); ++x)
+    {
+        for (int y = 0; y < height(); ++y)
+        {
+            string specialInfo = mSpecialInfo[x][y];
+
+            if (!specialInfo.compare("POINT_" + key))
+            {
+                correspondingPoints.push_back(Point(x, y));
+            }
+        }
+    }
+
+    // If there are any number other than two corresponding points,
+    // something is wrong
+    if (correspondingPoints.size() != 2)
+    {
+        Log::Print("Error! Tried to construct special rectangle with other than 2 points: ", false);
+        Log::Print(key);
+
+        return Rectangle::Empty;
+    }
+
+    // Construct the rectangle from the two points
+    Point p1 = correspondingPoints[0];
+    Point p2 = correspondingPoints[1];
+
+    //cout << "Point 1: (" << p1.x << ", " << p1.y << ")" << endl;
+    //cout << "Point 2: (" << p2.x << ", " << p2.y << ")" << endl;
+
+    int x = p1.x;
+    int y = p1.y;
+    int width = p2.x - p1.x + 1;
+    int height = p2.y - p1.y + 1;
+
+    return Rectangle(x, y, width, height);
+}
 void ascii::Surface::printContents()
 {
     for (int y = 0; y < height(); ++y)

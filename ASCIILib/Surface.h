@@ -174,7 +174,7 @@ namespace ascii
 
             // Retrieve a rectangle defined by points in this Surface's special
             // info
-            Rectangle GetSpecialRectangle(string key) { return mSpecialRectangles[key]; }
+            Rectangle GetSpecialRectangle(string key);
 
             // Find the first occurrance of the given character, reading
             // left to right, top to bottom
