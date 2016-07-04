@@ -56,6 +56,10 @@ namespace ascii
             ///</summary>
             int soundDuration(std::string key);
 
+            // Return the average length of sounds in a sound group, in
+            // milliseconds
+            int averageGroupSoundDuration(std::string groupKey);
+
             ///<summary>
             /// Return the summation of the lengths of every sound effect
             /// referenced by a key in the given collection
@@ -202,9 +206,10 @@ namespace ascii
             ///</summary>
             int firstOpenChannel();
 
-            Mix_Chunk* getSound(std::string key);
-
 			typedef std::vector<Mix_Chunk*> SoundGroup;
+
+            Mix_Chunk* getSound(std::string key);
+            SoundGroup getSoundGroup(std::string groupKey);
 
 			std::map<std::string, Mix_Chunk*> mSounds;
 			std::map<std::string, SoundGroup> mSoundGroups;

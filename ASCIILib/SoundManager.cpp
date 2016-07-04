@@ -73,7 +73,7 @@ bool ascii::SoundManager::hasSound(std::string key)
 
 void ascii::SoundManager::freeSound(std::string key)
 {
-	Mix_FreeChunk(mSounds[key]);
+	Mix_FreeChunk(getSound(key));
 	mSounds.erase(key);
 }
 
@@ -109,11 +109,26 @@ void ascii::SoundManager::stopLoopingSound(std::string key)
 
 int ascii::SoundManager::soundDuration(std::string key)
 {
-    Mix_Chunk* chunk = mSounds[key];
+    Mix_Chunk* chunk = getSound(key);
 
     int ms = chunk->alen / ((44100*2)/1000);
 
     return ms;
+}
+
+int ascii::SoundManager::averageGroupSoundDuration(std::string groupKey)
+{
+    ascii::SoundManager::SoundGroup group = getSoundGroup(groupKey);
+
+    int sum = 0;
+    for (int i = 0; i < group.size(); ++i)
+    {
+        Mix_Chunk* sound = group[i];
+
+        sum += this->soundDuration(sound);
+    }
+
+    return sum / group.size();
 }
 
 int ascii::SoundManager::firstOpenChannel()
@@ -157,7 +172,7 @@ void ascii::SoundManager::loadGroupSound(std::string group, const char* path)
 
 void ascii::SoundManager::freeSoundGroup(std::string group)
 {
-	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
 	for (auto it = soundGroup.begin(); it != soundGroup.end(); ++it)
 	{
@@ -169,7 +184,7 @@ void ascii::SoundManager::freeSoundGroup(std::string group)
 
 int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 {
-	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
     if (soundGroup.empty())
     {
@@ -181,16 +196,16 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 
     int channel = firstOpenChannel();
     Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
-	return Mix_PlayChannel(channel, mSoundGroups[group][n], 0);
+	return Mix_PlayChannel(channel, getSoundGroup(group)[n], 0);
 }
 
 int ascii::SoundManager::playSoundGroupGetDuration(std::string group, float volume)
 {
-	ascii::SoundManager::SoundGroup soundGroup = mSoundGroups[group];
+	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
 	int n = rand() % soundGroup.size();
 
-    Mix_Chunk* groupSound = mSoundGroups[group][n];
+    Mix_Chunk* groupSound = getSoundGroup(group)[n];
 
     int channel = firstOpenChannel();
     Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
@@ -315,13 +330,27 @@ void ascii::SoundManager::setMusicVolume(float value)
 
 Mix_Chunk* ascii::SoundManager::getSound(std::string key)
 {
-    Mix_Chunk* sound = mSounds[key];
-
-    if (!sound)
+    if (!this->hasSound(key))
     {
         Log::Print("Error! Tried to access nonexistent sound ", false);
         Log::Print(key);
+        return NULL;
     }
 
+    Mix_Chunk* sound = mSounds[key];
     return sound;
+}
+
+ascii::SoundManager::SoundGroup ascii::SoundManager::getSoundGroup(
+        std::string groupKey)
+{
+    if (mSoundGroups.find(groupKey) == mSoundGroups.end())
+    {
+        Log::Print("Error! Tried to access nonexistent sound group ", false);
+        Log::Print(groupKey);
+        return SoundGroup();
+    }
+
+    ascii::SoundManager::SoundGroup group = mSoundGroups[groupKey];
+    return group;
 }
