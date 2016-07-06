@@ -430,6 +430,22 @@ void ascii::Surface::blitSurface(Surface* surface, Rectangle source, int x, int 
 	}
 }
 
+void ascii::Surface::transposeSpecialInfo(Surface* surface, int x, int y)
+{
+	// everywhere where special info exists on the other surface, add it to
+	// this one
+	for (int destx = x, srcx = 0; destx < mWidth && srcx < surface->mWidth; ++destx, ++srcx)
+	{
+		for (int desty = y, srcy = 0; desty < mHeight && srcy < surface->mHeight; ++desty, ++srcy)
+		{
+			if (destx >= 0 && desty >= 0 && !surface->mSpecialInfo[srcx][srcy].empty())
+			{
+				mSpecialInfo[destx][desty] = surface->mSpecialInfo[srcx][srcy];
+			}
+		}
+	}
+}
+
 void ascii::Surface::applyMask(Surface* surface, int x, int y)
 {
 	// Set cells on this surface opaque if an opaque cell from the given
