@@ -199,6 +199,10 @@ namespace ascii
             // where they first appear in the given color
             void highlightTokens(UnicodeString text, ascii::Color color);
 
+            // Highlight the tokens of the given string on whichever lines they
+            // appear, EVERY time they appear, in the given color
+            void highlightAllTokens(UnicodeString text, ascii::Color color);
+
 		private:
             static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo, Color color);
 

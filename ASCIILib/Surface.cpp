@@ -696,6 +696,28 @@ void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
     highlightTokens(text, color, Point::Origin);
 }
 
+void ascii::Surface::highlightAllTokens(UnicodeString text, ascii::Color color)
+{
+    StringTokenizer tokenizer(text);
+
+    // Process each token
+    while (tokenizer.HasNextToken())
+    {
+        UnicodeString token = tokenizer.NextToken();
+
+        // Highlight the token every place where it appears
+        Point searchStart = findString(token);
+
+        while (searchStart.defined)
+        {
+            highlightString(token, color, searchStart);
+
+            ++searchStart.x;
+            searchStart = findString(token, searchStart);
+        }
+    }
+}
+
 ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
 {
     vector<Point> correspondingPoints;
