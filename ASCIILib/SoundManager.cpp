@@ -234,6 +234,16 @@ void ascii::SoundManager::stopLoopingGroup()
 	mLoopingChannels.clear();
 }
 
+void ascii::SoundManager::fadeOutLoopingGroup(std::string group, int ms)
+{
+    // Fade out the current sound
+    int channel = mLoopingChannels[group].first;
+    Mix_FadeOutChannel(channel, ms);
+
+    // Stop looping
+    stopLoopingGroup(group);
+}
+
 void ascii::SoundManager::pauseSounds()
 {
     Mix_Pause(-1);

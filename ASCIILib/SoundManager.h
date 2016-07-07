@@ -96,15 +96,17 @@ namespace ascii
 			///</summary>
 			void loopSoundGroup(std::string group, float volume=1.0f);
 
-			///<summary>
-			/// Stops looping a sound group.
-			///</summary>
+			// Stops looping a sound group. The current sound will finish
 			void stopLoopingGroup(std::string group);
 
 			///<summary>
 			/// Stops looping all current looping sound groups.
 			///</summary>
 			void stopLoopingGroup();
+
+            // Stop a looping sound group and fade out the current sound
+            void fadeOutLoopingGroup(std::string group, int ms);
+
 
             ///<summary>
             /// Pauses all sound effects currently playing
