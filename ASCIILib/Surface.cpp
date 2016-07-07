@@ -576,38 +576,91 @@ int ascii::Surface::measureStringMultilineY(UnicodeString text, Rectangle destin
     return result;
 }
 
-ascii::Point ascii::Surface::findString(UnicodeString text)
+ascii::Point ascii::Surface::findCharacter(UChar character, Point searchStart)
+{
+    Log::Print("Searching for character ", false);
+    Log::Print(UnicodeString(character), false);
+    Log::Print(" at position:");
+    Log::Print(searchStart.x);
+    Log::Print(searchStart.y);
+    // Loop through rows first, so that we can find the next occurance just by
+    // incrementing x of the resulting point and using that as the next search
+    // start
+    for (int y = searchStart.y; y < height(); ++y)
+    {
+        for (int x = searchStart.x; x < width(); ++x)
+        {
+            // Only begin the x-wise search at that starting coordinate for the
+            // first row checked!
+            searchStart.x = 0;
+
+            if (mCharacters[x][y] == character)
+            {
+                return Point(x, y);
+            }
+        }
+    }
+
+    return Point::Undefined;
+}
+
+ascii::Point ascii::Surface::findCharacter(UChar character)
+{
+    return findCharacter(character, Point::Origin);
+}
+
+ascii::Point ascii::Surface::findString(UnicodeString text, Point searchStart)
 {
     int textLength = text.length();
 
-    // Check each point in the Surface to see if it marks the beginning of
-    // a complete appearance of the desired string
-    for (int y = 0; y < height(); ++y)
+    if (textLength == 0)
     {
-        for (int x = 0; x + textLength <= width(); ++x)
+        Log::Print("Error! Tried to search Surface for occurance of empty string.");
+        return Point::Undefined;
+    }
+
+    // Check each occurance of the first character, to see if it is the start
+    // of a complete appearance of the desired string
+    Point occurance = findCharacter(text[0], searchStart);
+
+    while (occurance.defined)
+    {
+        Log::Print("Found an occurance of character ", false);
+        Log::Print(UnicodeString(text[0]), false);
+        Log::Print(" at position:");
+        Log::Print(occurance.x);
+        Log::Print(occurance.y);
+
+        UnicodeString possibleMatch;
+
+        for (int c = 0; c < textLength; ++c)
         {
-            UnicodeString possibleMatch;
-
-            for (int c = 0; c < textLength; ++c)
-            {
-                possibleMatch += getCharacter(x+c, y);
-            }
-
-            if (!possibleMatch.compare(text))
-            {
-                return ascii::Point(x, y);
-            }
+            possibleMatch += getCharacter(occurance.x+c, occurance.y);
         }
+
+        if (!possibleMatch.compare(text))
+        {
+            return ascii::Point(occurance.x, occurance.y);
+        }
+
+        searchStart = Point(occurance.x + 1, occurance.y);
+        occurance = findCharacter(text[0], searchStart);
     }
 
     // If the string is not found, return an undefined point
     return ascii::Point::Undefined;
 }
 
-void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
+ascii::Point ascii::Surface::findString(UnicodeString text)
+{
+    return findString(text, Point::Origin);
+}
+
+void ascii::Surface::highlightString(UnicodeString text, ascii::Color color,
+        Point searchStart)
 {
     // Find the given string
-    Point startingPosition = findString(text);
+    Point startingPosition = findString(text, searchStart);
 
     // If it is found...
     if (startingPosition.defined)
@@ -620,7 +673,13 @@ void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
     }
 }
 
-void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
+void ascii::Surface::highlightString(UnicodeString text, ascii::Color color)
+{
+    highlightString(text, color, Point::Origin);
+}
+
+void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color,
+        Point searchStart)
 {
     StringTokenizer tokenizer(text);
 
@@ -628,27 +687,16 @@ void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
     while (tokenizer.HasNextToken())
     {
         UnicodeString token = tokenizer.NextToken();
-        highlightString(token, color);
+        highlightString(token, color, searchStart);
     }
 }
 
-ascii::Point ascii::Surface::FindCharacter(UChar character)
+void ascii::Surface::highlightTokens(UnicodeString text, ascii::Color color)
 {
-    for (int x = 0; x < width(); ++x)
-    {
-        for (int y = 0; y < height(); ++y)
-        {
-            if (mCharacters[x][y] == character)
-            {
-                return Point(x, y);
-            }
-        }
-    }
-
-    return Point::Undefined;
+    highlightTokens(text, color, Point::Origin);
 }
 
-ascii::Rectangle ascii::Surface::GetSpecialRectangle(string key)
+ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
 {
     vector<Point> correspondingPoints;
 

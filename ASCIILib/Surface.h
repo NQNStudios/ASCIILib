@@ -151,24 +151,6 @@ namespace ascii
 			static int measureStringMultilineY(UnicodeString text, Rectangle destination);
 
             ///<summary>
-            /// Locate the first appearance of the given string on one line of
-            /// the graphics buffer
-            ///</summary>
-            ascii::Point findString(UnicodeString text);
-
-            ///<summary>
-            /// Highlight the given string on one line of the Surface using the
-            /// given color
-            ///</summary>
-            void highlightString(UnicodeString text, ascii::Color color);
-
-            ///<summary>
-            /// Highlight the tokens of the given string on whichever lines
-            /// where they first appear given color
-            ///</summary>
-            void highlightTokens(UnicodeString text, ascii::Color color);
-
-            ///<summary>
             /// Prints out the characters stored in the graphics buffer to
             /// the debug console.
             ///</summary>
@@ -176,11 +158,46 @@ namespace ascii
 
             // Retrieve a rectangle defined by points in this Surface's special
             // info
-            Rectangle GetSpecialRectangle(string key);
+            Rectangle getSpecialRectangle(string key);
 
-            // Find the first occurrance of the given character, reading
-            // left to right, top to bottom
-            ascii::Point FindCharacter(UChar character);
+            // Find the first occurrance of the given character proceeding from
+            // the given starting point, reading left to right, top to bottom
+            ascii::Point findCharacter(UChar character, Point searchStart);
+
+            // Find the first occurance of the given character, reading left to
+            // right, top to bottom
+            ascii::Point findCharacter(UChar character);
+
+            ///<summary>
+            /// Locate the first appearance, proceeding from the given starting
+            /// point, of the given string on one line of the graphics buffer
+            ///</summary>
+            ascii::Point findString(UnicodeString text, Point searchStart);
+
+            // Locate the first appearance of the given string on one line of
+            // the graphics buffer
+            ascii::Point findString(UnicodeString text);
+
+            // Highlight the first appearance, proceeding from the given starting
+            // point, of the given string on one line of the Surface using
+            // the given color
+            void highlightString(UnicodeString text, ascii::Color color,
+                    Point searchStart);
+
+            // Highlight the first appearance, proceeding from the given starting
+            // point, of the given string on one line of the Surface using
+            // the given color
+            void highlightString(UnicodeString text, ascii::Color color);
+
+            // Highlight the tokens of the given string on whichever lines
+            // where they first appear (proceeding from the given start point)
+            // in the given color
+            void highlightTokens(UnicodeString text, ascii::Color color,
+                    Point searchStart);
+
+            // Highlight the tokens of the given string on whichever lines
+            // where they first appear in the given color
+            void highlightTokens(UnicodeString text, ascii::Color color);
 
 		private:
             static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo, Color color);
