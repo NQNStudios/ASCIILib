@@ -182,7 +182,7 @@ UnicodeString ascii::FileReader::NextLineUnicode(bool trimmed)
 
     if (trimmed)
     {
-        nextLine.trim();
+        nextLine = nextLine.findAndReplace("\n", "");
     }
 
     return nextLine;

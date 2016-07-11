@@ -578,11 +578,11 @@ int ascii::Surface::measureStringMultilineY(UnicodeString text, Rectangle destin
 
 ascii::Point ascii::Surface::findCharacter(UChar character, Point searchStart)
 {
-    Log::Print("Searching for character ", false);
-    Log::Print(UnicodeString(character), false);
-    Log::Print(" at position:");
-    Log::Print(searchStart.x);
-    Log::Print(searchStart.y);
+    //Log::Print("Searching for character ", false);
+    //Log::Print(UnicodeString(character), false);
+    //Log::Print(" at position:");
+    //Log::Print(searchStart.x);
+    //Log::Print(searchStart.y);
     // Loop through rows first, so that we can find the next occurance just by
     // incrementing x of the resulting point and using that as the next search
     // start
@@ -625,11 +625,11 @@ ascii::Point ascii::Surface::findString(UnicodeString text, Point searchStart)
 
     while (occurance.defined)
     {
-        Log::Print("Found an occurance of character ", false);
-        Log::Print(UnicodeString(text[0]), false);
-        Log::Print(" at position:");
-        Log::Print(occurance.x);
-        Log::Print(occurance.y);
+        //Log::Print("Found an occurance of character ", false);
+        //Log::Print(UnicodeString(text[0]), false);
+        //Log::Print(" at position:");
+        //Log::Print(occurance.x);
+        //Log::Print(occurance.y);
 
         UnicodeString possibleMatch;
 
