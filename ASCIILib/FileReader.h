@@ -32,10 +32,10 @@ namespace ascii
             // Check if the file contains another line to read.
             bool HasNextLine();
             // Retrieve the next line from the file being read, UTF-8 encoded.
-            string NextLine();
+            string NextLine(bool trimmed=true);
             // Retrieve the next line from the file being read as
             // a UnicodeString 
-            UnicodeString NextLineUnicode();
+            UnicodeString NextLineUnicode(bool trimmed=true);
 
             // Return a string containing all text in the file being read.
             string FullContents();

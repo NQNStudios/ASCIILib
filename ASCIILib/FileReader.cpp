@@ -132,6 +132,8 @@ void ascii::FileReader::ParseLines(UnicodeString contents, string path)
             // Store the characters that are chained together as a line
             if (nextChar == '\n' || nextChar == 0)
             {
+                line += nextChar;
+
                 mLines.push_back(line);
                 line = "";
             }
@@ -144,7 +146,6 @@ void ascii::FileReader::ParseLines(UnicodeString contents, string path)
                 line += nextChar;
             }
         }
-
     }
 }
 
@@ -155,20 +156,35 @@ bool ascii::FileReader::HasNextLine()
     return !mLines.empty();
 }
 
-string ascii::FileReader::NextLine()
+string ascii::FileReader::NextLine(bool trimmed)
 {
     UnicodeString nextLine = mLines.front();
     mLines.pop_front();
 
     string temp;
-    //ULog(nextLine);
-    return nextLine.toUTF8String(temp);
+    string nextLineUTF8 = nextLine.toUTF8String(temp);
+
+    if (trimmed)
+    {
+        if (nextLineUTF8.back() == '\n')
+        {
+            nextLineUTF8.pop_back();
+        }
+    }
+
+    return nextLineUTF8;
 }
 
-UnicodeString ascii::FileReader::NextLineUnicode()
+UnicodeString ascii::FileReader::NextLineUnicode(bool trimmed)
 {
     UnicodeString nextLine = mLines.front();
     mLines.pop_front();
+
+    if (trimmed)
+    {
+        nextLine.trim();
+    }
+
     return nextLine;
 }
 
@@ -179,7 +195,7 @@ string ascii::FileReader::FullContents()
 
     while (HasNextLine())
     {
-        buffer << NextLine();
+        buffer << NextLine(false);
     }
 
     // Return the contents as a string
