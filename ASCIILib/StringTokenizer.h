@@ -13,6 +13,7 @@ namespace ascii
         public:
             // Construct a tokenizer for the given string
             StringTokenizer(UnicodeString buffer);
+            StringTokenizer(UnicodeString buffer, UnicodeString delimeters);
 
             // Retrieve the next token in the string
             UnicodeString NextToken(bool trimmed=true);
@@ -23,8 +24,10 @@ namespace ascii
             UnicodeString BufferRemainder();
 
         private:
+            bool IsDelimeter(UChar uch);
             UnicodeString mBuffer;
             int32_t mBufferPosition;
+            UnicodeString mDelimeters;
     };
 
     bool IsWhiteSpace(UChar uch);

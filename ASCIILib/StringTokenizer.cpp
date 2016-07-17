@@ -9,6 +9,13 @@ using namespace ascii;
 ascii::StringTokenizer::StringTokenizer(UnicodeString buffer)
     : mBuffer(buffer), mBufferPosition(0)
 {
+    mDelimeters = UnicodeString(" ");
+}
+
+ascii::StringTokenizer::StringTokenizer(UnicodeString buffer,
+        UnicodeString delimeters)
+    : mBuffer(buffer), mDelimeters(delimeters)
+{
 }
 
 UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
@@ -18,7 +25,7 @@ UnicodeString ascii::StringTokenizer::NextToken(bool trimmed)
     while (mBufferPosition < mBuffer.length())
     {
         ++mBufferPosition;
-        if (mBuffer[mBufferPosition] == UnicodeString(" ")[0])
+        if (IsDelimeter(mBuffer[mBufferPosition]))
         {
             ++mBufferPosition;
             break;
@@ -47,6 +54,15 @@ bool ascii::StringTokenizer::HasNextToken()
 UnicodeString ascii::StringTokenizer::BufferRemainder()
 {
     return mBuffer.tempSubString(mBufferPosition);
+}
+
+bool ascii::StringTokenizer::IsDelimeter(UChar uch)
+{
+    for (int i = 0; i < mDelimeters.length(); ++i)
+    {
+        if (mDelimeters[i] == uch) return true;
+    }
+    return false;
 }
 
 bool ascii::IsWhiteSpace(UChar uch)
