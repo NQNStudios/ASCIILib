@@ -3,6 +3,9 @@
 
 #include <SDL.h>
 
+#include "Point.h"
+using namespace ascii;
+
 namespace ascii
 {
 
@@ -29,6 +32,8 @@ namespace ascii
 			}
 
             bool isEmpty() { return x == 0 && y == 0 && width == 0 && height == 0; }
+
+            bool contains(Point point);
 
 			///<summary>
 			/// An empty rectangle.

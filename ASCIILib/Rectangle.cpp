@@ -14,3 +14,8 @@ ascii::Rectangle::operator SDL_Rect()
 
 	return rect;
 }
+
+bool ascii::Rectangle::contains(Point point)
+{
+    return point.x >= x && point.y >= y && point.x < right() && point.y < bottom();
+}

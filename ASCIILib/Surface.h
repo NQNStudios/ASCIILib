@@ -162,6 +162,9 @@ namespace ascii
             Rectangle getSpecialRectangle(string key);
             // Retrieve a list of special rectangles defined in this Surface
             map<string, Rectangle> getSpecialRectangles();
+            // Remove all special info that belongs to the given special
+            // rectangle
+            void removeSpecialRectangle(string key);
 
             // Find the first occurrance of the given character proceeding from
             // the given starting point, reading left to right, top to bottom

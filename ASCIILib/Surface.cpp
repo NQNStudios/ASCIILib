@@ -739,6 +739,18 @@ vector<ascii::Point> ascii::Surface::getSpecialPoints(string key)
     return correspondingPoints;
 }
 
+void ascii::Surface::removeSpecialRectangle(string key)
+{
+    vector<Point> correspondingPoints = getSpecialPoints(key);
+
+    for (int i = 0; i < correspondingPoints.size(); ++i)
+    {
+        Point point = correspondingPoints[i];
+
+        mSpecialInfo[point.x][point.y] = "";
+    }
+}
+
 ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
 {
     vector<Point> correspondingPoints = getSpecialPoints(key);
