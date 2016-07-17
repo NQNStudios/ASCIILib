@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 using namespace std;
 
 #include "unicode/unistr.h"
@@ -159,6 +160,8 @@ namespace ascii
             // Retrieve a rectangle defined by points in this Surface's special
             // info
             Rectangle getSpecialRectangle(string key);
+            // Retrieve a list of special rectangles defined in this Surface
+            map<string, Rectangle> getSpecialRectangles();
 
             // Find the first occurrance of the given character proceeding from
             // the given starting point, reading left to right, top to bottom
@@ -205,6 +208,8 @@ namespace ascii
 
 		private:
             static void processMultilineString(UnicodeString string, Rectangle destination, int* outEndX, int* outHeightY, Surface* blitTo, Color color);
+
+            vector<Point> getSpecialPoints(string key);
 
             // FIELDS
 			int mWidth, mHeight;

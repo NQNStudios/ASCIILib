@@ -718,7 +718,7 @@ void ascii::Surface::highlightAllTokens(UnicodeString text, ascii::Color color)
     }
 }
 
-ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
+vector<ascii::Point> ascii::Surface::getSpecialPoints(string key)
 {
     vector<Point> correspondingPoints;
 
@@ -735,6 +735,13 @@ ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
             }
         }
     }
+
+    return correspondingPoints;
+}
+
+ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
+{
+    vector<Point> correspondingPoints = getSpecialPoints(key);
 
     // If there are any number other than two corresponding points,
     // something is wrong
@@ -760,8 +767,38 @@ ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
 
     return Rectangle(x, y, width, height);
 }
+
+map<string, ascii::Rectangle> ascii::Surface::getSpecialRectangles()
+{
+    map<string, Rectangle> specialRectangles;
+    for (int x = 0; x < width(); ++x)
+    {
+        for (int y = 0; y < height(); ++y)
+        {
+            string specialInfo = mSpecialInfo[x][y];
+
+            if (specialInfo.size() > 6)
+            {
+                string prefix = specialInfo.substr(0, 6);
+
+                if (!prefix.compare("POINT_"))
+                {
+                    string key = specialInfo.substr(6);
+
+                    Rectangle specialRectangle = getSpecialRectangle(key);
+                    specialRectangles[key] = specialRectangle;
+                }
+            }
+        }
+    }
+
+    return specialRectangles;
+}
+
 void ascii::Surface::printContents()
 {
+    Log::Print("Number of special rectangles: ", false);
+    Log::Print(getSpecialRectangles().size());
     for (int y = 0; y < height(); ++y)
     {
         for (int x = 0; x < width(); ++x)
