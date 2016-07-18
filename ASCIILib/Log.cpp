@@ -7,7 +7,7 @@
 
 void ascii::Log::SDLError()
 {
-    Log::Print(SDL_GetError());
+    Log::Error(SDL_GetError());
 }
 
 bool ascii::Log::Enabled()

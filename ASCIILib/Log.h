@@ -14,17 +14,8 @@ namespace ascii
     class Log
     {
         public:
-            template<typename T> static void Print(T message, bool newLine=true)
-            {
-                if (Enabled())
-                {
-                    cout << message;
-                    if (newLine)
-                    {
-                        cout << endl;
-                    }
-                }
-            }
+            template<typename T> static void Print(T message, bool newLine=true);
+            template<typename T> static void Error(T errorMessage);
 
             static void SDLError();
 
@@ -32,3 +23,5 @@ namespace ascii
             static bool Enabled();
     };
 }
+
+#include "Log.tpp"
