@@ -31,7 +31,7 @@ namespace
 }
 
 
-ascii::Graphics::Graphics(const char* title, const char* fontpath,
+ascii::Graphics::Graphics(const char* title, string fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
@@ -40,10 +40,16 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
 {
 	if(TTF_Init() == -1)
     {
-        // TODO put a log error message
+        Log::Error("SDL_ttf failed to initialize");
+        Log::SDLError();
     }
 
-	mFont = TTF_OpenFont(fontpath, kFontSize);
+	mFont = TTF_OpenFont(fontpath.c_str(), kFontSize);
+    if (!mFont)
+    {
+        Log::Error("Failed to open the font file: " + fontpath);
+        Log::SDLError();
+    }
 
     Initialize();
 }
@@ -70,9 +76,21 @@ void ascii::Graphics::Initialize()
 		width() * mCharWidth, height() * mCharHeight, 
 		flags);
 
+    if (!mWindow)
+    {
+        Log::Error("Failed to create a window for the game.");
+        Log::SDLError();
+    }
+
 	checkSize();
 
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    if (!mRenderer)
+    {
+        Log::Error("Failed to SDL_Renderer.");
+        Log::SDLError();
+    }
 
 	mCache = new ascii::ImageCache(mRenderer,
             mCharWidth,
@@ -172,7 +190,7 @@ void ascii::Graphics::LoadFlairTable(string path)
     }
     else
     {
-        Log::Error("Failed to load file for special character table: " + path);
+        Log::Error("Failed to load file for character flair table: " + path);
     }
 }
 
@@ -193,6 +211,12 @@ void ascii::Graphics::LoadInversionTable(string path)
 
     // Open the file
     FileReader file(path);
+
+    if (!file.Exists())
+    {
+        Log::Error("Failed to open file for character inversion table: " + path);
+        return;
+    }
 
     // Parse each line
     while (file.HasNextLine())
@@ -487,8 +511,6 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                         string baseCharString = baseCharUString.toUTF8String(temp);
                         SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, baseCharString.c_str(), characterColor);
                         texture = SDL_CreateTextureFromSurface(mRenderer, surface);
-
-                        // TODO flip the texture
 
                         mGlyphTextures[glyph] = texture;
                         

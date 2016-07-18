@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <SDL_image.h>
 
+#include "Log.h"
+using namespace ascii;
+
 const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
@@ -40,8 +43,16 @@ void ascii::Game::HideMouseCursor()
 
 void ascii::Game::Run()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP);
+	if (SDL_Init(SDL_INIT_EVERYTHING))
+    {
+        Log::Error("SDL_Init failed!");
+        Log::SDLError();
+    }
+	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
+    {
+        Log::Error("SDL_image failed to initialize");
+        Log::SDLError();
+    }
 
 	if (mBufferWidth != 0 && mBufferHeight != 0)
 	{

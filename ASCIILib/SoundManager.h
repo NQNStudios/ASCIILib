@@ -217,6 +217,7 @@ namespace ascii
 			std::map<std::string, Mix_Chunk*> mSounds;
 			std::map<std::string, SoundGroup> mSoundGroups;
 
+            Mix_Music* getTrack(std::string key);
 			std::map<std::string, Mix_Music*> mTracks;
 
 			std::map<std::string, std::pair<int, float> > mLoopingChannels;

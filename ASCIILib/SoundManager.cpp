@@ -17,11 +17,15 @@ ascii::SoundManager::SoundManager(void)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
-        Log::Error("Failed to init with OGG support");
+        Log::Error("Failed to init SDL_Mixer with OGG support");
         Log::SDLError();
     }
 
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize);
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize))
+    {
+        Log::Error("Failed to open SDL_mixer audio channels");
+        Log::SDLError();
+    }
 
 	srand(time(NULL));
 }
@@ -166,7 +170,12 @@ int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
 
 void ascii::SoundManager::loadGroupSound(std::string group, string path)
 {
-	mSoundGroups[group].push_back(Mix_LoadWAV(path.c_str()));
+    Mix_Chunk* groupSound = Mix_LoadWAV(path.c_str());
+    if (!groupSound)
+    {
+        Log::Error("Failed to load sound for group '" + group + "': " + path ); 
+    }
+	mSoundGroups[group].push_back(groupSound);
 }
 
 void ascii::SoundManager::freeSoundGroup(std::string group)
@@ -261,7 +270,6 @@ void ascii::SoundManager::setSoundVolume(float value)
 {
     mSoundVolume = value;
 }
-
 void ascii::SoundManager::loadTrack(std::string key, string path)
 {
     Mix_Music* track = Mix_LoadMUS(path.c_str());
@@ -273,22 +281,33 @@ void ascii::SoundManager::loadTrack(std::string key, string path)
 	mTracks[key] = track;
 }
 
+Mix_Music* ascii::SoundManager::getTrack(std::string key)
+{
+    if (mTracks.find(key) == mTracks.end())
+    {
+        Log::Error("Tried to access nonexistent track: " + key);
+        return NULL;
+    }
+
+    return mTracks[key];
+}
+
 void ascii::SoundManager::freeTrack(std::string key)
 {
-	Mix_FreeMusic(mTracks[key]);
+	Mix_FreeMusic(getTrack(key));
 	mTracks.erase(key);
 }
 
 void ascii::SoundManager::playTrack(std::string key, int loops)
 {
-    Mix_Music* track = mTracks[key];
+    Mix_Music* track = getTrack(key);
 	Mix_PlayMusic(track, loops);
     mCurrentTrack = key;
 }
 
 void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
 {
-	Mix_FadeInMusicPos(mTracks[key], loops, ms, position);
+	Mix_FadeInMusicPos(getTrack(key), loops, ms, position);
     mCurrentTrack = key;
 }
 

@@ -53,7 +53,7 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, const char* fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
+			Graphics(const char* title, string fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
             ///<summary>
