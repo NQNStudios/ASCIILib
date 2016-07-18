@@ -20,22 +20,19 @@ ascii::ImageCache::~ImageCache()
 	clearTextures();
 }
 
-void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Color colorKey)
+void ascii::ImageCache::loadTexture(std::string key, string path, ascii::Color colorKey)
 {
-	SDL_Surface* imageSurface = IMG_Load(path);
+	SDL_Surface* imageSurface = IMG_Load(path.c_str());
     if (!imageSurface)
     {
-        Log::Print("Error! Failed to load texture: ", false);
-        Log::Print(path, false);
-        Log::Print(" because of error: ");
+        Log::Error("Failed to load texture: " + path);
         Log::SDLError();
     }
 
 	//Make sure the image dimensions will align to the buffer
 	if (imageSurface->w % mCharWidth != 0 || imageSurface->h % mCharHeight != 0)
     {
-        Log::Print("Warning! Loaded a texture which does not align with buffer: ", false);
-        Log::Print(path);
+        Log::Error("Warning! Loaded a texture which does not align with buffer: " + path);
     }
 
     if (!colorKey.isNone)
@@ -46,9 +43,7 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
 	SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(mRenderer, imageSurface);
     if (!imageTexture)
     {
-        Log::Print("Error! Failed to create texture ", false);
-        Log::Print(path, false);
-        Log::Print(" because of error: ");
+        Log::Error("Failed to create texture " + path);
         Log::SDLError();
     }
 
@@ -57,7 +52,7 @@ void ascii::ImageCache::loadTexture(std::string key, const char* path, ascii::Co
 	SDL_FreeSurface(imageSurface);
 }
 
-void ascii::ImageCache::loadTexture(std::string key, const char* path)
+void ascii::ImageCache::loadTexture(std::string key, string path)
 {
     loadTexture(key, path, Color::None);
 }
@@ -77,8 +72,7 @@ SDL_Texture* ascii::ImageCache::getTexture(std::string key)
 {
     if (mTextures.find(key) == mTextures.end())
     {
-        Log::Print("Error! Tried to retrieve a texture with a key that does not exist: ", false);
-        Log::Print(key);
+        Log::Error("Tried to retrieve nonexistent texture: " + key);
         return NULL;
     }
     else

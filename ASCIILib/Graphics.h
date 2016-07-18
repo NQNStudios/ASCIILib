@@ -69,8 +69,8 @@ namespace ascii
             ///</summary>
             void Dispose();
 
-            void LoadFlairTable(const char* path);
-            void LoadInversionTable(const char* path);
+            void LoadFlairTable(string path);
+            void LoadInversionTable(string path);
             void DisposeFlairTable();
 
             ///<summary>

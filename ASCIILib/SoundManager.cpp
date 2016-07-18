@@ -17,7 +17,7 @@ ascii::SoundManager::SoundManager(void)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
-        Log::Print("Error! Failed to init with OGG support");
+        Log::Error("Failed to init with OGG support");
         Log::SDLError();
     }
 
@@ -54,13 +54,12 @@ void ascii::SoundManager::update()
 	}
 }
 
-void ascii::SoundManager::loadSound(std::string key, const char* path)
+void ascii::SoundManager::loadSound(std::string key, string path)
 {
-    Mix_Chunk* sound = Mix_LoadWAV(path);
+    Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
     if (!sound)
     {
-        Log::Print("Error! Failed to load sound ", false);
-        Log::Print(path);
+        Log::Error("Failed to load sound " + path);
         Log::SDLError();
     }
 	mSounds[key] = sound;
@@ -165,9 +164,9 @@ int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
     return sum;
 }
 
-void ascii::SoundManager::loadGroupSound(std::string group, const char* path)
+void ascii::SoundManager::loadGroupSound(std::string group, string path)
 {
-	mSoundGroups[group].push_back(Mix_LoadWAV(path));
+	mSoundGroups[group].push_back(Mix_LoadWAV(path.c_str()));
 }
 
 void ascii::SoundManager::freeSoundGroup(std::string group)
@@ -188,8 +187,7 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 
     if (soundGroup.empty())
     {
-        Log::Print("Error! Tried to play empty sound group: ", false);
-        Log::Print(group);
+        Log::Error("Tried to play empty sound group: " + group);
     }
 
 	int n = rand() % soundGroup.size();
@@ -264,14 +262,12 @@ void ascii::SoundManager::setSoundVolume(float value)
     mSoundVolume = value;
 }
 
-void ascii::SoundManager::loadTrack(std::string key, const char* path)
+void ascii::SoundManager::loadTrack(std::string key, string path)
 {
-    Mix_Music* track = Mix_LoadMUS(path);
+    Mix_Music* track = Mix_LoadMUS(path.c_str());
     if (!track)
     {
-        Log::Print("Failed to load music file ", false);
-        Log::Print(path, false);
-        Log::Print(" with error:");
+        Log::Error("Failed to load music file: " + path);
         Log::SDLError();
     }
 	mTracks[key] = track;
@@ -342,8 +338,7 @@ Mix_Chunk* ascii::SoundManager::getSound(std::string key)
 {
     if (!this->hasSound(key))
     {
-        Log::Print("Error! Tried to access nonexistent sound ", false);
-        Log::Print(key);
+        Log::Error("Tried to access nonexistent sound: " + key);
         return NULL;
     }
 
@@ -356,8 +351,7 @@ ascii::SoundManager::SoundGroup ascii::SoundManager::getSoundGroup(
 {
     if (mSoundGroups.find(groupKey) == mSoundGroups.end())
     {
-        Log::Print("Error! Tried to access nonexistent sound group ", false);
-        Log::Print(groupKey);
+        Log::Error("Tried to access nonexistent sound group: " + groupKey);
         return SoundGroup();
     }
 

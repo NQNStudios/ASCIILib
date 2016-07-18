@@ -1,6 +1,7 @@
 #include "Graphics.h"
 
 #include <algorithm>
+#include <string>
 
 #include "unicode/uchar.h"
 #include "unicode/locid.h"
@@ -94,7 +95,7 @@ void ascii::Graphics::Dispose()
     delete mCache;
 }
 
-void ascii::Graphics::LoadFlairTable(const char* path)
+void ascii::Graphics::LoadFlairTable(string path)
 {
     if (mHasFlairTable)
     {
@@ -171,8 +172,7 @@ void ascii::Graphics::LoadFlairTable(const char* path)
     }
     else
     {
-        Log::Print("Error loading special character table:");
-        Log::Print(path);
+        Log::Error("Failed to load file for special character table: " + path);
     }
 }
 
@@ -183,7 +183,7 @@ void ascii::Graphics::DisposeFlairTable()
     mHasFlairTable = false;
 }
 
-void ascii::Graphics::LoadInversionTable(const char* path)
+void ascii::Graphics::LoadInversionTable(string path)
 {
     // Clear out any previously loaded inversion table
     if (mHasInversionTable)

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+using namespace std;
 
 #include <SDL_mixer.h>
 
@@ -27,7 +28,7 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which to store the sound.</param>
 			///<param name="path">The file path of the WAV file.</param>
-			void loadSound(std::string key, const char* path);
+			void loadSound(std::string key, string path);
 
             ///<summary>
             /// Check if the SoundManager has loaded a sound corresponding
@@ -71,7 +72,7 @@ namespace ascii
 			///</summary>
 			///<param name="key">The group in which to store the sound.</param>
 			///<param name="path">The file path of the WAV file.</param>
-			void loadGroupSound(std::string group, const char* path);
+			void loadGroupSound(std::string group, string path);
 
 			///<summary>
 			/// Frees all sounds from a sound group.
@@ -132,7 +133,7 @@ namespace ascii
 			///</summary>
 			///<param name="key">The key with which to store the track.</param>
 			///<param name="path">The file path of the track.</param>
-			void loadTrack(std::string key, const char* path);
+			void loadTrack(std::string key, string path);
 
 			///<summary>
 			/// Frees a music track from memory.

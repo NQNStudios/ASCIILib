@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+using namespace std;
 
 #include <SDL.h>
 
@@ -30,14 +31,14 @@ namespace ascii
 			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
 			/// <param name="colorKey">The transparent color of the texture to load.
             //                              THIS PARAMETER MAY BE Color::None</param>
-			void loadTexture(std::string key, const char* path, Color colorKey);
+			void loadTexture(std::string key, string path, Color colorKey);
 
 			/// <summary>
 			/// Loads a texture and stores it in the cache. Ensures that the texture will align with the "Console" buffer.
 			/// </summary>
 			/// <param name="key">A simple, unique, and descriptive key to associate this texture with.</param>
 			/// <param name="path">The filepath of the texture to load (must be a bitmap).</param>
-			void loadTexture(std::string key, const char* path);
+			void loadTexture(std::string key, string path);
 
 			/// <summary>
 			/// Frees the texture in the cache associated with the given key string.

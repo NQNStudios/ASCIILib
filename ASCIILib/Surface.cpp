@@ -615,7 +615,7 @@ ascii::Point ascii::Surface::findString(UnicodeString text, Point searchStart)
 
     if (textLength == 0)
     {
-        Log::Print("Error! Tried to search Surface for occurance of empty string.");
+        Log::Error("Tried to search Surface for occurance of empty string.");
         return Point::Undefined;
     }
 
@@ -759,8 +759,7 @@ ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
     // something is wrong
     if (correspondingPoints.size() != 2)
     {
-        Log::Print("Error! Tried to construct special rectangle with other than 2 points: ", false);
-        Log::Print(key);
+        Log::Error("Tried to construct special rectangle with other than 2 points: " + key);
 
         return Rectangle::Empty;
     }
