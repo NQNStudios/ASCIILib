@@ -37,7 +37,10 @@ ascii::Graphics::Graphics(const char* title, const char* fontpath,
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
     mHasFlairTable(false), mHasInversionTable(false)
 {
-	TTF_Init();
+	if(TTF_Init() == -1)
+    {
+        // TODO put a log error message
+    }
 
 	mFont = TTF_OpenFont(fontpath, kFontSize);
 
