@@ -81,10 +81,7 @@ UnicodeString ascii::FileReader::ReadContents(string path)
             // Make sure none of the characters we read are forbidden
             if (mForbiddenCharacters.indexOf(nextChar) != -1)
             {
-                Log::Print("Warning! Forbidden character ", false);
-                Log::Print(UnicodeString(nextChar), false);
-                Log::Print(" found in file ", false);
-                Log::Print(path);
+                Log::Error(UnicodeString("Forbidden character '") + UnicodeString(nextChar) + UnicodeString("' found in file: ") + UnicodeString::fromUTF8(path));
             }
         }
 
@@ -107,8 +104,7 @@ UnicodeString ascii::FileReader::ReadContents(string path)
 
         if(!(a!=(UChar)0xEF || b!=(UChar)0xBB || c!=(UChar)0xBF))
         {
-            Log::Print("Warning. File contains UTF-8 bit order mark:", false);
-            Log::Print(path);
+            Log::Error("Warning. File contains UTF-8 bit order mark: " + path);
 
             // Strip the BOM
             contentsUString = contentsUString.tempSubString(3);

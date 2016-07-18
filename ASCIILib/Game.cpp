@@ -48,9 +48,9 @@ void ascii::Game::Run()
         Log::Error("SDL_Init failed!");
         Log::SDLError();
     }
-	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
+	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != (IMG_INIT_PNG | IMG_INIT_JPG))
     {
-        Log::Error("SDL_image failed to initialize");
+        Log::Error("SDL_image failed to initialize with PNG and JPG support");
         Log::SDLError();
     }
 
