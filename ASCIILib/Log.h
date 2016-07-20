@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 #include "unicode/ustream.h"
@@ -19,8 +21,11 @@ namespace ascii
 
             static void SDLError();
 
+            static void SetOutputFilename(string filename);
+
         private:
             static bool Enabled();
+            static string sOutputFilename;
     };
 }
 
