@@ -12,7 +12,9 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
 
 template<typename T> void ascii::Log::Error(T errorMessage)
 {
+    Print("");
     Print("*========================ERROR========================*");
     Print(errorMessage);
     Print("*========================ERROR========================*");
+    Print("");
 }
