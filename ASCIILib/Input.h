@@ -58,6 +58,9 @@ namespace ascii
             ///</summary>
             std::vector<SDL_Keycode> allPressedKeys();
 
+            // Return the list of keys that are held this frame
+            std::vector<SDL_Keycode> allHeldKeys();
+
 			///<summary>The x-coordinate of the mouse.</summary>
 			int mouseX() { return mMouseX; }
 

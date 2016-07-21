@@ -75,6 +75,21 @@ std::vector<SDL_Keycode> ascii::Input::allPressedKeys()
     return keyList;
 }
 
+std::vector<SDL_Keycode> ascii::Input::allHeldKeys()
+{
+    std::vector<SDL_Keycode> keyList;
+
+    for (auto it = mHeldKeys.begin(); it != mHeldKeys.end(); ++it)
+    {
+        if (it->second == true)
+        {
+            keyList.push_back(it->first);
+        }
+    }
+
+    return keyList;
+}
+
 int ascii::Input::mouseChangeX()
 {
     // The mouse's position hasn't actually changed on the first frame

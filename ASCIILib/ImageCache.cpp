@@ -27,6 +27,7 @@ void ascii::ImageCache::loadTexture(std::string key, string path, ascii::Color c
     {
         Log::Error("Failed to load texture: " + path);
         Log::SDLError();
+		return;
     }
 
 	//Make sure the image dimensions will align to the buffer

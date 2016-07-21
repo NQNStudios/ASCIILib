@@ -90,17 +90,17 @@ UnicodeString ascii::FileReader::ReadContents(string path)
 
         // Create a UnicodeString object
         UnicodeString contentsUString(contents);
-
         // Clean up the memory used to read the UChars
         delete[] contents;
         // Close the file
         u_fclose(ufile);
 
         // Check if the UTF-8 Bit Order Mark is present
-        UChar a,b,c;
-        a = contents[0];
-        b = contents[1];
-        c = contents[2];
+		UChar a, b, c;
+		a = contentsUString[0];
+		b = contentsUString[1];
+		c = contentsUString[2];
+
 
         if(!(a!=(UChar)0xEF || b!=(UChar)0xBB || c!=(UChar)0xBF))
         {
