@@ -73,6 +73,11 @@ UnicodeString ascii::FileReader::ReadContents(string path)
 
         // Read every character
         long index = 0;
+
+        // Keep a working count of which line and character we're reading
+        int line = 1;
+        int lineCharacter = 0;
+
         while (!u_feof(ufile))
         {
             UChar nextChar = u_fgetc(ufile);
@@ -82,7 +87,19 @@ UnicodeString ascii::FileReader::ReadContents(string path)
             if (mForbiddenCharacters.indexOf(nextChar) != -1)
             {
                 Log::Error(UnicodeString("Forbidden character '") + UnicodeString(nextChar) + UnicodeString("' found in file: ") + UnicodeString::fromUTF8(path));
+                Log::Print("Line: ", false);
+                Log::Print(line);
+                Log::Print("Character: ", false);
+                Log::Print(lineCharacter);
             }
+
+            // Update the current position in the file
+            if (nextChar == '\n')
+            {
+                ++line;
+                lineCharacter = 0;
+            }
+            ++lineCharacter;
         }
 
         // Add the string termination
