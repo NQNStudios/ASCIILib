@@ -15,59 +15,30 @@
 #include "FileReader.h"
 using namespace ascii;
 
-const int kFontSize = 12;
-
 //static
 const unsigned int ascii::Graphics::kBufferWidth = 80;
 
 //static
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
-namespace
-{
-    // Needs to be big enough for the file path of the flair sheet
-    const int32_t MAX_FLAIR_TABLE_LINE_SIZE = 30;
-    const string FLAIR_SHEET_KEY("FLAIR_SHEET");
-}
-
-
-ascii::Graphics::Graphics(const char* title, string fontpath,
-        int bufferWidth, int bufferHeight)
+ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
+        string fontpath, int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL), mHidingImages(false),
-    mHasFlairTable(false), mHasInversionTable(false)
+    mWindow(NULL), mRenderer(NULL), mHidingImages(false), mFontPath(fontpath),
+    mCharWidth(charWidth), mCharHeight(charHeight)
 {
-	if(TTF_Init() == -1)
-    {
-        Log::Error("SDL_ttf failed to initialize");
-        Log::SDLError();
-    }
-
-	mFont = TTF_OpenFont(fontpath.c_str(), kFontSize);
-    if (!mFont)
-    {
-        Log::Error("Failed to open the font file: " + fontpath);
-        Log::SDLError();
-    }
-
     Initialize();
 }
 
 ascii::Graphics::~Graphics(void)
 {
     Dispose();
-
-	TTF_CloseFont(mFont);
-
-	TTF_Quit();
 }
 
 void ascii::Graphics::Initialize()
 {
     mFullscreen = false;
-
-    UpdateCharSize();
 
     int flags = SDL_WINDOW_SHOWN;
 
@@ -92,174 +63,22 @@ void ascii::Graphics::Initialize()
         Log::SDLError();
     }
 
+    mpFont = new PixelFont(mRenderer, mCharWidth, mCharHeight, "content/type/font-layout.txt", "content/type/test-font.png");
+
 	mCache = new ascii::ImageCache(mRenderer,
             mCharWidth,
             mCharHeight);
-
-    if (mHasFlairTable)
-    {
-        LoadFlairTable(mFlairTablePath.c_str());
-    }
 }
 
 void ascii::Graphics::Dispose()
 {
-    // Free textures we've created for rendering tokens
-    clearGlyphs();
-    // Free the texture of the flair table
-    DisposeFlairTable();
+    delete mpFont;
+
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     delete mCache;
 }
 
-void ascii::Graphics::LoadFlairTable(string path)
-{
-    if (mHasFlairTable)
-    {
-        DisposeFlairTable();
-    }
-
-    mFlairTablePath = path;
-
-    // Open the UTF-8 file
-    FileReader file(path);
-
-    // Make sure it opened properly
-    if (file.Exists())
-    {
-        // Read the first line, which holds the path to the flair sheet
-        string line;
-
-        line = file.NextLine();
-
-        // Load the sheet as a texture
-        // Strip the trailing newline
-        string temp;
-        string sheetPath = line;
-        //Log::Print("Loading texture " + sheetPath);
-        mCache->loadTexture(FLAIR_SHEET_KEY, sheetPath.c_str());
-
-        // Parse each line of the special char table
-        while(file.HasNextLine())
-        {
-            // Parse in Unicode for special characters
-            string line = file.NextLine();
-            UnicodeString lineUnicode = UnicodeString::fromUTF8(StringPiece(line.c_str()));
-
-            //string lineOutput = lineUnicode.toUTF8String(temp);
-            //Log::Print(lineUnicode);
-            //Log::Print("Line size:");
-            //Log::Print(lineUnicode.length());
-
-            // Split the line into tokens
-            StringTokenizer tokenizer(lineUnicode);
-
-            // The line will be structured as follows:
-            // [Unicode char] [ASCII char] [flair index] [(optional) y offset]
-            UChar specialChar = tokenizer.NextToken()[0];
-
-            // Don't read a normal char if that token has more than one
-            // character i.e. "NONE"
-            UChar normalChar = ' ';
-            UnicodeString baseCharToken = tokenizer.NextToken();
-            if (baseCharToken.length() == 1)
-                normalChar = baseCharToken[0];
-
-            UnicodeString indexString = tokenizer.NextToken();
-            string temp;
-            int flairIndex = atoi(indexString.toUTF8String(temp).c_str());
-
-            int flairOffset = 0;
-            if (tokenizer.HasNextToken())
-            {
-                UnicodeString offsetString = tokenizer.NextToken();
-                temp = "";
-                flairOffset = atoi(offsetString.toUTF8String(temp).c_str());
-                //cout << "Changing flair offset: " << flairOffset << endl;
-            }
-
-            FlairChar flairChar;
-            flairChar.base = normalChar;
-            flairChar.flairIndex = flairIndex;
-            flairChar.flairOffset = flairOffset;
-            mFlairTable[specialChar] = flairChar;
-        }
-
-        mHasFlairTable = true;
-    }
-    else
-    {
-        Log::Error("Failed to load file for character flair table: " + path);
-    }
-}
-
-void ascii::Graphics::DisposeFlairTable()
-{
-    mCache->freeTexture(FLAIR_SHEET_KEY);
-    mFlairTable.clear();
-    mHasFlairTable = false;
-}
-
-void ascii::Graphics::LoadInversionTable(string path)
-{
-    // Clear out any previously loaded inversion table
-    if (mHasInversionTable)
-    {
-        mInversionTable.clear();
-    }
-
-    // Open the file
-    FileReader file(path);
-
-    if (!file.Exists())
-    {
-        Log::Error("Failed to open file for character inversion table: " + path);
-        return;
-    }
-
-    // Parse each line
-    while (file.HasNextLine())
-    {
-        UnicodeString lineUnicode = file.NextLineUnicode();
-
-        // The line will be in format:
-        // [original character] [reference character] [inversion axes]
-        //     [(optional) x offset] [(optional) y offset]
-        // Inversion axes are strung together from options "x" and "y"
-        // Ex. "xy" for both
-        StringTokenizer tokenizer(lineUnicode);
-
-        UChar specialChar = tokenizer.NextToken()[0];
-        UChar baseChar = tokenizer.NextToken()[0];
-        UnicodeString axesUnicode = tokenizer.NextToken();
-
-        string temp;
-        string axesString = axesUnicode.toUTF8String(temp);
-
-        InvertedChar invertedChar;
-        invertedChar.base = baseChar;
-        invertedChar.invertX =
-            (find(axesString.begin(), axesString.end(), 'x') != axesString.end());
-        invertedChar.invertY =
-            (find(axesString.begin(), axesString.end(), 'y') != axesString.end());
-
-        invertedChar.offsetX = 0;
-        invertedChar.offsetY = 0;
-        if (tokenizer.HasNextToken())
-        {
-            UnicodeString offsetString;
-            offsetString = tokenizer.NextToken();
-            invertedChar.offsetX = atoi(offsetString.toUTF8String(temp).c_str());
-            offsetString = tokenizer.NextToken();
-            invertedChar.offsetY = atoi(offsetString.toUTF8String(temp).c_str());
-        }
-
-        mInversionTable[specialChar] = invertedChar;
-    }
-
-    mHasInversionTable = true;
-}
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
 {
@@ -308,6 +127,16 @@ int ascii::Graphics::pixelToCellY(int pixelY)
     return pixelY / mCharHeight;
 }
 
+int ascii::Graphics::cellToPixelX(int cellX)
+{
+    return drawOrigin().x + (cellX * mCharWidth);
+}
+
+int ascii::Graphics::cellToPixelY(int cellY)
+{
+    return drawOrigin().y + (cellY * mCharHeight);
+}
+
 ascii::Point ascii::Graphics::drawOrigin()
 {
     // Calculate the top-left corner of the rendering region
@@ -339,17 +168,14 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
     // Don't draw any images if they're currently being hidden
     if (!mHidingImages)
     {
-        int drawX = drawOrigin().x;
-        int drawY = drawOrigin().y;
-
         // Draw every image in the given map otherwise, using their specified
         // positions
         for (auto it = images->begin(); it != images->end(); ++it)
         {
             SDL_Rect dest;
             
-            dest.x = drawX + it->second.second.x * mCharWidth;
-            dest.y = drawY + it->second.second.y * mCharHeight;
+            dest.x = cellToPixelX(it->second.second.x);
+            dest.y = cellToPixelY(it->second.second.y);
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
@@ -372,8 +198,8 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = drawX + (x + xSrc) * mCharWidth;
-			colorRect.y = drawY + (y + ySrc) * mCharHeight;
+			colorRect.x = cellToPixelX(x + xSrc);
+			colorRect.y = cellToPixelY(y + ySrc);
 			colorRect.w = 0;
 			colorRect.h = mCharHeight;
 
@@ -399,193 +225,29 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 
 void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 {
-    int drawX = drawOrigin().x;
-    int drawY = drawOrigin().y;
-
 	//draw all characters
 	for (int ySrc = 0; ySrc < surface->height(); ++ySrc)
 	{
-		int xSrc = 0;
+        for (int xSrc = 0; xSrc < surface->width(); ++xSrc)
+        {
+            UChar character = surface->getCharacter(xSrc, ySrc);
 
-		while (xSrc < surface->width())
-		{
-			// Chain all adjacent characters with the same color into strings
-            // for more efficient rendering
+            if (!IsWhiteSpace(character))
+            {
+                Color color = surface->getCharacterColor(xSrc, ySrc);
 
-            // Don't bother chaining spaces together
-			UChar uch = surface->getCharacter(xSrc, ySrc);
+                int pixelX = cellToPixelX(x + xSrc);
+                int pixelY = cellToPixelY(y + ySrc);
 
-			if (IsWhiteSpace(uch))
-			{
-				++xSrc;
-				continue;
-			}
-
-            // If the character is not a space, start chaining with its
-            // neighbors
-            UnicodeString charChain;
-			SDL_Rect textRect;
-
-			textRect.x = drawX + (x + xSrc) * mCharWidth;
-			textRect.y = drawY + (y + ySrc) * mCharHeight;
-			textRect.w = 0;
-			textRect.h = mCharHeight;
-			Color characterColor = surface->getCharacterColor(xSrc, ySrc);
-
-			do
-			{
-				if (!surface->isCellOpaque(xSrc, ySrc))
-				{
-					++xSrc;
-					break;
-				}
-
-                // First process each character as unicode to see if it must be
-                // rendered as a FlairChar or InvertedChar
-				UChar uch = surface->getCharacter(xSrc, ySrc);
-
-                if (mHasFlairTable && mFlairTable.find(uch)
-                        != mFlairTable.end())
-                {
-                    //cout << "Processing special character" << endl;
-                    // Must process as a special character
-                    FlairChar flairChar = mFlairTable[uch];
-                    // Adopt a normal character as base
-                    uch = flairChar.base;
-                    // Retrieve the index of the flair to draw in conjunction
-                    int flairIndex = flairChar.flairIndex;
-                    // Retrieve the y offset for drawing the flair
-                    int flairOffset = flairChar.flairOffset;
-
-                    //cout << "Flair index: " << flairIndex << endl;
-                    //cout << "Flair offset: " << flairOffset << endl;
-
-                    // Draw the flair
-                    SDL_Rect src = Rectangle(
-                            flairIndex * mCharWidth,
-                            0,
-                            mCharWidth,
-                            mCharHeight);
-                    SDL_Rect dest = Rectangle(
-                            drawX + (x + xSrc) * mCharWidth,
-                            drawY + (y + ySrc) * mCharHeight + flairOffset,
-                            mCharWidth,
-                            mCharHeight);
-
-                    SDL_Texture* flairSheet = mCache->getTexture(FLAIR_SHEET_KEY);
-                    // Using the proper color
-                    SDL_SetTextureColorMod(flairSheet,
-                            characterColor.r,
-                            characterColor.g,
-                            characterColor.b);
-
-                    SDL_RenderCopy(mRenderer, flairSheet, &src, &dest);
-                }
-                else if (mHasInversionTable && mInversionTable.find(uch)
-                        != mInversionTable.end())
-                {
-                    // Must process as an Inverted character
-                    InvertedChar invertedChar = mInversionTable[uch];
-
-                    SDL_Rect dest = Rectangle(
-                            drawX + (x + xSrc) * mCharWidth + invertedChar.offsetX,
-                            drawY + (y + ySrc) * mCharHeight + invertedChar.offsetY,
-                            mCharWidth,
-                            mCharHeight);
-
-                    UnicodeString ustr; ustr += uch;
-                    string temp;
-                    string str = ustr.toUTF8String(temp);
-                    Glyph glyph = std::make_pair(str, characterColor);
-
-                    SDL_Texture* texture = NULL;
-
-                    if (mGlyphTextures[glyph])
-                    {
-                        texture = mGlyphTextures[glyph];
-                    }
-                    else
-                    {
-                        UnicodeString baseCharUString = invertedChar.base;
-                        temp = "";
-                        string baseCharString = baseCharUString.toUTF8String(temp);
-                        SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, baseCharString.c_str(), characterColor);
-                        texture = SDL_CreateTextureFromSurface(mRenderer, surface);
-
-                        mGlyphTextures[glyph] = texture;
-                        
-                        SDL_FreeSurface(surface);
-                    }
-                    // Using the proper color
-                    SDL_SetTextureColorMod(texture,
-                            characterColor.r,
-                            characterColor.g,
-                            characterColor.b);
-
-                    SDL_RendererFlip flip = SDL_FLIP_NONE;
-                    if (invertedChar.invertX) flip =
-                        (SDL_RendererFlip)(flip | SDL_FLIP_HORIZONTAL);
-                    if (invertedChar.invertY) flip =
-                        (SDL_RendererFlip)(flip | SDL_FLIP_VERTICAL);
-
-                    SDL_RenderCopyEx(mRenderer, texture, NULL, &dest, 0, NULL, flip);
-                    
-                    // Don't chain this character with the rest or the inverted
-                    // version will be overlapped with the regular version
-                    uch = ' ';
-                }
-
-                // Don't chain empty space in a word. Empty space can exist
-                // here if it is used as the base for a non-space character
-                // combo
-                if (!IsWhiteSpace(uch))
-                {
-                    charChain += uch;
-                    textRect.w += mCharWidth;
-                }
-                else
-                {
-                    ++xSrc;
-                    break;
-                }
-
-				++xSrc;
-			} while (
-                // Stop when we reach the end of the row
-                xSrc < surface->width()
-                // Stop if the next character has a different color
-                && surface->getCharacterColor(xSrc, ySrc) == characterColor
-                // Stop if the next character is another space
-                && !IsWhiteSpace(surface->getCharacter(xSrc, ySrc)));
-
-            // Convert the unicode into an appropriate string encoding for
-            // TTF_RenderText()
-            string temp;
-            string str = charChain.toUTF8String(temp);
-
-			Glyph glyph = std::make_pair(str, characterColor);
-
-			SDL_Texture* texture = NULL;
-
-			if (mGlyphTextures[glyph])
-			{
-				texture = mGlyphTextures[glyph];
-			}
-			else
-			{
-				SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, str.c_str(), characterColor);
-				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
-
-				mGlyphTextures[glyph] = texture;
-				
-				SDL_FreeSurface(surface);
-			}
-
-            SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
-		}
+                //Log::Print("Rendering character: " + UnicodeString(character));
+                //Log::Print("x: ", false);
+                //Log::Print(pixelX);
+                //Log::Print("y: ", false);
+                //Log::Print(pixelY);
+                mpFont->RenderCharacter(character, pixelX, pixelY, color);
+            }
+        }
 	}
-
-    //SDL_RenderCopy(mRenderer, mpFlairSheet, NULL, NULL);
 }
 
 void ascii::Graphics::drawSurface(ascii::Surface* surface, int x, int y)
@@ -629,8 +291,6 @@ void ascii::Graphics::update()
     mForegroundSurfaces.clear();
 
     // Refresh the window to show all changes
-    //cout << "Drawing flair sheet everywhere" << endl;
-    //SDL_RenderCopy(mRenderer, mpFlairSheet, NULL, NULL);
     refresh();
 }
 
@@ -675,16 +335,6 @@ void ascii::Graphics::showImages()
     mHidingImages = false;
 }
 
-void ascii::Graphics::clearGlyphs()
-{
-	for (std::map<Glyph, SDL_Texture*>::iterator it = mGlyphTextures.begin(); it != mGlyphTextures.end(); ++it)
-	{
-		SDL_DestroyTexture(it->second); //destroy all stored string textures
-	}
-
-	mGlyphTextures.clear();
-}
-
 ascii::Point ascii::Graphics::drawResolution()
 {
     return ascii::Point(mCharWidth * width(), mCharHeight * height());
@@ -706,9 +356,4 @@ void ascii::Graphics::checkSize()
 
         SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
     }
-}
-
-void ascii::Graphics::UpdateCharSize()
-{
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
 }

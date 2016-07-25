@@ -11,27 +11,11 @@ using namespace std;
 #include "Surface.h"
 #include "Rectangle.h"
 #include "Point.h"
+#include "PixelFont.h"
+
 
 namespace ascii
 {
-
-    struct FlairChar
-    {
-        public:
-            UChar base;
-            int flairIndex;
-            int flairOffset;
-    };
-
-    struct InvertedChar
-    {
-        public:
-            UChar base;
-            bool invertX;
-            bool invertY;
-            int offsetX;
-            int offsetY;
-    };
 
 	///<summary>
 	/// Handles all rendering for an ASCIILib game.
@@ -53,14 +37,9 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, string fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
+			Graphics(const char* title, int charWidth, int charHeight, string fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
-            ///<summary>
-            /// Modifies the graphics video mode, even after construction.
-            /// Warning: This rebuilds the image cache. All images will need
-            /// to be reloaded.
-            ///</summary>
             void Initialize();
 
             ///<summary>
@@ -68,10 +47,6 @@ namespace ascii
             /// call to Initialize()
             ///</summary>
             void Dispose();
-
-            void LoadFlairTable(string path);
-            void LoadInversionTable(string path);
-            void DisposeFlairTable();
 
             ///<summary>
             /// Sets the window to fullscreen or not
@@ -95,6 +70,9 @@ namespace ascii
 
             int pixelToCellX(int pixelX);
             int pixelToCellY(int pixelY);
+
+            int cellToPixelX(int cellX);
+            int cellToPixelY(int cellY);
 
 			///<summary>
 			/// Renders the rendering buffer in its current state.
@@ -175,17 +153,10 @@ namespace ascii
 			///</summary>
 			void checkSize();
 
-            ///<summary>
-            /// Update the values of mCharWidth and mCharHeight to reflect
-            /// scale
-            ///</summary>
-            void UpdateCharSize();
-
 			SDL_Window* mWindow;
 			SDL_Renderer* mRenderer;
 			ImageCache* mCache;
 
-			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
 
 			map<Glyph, SDL_Texture*> mGlyphTextures;
@@ -198,15 +169,10 @@ namespace ascii
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
 
-            map<UChar, FlairChar> mFlairTable;
-            string mFlairTablePath;
-            bool mHasFlairTable;
-
-            map<UChar, InvertedChar> mInversionTable;
-            string mInversionTablePath;
-            bool mHasInversionTable;
-
             bool mHidingImages;
+
+            string mFontPath;
+            PixelFont* mpFont;
 	};
 
 };

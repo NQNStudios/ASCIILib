@@ -54,14 +54,7 @@ void ascii::Game::Run()
         Log::SDLError();
     }
 
-	if (mBufferWidth != 0 && mBufferHeight != 0)
-	{
-		mpGraphics = new ascii::Graphics(mWindowTitle, mFontpath, mBufferWidth, mBufferHeight);
-	}
-	else
-	{
-		mpGraphics = new ascii::Graphics(mWindowTitle, mFontpath);
-	}
+    mpGraphics = new ascii::Graphics(mWindowTitle, 8, 12, mFontpath, mBufferWidth, mBufferHeight);
 
 	LoadContent(imageCache(), mpSoundManager);
 

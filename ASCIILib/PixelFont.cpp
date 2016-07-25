@@ -19,14 +19,14 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
 
     while (layoutFile.HasNextLine())
     {
-        layoutRows.push_back(layoutFile.NextLineUnicode(false));
+        layoutRows.push_back(layoutFile.NextLineUnicode());
     }
 
     // Load the texture sheet
     SDL_Surface* tempSurface = IMG_Load(textureSheet.c_str());
 
     // Make sure the texture sheet loaded correctly
-    if (!mpTextureSheet)
+    if (!tempSurface)
     {
         Log::Error("Failed to load pixel font: " + textureSheet);
         Log::SDLError();
@@ -37,17 +37,29 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
     int rows = layoutRows.size();
     int cols = layoutRows[0].length();
 
-    if (tempSurface->w != cols * charWidth || tempSurface->h != rows * charHeight)
+    int expectedWidth = cols * charWidth;
+    int expectedHeight = rows * charHeight;
+
+    if (tempSurface->w != expectedWidth || tempSurface->h != expectedHeight)
     {
         Log::Error("Tried to load pixel font with invalid texture sheet dimensions to match font layout file: " + textureSheet);
+
         Log::Print("Layout file: " + fontLayoutFile);
+        Log::Print("Expected width: ", false);
+        Log::Print(expectedWidth);
+        Log::Print("Expected height: ", false);
+        Log::Print(expectedHeight);
+        Log::Print("Actual width: ", false);
+        Log::Print(tempSurface->w);
+        Log::Print("Actual height: ", false);
+        Log::Print(tempSurface->h);
         return;
     }
 
-    // Font files are black letters on white background, making white
+    // Font files are white letters on black background, making white
     // transparent
     SDL_SetColorKey(tempSurface, SDL_ENABLE,
-            Color::White.ToUint32(tempSurface->format));
+            Color::Black.ToUint32(tempSurface->format));
 
     // Now create a texture from the loaded surface, and free the surface
     mpTextureSheet = SDL_CreateTextureFromSurface(pRenderer, tempSurface);
