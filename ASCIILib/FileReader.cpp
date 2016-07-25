@@ -11,6 +11,18 @@ namespace
     const int LINE_CHARACTER_LIMIT = 500;
 }
 
+map<UChar, bool> ascii::FileReader::charsEncountered;
+void ascii::FileReader::PrintEncounteredChars()
+{
+    UnicodeString str;
+    for (auto it = charsEncountered.begin(); it != charsEncountered.end(); ++it)
+    {
+        UChar uchar = it->first;
+        str += uchar;
+    }
+    Log::Print(str);
+}
+
 
 ascii::FileReader::FileReader(string path)
 {
@@ -82,6 +94,8 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         {
             UChar nextChar = u_fgetc(ufile);
             contents[index++] = nextChar;
+
+            charsEncountered[nextChar] = true;
 
             // Make sure none of the characters we read are forbidden
             if (mForbiddenCharacters.indexOf(nextChar) != -1)

@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <deque>
+#include <map>
 using namespace std;
 
 #include "unicode/utypes.h"
@@ -40,7 +41,13 @@ namespace ascii
             // Return a string containing all text in the file being read.
             string FullContents();
 
+            // Print a string of every unicode character so far encountered while
+            // reading a file
+            static void PrintEncounteredChars();
+
         private:
+            static map<UChar, bool> charsEncountered;
+
             void Initialize(string path);
             // Retrieve the full UTF-8 contents
             UnicodeString ReadContents(string path);
