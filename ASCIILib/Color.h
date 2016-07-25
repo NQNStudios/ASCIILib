@@ -35,7 +35,7 @@ namespace ascii
 			/// <summary>
 			/// Maps this Color to an SDL Uint32 using the given pixel format.
 			/// </summary>
-			Uint32 ToUint32(const SDL_PixelFormat* format);
+			Uint32 ToUint32(const SDL_PixelFormat* format) const;
 
 			/// <summary>
 			/// The alpha value of all colors in ASCIILib graphics (255).

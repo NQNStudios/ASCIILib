@@ -70,7 +70,7 @@ ascii::Color::operator SDL_Color()
 	return color;
 }
 
-Uint32 ascii::Color::ToUint32(const SDL_PixelFormat* format)
+Uint32 ascii::Color::ToUint32(const SDL_PixelFormat* format) const
 {
 	return SDL_MapRGB(format, r, g, b);
 }
