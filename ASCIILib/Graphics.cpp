@@ -232,7 +232,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
         {
             UChar character = surface->getCharacter(xSrc, ySrc);
 
-            if (!IsWhiteSpace(character))
+            if (!IsWhiteSpace(character) && surface->isCellOpaque(xSrc, ySrc))
             {
                 Color color = surface->getCharacterColor(xSrc, ySrc);
 
