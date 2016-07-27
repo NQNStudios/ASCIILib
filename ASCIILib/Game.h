@@ -21,13 +21,7 @@ namespace ascii
 			///<param name="title">The title of the game's window.</param>
 			///<param name="bufferWidth">The width of the game's buffer, in cells.</param>
 			///<param name="bufferHeight">The height of the game's buffer, in cells.</param>
-			Game(const char* title, const char* fontpath, const int bufferWidth, const int bufferHeight);
-
-			///<summary>
-			/// Creates an ASCIILib game.
-			///</summary>
-			///<param name="title">The title of the game's window.</param>
-			Game(const char* title, const char* fontpath);
+			Game(const char* title, const int bufferWidth, const int bufferHeight);
 
             ~Game();
 

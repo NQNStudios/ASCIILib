@@ -10,14 +10,8 @@ using namespace ascii;
 const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
-ascii::Game::Game(const char* title, const char* fontpath, const int bufferWidth, const int bufferHeight)
-	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
-{
-	mpSoundManager = new SoundManager();
-}
-
-ascii::Game::Game(const char* title, const char* fontpath)
-	: mBufferWidth(0), mBufferHeight(0), mWindowTitle(title), mFontpath(fontpath), mRunning(false)
+ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight)
+	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false)
 {
 	mpSoundManager = new SoundManager();
 }
@@ -54,7 +48,7 @@ void ascii::Game::Run()
         Log::SDLError();
     }
 
-    mpGraphics = new ascii::Graphics(mWindowTitle, 8, 12, mFontpath, mBufferWidth, mBufferHeight);
+    mpGraphics = new ascii::Graphics(mWindowTitle, 8, 12, mBufferWidth, mBufferHeight);
 
 	LoadContent(imageCache(), mpSoundManager);
 
