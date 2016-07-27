@@ -72,12 +72,6 @@ void ascii::Graphics::Initialize()
 
 void ascii::Graphics::Dispose()
 {
-    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
-    {
-        PixelFont* pFont = it->second;
-        delete pFont;
-    }
-
     SDL_DestroyRenderer(mpRenderer);
     SDL_DestroyWindow(mpWindow);
     delete mpCache;
@@ -86,6 +80,22 @@ void ascii::Graphics::Dispose()
 void ascii::Graphics::LoadFont(string key, string fontLayoutPath, string fontPath)
 {
     mFonts[key] = new PixelFont(mpRenderer, mCharWidth, mCharHeight, fontLayoutPath, fontPath);
+}
+
+void ascii::Graphics::UnloadFont(string key)
+{
+    PixelFont* pFont = mFonts[key];
+    delete pFont;
+    mFonts.erase(key);
+}
+
+void ascii::Graphics::UnloadAllFonts()
+{
+    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
+    {
+        delete it->second;
+    }
+    mFonts.clear();
 }
 
 void ascii::Graphics::SetDefaultFont(string key)

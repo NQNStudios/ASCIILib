@@ -44,6 +44,8 @@ namespace ascii
 
             void LoadFont(string key, string fontPath, string fontLayoutPath);
             void SetDefaultFont(string key);
+            void UnloadFont(string key);
+            void UnloadAllFonts();
 
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
