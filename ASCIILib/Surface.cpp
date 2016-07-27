@@ -26,6 +26,7 @@ ascii::Surface::Surface(int width, int height)
 		mCharacterColors(width, vector<Color>(height, Color::White)),
 		mSpecialInfo(width, vector<string>(height, ""))
 {
+    // Default opacity of each cell to true
 	for (int x = 0; x < width; ++x)
 	{
 		mCellOpacity.push_back(new bool[height]);
@@ -35,35 +36,6 @@ ascii::Surface::Surface(int width, int height)
             mCellOpacity.back()[y] = true;
         }
 	}
-}
-
-ascii::Surface::Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor)
-	: mWidth(width), mHeight(height),
-		mCharacters(width, vector<UChar>(height, character)),
-		mBackgroundColors(width, vector<Color>(height, backgroundColor)),
-		mCharacterColors(width, vector<Color>(height, characterColor)),
-		mSpecialInfo(width, vector<string>(height, ""))
-{
-	for (int x = 0; x < width; ++x)
-	{
-		mCellOpacity.push_back(new bool[height]);
-
-        for (int y = 0; y < height; ++y)
-        {
-            mCellOpacity.back()[y] = true;
-        }
-	}
-}
-
-ascii::Surface::Surface(UChar character, Color backgroundColor, Color characterColor)
-	: mWidth(1), mHeight(1),
-		mCharacters(1, vector<UChar>(1, character)),
-		mBackgroundColors(1, vector<Color>(1, backgroundColor)),
-		mCharacterColors(1, vector<Color>(1, characterColor)),
-		mSpecialInfo(1, vector<string>(1, ""))
-{
-	mCellOpacity.push_back(new bool[1]);
-    mCellOpacity[0][0] = true;
 }
 
 ascii::Surface* ascii::Surface::FromFile(const char* filepath)
@@ -240,50 +212,42 @@ void ascii::Surface::clear()
 
 void ascii::Surface::clearTransparent()
 {
-	for (int x = 0; x < mWidth; ++x)
-	{
-		for (int y = 0; y < mHeight; ++y)
-		{
-			setCellOpacity(x, y, false);
-		}
-	}
+    forEachCell(
+            [](Surface* s, int x, int y) -> void
+            {
+                s->setCellOpacity(x, y, false);
+            });
 }
 
 void ascii::Surface::clearOpaque()
 {
-	for (int x = 0; x < mWidth; ++x)
-	{
-		for (int y = 0; y < mHeight; ++y)
-		{
-			setCellOpacity(x, y, true);
-		}
-	}
+    forEachCell(
+            [](Surface* s, int x, int y) -> void
+            {
+                s->setCellOpacity(x, y, true);
+            });
 }
 
 void ascii::Surface::fill(UChar character, Color backgroundColor, Color characterColor)
 {
-	for (int x = 0; x < mWidth; ++x)
-	{
-		for (int y = 0; y < mHeight; ++y)
-		{
-			setCharacter(x, y, character);
-			setBackgroundColor(x, y, backgroundColor);
-			setCharacterColor(x, y, characterColor);
-		}
-	}
+    forEachCell(
+            [](Surface* s, int x, int y) -> void
+            {
+                s->setCharacter(x, y, character);
+                s->setBackgroundColor(x, y, backgroundColor);
+                s->setCharacterColor(x, y, characterColor);
+            });
 }
 
 void ascii::Surface::fillRect(Rectangle destination, UChar character, Color backgroundColor, Color characterColor)
 {
-	for (int x = destination.left(); x < destination.right(); ++x)
-	{
-		for (int y = destination.top(); y < destination.bottom(); ++y)
-		{
-			setCharacter(x, y, character);
-			setBackgroundColor(x, y, backgroundColor);
-			setCharacterColor(x, y, characterColor);
-		}
-	}
+    forEachCell(destination,
+            [](Surface* s, int x, int y) -> void
+            {
+                s->setCharacter(x, y, character);
+                s->setBackgroundColor(x, y, backgroundColor);
+                s->setCharacterColor(x, y, characterColor);
+            });
 }
 
 void ascii::Surface::drawBorder(UChar character, Color backgroundColor, Color characterColor)
@@ -346,9 +310,9 @@ void ascii::Surface::drawRect(Rectangle destination, UChar character, Color back
 		setBackgroundColor(x1, y, backgroundColor);
 		setCharacterColor(x1, y, characterColor);
 
-		setCharacter(x1, y, character);
-		setBackgroundColor(x1, y, backgroundColor);
-		setCharacterColor(x1, y, characterColor);
+		setCharacter(x2, y, character);
+		setBackgroundColor(x2 y, backgroundColor);
+		setCharacterColor(x2, y, characterColor);
 	}
 }
 
@@ -819,4 +783,25 @@ void ascii::Surface::printContents()
 
         cout << endl;
     }
+}
+
+void Surface::forEachCell(Rectangle bounds, CellOperation operation)
+{
+    int startX = bounds.x;
+    int startY = bounds.y;
+    int finishX = bounds.right();
+    int finishY = bounds.bottom();
+
+    for (int x = startX; x < finishX; ++x)
+    {
+        for (int y = startY; y < finishY; ++y)
+        {
+            (*operation)(this, x, y);
+        }
+    }
+}
+
+void Surface::forEachCell(CellOperation operation)
+{
+    forEachCell(Rectangle(0, 0, mWidth, mHeight), operation);
 }

@@ -19,6 +19,12 @@ using namespace icu;
 namespace ascii
 {
 
+    class Surface;
+
+    // Delegate type for a function that operates on a cell of a Surface, given
+    // its coordinates
+    typedef void (*CellOperation)(ascii::Surface*, int, int);
+
 	///<summary>
 	/// A surface of colored console characters with background colors.
 	///</summary>
@@ -29,16 +35,6 @@ namespace ascii
 			/// Constructs an empty surface of the given dimensions.
 			///</summary>
 			Surface(int width, int height);
-
-			///<summary>
-			/// Constructs a surface of the given dimensions filled with the given character and background color.
-			///</summary>
-			Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor);
-
-			///<summary>
-			/// Constructs a 1x1 surface with the given character and background color.
-			///</summary>
-			Surface(UChar character, Color backgroundColor, Color characterColor);
 
 			///<summary>
 			/// Loads a surface from a text file.
@@ -59,6 +55,13 @@ namespace ascii
 			void setCharacterColor(int x, int y, Color value) { mCharacterColors[x][y] = value; }
 			void setCellOpacity(int x, int y, bool value) { mCellOpacity[x][y] = value; }
 			void setSpecialInfo(int x, int y, string value) { mSpecialInfo[x][y] = value; }
+
+            // Perform the given operation on each cell inside the given
+            // rectangle
+            void forEachCell(Rectangle bounds, CellOperation operation);
+
+            // Perform the given operation on every cell inside this Surface
+            void forEachCell(CellOperation operation);
 
 			///<summary>
 			/// Clears the surface of all characters and non-black colors.
