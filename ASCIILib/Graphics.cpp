@@ -22,10 +22,12 @@ const unsigned int ascii::Graphics::kBufferWidth = 80;
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
-        string fontpath, int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mTitle(title),
+        int bufferWidth, int bufferHeight)
+	: Surface(bufferWidth, bufferHeight),
+    mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL), mHidingImages(false), mFontPath(fontpath),
+    mpWindow(NULL), mpRenderer(NULL), mHidingImages(false),
+    mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
     mCharWidth(charWidth), mCharHeight(charHeight)
 {
     Initialize();
@@ -42,12 +44,12 @@ void ascii::Graphics::Initialize()
 
     int flags = SDL_WINDOW_SHOWN;
 
-	mWindow = SDL_CreateWindow(mTitle, 
+	mpWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
 		width() * mCharWidth, height() * mCharHeight, 
 		flags);
 
-    if (!mWindow)
+    if (!mpWindow)
     {
         Log::Error("Failed to create a window for the game.");
         Log::SDLError();
@@ -55,28 +57,50 @@ void ascii::Graphics::Initialize()
 
 	checkSize();
 
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+	mpRenderer = SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    if (!mRenderer)
+    if (!mpRenderer)
     {
         Log::Error("Failed to SDL_Renderer.");
         Log::SDLError();
     }
 
-    mpFont = new PixelFont(mRenderer, mCharWidth, mCharHeight, "content/type/font-layout.txt", "content/type/test-font.png");
-
-	mCache = new ascii::ImageCache(mRenderer,
+	mpCache = new ascii::ImageCache(mpRenderer,
             mCharWidth,
             mCharHeight);
 }
 
 void ascii::Graphics::Dispose()
 {
-    delete mpFont;
+    SDL_DestroyRenderer(mpRenderer);
+    SDL_DestroyWindow(mpWindow);
+    delete mpCache;
+}
 
-    SDL_DestroyRenderer(mRenderer);
-    SDL_DestroyWindow(mWindow);
-    delete mCache;
+void ascii::Graphics::LoadFont(string key, string fontLayoutPath, string fontPath)
+{
+    mFonts[key] = new PixelFont(mpRenderer, mCharWidth, mCharHeight, fontLayoutPath, fontPath);
+}
+
+void ascii::Graphics::UnloadFont(string key)
+{
+    PixelFont* pFont = mFonts[key];
+    delete pFont;
+    mFonts.erase(key);
+}
+
+void ascii::Graphics::UnloadAllFonts()
+{
+    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
+    {
+        delete it->second;
+    }
+    mFonts.clear();
+}
+
+void ascii::Graphics::SetDefaultFont(string key)
+{
+    mFonts[""] = mFonts[key];
 }
 
 
@@ -98,7 +122,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
         Initialize();
     }
 
-    if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
+    if (SDL_SetWindowFullscreen(mpWindow, flags) != 0)
     {
         Log::SDLError();
     }
@@ -159,8 +183,8 @@ ascii::Point ascii::Graphics::drawOrigin()
 void ascii::Graphics::clearScreen()
 {
 	// Draw background color
-	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
-	SDL_RenderFillRect(mRenderer, NULL);
+	SDL_SetRenderDrawColor(mpRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
+	SDL_RenderFillRect(mpRenderer, NULL);
 }
 
 void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
@@ -179,7 +203,7 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
-            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+            SDL_RenderCopy(mpRenderer, it->second.first, NULL, &dest);
         }
     }
 }
@@ -217,8 +241,8 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 				++xSrc;
 			} while (xSrc < surface->width() && surface->getBackgroundColor(xSrc, ySrc) == backgroundColor);
 
-			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
-			SDL_RenderFillRect(mRenderer, &colorRect);
+			SDL_SetRenderDrawColor(mpRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
+			SDL_RenderFillRect(mpRenderer, &colorRect);
 		}
 	}
 }
@@ -236,15 +260,22 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
             {
                 Color color = surface->getCharacterColor(xSrc, ySrc);
 
-                int pixelX = cellToPixelX(x + xSrc);
-                int pixelY = cellToPixelY(y + ySrc);
+                int destCellX = x + xSrc;
+                int destCellY = y + ySrc;
+                int destPixelX = cellToPixelX(destCellX);
+                int destPixelY = cellToPixelY(destCellY);
 
                 //Log::Print("Rendering character: " + UnicodeString(character));
                 //Log::Print("x: ", false);
                 //Log::Print(pixelX);
                 //Log::Print("y: ", false);
                 //Log::Print(pixelY);
-                mpFont->RenderCharacter(character, pixelX, pixelY, color);
+
+                string cellFont = mCellFonts[destCellX][destCellY];
+                PixelFont* font = GetFont(cellFont);
+
+                if (font)
+                    font->RenderCharacter(character, destPixelX, destPixelY, color);
             }
         }
 	}
@@ -261,7 +292,7 @@ void ascii::Graphics::drawSurface(ascii::Surface* surface, int x, int y)
 
 void ascii::Graphics::refresh()
 {
-    SDL_RenderPresent(mRenderer);
+    SDL_RenderPresent(mpRenderer);
 }
 
 void ascii::Graphics::update()
@@ -301,7 +332,7 @@ void ascii::Graphics::drawForegroundSurface(ascii::Surface* surface, int x, int 
 
 void ascii::Graphics::addBackgroundImage(std::string key, std::string textureKey, int x, int y)
 {
-	mBackgroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+	mBackgroundImages[key] = std::make_pair(mpCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
 void ascii::Graphics::removeBackgroundImage(std::string key)
@@ -311,7 +342,7 @@ void ascii::Graphics::removeBackgroundImage(std::string key)
 
 void ascii::Graphics::addForegroundImage(std::string key, std::string textureKey, int x, int y)
 {
-	mForegroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+	mForegroundImages[key] = std::make_pair(mpCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
 void ascii::Graphics::removeForegroundImage(std::string key)
@@ -343,7 +374,7 @@ ascii::Point ascii::Graphics::drawResolution()
 ascii::Point ascii::Graphics::actualResolution()
 {
     int w, h;
-    SDL_GetWindowSize(mWindow, &w, &h);
+    SDL_GetWindowSize(mpWindow, &w, &h);
     return ascii::Point(w, h);
 }
 
@@ -352,8 +383,56 @@ void ascii::Graphics::checkSize()
     if (!mFullscreen)
     {
         int w, h;
-        SDL_GetWindowSize(mWindow, &w, &h);
+        SDL_GetWindowSize(mpWindow, &w, &h);
 
         SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
     }
+}
+
+void ascii::Graphics::clearCellFonts()
+{
+    for (int x = 0; x < width(); ++x)
+    {
+        for (int y = 0; y < height(); ++y)
+        {
+            mCellFonts[x][y] = "";
+        }
+    }
+}
+
+void ascii::Graphics::setCellFont(Rectangle cells, string font)
+{
+    for (int x = cells.x; x < cells.right(); ++x)
+    {
+        for (int y = cells.y; y < cells.bottom(); ++y)
+        {
+            mCellFonts[x][y] = font;
+        }
+    }
+}
+
+PixelFont* ascii::Graphics::GetFont(string key)
+{
+    PixelFont* font = NULL;
+
+    if (mFonts.find(key) != mFonts.end())
+    {
+        font = mFonts[key];
+    }
+    else
+    {
+        string error = "Graphics tried to render a character in a nonexistent font: ";
+        if (key.empty())
+        {
+            error += "[DEFAULT FONT]";
+        }
+        else
+        {
+            error += key;
+        }
+
+        Log::Error(error);
+    }
+
+    return font;
 }

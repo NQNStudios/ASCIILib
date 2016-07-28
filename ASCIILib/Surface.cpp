@@ -26,6 +26,7 @@ ascii::Surface::Surface(int width, int height)
 		mCharacterColors(width, vector<Color>(height, Color::White)),
 		mSpecialInfo(width, vector<string>(height, ""))
 {
+    // Default each cell to opaque
 	for (int x = 0; x < width; ++x)
 	{
 		mCellOpacity.push_back(new bool[height]);
@@ -35,35 +36,6 @@ ascii::Surface::Surface(int width, int height)
             mCellOpacity.back()[y] = true;
         }
 	}
-}
-
-ascii::Surface::Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor)
-	: mWidth(width), mHeight(height),
-		mCharacters(width, vector<UChar>(height, character)),
-		mBackgroundColors(width, vector<Color>(height, backgroundColor)),
-		mCharacterColors(width, vector<Color>(height, characterColor)),
-		mSpecialInfo(width, vector<string>(height, ""))
-{
-	for (int x = 0; x < width; ++x)
-	{
-		mCellOpacity.push_back(new bool[height]);
-
-        for (int y = 0; y < height; ++y)
-        {
-            mCellOpacity.back()[y] = true;
-        }
-	}
-}
-
-ascii::Surface::Surface(UChar character, Color backgroundColor, Color characterColor)
-	: mWidth(1), mHeight(1),
-		mCharacters(1, vector<UChar>(1, character)),
-		mBackgroundColors(1, vector<Color>(1, backgroundColor)),
-		mCharacterColors(1, vector<Color>(1, characterColor)),
-		mSpecialInfo(1, vector<string>(1, ""))
-{
-	mCellOpacity.push_back(new bool[1]);
-    mCellOpacity[0][0] = true;
 }
 
 ascii::Surface* ascii::Surface::FromFile(const char* filepath)

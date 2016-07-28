@@ -31,16 +31,6 @@ namespace ascii
 			Surface(int width, int height);
 
 			///<summary>
-			/// Constructs a surface of the given dimensions filled with the given character and background color.
-			///</summary>
-			Surface(int width, int height, UChar character, Color backgroundColor, Color characterColor);
-
-			///<summary>
-			/// Constructs a 1x1 surface with the given character and background color.
-			///</summary>
-			Surface(UChar character, Color backgroundColor, Color characterColor);
-
-			///<summary>
 			/// Loads a surface from a text file.
 			///</summary>
 			static Surface* FromFile(const char* filepath);

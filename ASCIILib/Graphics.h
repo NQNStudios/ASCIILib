@@ -37,10 +37,15 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, int charWidth, int charHeight, string fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
+			Graphics(const char* title, int charWidth, int charHeight, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
             void Initialize();
+
+            void LoadFont(string key, string fontPath, string fontLayoutPath);
+            void SetDefaultFont(string key);
+            void UnloadFont(string key);
+            void UnloadAllFonts();
 
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
@@ -63,7 +68,7 @@ namespace ascii
 			///<summary>
 			/// Returns the image cache for this Graphics instance.
 			///</summary>
-			ImageCache* imageCache() { return mCache; }
+			ImageCache* imageCache() { return mpCache; }
 
 			int charWidth() { return mCharWidth; }
 			int charHeight() { return mCharHeight; }
@@ -136,6 +141,9 @@ namespace ascii
             Point drawResolution();
             Point actualResolution();
 
+            void clearCellFonts();
+            void setCellFont(Rectangle cells, string font);
+
 		private:
 			typedef pair<string, Color> Glyph;
 			typedef pair<SDL_Texture*, Point> Image;
@@ -153,13 +161,11 @@ namespace ascii
 			///</summary>
 			void checkSize();
 
-			SDL_Window* mWindow;
-			SDL_Renderer* mRenderer;
-			ImageCache* mCache;
+			SDL_Window* mpWindow;
+			SDL_Renderer* mpRenderer;
+			ImageCache* mpCache;
 
 			int mCharWidth, mCharHeight;
-
-			map<Glyph, SDL_Texture*> mGlyphTextures;
 
             const char* mTitle;
             bool mFullscreen;
@@ -169,10 +175,12 @@ namespace ascii
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
 
+            vector<vector<string> > mCellFonts;
+
             bool mHidingImages;
 
-            string mFontPath;
-            PixelFont* mpFont;
+            map<string, PixelFont*> mFonts;
+            PixelFont* GetFont(string key);
 	};
 
 };
