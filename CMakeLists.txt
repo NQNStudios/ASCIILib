@@ -13,7 +13,6 @@ else()
     # Define windows variables
     SET(ENV{SDL2DIR} "${ASCIILib_SOURCE_DIR}")
     SET(ENV{SDL2_IMAGE} "${ASCIILib_SOURCE_DIR}")
-    SET(ENV{SDL2_TTF} "${ASCIILib_SOURCE_DIR}")
     SET(ENV{SDL2_MIXER} "${ASCIILib_SOURCE_DIR}")
     SET(ENV{ICU_ROOT} "${ASCIILib_SOURCE_DIR}")
 endif(UNIX)
@@ -41,13 +40,11 @@ include_directories(
     ${SDL2_INCLUDE_DIR}
     ${SDL2_MIXER_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
-    ${SDL2_TTF_INCLUDE_DIR}
     ${ICU_INCLUDE_DIRS}
     )
 target_link_libraries(${PROJECT_NAME}
     ${SDL2_LIBRARY}
     ${SDL2_MIXER_LIBRARY}
     ${SDL2_IMAGE_LIBRARY}
-    ${SDL2_TTF_LIBRARY}
     ${ICU_LIBRARIES}
     )
