@@ -15,24 +15,6 @@ using namespace std;
 namespace ascii
 {
 
-    struct FlairChar
-    {
-        public:
-            UChar base;
-            int flairIndex;
-            int flairOffset;
-    };
-
-    struct InvertedChar
-    {
-        public:
-            UChar base;
-            bool invertX;
-            bool invertY;
-            int offsetX;
-            int offsetY;
-    };
-
 	///<summary>
 	/// Handles all rendering for an ASCIILib game.
 	///</summary>
@@ -68,10 +50,6 @@ namespace ascii
             /// call to Initialize()
             ///</summary>
             void Dispose();
-
-            void LoadFlairTable(string path);
-            void LoadInversionTable(string path);
-            void DisposeFlairTable();
 
             ///<summary>
             /// Sets the window to fullscreen or not
@@ -197,14 +175,6 @@ namespace ascii
 			map<string, Image> mBackgroundImages;
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
-
-            map<UChar, FlairChar> mFlairTable;
-            string mFlairTablePath;
-            bool mHasFlairTable;
-
-            map<UChar, InvertedChar> mInversionTable;
-            string mInversionTablePath;
-            bool mHasInversionTable;
 
             bool mHidingImages;
 
