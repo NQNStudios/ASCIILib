@@ -207,6 +207,8 @@ namespace ascii
             bool mHasInversionTable;
 
             bool mHidingImages;
+
+            int mCharHeightCorrection;
 	};
 
 };

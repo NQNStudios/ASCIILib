@@ -31,12 +31,19 @@ namespace
 }
 
 
+// Note: The font used by Graphics might for some reason yield a pixel height
+// different than kFontSize. In this case, mCharHeight will be invalid for
+// calculation of window size and other values. kFontSize is the actual
+// measurement of the height of a cell, and mCharHeight is the height of the
+// character the font created
+
+
 ascii::Graphics::Graphics(const char* title, string fontpath,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight), mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
     mWindow(NULL), mRenderer(NULL), mHidingImages(false),
-    mHasFlairTable(false), mHasInversionTable(false)
+    mHasFlairTable(false), mHasInversionTable(false), mCharHeightCorrection(0)
 {
 	if(TTF_Init() == -1)
     {
@@ -73,7 +80,7 @@ void ascii::Graphics::Initialize()
 
 	mWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth, height() * mCharHeight, 
+		width() * mCharWidth, height() * kFontSize, 
 		flags);
 
     if (!mWindow)
@@ -94,7 +101,7 @@ void ascii::Graphics::Initialize()
 
 	mCache = new ascii::ImageCache(mRenderer,
             mCharWidth,
-            mCharHeight);
+            kFontSize);
 
     if (mHasFlairTable)
     {
@@ -349,7 +356,7 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
             SDL_Rect dest;
             
             dest.x = drawX + it->second.second.x * mCharWidth;
-            dest.y = drawY + it->second.second.y * mCharHeight;
+            dest.y = drawY + it->second.second.y * kFontSize;
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
@@ -373,9 +380,9 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 			SDL_Rect colorRect;
 
 			colorRect.x = drawX + (x + xSrc) * mCharWidth;
-			colorRect.y = drawY + (y + ySrc) * mCharHeight;
+			colorRect.y = drawY + (y + ySrc) * kFontSize;
 			colorRect.w = 0;
-			colorRect.h = mCharHeight;
+			colorRect.h = kFontSize;
 
 			Color backgroundColor = surface->getBackgroundColor(xSrc, ySrc);
 
@@ -427,9 +434,9 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 			SDL_Rect textRect;
 
 			textRect.x = drawX + (x + xSrc) * mCharWidth;
-			textRect.y = drawY + (y + ySrc) * mCharHeight;
+			textRect.y = drawY + (y + ySrc) * kFontSize;
 			textRect.w = 0;
-			textRect.h = mCharHeight;
+			textRect.h = kFontSize;
 			Color characterColor = surface->getCharacterColor(xSrc, ySrc);
 
 			do
@@ -581,7 +588,14 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 				SDL_FreeSurface(surface);
 			}
 
-            SDL_RenderCopy(mRenderer, texture, NULL, &textRect);
+            // If for some reason the font dimensions are off, clip the glyph
+            // so the texture fits where it should
+            SDL_Rect adjustedGlyphSrc;
+            adjustedGlyphSrc.x = 0;
+            adjustedGlyphSrc.y = 0;
+            adjustedGlyphSrc.w = textRect.w;
+            adjustedGlyphSrc.h = textRect.h;
+            SDL_RenderCopy(mRenderer, texture, &adjustedGlyphSrc, &textRect);
 		}
 	}
 
@@ -704,11 +718,32 @@ void ascii::Graphics::checkSize()
         int w, h;
         SDL_GetWindowSize(mWindow, &w, &h);
 
-        SDL_assert(width() * mCharWidth == w && height() * mCharHeight == h);
+        bool check = width() * mCharWidth == w && height() * kFontSize == h;
+
+        if (!check)
+        {
+            Log::Error("The size of the created window does not match expected dimensions! This could be because the width and height of the graphics buffer are too small.");
+        }
     }
 }
 
 void ascii::Graphics::UpdateCharSize()
 {
-	TTF_SizeText(mFont, " ", &mCharWidth, &mCharHeight);
+	TTF_SizeText(mFont, "A", &mCharWidth, &mCharHeight);
+
+    if (mCharHeight != kFontSize)
+    {
+        Log::Print("Warning! Char height measured from the font loaded does not match expected font size:", false);
+        Log::Print(mCharHeight, false);
+        Log::Print(" != ", false);
+        Log::Print(kFontSize);
+
+        mCharHeightCorrection = abs(mCharHeight - kFontSize);
+    }
+
+    Log::Print("Char dimensions: (", false);
+    Log::Print(mCharWidth, false);
+    Log::Print(" ", false);
+    Log::Print(mCharHeight, false);
+    Log::Print(")");
 }
