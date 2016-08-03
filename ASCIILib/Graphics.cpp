@@ -284,6 +284,8 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 					break;
 				}
 
+                uch = surface->getCharacter(xSrc, ySrc);
+
                 // Don't chain empty space in a word. Empty space can exist
                 // here if it is used as the base for a non-space character
                 // combo
