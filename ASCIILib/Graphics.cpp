@@ -149,7 +149,7 @@ int ascii::Graphics::pixelToCellY(int pixelY)
     {
         pixelY -= drawOrigin().y;
     }
-    return pixelY / mCharHeight;
+    return pixelY / kFontSize;
 }
 
 ascii::Point ascii::Graphics::drawOrigin()
@@ -441,7 +441,7 @@ void ascii::Graphics::clearGlyphs()
 
 ascii::Point ascii::Graphics::drawResolution()
 {
-    return ascii::Point(mCharWidth * width(), mCharHeight * height());
+    return ascii::Point(mCharWidth * width(), kFontSize * height());
 }
 
 ascii::Point ascii::Graphics::actualResolution()
