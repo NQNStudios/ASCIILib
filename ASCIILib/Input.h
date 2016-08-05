@@ -3,6 +3,8 @@
 
 #include <map>
 #include <vector>
+using namespace std;
+
 #include <SDL.h>
 
 namespace ascii
@@ -29,6 +31,9 @@ namespace ascii
 				: mMouseState(0), mLastMouseState(0), mMouseX(0), mMouseY(0), mLastMouseX(0), mLastMouseY(0), mScrollX(0), mScrollY(0), mFirstFrame(true)
 			{
 			}
+
+            // Permanently ignore input events for the given keyboard key
+            void ignoreKey(SDL_Keycode key) { mIgnoredKeys.push_back(key); }
 
 			///<summary>
 			/// Checks whether a key was pressed this frame.
@@ -105,6 +110,9 @@ namespace ascii
 			std::map<SDL_Keycode, bool> mHeldKeys;
 			std::map<SDL_Keycode, bool> mPressedKeys;
 			std::map<SDL_Keycode, bool> mReleasedKeys;
+
+            bool ignoreKeyEvent(const SDL_Event& event);
+            vector<SDL_Keycode> mIgnoredKeys;
 
 			int mMouseX, mMouseY;
 			Uint32 mMouseState;

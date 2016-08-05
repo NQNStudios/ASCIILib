@@ -1,5 +1,7 @@
 #include "Input.h"
 
+#include <algorithm>
+
 
 void ascii::Input::beginNewFrame()
 {
@@ -19,8 +21,17 @@ void ascii::Input::beginNewFrame()
     mFirstFrame = false;
 }
 
+bool ascii::Input::ignoreKeyEvent(const SDL_Event& event)
+{
+    SDL_Keycode key = event.key.keysym.sym;
+
+    return find(mIgnoredKeys.begin(), mIgnoredKeys.end(), key) != mIgnoredKeys.end();
+}
+
 void ascii::Input::keyDownEvent(const SDL_Event& event)
 {
+    if (ignoreKeyEvent(event)) return;
+
 	if (!event.key.repeat)
 	{
 		mPressedKeys[event.key.keysym.sym] = true;
@@ -30,6 +41,8 @@ void ascii::Input::keyDownEvent(const SDL_Event& event)
 
 void ascii::Input::keyUpEvent(const SDL_Event& event)
 {
+    if (ignoreKeyEvent(event)) return;
+
 	mReleasedKeys[event.key.keysym.sym] = true;
 	mHeldKeys[event.key.keysym.sym] = false;
 }

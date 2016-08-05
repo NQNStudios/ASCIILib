@@ -63,9 +63,9 @@ void ascii::Game::Run()
 		mpGraphics = new ascii::Graphics(mWindowTitle, mFontpath);
 	}
 
-	LoadContent(imageCache(), mpSoundManager);
-
     mpInput = new Input();
+
+	LoadContent(imageCache(), mpSoundManager);
 
 	mRunning = true;
 
