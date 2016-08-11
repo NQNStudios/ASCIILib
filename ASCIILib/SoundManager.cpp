@@ -13,18 +13,22 @@ using ascii::Log;
 const int kChunkSize = 1024;
 
 ascii::SoundManager::SoundManager(void)
-    : mSoundVolume(1.0f)
+    : mSoundVolume(1.0f), mEnabled(true)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
         Log::Error("Failed to init SDL_Mixer with OGG support");
         Log::SDLError();
+
+        mEnabled = false;
     }
 
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize))
+    if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize))
     {
         Log::Error("Failed to open SDL_mixer audio channels");
         Log::SDLError();
+
+        mEnabled = false;
     }
 
 	srand(time(NULL));
@@ -47,6 +51,8 @@ ascii::SoundManager::~SoundManager(void)
 
 void ascii::SoundManager::update()
 {
+    if (!mEnabled) return;
+
 	for (auto it = mLoopingChannels.begin(); it != mLoopingChannels.end(); ++it)
 	{
 		if (!Mix_Playing(it->second.first))
@@ -60,6 +66,8 @@ void ascii::SoundManager::update()
 
 void ascii::SoundManager::loadSound(std::string key, string path)
 {
+    if (!mEnabled) return;
+
     Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
     if (!sound)
     {
@@ -71,17 +79,23 @@ void ascii::SoundManager::loadSound(std::string key, string path)
 
 bool ascii::SoundManager::hasSound(std::string key)
 {
+    if (!mEnabled) return false;
+
     return mSounds.find(key) != mSounds.end();
 }
 
 void ascii::SoundManager::freeSound(std::string key)
 {
+    if (!mEnabled) return;
+
 	Mix_FreeChunk(getSound(key));
 	mSounds.erase(key);
 }
 
 void ascii::SoundManager::playSound(std::string key, float volume)
 {
+    if (!mEnabled) return;
+
     int channel = firstOpenChannel();
 
     Mix_Volume(channel, MIX_MAX_VOLUME * (mSoundVolume * volume));
@@ -90,6 +104,8 @@ void ascii::SoundManager::playSound(std::string key, float volume)
 
 void ascii::SoundManager::loopSound(std::string key, float volume)
 {
+    if (!mEnabled) return;
+
     int channel = firstOpenChannel();
 
     // Store which channel it's looping on
@@ -101,6 +117,8 @@ void ascii::SoundManager::loopSound(std::string key, float volume)
 
 void ascii::SoundManager::stopLoopingSound(std::string key)
 {
+    if (!mEnabled) return;
+
     // Check which channel it's looping on
     int channel = mLoopingSoundChannels[key];
 
@@ -112,6 +130,8 @@ void ascii::SoundManager::stopLoopingSound(std::string key)
 
 int ascii::SoundManager::soundDuration(std::string key)
 {
+    if (!mEnabled) return 0;
+
     Mix_Chunk* chunk = getSound(key);
 
     int ms = chunk->alen / ((44100*2)/1000);
@@ -121,6 +141,8 @@ int ascii::SoundManager::soundDuration(std::string key)
 
 int ascii::SoundManager::averageGroupSoundDuration(std::string groupKey)
 {
+    if (!mEnabled) return 0;
+
     ascii::SoundManager::SoundGroup group = getSoundGroup(groupKey);
 
     int sum = 0;
@@ -136,6 +158,8 @@ int ascii::SoundManager::averageGroupSoundDuration(std::string groupKey)
 
 int ascii::SoundManager::firstOpenChannel()
 {
+    if (!mEnabled) return -1;
+
     // Return the first channel that's not playing a sample
     for (int i = 0; i < MIX_CHANNELS; ++i)
     {
@@ -155,6 +179,8 @@ int ascii::SoundManager::soundDuration(Mix_Chunk* sound)
 
 int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
 {
+    if (!mEnabled) return 0;
+
     int sum = 0;
 
     for (auto it = keys.begin(); it != keys.end(); ++it)
@@ -170,6 +196,8 @@ int ascii::SoundManager::totalSoundDuration(std::vector<std::string> keys)
 
 void ascii::SoundManager::loadGroupSound(std::string group, string path)
 {
+    if (!mEnabled) return;
+
     Mix_Chunk* groupSound = Mix_LoadWAV(path.c_str());
     if (!groupSound)
     {
@@ -180,6 +208,8 @@ void ascii::SoundManager::loadGroupSound(std::string group, string path)
 
 void ascii::SoundManager::freeSoundGroup(std::string group)
 {
+    if (!mEnabled) return;
+
 	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
 	for (auto it = soundGroup.begin(); it != soundGroup.end(); ++it)
@@ -192,6 +222,8 @@ void ascii::SoundManager::freeSoundGroup(std::string group)
 
 int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 {
+    if (!mEnabled) return -1;
+
 	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
     if (soundGroup.empty())
@@ -208,6 +240,8 @@ int ascii::SoundManager::playSoundGroup(std::string group, float volume)
 
 int ascii::SoundManager::playSoundGroupGetDuration(std::string group, float volume)
 {
+    if (!mEnabled) return 0;
+
 	ascii::SoundManager::SoundGroup soundGroup = getSoundGroup(group);
 
 	int n = rand() % soundGroup.size();
@@ -223,16 +257,22 @@ int ascii::SoundManager::playSoundGroupGetDuration(std::string group, float volu
 
 void ascii::SoundManager::loopSoundGroup(std::string group, float volume)
 {
+    if (!mEnabled) return;
+
     mLoopingChannels[group] = std::make_pair(playSoundGroup(group, volume), volume);
 }
 
 void ascii::SoundManager::stopLoopingGroup(std::string group)
 {
+    if (!mEnabled) return;
+
 	mLoopingChannels.erase(group);
 }
 
 void ascii::SoundManager::stopLoopingGroup()
 {
+    if (!mEnabled) return;
+
 	for (auto it = mLoopingChannels.begin(); it != mLoopingChannels.end(); ++it)
 	{
 		Mix_HaltChannel(it->second.first);
@@ -243,6 +283,8 @@ void ascii::SoundManager::stopLoopingGroup()
 
 void ascii::SoundManager::fadeOutLoopingGroup(std::string group, int ms)
 {
+    if (!mEnabled) return;
+
     // Fade out the current sound
     int channel = mLoopingChannels[group].first;
     Mix_FadeOutChannel(channel, ms);
@@ -253,16 +295,22 @@ void ascii::SoundManager::fadeOutLoopingGroup(std::string group, int ms)
 
 void ascii::SoundManager::pauseSounds()
 {
+    if (!mEnabled) return;
+
     Mix_Pause(-1);
 }
 
 void ascii::SoundManager::resumeSounds()
 {
+    if (!mEnabled) return;
+
     Mix_Resume(-1);
 }
 
 float ascii::SoundManager::getSoundVolume()
 {
+    if (!mEnabled) return 0.0f;
+
 	return mSoundVolume;
 }
 
@@ -270,8 +318,11 @@ void ascii::SoundManager::setSoundVolume(float value)
 {
     mSoundVolume = value;
 }
+
 void ascii::SoundManager::loadTrack(std::string key, string path)
 {
+    if (!mEnabled) return;
+
     Mix_Music* track = Mix_LoadMUS(path.c_str());
     if (!track)
     {
@@ -283,6 +334,8 @@ void ascii::SoundManager::loadTrack(std::string key, string path)
 
 Mix_Music* ascii::SoundManager::getTrack(std::string key)
 {
+    if (!mEnabled) return NULL;
+
     if (mTracks.find(key) == mTracks.end())
     {
         Log::Error("Tried to access nonexistent track: " + key);
@@ -294,12 +347,16 @@ Mix_Music* ascii::SoundManager::getTrack(std::string key)
 
 void ascii::SoundManager::freeTrack(std::string key)
 {
+    if (!mEnabled) return;
+
 	Mix_FreeMusic(getTrack(key));
 	mTracks.erase(key);
 }
 
 void ascii::SoundManager::playTrack(std::string key, int loops)
 {
+    if (!mEnabled) return;
+
     Mix_Music* track = getTrack(key);
 	Mix_PlayMusic(track, loops);
     mCurrentTrack = key;
@@ -307,54 +364,74 @@ void ascii::SoundManager::playTrack(std::string key, int loops)
 
 void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
 {
+    if (!mEnabled) return;
+
 	Mix_FadeInMusicPos(getTrack(key), loops, ms, position);
     mCurrentTrack = key;
 }
 
 void ascii::SoundManager::stopTrack()
 {
+    if (!mEnabled) return;
+
 	Mix_HaltMusic();
     mCurrentTrack = "";
 }
 			
 void ascii::SoundManager::fadeOutTrack(int ms)
 {
+    if (!mEnabled) return;
+
 	Mix_FadeOutMusic(ms);
     mCurrentTrack = "";
 }
 
 void ascii::SoundManager::pauseTrack()
 {
+    if (!mEnabled) return;
+
 	Mix_PauseMusic();
 }
 
 void ascii::SoundManager::resumeTrack()
 {
+    if (!mEnabled) return;
+
 	Mix_ResumeMusic();
 }
 
 void ascii::SoundManager::rewindTrack()
 {
+    if (!mEnabled) return;
+
 	Mix_RewindMusic();
 }
 
 void ascii::SoundManager::setTrackPosition(double position)
 {
+    if (!mEnabled) return;
+
 	Mix_SetMusicPosition(position);
 }
 
 float ascii::SoundManager::getMusicVolume()
 {
+    if (!mEnabled) return 0.0f;
+
 	return (float) Mix_VolumeMusic(-1) / MIX_MAX_VOLUME;
 }
 
 void ascii::SoundManager::setMusicVolume(float value)
 {
+    if (!mEnabled) return;
+
 	Mix_VolumeMusic(MIX_MAX_VOLUME * value);
 }
 
 Mix_Chunk* ascii::SoundManager::getSound(std::string key)
 {
+    if (!mEnabled) return NULL;
+
     if (!this->hasSound(key))
     {
         Log::Error("Tried to access nonexistent sound: " + key);
@@ -368,6 +445,8 @@ Mix_Chunk* ascii::SoundManager::getSound(std::string key)
 ascii::SoundManager::SoundGroup ascii::SoundManager::getSoundGroup(
         std::string groupKey)
 {
+    if (!mEnabled) return vector<Mix_Chunk*>();
+
     if (mSoundGroups.find(groupKey) == mSoundGroups.end())
     {
         Log::Error("Tried to access nonexistent sound group: " + groupKey);

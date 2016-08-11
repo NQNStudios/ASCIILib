@@ -226,6 +226,8 @@ namespace ascii
             std::string mCurrentTrack;
 
             float mSoundVolume;
+
+            bool mEnabled;
 	};
 
 };
