@@ -11,12 +11,12 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
         }
 
         // Output the message to the console
-        /*cout << messageStream.str();*/
+        cout << messageStream.str();
 
         // If an output filename is set, output to a file also
         if (!sOutputFilename.empty())
         {
-            ofstream fileStream(sOutputFilename, ios_base::app);
+            ofstream fileStream(sOutputFilename.c_str(), ios_base::app);
 
             fileStream << messageStream.str();
         }

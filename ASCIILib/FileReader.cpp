@@ -193,9 +193,9 @@ string ascii::FileReader::NextLine(bool trimmed)
 
     if (trimmed)
     {
-        if (nextLineUTF8.back() == '\n')
+        if (nextLineUTF8[nextLineUTF8.size() - 1] == '\n')
         {
-            nextLineUTF8.pop_back();
+            nextLineUTF8 = nextLineUTF8.substr(0, nextLineUTF8.size() - 1);
         }
     }
 
