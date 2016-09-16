@@ -105,7 +105,7 @@ void ascii::Game::Run()
 		Update(std::min(elapsedTime, kMaxFrameTime));
 		lastUpdateTime = currentTime;
 
-        mpSoundManager->update();
+        mpSoundManager->update(elapsedTime);
 
 		Draw(*mpGraphics);
 

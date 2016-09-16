@@ -13,7 +13,8 @@ using ascii::Log;
 const int kChunkSize = 1024;
 
 ascii::SoundManager::SoundManager(void)
-    : mSoundVolume(1.0f), mEnabled(true)
+    : mSoundVolume(1.0f), mEnabled(true), mCurrentTrackPosition(0.0f),
+    mPlayingCurrentTrack(false), mCurrentLoops(0)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
@@ -49,7 +50,7 @@ ascii::SoundManager::~SoundManager(void)
 	Mix_CloseAudio();
 }
 
-void ascii::SoundManager::update()
+void ascii::SoundManager::update(int deltaMS)
 {
     if (!mEnabled) return;
 
@@ -62,6 +63,11 @@ void ascii::SoundManager::update()
                     it->second.second);
 		}
 	}
+
+    if (mPlayingCurrentTrack)
+    {
+        mCurrentTrackPosition += (double)deltaMS / 1000.0;
+    }
 }
 
 void ascii::SoundManager::loadSound(std::string key, string path)
@@ -360,6 +366,8 @@ void ascii::SoundManager::playTrack(std::string key, int loops)
     Mix_Music* track = getTrack(key);
 	Mix_PlayMusic(track, loops);
     mCurrentTrack = key;
+    mCurrentLoops = loops;
+    mPlayingCurrentTrack = true;
 }
 
 void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double position)
@@ -368,6 +376,8 @@ void ascii::SoundManager::fadeInTrack(std::string key, int ms, int loops, double
 
 	Mix_FadeInMusicPos(getTrack(key), loops, ms, position);
     mCurrentTrack = key;
+    mCurrentLoops = loops;
+    mPlayingCurrentTrack = true;
 }
 
 void ascii::SoundManager::stopTrack()
@@ -376,6 +386,9 @@ void ascii::SoundManager::stopTrack()
 
 	Mix_HaltMusic();
     mCurrentTrack = "";
+    mCurrentLoops = 0;
+    mPlayingCurrentTrack = false;
+    mCurrentTrackPosition = 0.0;
 }
 			
 void ascii::SoundManager::fadeOutTrack(int ms)
@@ -384,6 +397,8 @@ void ascii::SoundManager::fadeOutTrack(int ms)
 
 	Mix_FadeOutMusic(ms);
     mCurrentTrack = "";
+    mCurrentLoops = 0;
+    mPlayingCurrentTrack = false;
 }
 
 void ascii::SoundManager::pauseTrack()
@@ -391,6 +406,7 @@ void ascii::SoundManager::pauseTrack()
     if (!mEnabled) return;
 
 	Mix_PauseMusic();
+    mPlayingCurrentTrack = false;
 }
 
 void ascii::SoundManager::resumeTrack()
@@ -398,6 +414,7 @@ void ascii::SoundManager::resumeTrack()
     if (!mEnabled) return;
 
 	Mix_ResumeMusic();
+    mPlayingCurrentTrack = true;
 }
 
 void ascii::SoundManager::rewindTrack()
@@ -405,6 +422,7 @@ void ascii::SoundManager::rewindTrack()
     if (!mEnabled) return;
 
 	Mix_RewindMusic();
+    mCurrentTrackPosition = 0.0;
 }
 
 void ascii::SoundManager::setTrackPosition(double position)
@@ -412,6 +430,7 @@ void ascii::SoundManager::setTrackPosition(double position)
     if (!mEnabled) return;
 
 	Mix_SetMusicPosition(position);
+    mCurrentTrackPosition = position;
 }
 
 float ascii::SoundManager::getMusicVolume()
@@ -455,4 +474,29 @@ ascii::SoundManager::SoundGroup ascii::SoundManager::getSoundGroup(
 
     ascii::SoundManager::SoundGroup group = mSoundGroups[groupKey];
     return group;
+}
+
+
+void ascii::SoundManager::playBackgroundTrack()
+{
+    if (mPlayingCurrentTrack)
+    {
+        Mix_HaltMusic();
+    }
+
+    Mix_FadeInMusic(mTracks[mBackgroundTrack], -1, 3000);
+}
+
+void ascii::SoundManager::stopBackgroundTrack()
+{
+    if (!mCurrentTrack.empty())
+    {
+        Mix_HaltMusic();
+        Mix_FadeInMusicPos(mTracks[mCurrentTrack], mCurrentLoops, 1000, mCurrentTrackPosition);
+        mPlayingCurrentTrack = true;
+    }
+    else
+    {
+        Mix_FadeOutMusic(1000);
+    }
 }

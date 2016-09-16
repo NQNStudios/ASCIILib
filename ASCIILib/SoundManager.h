@@ -21,7 +21,7 @@ namespace ascii
 			SoundManager();
 			~SoundManager();
 			
-            void update();
+            void update(int deltaMS);
 
 			///<summary>
 			/// Loads and stores a sound effect in the SoundManager.
@@ -196,6 +196,12 @@ namespace ascii
 
 			///<summary>The status of the current music fade effect.</summary>
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
+
+            void setBackgroundTrack(string track) { mBackgroundTrack = track; }
+
+            void playBackgroundTrack();
+            void stopBackgroundTrack();
+
 		private:
             ///<summary>
             /// Return the length in milliseconds of a sound effect recorded in
@@ -224,6 +230,12 @@ namespace ascii
             std::map<std::string, int> mLoopingSoundChannels;
 
             std::string mCurrentTrack;
+
+            double mCurrentTrackPosition;
+            int mCurrentLoops;
+            bool mPlayingCurrentTrack;
+
+            std::string mBackgroundTrack;
 
             float mSoundVolume;
 
