@@ -731,6 +731,7 @@ vector<ascii::Point> ascii::Surface::getSpecialPoints(string key)
 
             if (!specialInfo.compare("POINT_" + key))
             {
+                Log::Print("Found a point! " + key);
                 correspondingPoints.push_back(Point(x, y));
             }
         }
