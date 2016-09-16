@@ -57,3 +57,6 @@ rules.ninja
 *.DS_Store
 
 *.exp
+
+CMakeScripts/
+Whisperer.build/
