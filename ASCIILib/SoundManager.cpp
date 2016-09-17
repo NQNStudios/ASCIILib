@@ -24,6 +24,9 @@ ascii::SoundManager::SoundManager(void)
         mEnabled = false;
     }
 
+    // TODO THIS IS VERY MUCH FOR TESTING
+    mEnabled = false;
+
     if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, kChunkSize))
     {
         Log::Error("Failed to open SDL_mixer audio channels");

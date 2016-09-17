@@ -202,6 +202,8 @@ namespace ascii
             void playBackgroundTrack();
             void stopBackgroundTrack();
 
+            bool isEnabled() { return mEnabled; }
+
 		private:
             ///<summary>
             /// Return the length in milliseconds of a sound effect recorded in
