@@ -16,9 +16,23 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
         // If an output filename is set, output to a file also
         if (!sOutputFilename.empty())
         {
-            ofstream fileStream(sOutputFilename.c_str(), ios_base::app);
+            FILE* file = fopen(sOutputFilename.c_str(), "a");
 
-            fileStream << messageStream.str();
+			if (file == NULL)
+			{
+                cout << "Error! Could not write log output to file." << endl;
+			}
+			else
+			{
+                fprintf(file, messageStream.str().c_str());
+                fclose(file);
+			}
+
+			/*ofstream fileStream(sOutputFilename.c_str(), ios_base::app);*/
+
+            /*fileStream << messageStream.str();*/
+
+            /*fileStream.close();*/
         }
     }
 }

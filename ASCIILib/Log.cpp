@@ -22,13 +22,14 @@ void ascii::Log::SetOutputFilename(string filename)
     sOutputFilename = filename;
 
     // If the file already exists, overwrite it
-    ofstream overwriteStream(filename.c_str(), ios_base::trunc);
+	FILE* overwriteFile = fopen(filename.c_str(), "w");
 
-    // If the file can't be opened, print another error
-    if (!overwriteStream.good())
+    if (overwriteFile == NULL)
     {
         string filename = sOutputFilename;
         sOutputFilename = "";
         Error("Log file could not be opened for writing: " + filename);
     }
+
+	fclose(overwriteFile);
 }
