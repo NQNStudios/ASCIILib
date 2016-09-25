@@ -27,12 +27,6 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
                 fprintf(file, messageStream.str().c_str());
                 fclose(file);
 			}
-
-			/*ofstream fileStream(sOutputFilename.c_str(), ios_base::app);*/
-
-            /*fileStream << messageStream.str();*/
-
-            /*fileStream.close();*/
         }
     }
 }
