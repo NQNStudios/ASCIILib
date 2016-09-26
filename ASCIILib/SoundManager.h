@@ -198,6 +198,7 @@ namespace ascii
 			Mix_Fading fadingMusic() { return Mix_FadingMusic(); }
 
             void setBackgroundTrack(string track) { mBackgroundTrack = track; }
+            void setBackgroundTrackVolumeMod(float mod) { mBackgroundTrackVolumeMod = mod; }
 
             void playBackgroundTrack();
             void stopBackgroundTrack();
@@ -238,6 +239,7 @@ namespace ascii
             bool mPlayingCurrentTrack;
 
             std::string mBackgroundTrack;
+            float mBackgroundTrackVolumeMod;
 
             float mSoundVolume;
 
