@@ -14,7 +14,7 @@ const int kChunkSize = 1024;
 
 ascii::SoundManager::SoundManager(void)
     : mSoundVolume(1.0f), mEnabled(true), mCurrentTrackPosition(0.0f),
-    mPlayingCurrentTrack(false), mCurrentLoops(0)
+    mPlayingCurrentTrack(false), mCurrentLoops(0), mBackgroundTrackVolumeMod(1.0f)
 {
     if (Mix_Init(MIX_INIT_OGG) != MIX_INIT_OGG)
     {
@@ -484,19 +484,20 @@ void ascii::SoundManager::playBackgroundTrack()
         Mix_HaltMusic();
     }
 
+    setMusicVolume(getMusicVolume() * mBackgroundTrackVolumeMod);
+
     Mix_FadeInMusic(mTracks[mBackgroundTrack], -1, 3000);
 }
 
 void ascii::SoundManager::stopBackgroundTrack()
 {
+    setMusicVolume(getMusicVolume() / mBackgroundTrackVolumeMod);
+
+    Mix_HaltMusic();
+
     if (!mCurrentTrack.empty())
     {
-        Mix_HaltMusic();
         Mix_FadeInMusicPos(mTracks[mCurrentTrack], mCurrentLoops, 1000, mCurrentTrackPosition);
         mPlayingCurrentTrack = true;
-    }
-    else
-    {
-        Mix_FadeOutMusic(1000);
     }
 }

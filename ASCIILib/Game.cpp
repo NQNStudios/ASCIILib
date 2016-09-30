@@ -82,6 +82,9 @@ void ascii::Game::Run()
 				case SDL_MOUSEWHEEL:
 					mpInput->scrollEvent(event);
 					break;
+                case SDL_WINDOWEVENT:
+                    HandleWindowEvent(event);
+                    break;
 			}
 		}
 

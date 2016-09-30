@@ -64,6 +64,9 @@ namespace ascii
             virtual void Update(int deltaMS)=0;
             virtual void HandleInput(Input& input)=0;
             virtual void Draw(Graphics& graphics)=0;
+
+            virtual void HandleWindowEvent(SDL_Event event)=0;
+
 		private:
 			const char* mWindowTitle;
             const char* mFontpath;
