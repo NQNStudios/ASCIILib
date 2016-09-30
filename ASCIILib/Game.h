@@ -23,12 +23,6 @@ namespace ascii
 			///<param name="bufferHeight">The height of the game's buffer, in cells.</param>
 			Game(const char* title, const char* fontpath, const int bufferWidth, const int bufferHeight);
 
-			///<summary>
-			/// Creates an ASCIILib game.
-			///</summary>
-			///<param name="title">The title of the game's window.</param>
-			Game(const char* title, const char* fontpath);
-
             ~Game();
 
             void ShowMouseCursor();
@@ -65,7 +59,8 @@ namespace ascii
 			///</summary>
 			void Quit();
         protected:
-            virtual void LoadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
+			virtual void LoadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
+			virtual void UnloadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
             virtual void Update(int deltaMS)=0;
             virtual void HandleInput(Input& input)=0;
             virtual void Draw(Graphics& graphics)=0;

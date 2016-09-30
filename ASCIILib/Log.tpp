@@ -12,6 +12,7 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
 
         // Output the message to the console
         cout << messageStream.str();
+        cout.flush();
 
         // If an output filename is set, output to a file also
         if (!sOutputFilename.empty())
@@ -21,10 +22,12 @@ template<typename T> void ascii::Log::Print(T message, bool newLine)
 			if (file == NULL)
 			{
                 cout << "Error! Could not write log output to file." << endl;
+                cout.flush();
 			}
 			else
 			{
                 fprintf(file, messageStream.str().c_str());
+                fflush(file);
                 fclose(file);
 			}
         }

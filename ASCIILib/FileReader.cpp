@@ -117,7 +117,7 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         }
 
         // Add the string termination
-        contents[index] = 0;
+        contents[index] = '\0';
 
         // Create a UnicodeString object
         UnicodeString contentsUString(contents);

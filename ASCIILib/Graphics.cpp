@@ -87,7 +87,7 @@ void ascii::Graphics::Initialize()
 
     if (!mRenderer)
     {
-        Log::Error("Failed to SDL_Renderer.");
+        Log::Error("Failed to create SDL_Renderer.");
         Log::SDLError();
     }
 
