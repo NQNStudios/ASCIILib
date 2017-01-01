@@ -33,11 +33,14 @@ ascii::Game::Game(const char* title, const char* fontpath, const int bufferWidth
 
 ascii::Game::~Game()
 {
+	Log::Print("Game deconstructor called");
 	delete mpGraphics;
 	delete mpSoundManager;
     delete mpInput;
 
 	IMG_Quit();
+
+	Log::Print("Calling SDL_Quit()");
 	SDL_Quit();
 }
 
@@ -71,6 +74,7 @@ void ascii::Game::Run()
 			switch (event.type)
 			{
 				case SDL_QUIT:
+					Log::Print("Handling SDL_QUIT event.");
 					Quit();
 					return;
 				case SDL_KEYDOWN:
