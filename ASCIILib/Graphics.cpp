@@ -15,67 +15,42 @@
 #include "FileReader.h"
 using namespace ascii;
 
-const int kFontSize = 12;
-
 //static
 const unsigned int ascii::Graphics::kBufferWidth = 80;
 
 //static
 const unsigned int ascii::Graphics::kBufferHeight = 25;
 
-// Note: The font used by Graphics might for some reason yield a pixel height
-// different than kFontSize. In this case, mCharHeight will be invalid for
-// calculation of window size and other values. kFontSize is the actual
-// measurement of the height of a cell, and mCharHeight is the height of the
-// character the font created
 
-
-ascii::Graphics::Graphics(const char* title, string fontpath,
+ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
         int bufferWidth, int bufferHeight)
-	: Surface(bufferWidth, bufferHeight), mTitle(title),
+	: Surface(bufferWidth, bufferHeight),
+    mTitle(title),
     mFullscreen(false), mBackgroundColor(ascii::Color::Black),
-    mWindow(NULL), mRenderer(NULL), mHidingImages(false),
-    mCharHeightCorrection(0)
+    mpWindow(NULL), mpRenderer(NULL), mHidingImages(false),
+    mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
+    mCharWidth(charWidth), mCharHeight(charHeight)
 {
-	if(TTF_Init() == -1)
-    {
-        Log::Error("SDL_ttf failed to initialize");
-        Log::SDLError();
-    }
-
-	mFont = TTF_OpenFont(fontpath.c_str(), kFontSize);
-    if (!mFont)
-    {
-        Log::Error("Failed to open the font file: " + fontpath);
-        Log::SDLError();
-    }
-
     Initialize();
 }
 
 ascii::Graphics::~Graphics(void)
 {
     Dispose();
-
-	TTF_CloseFont(mFont);
-
-	TTF_Quit();
 }
 
 void ascii::Graphics::Initialize()
 {
     mFullscreen = false;
 
-    UpdateCharSize();
-
     int flags = SDL_WINDOW_SHOWN;
 
-	mWindow = SDL_CreateWindow(mTitle, 
+	mpWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth, height() * kFontSize, 
+		width() * mCharWidth, height() * mCharHeight, 
 		flags);
 
-    if (!mWindow)
+    if (!mpWindow)
     {
         Log::Error("Failed to create a window for the game.");
         Log::SDLError();
@@ -83,27 +58,52 @@ void ascii::Graphics::Initialize()
 
 	checkSize();
 
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
+	mpRenderer = SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    if (!mRenderer)
+    if (!mpRenderer)
     {
         Log::Error("Failed to create SDL_Renderer.");
         Log::SDLError();
     }
 
-	mCache = new ascii::ImageCache(mRenderer,
+	mpCache = new ascii::ImageCache(mpRenderer,
             mCharWidth,
-            kFontSize);
+            mCharHeight);
 }
 
 void ascii::Graphics::Dispose()
 {
-    // Free textures we've created for rendering tokens
-    clearGlyphs();
-    SDL_DestroyRenderer(mRenderer);
-    SDL_DestroyWindow(mWindow);
-    delete mCache;
+    SDL_DestroyRenderer(mpRenderer);
+    SDL_DestroyWindow(mpWindow);
+    delete mpCache;
 }
+
+void ascii::Graphics::LoadFont(string key, string fontLayoutPath, string fontPath)
+{
+    mFonts[key] = new PixelFont(mpRenderer, mCharWidth, mCharHeight, fontLayoutPath, fontPath);
+}
+
+void ascii::Graphics::UnloadFont(string key)
+{
+    PixelFont* pFont = mFonts[key];
+    delete pFont;
+    mFonts.erase(key);
+}
+
+void ascii::Graphics::UnloadAllFonts()
+{
+    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
+    {
+        delete it->second;
+    }
+    mFonts.clear();
+}
+
+void ascii::Graphics::SetDefaultFont(string key)
+{
+    mFonts[""] = mFonts[key];
+}
+
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
 {
@@ -123,7 +123,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
         Initialize();
     }
 
-    if (SDL_SetWindowFullscreen(mWindow, flags) != 0)
+    if (SDL_SetWindowFullscreen(mpWindow, flags) != 0)
     {
         Log::SDLError();
     }
@@ -149,7 +149,17 @@ int ascii::Graphics::pixelToCellY(int pixelY)
     {
         pixelY -= drawOrigin().y;
     }
-    return pixelY / kFontSize;
+    return pixelY / mCharHeight;
+}
+
+int ascii::Graphics::cellToPixelX(int cellX)
+{
+    return drawOrigin().x + (cellX * mCharWidth);
+}
+
+int ascii::Graphics::cellToPixelY(int cellY)
+{
+    return drawOrigin().y + (cellY * mCharHeight);
 }
 
 ascii::Point ascii::Graphics::drawOrigin()
@@ -174,8 +184,8 @@ ascii::Point ascii::Graphics::drawOrigin()
 void ascii::Graphics::clearScreen()
 {
 	// Draw background color
-	SDL_SetRenderDrawColor(mRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
-	SDL_RenderFillRect(mRenderer, NULL);
+	SDL_SetRenderDrawColor(mpRenderer, mBackgroundColor.r, mBackgroundColor.g, mBackgroundColor.b, ascii::Color::kAlpha);
+	SDL_RenderFillRect(mpRenderer, NULL);
 }
 
 void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
@@ -183,21 +193,18 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
     // Don't draw any images if they're currently being hidden
     if (!mHidingImages)
     {
-        int drawX = drawOrigin().x;
-        int drawY = drawOrigin().y;
-
         // Draw every image in the given map otherwise, using their specified
         // positions
         for (auto it = images->begin(); it != images->end(); ++it)
         {
             SDL_Rect dest;
             
-            dest.x = drawX + it->second.second.x * mCharWidth;
-            dest.y = drawY + it->second.second.y * kFontSize;
+            dest.x = cellToPixelX(it->second.second.x);
+            dest.y = cellToPixelY(it->second.second.y);
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
 
-            SDL_RenderCopy(mRenderer, it->second.first, NULL, &dest);
+            SDL_RenderCopy(mpRenderer, it->second.first, NULL, &dest);
         }
     }
 }
@@ -216,10 +223,10 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 			//chain all adjacent background colors in a row for more efficient rendering
 			SDL_Rect colorRect;
 
-			colorRect.x = drawX + (x + xSrc) * mCharWidth;
-			colorRect.y = drawY + (y + ySrc) * kFontSize;
+			colorRect.x = cellToPixelX(x + xSrc);
+			colorRect.y = cellToPixelY(y + ySrc);
 			colorRect.w = 0;
-			colorRect.h = kFontSize;
+			colorRect.h = mCharHeight;
 
 			Color backgroundColor = surface->getBackgroundColor(xSrc, ySrc);
 
@@ -235,112 +242,43 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 				++xSrc;
 			} while (xSrc < surface->width() && surface->getBackgroundColor(xSrc, ySrc) == backgroundColor);
 
-			SDL_SetRenderDrawColor(mRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
-			SDL_RenderFillRect(mRenderer, &colorRect);
+			SDL_SetRenderDrawColor(mpRenderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, Color::kAlpha);
+			SDL_RenderFillRect(mpRenderer, &colorRect);
 		}
 	}
 }
 
 void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
 {
-    int drawX = drawOrigin().x;
-    int drawY = drawOrigin().y;
-
 	//draw all characters
 	for (int ySrc = 0; ySrc < surface->height(); ++ySrc)
 	{
-		int xSrc = 0;
+        for (int xSrc = 0; xSrc < surface->width(); ++xSrc)
+        {
+            UChar character = surface->getCharacter(xSrc, ySrc);
 
-		while (xSrc < surface->width())
-		{
-			// Chain all adjacent characters with the same color into strings
-            // for more efficient rendering
+            if (!IsWhiteSpace(character) && surface->isCellOpaque(xSrc, ySrc))
+            {
+                Color color = surface->getCharacterColor(xSrc, ySrc);
 
-            // Don't bother chaining spaces together
-			UChar uch = surface->getCharacter(xSrc, ySrc);
+                int destCellX = x + xSrc;
+                int destCellY = y + ySrc;
+                int destPixelX = cellToPixelX(destCellX);
+                int destPixelY = cellToPixelY(destCellY);
 
-			if (IsWhiteSpace(uch))
-			{
-				++xSrc;
-				continue;
-			}
+                //Log::Print("Rendering character: " + UnicodeString(character));
+                //Log::Print("x: ", false);
+                //Log::Print(pixelX);
+                //Log::Print("y: ", false);
+                //Log::Print(pixelY);
 
-            // If the character is not a space, start chaining with its
-            // neighbors
-            UnicodeString charChain;
-			SDL_Rect textRect;
+                string cellFont = mCellFonts[destCellX][destCellY];
+                PixelFont* font = GetFont(cellFont);
 
-			textRect.x = drawX + (x + xSrc) * mCharWidth;
-			textRect.y = drawY + (y + ySrc) * kFontSize;
-			textRect.w = 0;
-			textRect.h = kFontSize;
-			Color characterColor = surface->getCharacterColor(xSrc, ySrc);
-
-			do
-			{
-				if (!surface->isCellOpaque(xSrc, ySrc))
-				{
-					++xSrc;
-					break;
-				}
-
-                uch = surface->getCharacter(xSrc, ySrc);
-
-                // Don't chain empty space in a word. Empty space can exist
-                // here if it is used as the base for a non-space character
-                // combo
-                if (!IsWhiteSpace(uch))
-                {
-                    charChain += uch;
-                    textRect.w += mCharWidth;
-                }
-                else
-                {
-                    ++xSrc;
-                    break;
-                }
-
-				++xSrc;
-			} while (
-                // Stop when we reach the end of the row
-                xSrc < surface->width()
-                // Stop if the next character has a different color
-                && surface->getCharacterColor(xSrc, ySrc) == characterColor
-                // Stop if the next character is another space
-                && !IsWhiteSpace(surface->getCharacter(xSrc, ySrc)));
-
-            // Convert the unicode into an appropriate string encoding for
-            // TTF_RenderText()
-            string temp;
-            string str = charChain.toUTF8String(temp);
-
-			Glyph glyph = std::make_pair(str, characterColor);
-
-			SDL_Texture* texture = NULL;
-
-			if (mGlyphTextures[glyph])
-			{
-				texture = mGlyphTextures[glyph];
-			}
-			else
-			{
-				SDL_Surface* surface = TTF_RenderUTF8_Solid(mFont, str.c_str(), characterColor);
-				texture = SDL_CreateTextureFromSurface(mRenderer, surface);
-
-				mGlyphTextures[glyph] = texture;
-				
-				SDL_FreeSurface(surface);
-			}
-
-            // If for some reason the font dimensions are off, clip the glyph
-            // so the texture fits where it should
-            SDL_Rect adjustedGlyphSrc;
-            adjustedGlyphSrc.x = 0;
-            adjustedGlyphSrc.y = 0;
-            adjustedGlyphSrc.w = textRect.w;
-            adjustedGlyphSrc.h = textRect.h;
-            SDL_RenderCopy(mRenderer, texture, &adjustedGlyphSrc, &textRect);
-		}
+                if (font)
+                    font->RenderCharacter(character, destPixelX, destPixelY, color);
+            }
+        }
 	}
 }
 
@@ -355,7 +293,7 @@ void ascii::Graphics::drawSurface(ascii::Surface* surface, int x, int y)
 
 void ascii::Graphics::refresh()
 {
-    SDL_RenderPresent(mRenderer);
+    SDL_RenderPresent(mpRenderer);
 }
 
 void ascii::Graphics::update()
@@ -395,7 +333,7 @@ void ascii::Graphics::drawForegroundSurface(ascii::Surface* surface, int x, int 
 
 void ascii::Graphics::addBackgroundImage(std::string key, std::string textureKey, int x, int y)
 {
-	mBackgroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+	mBackgroundImages[key] = std::make_pair(mpCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
 void ascii::Graphics::removeBackgroundImage(std::string key)
@@ -405,7 +343,7 @@ void ascii::Graphics::removeBackgroundImage(std::string key)
 
 void ascii::Graphics::addForegroundImage(std::string key, std::string textureKey, int x, int y)
 {
-	mForegroundImages[key] = std::make_pair(mCache->getTexture(textureKey), ascii::Point(x, y));
+	mForegroundImages[key] = std::make_pair(mpCache->getTexture(textureKey), ascii::Point(x, y));
 }
 
 void ascii::Graphics::removeForegroundImage(std::string key)
@@ -429,25 +367,15 @@ void ascii::Graphics::showImages()
     mHidingImages = false;
 }
 
-void ascii::Graphics::clearGlyphs()
-{
-	for (std::map<Glyph, SDL_Texture*>::iterator it = mGlyphTextures.begin(); it != mGlyphTextures.end(); ++it)
-	{
-		SDL_DestroyTexture(it->second); //destroy all stored string textures
-	}
-
-	mGlyphTextures.clear();
-}
-
 ascii::Point ascii::Graphics::drawResolution()
 {
-    return ascii::Point(mCharWidth * width(), kFontSize * height());
+    return ascii::Point(mCharWidth * width(), mCharHeight * height());
 }
 
 ascii::Point ascii::Graphics::actualResolution()
 {
     int w, h;
-    SDL_GetWindowSize(mWindow, &w, &h);
+    SDL_GetWindowSize(mpWindow, &w, &h);
     return ascii::Point(w, h);
 }
 
@@ -456,9 +384,9 @@ void ascii::Graphics::checkSize()
     if (!mFullscreen)
     {
         int w, h;
-        SDL_GetWindowSize(mWindow, &w, &h);
+        SDL_GetWindowSize(mpWindow, &w, &h);
 
-        bool check = width() * mCharWidth == w && height() * kFontSize == h;
+        bool check = width() * mCharWidth == w && height() * mCharHeight == h;
 
         if (!check)
         {
@@ -467,23 +395,50 @@ void ascii::Graphics::checkSize()
     }
 }
 
-void ascii::Graphics::UpdateCharSize()
+void ascii::Graphics::clearCellFonts()
 {
-	TTF_SizeText(mFont, "A", &mCharWidth, &mCharHeight);
-
-    if (mCharHeight != kFontSize)
+    for (int x = 0; x < width(); ++x)
     {
-        Log::Print("Warning! Char height measured from the font loaded does not match expected font size:", false);
-        Log::Print(mCharHeight, false);
-        Log::Print(" != ", false);
-        Log::Print(kFontSize);
+        for (int y = 0; y < height(); ++y)
+        {
+            mCellFonts[x][y] = "";
+        }
+    }
+}
 
-        mCharHeightCorrection = abs(mCharHeight - kFontSize);
+void ascii::Graphics::setCellFont(Rectangle cells, string font)
+{
+    for (int x = cells.x; x < cells.right(); ++x)
+    {
+        for (int y = cells.y; y < cells.bottom(); ++y)
+        {
+            mCellFonts[x][y] = font;
+        }
+    }
+}
+
+PixelFont* ascii::Graphics::GetFont(string key)
+{
+    PixelFont* font = NULL;
+
+    if (mFonts.find(key) != mFonts.end())
+    {
+        font = mFonts[key];
+    }
+    else
+    {
+        string error = "Graphics tried to render a character in a nonexistent font: ";
+        if (key.empty())
+        {
+            error += "[DEFAULT FONT]";
+        }
+        else
+        {
+            error += key;
+        }
+
+        Log::Error(error);
     }
 
-    Log::Print("Char dimensions: (", false);
-    Log::Print(mCharWidth, false);
-    Log::Print(" ", false);
-    Log::Print(mCharHeight, false);
-    Log::Print(")");
+    return font;
 }

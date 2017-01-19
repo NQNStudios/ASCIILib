@@ -11,6 +11,7 @@ using namespace std;
 #include "Surface.h"
 #include "Rectangle.h"
 #include "Point.h"
+#include "PixelFont.h"
 
 namespace ascii
 {
@@ -35,7 +36,7 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, string fontpath, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
+			Graphics(const char* title, int charWidth, int charHeight, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
             ///<summary>
@@ -45,6 +46,10 @@ namespace ascii
             ///</summary>
             void Initialize();
 
+            void LoadFont(string key, string fontPath, string fontLayoutPath);
+            void SetDefaultFont(string key);
+            void UnloadFont(string key);
+            void UnloadAllFonts();
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
             /// call to Initialize()
@@ -66,7 +71,7 @@ namespace ascii
 			///<summary>
 			/// Returns the image cache for this Graphics instance.
 			///</summary>
-			ImageCache* imageCache() { return mCache; }
+			ImageCache* imageCache() { return mpCache; }
 
 			int charWidth() { return mCharWidth; }
 			int charHeight() { return mCharHeight; }
@@ -74,6 +79,8 @@ namespace ascii
             int pixelToCellX(int pixelX);
             int pixelToCellY(int pixelY);
 
+            int cellToPixelX(int cellX);
+            int cellToPixelY(int cellY);
 			///<summary>
 			/// Renders the rendering buffer in its current state.
 			///</summary>
@@ -136,6 +143,8 @@ namespace ascii
             Point drawResolution();
             Point actualResolution();
 
+            void clearCellFonts();
+            void setCellFont(Rectangle cells, string font);
 		private:
 			typedef pair<string, Color> Glyph;
 			typedef pair<SDL_Texture*, Point> Image;
@@ -153,20 +162,11 @@ namespace ascii
 			///</summary>
 			void checkSize();
 
-            ///<summary>
-            /// Update the values of mCharWidth and mCharHeight to reflect
-            /// scale
-            ///</summary>
-            void UpdateCharSize();
+			SDL_Window* mpWindow;
+			SDL_Renderer* mpRenderer;
+			ImageCache* mpCache;
 
-			SDL_Window* mWindow;
-			SDL_Renderer* mRenderer;
-			ImageCache* mCache;
-
-			TTF_Font* mFont;
 			int mCharWidth, mCharHeight;
-
-			map<Glyph, SDL_Texture*> mGlyphTextures;
 
             const char* mTitle;
             bool mFullscreen;
@@ -175,10 +175,11 @@ namespace ascii
 			map<string, Image> mBackgroundImages;
 			map<string, Image> mForegroundImages;
             vector<ForegroundSurface> mForegroundSurfaces;
-
+            vector<vector<string> > mCellFonts;
             bool mHidingImages;
 
-            int mCharHeightCorrection;
+            map<string, PixelFont*> mFonts;
+            PixelFont* GetFont(string key);
 	};
 
 };
