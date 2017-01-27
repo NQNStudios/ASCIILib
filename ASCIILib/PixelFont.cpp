@@ -56,14 +56,14 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
         return;
     }
 
-    // Font files are white letters on black background, making white
+    // Font files are white letters on black background, making black
     // transparent
     SDL_SetColorKey(tempSurface, SDL_ENABLE,
             Color::Black.ToUint32(tempSurface->format));
 
     // Now create a texture from the loaded surface, and free the surface
     mpTextureSheet = SDL_CreateTextureFromSurface(pRenderer, tempSurface);
-
+    
     // Dispose of the surface
     SDL_FreeSurface(tempSurface);
 
