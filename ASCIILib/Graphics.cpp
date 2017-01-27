@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <string>
+#include <sstream>
 
 #include "unicode/uchar.h"
 #include "unicode/locid.h"
@@ -47,7 +48,7 @@ void ascii::Graphics::Initialize()
 
 	mpWindow = SDL_CreateWindow(mTitle, 
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth, height() * mCharHeight, 
+		width() * mCharWidth * mScale, height() * mCharHeight * mScale,
 		flags);
 
     if (!mpWindow)
@@ -71,6 +72,20 @@ void ascii::Graphics::Initialize()
             mCharHeight);
 }
 
+void ascii::Graphics::SetScale(float scale)
+{
+    if (scale != mScale)
+    {
+        mScale = scale;
+        
+        Dispose();
+        Initialize();
+    }
+
+
+    // Switch the default font to the proper size
+}
+
 void ascii::Graphics::Dispose()
 {
     SDL_DestroyRenderer(mpRenderer);
@@ -78,14 +93,20 @@ void ascii::Graphics::Dispose()
     delete mpCache;
 }
 
-void ascii::Graphics::LoadFont(string key, string fontLayoutPath, string fontPath)
+void ascii::Graphics::LoadFont(string key, int size, string fontLayoutPath, string fontPath)
 {
-    mFonts[key] = new PixelFont(mpRenderer, mCharWidth, mCharHeight, fontLayoutPath, fontPath);
+    stringstream sstream;
+    sstream << key << size;
+    
+    float scale = (float) size / (float) mCharHeight;
+    mFonts[sstream.str()] = new PixelFont(mpRenderer, mCharWidth * scale, size, fontLayoutPath, fontPath);
 }
 
-void ascii::Graphics::UnloadFont(string key)
+void ascii::Graphics::UnloadFont(string key, int size)
 {
-    PixelFont* pFont = mFonts[key];
+    stringstream sstream;
+    sstream << key << size;
+    PixelFont* pFont = mFonts[sstream.str()];
     delete pFont;
     mFonts.erase(key);
 }
@@ -101,7 +122,7 @@ void ascii::Graphics::UnloadAllFonts()
 
 void ascii::Graphics::SetDefaultFont(string key)
 {
-    mFonts[""] = mFonts[key];
+    mDefaultFont = key;
 }
 
 
@@ -140,7 +161,7 @@ int ascii::Graphics::pixelToCellX(int pixelX)
     {
         pixelX -= drawOrigin().x;
     }
-    return pixelX / mCharWidth;
+    return pixelX / (mCharWidth * mScale);
 }
 
 int ascii::Graphics::pixelToCellY(int pixelY)
@@ -149,17 +170,17 @@ int ascii::Graphics::pixelToCellY(int pixelY)
     {
         pixelY -= drawOrigin().y;
     }
-    return pixelY / mCharHeight;
+    return pixelY / (mCharHeight * mScale);
 }
 
 int ascii::Graphics::cellToPixelX(int cellX)
 {
-    return drawOrigin().x + (cellX * mCharWidth);
+    return drawOrigin().x + (cellX * mCharWidth * mScale);
 }
 
 int ascii::Graphics::cellToPixelY(int cellY)
 {
-    return drawOrigin().y + (cellY * mCharHeight);
+    return drawOrigin().y + (cellY * mCharHeight * mScale);
 }
 
 ascii::Point ascii::Graphics::drawOrigin()
@@ -203,6 +224,8 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
             dest.y = cellToPixelY(it->second.second.y);
 
             SDL_QueryTexture(it->second.first, NULL, NULL, &dest.w, &dest.h);
+            dest.w *= mScale;
+            dest.h *= mScale;
 
             SDL_RenderCopy(mpRenderer, it->second.first, NULL, &dest);
         }
@@ -226,7 +249,7 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
 			colorRect.x = cellToPixelX(x + xSrc);
 			colorRect.y = cellToPixelY(y + ySrc);
 			colorRect.w = 0;
-			colorRect.h = mCharHeight;
+			colorRect.h = mCharHeight * mScale;
 
 			Color backgroundColor = surface->getBackgroundColor(xSrc, ySrc);
 
@@ -238,7 +261,7 @@ void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y
                     break;
                 }
 
-				colorRect.w += mCharWidth;
+				colorRect.w += mCharWidth * mScale;
 				++xSrc;
 			} while (xSrc < surface->width() && surface->getBackgroundColor(xSrc, ySrc) == backgroundColor);
 
@@ -273,6 +296,7 @@ void ascii::Graphics::drawCharacters(ascii::Surface* surface, int x, int y)
                 //Log::Print(pixelY);
 
                 string cellFont = mCellFonts[destCellX][destCellY];
+
                 PixelFont* font = GetFont(cellFont);
 
                 if (font)
@@ -369,7 +393,7 @@ void ascii::Graphics::showImages()
 
 ascii::Point ascii::Graphics::drawResolution()
 {
-    return ascii::Point(mCharWidth * width(), mCharHeight * height());
+    return ascii::Point(mCharWidth * width() * mScale, mCharHeight * height() * mScale);
 }
 
 ascii::Point ascii::Graphics::actualResolution()
@@ -386,7 +410,7 @@ void ascii::Graphics::checkSize()
         int w, h;
         SDL_GetWindowSize(mpWindow, &w, &h);
 
-        bool check = width() * mCharWidth == w && height() * mCharHeight == h;
+        bool check = width() * mCharWidth * mScale == w && height() * mCharHeight * mScale == h;
 
         if (!check)
         {
@@ -420,6 +444,15 @@ void ascii::Graphics::setCellFont(Rectangle cells, string font)
 PixelFont* ascii::Graphics::GetFont(string key)
 {
     PixelFont* font = NULL;
+
+    if (key.empty())
+    {
+        key = mDefaultFont;
+    }
+
+    stringstream sstream;
+    sstream << key << (mCharHeight * mScale);
+    key = sstream.str();
 
     if (mFonts.find(key) != mFonts.end())
     {

@@ -39,6 +39,8 @@ namespace ascii
 			Graphics(const char* title, int charWidth, int charHeight, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
+            void SetScale(float scale);
+
             ///<summary>
             /// Modifies the graphics video mode, even after construction.
             /// Warning: This rebuilds the image cache. All images will need
@@ -46,10 +48,11 @@ namespace ascii
             ///</summary>
             void Initialize();
 
-            void LoadFont(string key, string fontPath, string fontLayoutPath);
+            void LoadFont(string key, int size, string fontPath, string fontLayoutPath);
             void SetDefaultFont(string key);
-            void UnloadFont(string key);
+            void UnloadFont(string key, int size);
             void UnloadAllFonts();
+
             ///<summary>
             /// Cleans up everything created by Graphics, allowing a new
             /// call to Initialize()
@@ -180,6 +183,9 @@ namespace ascii
 
             map<string, PixelFont*> mFonts;
             PixelFont* GetFont(string key);
+            string mDefaultFont;
+
+            float mScale = 1.0f;
 	};
 
 };

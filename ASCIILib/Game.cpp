@@ -10,7 +10,8 @@ using namespace ascii;
 const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
-ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight)
+ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight,
+        int charWidth, int charHeight)
 	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING))
@@ -26,7 +27,7 @@ ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeig
 
 	mpSoundManager = new SoundManager();
 
-	mpGraphics = new ascii::Graphics(mWindowTitle, 12, 18, mBufferWidth, mBufferHeight);
+	mpGraphics = new ascii::Graphics(mWindowTitle, charWidth, charHeight, mBufferWidth, mBufferHeight);
 
 	mpInput = new Input();
 }
