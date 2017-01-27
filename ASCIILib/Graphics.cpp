@@ -32,6 +32,19 @@ ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
     mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
     mCharWidth(charWidth), mCharHeight(charHeight)
 {
+    // Retrieve the native max resolution of the player's display
+    SDL_DisplayMode mode;
+
+    if (SDL_GetDesktopDisplayMode(0, &mode) != 0)
+    {
+        Log::Error("Failed to get display mode of the current display.");
+        Log::SDLError();
+    }
+
+    mSystemFullscreenWidth = mode.w;
+    mSystemFullscreenHeight = mode.h;
+
+    // Initialize graphics at the default scale and everything
     Initialize();
 }
 

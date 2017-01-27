@@ -148,6 +148,10 @@ namespace ascii
 
             void clearCellFonts();
             void setCellFont(Rectangle cells, string font);
+
+            int nativeFullscreenWidth() { return mSystemFullscreenWidth; }
+            int nativeFullscreenHeight() { return mSystemFullscreenHeight; }
+
 		private:
 			typedef pair<string, Color> Glyph;
 			typedef pair<SDL_Texture*, Point> Image;
@@ -186,6 +190,9 @@ namespace ascii
             string mDefaultFont;
 
             float mScale = 1.0f;
+
+            int mSystemFullscreenWidth;
+            int mSystemFullscreenHeight;
 	};
 
 };
