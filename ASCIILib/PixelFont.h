@@ -19,13 +19,21 @@ namespace ascii
     {
         public:
             // Create and load a pixel font
-            PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
+            PixelFont(int charWidth, int charHeight,
                     string fontLayoutFile, string textureSheet);
+            
+            void Initialize(SDL_Renderer* pRenderer);
+            void Dispose();
+
+
             ~PixelFont();
 
             // Draw the given character at the point given in pixels using the
             // given renderer
             void RenderCharacter(UChar character, int x, int y, Color color);
+
+            int charHeight() { return mCharHeight; }
+
         private:
             SDL_Renderer* mpRenderer;
             SDL_Texture* mpTextureSheet;
@@ -33,6 +41,11 @@ namespace ascii
 
             int mCharWidth;
             int mCharHeight;
+
+            string mFontLayoutPath;
+            string mFontPath;
+
+            bool mInitialized;
     };
 
 }

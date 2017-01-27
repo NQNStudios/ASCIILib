@@ -9,13 +9,23 @@
 #include "Rectangle.h"
 
 
-PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
+PixelFont::PixelFont(int charWidth, int charHeight,
         string fontLayoutFile, string textureSheet)
-    : mpRenderer(pRenderer), mCharWidth(charWidth), mCharHeight(charHeight)
+    : mCharWidth(charWidth), mCharHeight(charHeight),
+    mInitialized(false)
 {
+    mFontLayoutPath = fontLayoutFile;
+    mFontPath = textureSheet;
+}
+
+void PixelFont::Initialize(SDL_Renderer* pRenderer)
+{
+    Log::Print("Initializing pixel font: " + mFontPath);
+    mpRenderer = pRenderer;
+    
     // Extract the rows of characters from the layout file
     vector<UnicodeString> layoutRows;
-    FileReader layoutFile(fontLayoutFile);
+    FileReader layoutFile(mFontLayoutPath);
 
     while (layoutFile.HasNextLine())
     {
@@ -23,12 +33,12 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
     }
 
     // Load the texture sheet
-    SDL_Surface* tempSurface = IMG_Load(textureSheet.c_str());
+    SDL_Surface* tempSurface = IMG_Load(mFontPath.c_str());
 
     // Make sure the texture sheet loaded correctly
     if (!tempSurface)
     {
-        Log::Error("Failed to load pixel font: " + textureSheet);
+        Log::Error("Failed to load pixel font: " + mFontPath);
         Log::SDLError();
         return;
     }
@@ -37,14 +47,14 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
     int rows = layoutRows.size();
     int cols = layoutRows[0].length();
 
-    int expectedWidth = cols * charWidth;
-    int expectedHeight = rows * charHeight;
+    int expectedWidth = cols * mCharWidth;
+    int expectedHeight = rows * mCharHeight;
 
     if (tempSurface->w != expectedWidth || tempSurface->h != expectedHeight)
     {
-        Log::Error("Tried to load pixel font with invalid texture sheet dimensions to match font layout file: " + textureSheet);
+        Log::Error("Tried to load pixel font with invalid texture sheet dimensions to match font layout file: " + mFontPath);
 
-        Log::Print("Layout file: " + fontLayoutFile);
+        Log::Print("Layout file: " + mFontLayoutPath);
         Log::Print("Expected width: ", false);
         Log::Print(expectedWidth);
         Log::Print("Expected height: ", false);
@@ -78,25 +88,43 @@ PixelFont::PixelFont(SDL_Renderer* pRenderer, int charWidth, int charHeight,
             UChar character = row[c];
 
             SDL_Rect sourceRect; 
-            sourceRect.x = c * charWidth;
-            sourceRect.y = r * charHeight;
-            sourceRect.w = charWidth;
-            sourceRect.h = charHeight;
+            sourceRect.x = c * mCharWidth;
+            sourceRect.y = r * mCharHeight;
+            sourceRect.w = mCharWidth;
+            sourceRect.h = mCharHeight;
 
             mCharacterRectangles[character] = sourceRect;
         }
     }
 
     // Now the pixel font should be ready to render letters!
+    mInitialized = true;
 }
 
 PixelFont::~PixelFont()
 {
-    SDL_DestroyTexture(mpTextureSheet);
+    Dispose();
+}
+
+void PixelFont::Dispose()
+{
+    if (mInitialized)
+    {
+        Log::Print("Disposing pixel font: " + mFontPath);
+        SDL_DestroyTexture(mpTextureSheet);
+    }
+
+    mInitialized = false;
 }
 
 void PixelFont::RenderCharacter(UChar character, int x, int y, Color color)
 {
+    if (!mInitialized)
+    {
+        Log::Error("Tried to render characters with uninitialized font: " + mFontPath);
+        return;
+    }
+
     // Retrieve the character's source rectangle
     SDL_Rect src = mCharacterRectangles[character];
     SDL_Rect dest = Rectangle(x, y, mCharWidth, mCharHeight);

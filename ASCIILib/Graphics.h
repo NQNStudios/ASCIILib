@@ -48,7 +48,7 @@ namespace ascii
             ///</summary>
             void Initialize();
 
-            void LoadFont(string key, int size, string fontPath, string fontLayoutPath);
+            void AddFont(string key, int size, string fontPath, string fontLayoutPath);
             void SetDefaultFont(string key);
             void UnloadFont(string key, int size);
             void UnloadAllFonts();

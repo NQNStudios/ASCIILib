@@ -70,17 +70,28 @@ void ascii::Graphics::Initialize()
 	mpCache = new ascii::ImageCache(mpRenderer,
             mCharWidth,
             mCharHeight);
+
+    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
+    {
+        if (it->second->charHeight() == mCharHeight * mScale)
+        {
+            it->second->Initialize(mpRenderer);
+        }
+    }
+    
+    // Use linear scaling
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 }
 
 void ascii::Graphics::SetScale(float scale)
 {
-    if (scale != mScale)
-    {
+//    if (scale != mScale)
+//    {
         mScale = scale;
         
         Dispose();
         Initialize();
-    }
+//    }
 
 
     // Switch the default font to the proper size
@@ -90,16 +101,28 @@ void ascii::Graphics::Dispose()
 {
     SDL_DestroyRenderer(mpRenderer);
     SDL_DestroyWindow(mpWindow);
+
+    // Dispose of fonts
+    for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
+    {
+        it->second->Dispose();
+    }
+
     delete mpCache;
 }
 
-void ascii::Graphics::LoadFont(string key, int size, string fontLayoutPath, string fontPath)
+void ascii::Graphics::AddFont(string key, int size, string fontLayoutPath, string fontPath)
 {
     stringstream sstream;
     sstream << key << size;
     
     float scale = (float) size / (float) mCharHeight;
-    mFonts[sstream.str()] = new PixelFont(mpRenderer, mCharWidth * scale, size, fontLayoutPath, fontPath);
+    mFonts[sstream.str()] = new PixelFont(mCharWidth * scale, size, fontLayoutPath, fontPath);
+
+    if (size == mCharHeight * mScale)
+    {
+        mFonts[sstream.str()]->Initialize(mpRenderer);
+    }
 }
 
 void ascii::Graphics::UnloadFont(string key, int size)
