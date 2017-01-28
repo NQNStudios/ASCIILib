@@ -149,8 +149,9 @@ namespace ascii
             void clearCellFonts();
             void setCellFont(Rectangle cells, string font);
 
-            int nativeFullscreenWidth() { return mSystemFullscreenWidth; }
-            int nativeFullscreenHeight() { return mSystemFullscreenHeight; }
+            // Get the native resolution of the display the game window is
+            // currently shown on
+            void getCurrentDisplayResolution(int* outWidth, int* outHeight);
 
 		private:
 			typedef pair<string, Color> Glyph;

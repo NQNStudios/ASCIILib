@@ -32,18 +32,6 @@ ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
     mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
     mCharWidth(charWidth), mCharHeight(charHeight)
 {
-    // Retrieve the native max resolution of the player's display
-    SDL_DisplayMode mode;
-
-    if (SDL_GetDesktopDisplayMode(0, &mode) != 0)
-    {
-        Log::Error("Failed to get display mode of the current display.");
-        Log::SDLError();
-    }
-
-    mSystemFullscreenWidth = mode.w;
-    mSystemFullscreenHeight = mode.h;
-
     // Initialize graphics at the default scale and everything
     Initialize();
 }
@@ -108,6 +96,30 @@ void ascii::Graphics::SetScale(float scale)
 
 
     // Switch the default font to the proper size
+}
+
+void ascii::Graphics::getCurrentDisplayResolution(int* outWidth, int* outHeight)
+{
+    // Check which display the window is on right now
+    int displayIndex = SDL_GetWindowDisplayIndex(mpWindow);
+    
+    if (displayIndex == -1)
+    {
+        Log::Error("Failed to determine which display the window is on!");
+        Log::SDLError();
+    }
+
+    // Retrieve the native max resolution of the player's display
+    SDL_DisplayMode mode;
+
+    if (SDL_GetDesktopDisplayMode(displayIndex, &mode) != 0)
+    {
+        Log::Error("Failed to get display mode of the current display.");
+        Log::SDLError();
+    }
+
+    *outWidth = mode.w;
+    *outHeight = mode.h;
 }
 
 void ascii::Graphics::Dispose()
