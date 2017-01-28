@@ -89,9 +89,10 @@ void ascii::Graphics::SetScale(float scale)
 //    if (scale != mScale)
 //    {
         mScale = scale;
-        
+    
         Dispose();
         Initialize();
+
 //    }
 
 
@@ -194,6 +195,7 @@ void ascii::Graphics::SetFullscreen(bool fullscreen)
 
     if (SDL_SetWindowFullscreen(mpWindow, flags) != 0)
     {
+        Log::Error("Failed to set fullscreen.");
         Log::SDLError();
     }
 }
