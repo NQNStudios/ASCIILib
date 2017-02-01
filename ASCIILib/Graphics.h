@@ -39,7 +39,12 @@ namespace ascii
 			Graphics(const char* title, int charWidth, int charHeight, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
 
-            void SetScale(float scale);
+            // Sets the list of scales Graphics can apply when rendering
+            void SetScaleOptions(float* scales, int count);
+
+            // Applies the desired scale option, or the next smallest option
+            // which fits on the current display
+            void ApplyClosestScaleOption(int option);
 
             ///<summary>
             /// Modifies the graphics video mode, even after construction.
@@ -192,8 +197,10 @@ namespace ascii
 
             float mScale = 1.0f;
 
-            int mSystemFullscreenWidth;
-            int mSystemFullscreenHeight;
+            vector<float> mScaleOptions;
+            int mCurrentScaleOption;
+
+            int mLastDisplayIndex;
 	};
 
 };

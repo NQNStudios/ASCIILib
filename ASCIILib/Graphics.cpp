@@ -32,6 +32,10 @@ ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
     mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
     mCharWidth(charWidth), mCharHeight(charHeight)
 {
+    // Default scale options only include 1.0 
+    mScaleOptions.push_back(1.0f);
+    mCurrentScaleOption = 0;
+
     // Initialize graphics at the default scale and everything
     Initialize();
 }
@@ -82,21 +86,9 @@ void ascii::Graphics::Initialize()
     
     // Use linear scaling
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-}
 
-void ascii::Graphics::SetScale(float scale)
-{
-//    if (scale != mScale)
-//    {
-        mScale = scale;
-    
-        Dispose();
-        Initialize();
-
-//    }
-
-
-    // Switch the default font to the proper size
+    // Save the display index so we can react when it changes
+    mLastDisplayIndex = SDL_GetWindowDisplayIndex(mpWindow);
 }
 
 void ascii::Graphics::getCurrentDisplayResolution(int* outWidth, int* outHeight)
@@ -121,6 +113,46 @@ void ascii::Graphics::getCurrentDisplayResolution(int* outWidth, int* outHeight)
 
     *outWidth = mode.w;
     *outHeight = mode.h;
+}
+
+
+void ascii::Graphics::SetScaleOptions(float* scales, int count)
+{
+    mScaleOptions.clear();
+    for (int i = 0; i < count; ++i)
+    {
+        mScaleOptions.push_back(scales[i]);
+    }
+}
+
+void ascii::Graphics::ApplyClosestScaleOption(int option)
+{
+    Log::Print("Applying scale option: ", false);
+    Log::Print(option);
+
+    // Remember the scale option
+    mCurrentScaleOption = option;
+
+    // Find the native resolution of the screen the game window appears on
+    int resolutionWidth, resolutionHeight;
+    getCurrentDisplayResolution(&resolutionWidth, &resolutionHeight);
+
+    // Start at the index where the desired scale resides in the vector
+    for (int idx = option; idx < mScaleOptions.size(); ++idx)
+    {
+        float scaleToCheck = mScaleOptions[idx];
+
+        if (resolutionWidth > width() * mCharWidth * scaleToCheck
+                && resolutionHeight > height() * mCharHeight * scaleToCheck)
+        {
+            Log::Print("Closest available option was: ", false);
+            Log::Print(idx);
+            mScale = scaleToCheck;
+            Dispose();
+            Initialize();
+            return;
+        }
+    }
 }
 
 void ascii::Graphics::Dispose()
@@ -372,6 +404,13 @@ void ascii::Graphics::refresh()
 
 void ascii::Graphics::update()
 {
+    // If the window has moved to a different display, refresh the scaling
+    // options to fit bigger/smaller screen space
+    if (mLastDisplayIndex != SDL_GetWindowDisplayIndex(mpWindow))
+    {
+        ApplyClosestScaleOption(mCurrentScaleOption);
+    }
+
     // Clear the screen for drawing
     clearScreen();
 
