@@ -5,6 +5,10 @@
 #include "SoundManager.h"
 #include "Input.h"
 #include "Graphics.h"
+#include "ContentManager.h"
+#include "TextManager.h"
+#include "LanguageManager.h"
+#include "input/InputMappings.h"
 
 namespace ascii
 {
@@ -49,6 +53,20 @@ namespace ascii
             ///</summary>
             ascii::Input* input() { return mpInput; }
 
+            ContentManager* contentManager() { return mpContentManager; }
+
+            LanguageManager* languageManager() { return &mLanguageManager; }
+            TextManager* textManager() { return &mTextManager; }
+            virtual InputMappings* inputMappings() = 0;
+            virtual Preferences* config() = 0;
+
+            // Set the current language
+            void SetLanguage(int index);
+
+
+            void ActivateCondition(string condition);
+            void DeactivateCondition(string condition);
+            bool ConditionIsActive(string condition);
 
 			///<summary>
 			/// Runs the game's event loop.
@@ -68,16 +86,22 @@ namespace ascii
 
             virtual void HandleWindowEvent(SDL_Event event)=0;
 
+            ContentManager* mpContentManager;
+            LanguageManager mLanguageManager;
+            TextManager mTextManager;
+
 		private:
 			const char* mWindowTitle;
-            const char* mFontpath;
 			const int mBufferWidth, mBufferHeight;
 
-			ascii::SoundManager* mpSoundManager;
-			ascii::Graphics* mpGraphics;
-            ascii::Input* mpInput;
-
+			SoundManager* mpSoundManager;
+			Graphics* mpGraphics;
+            Input* mpInput;
+        
 			bool mRunning;
+
+            vector<string> mActiveConditions;
+
 	};
 
 };

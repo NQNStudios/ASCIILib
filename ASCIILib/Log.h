@@ -29,4 +29,6 @@ namespace ascii
     };
 }
 
+// Template functions are defined in a separate file, but must be compiled with
+// the header file
 #include "Log.tpp"

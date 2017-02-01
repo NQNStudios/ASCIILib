@@ -6,10 +6,6 @@
 #include "Log.h"
 using namespace ascii;
 
-namespace
-{
-    const int LINE_CHARACTER_LIMIT = 500;
-}
 
 map<UChar, bool> ascii::FileReader::charsEncountered;
 void ascii::FileReader::PrintEncounteredChars()

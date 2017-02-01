@@ -316,10 +316,7 @@ void ascii::Graphics::drawImages(std::map<std::string, Image>* images)
 
 void ascii::Graphics::drawBackgroundColors(ascii::Surface* surface, int x, int y)
 {
-    int drawX = drawOrigin().x;
-    int drawY = drawOrigin().y;
-
-	for (int ySrc = 0; ySrc < surface->height(); ++ySrc) 
+    for (int ySrc = 0; ySrc < surface->height(); ++ySrc)
     {
 		int xSrc = 0;
 

@@ -12,7 +12,8 @@ const int kMaxFrameTime = 5 * 1000 / 60;
 
 ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight,
         int charWidth, int charHeight)
-	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false)
+	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false),
+    mTextManager(&mLanguageManager)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 	{
@@ -58,6 +59,8 @@ void ascii::Game::HideMouseCursor()
 
 void ascii::Game::Run()
 {
+    mpContentManager = new ContentManager(this);
+
 	LoadContent(imageCache(), mpSoundManager);
 
 	mRunning = true;
@@ -122,3 +125,38 @@ void ascii::Game::Quit()
 {
     mRunning = false;
 }
+
+void ascii::Game::SetLanguage(int index)
+{
+    if (index != mLanguageManager.CurrentPackIndex())
+    {
+        // Set the language of the game
+        mLanguageManager.SetPack(index);
+
+        // Reload text files in the new language
+        mTextManager.ReloadFiles();
+    }
+
+    // Save the selected language in JSON
+    config()->SetInt("language", index);
+    config()->WriteValues();
+}
+
+void ascii::Game::ActivateCondition(string condition)
+{
+    mActiveConditions.push_back(condition);
+}
+
+void ascii::Game::DeactivateCondition(string condition)
+{
+    mActiveConditions.erase(remove(
+                mActiveConditions.begin(), mActiveConditions.end(), condition));
+}
+
+bool ascii::Game::ConditionIsActive(string condition)
+{
+    return find(mActiveConditions.begin(), mActiveConditions.end(), condition)
+        != mActiveConditions.end();
+}
+
+
