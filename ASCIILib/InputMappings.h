@@ -9,9 +9,9 @@ using namespace icu;
 
 #include "SDL.h"
 
-#include "../Input.h"
+#include "Input.h"
 
-#include "../Preferences.h"
+#include "Preferences.h"
 #include "InputAction.h"
 
 namespace ascii

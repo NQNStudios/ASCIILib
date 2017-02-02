@@ -2,9 +2,9 @@
 
 #include "unicode/utypes.h"
 
-#include "../Color.h"
-#include "../Point.h"
-#include "../Graphics.h"
+#include "Color.h"
+#include "Point.h"
+#include "Graphics.h"
 using namespace ascii;
 
 #include "Alignment.h"

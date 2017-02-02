@@ -5,10 +5,10 @@ using namespace std;
 
 #include "SDL.h"
 
-#include "../Input.h"
+#include "Input.h"
 using namespace ascii;
 
-#include "../json/json.h"
+#include "json.h"
 
 
 // Holds a set of input mappings which will trigger an action. Checks these

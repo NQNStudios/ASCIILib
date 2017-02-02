@@ -9,8 +9,9 @@ using namespace std;
 using namespace ascii;
 
 #include "TextManager.h"
+#include "Game.h"
 
-Menu::Menu(Whisperer* game)
+Menu::Menu(Game* game)
     : mpGame(game), mSelectedIndex(0),
     mLastSelectedIndex(0), mpNextState(NULL), mUsingMouse(false),
     mpSelectUpAction(game->inputMappings()->GetAction("Up")),

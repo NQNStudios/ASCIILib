@@ -39,9 +39,9 @@
 #include <string>
 using namespace std;
 
-#include "json/json.h"
-
 #include "json.h"
+
+#include "json-util.h"
 
 namespace ascii
 {

@@ -7,7 +7,7 @@ using namespace std;
 #include "unicode/unistr.h"
 using namespace std;
 
-#include "json/json.h"
+#include "json.h"
 
 
 // Defines two possible modes for printing text

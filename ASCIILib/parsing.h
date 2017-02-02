@@ -8,18 +8,18 @@ using namespace std;
 
 #include "SDL.h"
 
-#include "../Color.h"
-#include "../Point.h"
+#include "Color.h"
+#include "Point.h"
 using namespace ascii;
 
-#include "../json/json.h"
+#include "json.h"
 
-#include "../json.h"
-#include "../Preferences.h"
+#include "json-util.h"
+#include "Preferences.h"
 
-#include "../content.h"
-#include "../TextManager.h"
-#include "../Game.h"
+#include "content.h"
+#include "TextManager.h"
+#include "Game.h"
 
 #include "Label.h"
 #include "Button.h"

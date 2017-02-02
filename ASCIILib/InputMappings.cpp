@@ -3,7 +3,7 @@
 #include "Input.h"
 using namespace ascii;
 
-#include "../Whisperer.h"
+#include "Game.h"
 
 
 InputMappings::InputMappings(Preferences* preferences)
@@ -229,7 +229,7 @@ UnicodeString InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
     return toReturn;
 }
 
-UnicodeString InputMappings::MouseButtonNameList(Whisperer* game,
+UnicodeString InputMappings::MouseButtonNameList(Game* game,
         vector<MouseButton> mouseButtonList)
 {
     UnicodeString toReturn = "";

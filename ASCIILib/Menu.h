@@ -7,16 +7,16 @@ using namespace std;
 
 #include "unicode/utypes.h"
 
-#include "../Color.h"
+#include "Color.h"
 using namespace ascii;
 
-#include "../json.h"
+#include "json-util.h"
 
-#include "../State.h"
-#include "../Game.h"
+#include "State.h"
+#include "Game.h"
 using namespace ascii;
 
-#include "../input/InputAction.h"
+#include "InputAction.h"
 
 #include "Label.h"
 #include "Button.h"

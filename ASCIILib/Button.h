@@ -2,8 +2,8 @@
 
 #include "unicode/utypes.h"
 
-#include "../Graphics.h"
-#include "../Color.h"
+#include "Graphics.h"
+#include "Color.h"
 using namespace ascii;
 
 #include "Alignment.h"

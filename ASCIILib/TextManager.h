@@ -9,7 +9,7 @@ using namespace std;
 #include "unicode/unistr.h"
 using namespace icu;
 
-#include "json/json.h"
+#include "json.h"
 
 #include "LanguageManager.h"
 

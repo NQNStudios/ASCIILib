@@ -3,7 +3,7 @@
 #include <fstream>
 #include <algorithm>
 
-#include "json.h"
+#include "json-util.h"
 #include "FilePaths.h"
 
 Preferences::Preferences(string filename, string defaultFilename)

@@ -8,7 +8,8 @@
 #include "ContentManager.h"
 #include "TextManager.h"
 #include "LanguageManager.h"
-#include "input/InputMappings.h"
+#include "InputMappings.h"
+#include "State.h"
 
 namespace ascii
 {
@@ -32,6 +33,10 @@ namespace ascii
 
             void ShowMouseCursor();
             void HideMouseCursor();
+
+            bool FirstInputFrame() { return mFirstInputFrame; }
+
+            virtual State* PerformAction(string actionKey) = 0;
 
 			///<summary>
 			/// The game's SoundManager.
@@ -101,6 +106,8 @@ namespace ascii
 			bool mRunning;
 
             vector<string> mActiveConditions;
+
+            bool mFirstInputFrame;
 
 	};
 

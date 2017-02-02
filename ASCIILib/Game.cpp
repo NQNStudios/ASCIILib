@@ -13,7 +13,7 @@ const int kMaxFrameTime = 5 * 1000 / 60;
 ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight,
         int charWidth, int charHeight)
 	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false),
-    mTextManager(&mLanguageManager)
+    mTextManager(&mLanguageManager), mFirstInputFrame(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 	{
@@ -98,6 +98,7 @@ void ascii::Game::Run()
 		}
 
 		HandleInput(*mpInput);
+        mFirstInputFrame = false;
 
 		const int currentTime = SDL_GetTicks();
 		const int elapsedTime = currentTime - lastUpdateTime;
