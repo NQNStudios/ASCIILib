@@ -9,6 +9,9 @@ using namespace std;
 
 #include "json.h"
 
+namespace ascii
+{
+
 
 // Defines two possible modes for printing text
 enum PrintMode
@@ -70,3 +73,5 @@ class LanguageManager
 bool ContainsWord(const vector<UnicodeString>& list, const UnicodeString& word);
 // Check if a letter is contained in a list of letters
 bool ContainsLetter(const UnicodeString& list, UChar letter);
+
+}

@@ -6,7 +6,7 @@
 #include "json-util.h"
 #include "FilePaths.h"
 
-Preferences::Preferences(string filename, string defaultFilename)
+ascii::Preferences::Preferences(string filename, string defaultFilename)
     : mDefaultFilename(defaultFilename)
 {
     filename = FileDirectory() + filename;
@@ -34,55 +34,55 @@ Preferences::Preferences(string filename, string defaultFilename)
     }
 }
 
-Preferences::~Preferences()
+ascii::Preferences::~Preferences()
 {
     delete mRoot;
 }
 
-void Preferences::WriteValues()
+void ascii::Preferences::WriteValues()
 {
     Log::Print("Writing Preferences values to path: " + mFilename);
     // Write out the currently stored version of the JSON configuration
     Json::Write(mRoot, mFilename);
 }
 
-void Preferences::WriteDefaultValues()
+void ascii::Preferences::WriteDefaultValues()
 {
     mRoot = Json::Load(FileAccessPath(mDefaultFilename));
     WriteValues();
 }
 
-bool Preferences::ValueExists(string key)
+bool ascii::Preferences::ValueExists(string key)
 {
     return Json::ElementExists(*mRoot, key);
 }
 
-Json::Value Preferences::GetValue(string key)
+Json::Value ascii::Preferences::GetValue(string key)
 {
     return Json::GetValue(*mRoot, key);
 }
 
-int Preferences::GetInt(string key)
+int ascii::Preferences::GetInt(string key)
 {
     return Json::GetInt(*mRoot, key);
 }
 
-float Preferences::GetFloat(string key)
+float ascii::Preferences::GetFloat(string key)
 {
     return Json::GetFloat(*mRoot, key);
 }
 
-bool Preferences::GetBool(string key)
+bool ascii::Preferences::GetBool(string key)
 {
     return Json::GetBool(*mRoot, key);
 }
 
-string Preferences::GetString(string key)
+string ascii::Preferences::GetString(string key)
 {
     return Json::GetString(*mRoot, key);
 }
 
-void Preferences::SetValue(string key, Value value)
+void ascii::Preferences::SetValue(string key, Value value)
 {
     if (ValueExists(key))
     {
@@ -97,28 +97,28 @@ void Preferences::SetValue(string key, Value value)
     }
 }
 
-void Preferences::SetInt(string key, int value)
+void ascii::Preferences::SetInt(string key, int value)
 {
     // Create the newly desired JSON value
     Value newValue(value);
     SetValue(key, newValue);
 }
 
-void Preferences::SetFloat(string key, float value)
+void ascii::Preferences::SetFloat(string key, float value)
 {
     // Create the newly desired JSON value
     Value newValue(value);
     SetValue(key, newValue);
 }
 
-void Preferences::SetBool(string key, bool value)
+void ascii::Preferences::SetBool(string key, bool value)
 {
     // Create the newly desired JSON value
     Value newValue(value);
     SetValue(key, newValue);
 }
 
-void Preferences::SetString(string key, string value)
+void ascii::Preferences::SetString(string key, string value)
 {
     // Create the newly desired JSON value
     Value newValue(value);

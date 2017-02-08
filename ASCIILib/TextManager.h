@@ -15,6 +15,9 @@ using namespace icu;
 
 #include "content.h"
 
+namespace ascii
+{
+
 
 // Reads game text from the file system in the currently selected language.
 class TextManager
@@ -48,3 +51,5 @@ class TextManager
         // details about the current language
         LanguageManager* mpLanguageManager;
 };
+
+}

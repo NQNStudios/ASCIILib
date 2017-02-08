@@ -11,12 +11,12 @@
 
 
 // Static redeclarations
-const unsigned int DialogStyle::FRAME_SURFACES_DIM;
-const unsigned int DialogStyle::FRAME_SURFACES_FIRST;
-const unsigned int DialogStyle::FRAME_SURFACES_CENTER;
-const unsigned int DialogStyle::FRAME_SURFACES_LAST;
+const unsigned int ascii::DialogStyle::FRAME_SURFACES_DIM;
+const unsigned int ascii::DialogStyle::FRAME_SURFACES_FIRST;
+const unsigned int ascii::DialogStyle::FRAME_SURFACES_CENTER;
+const unsigned int ascii::DialogStyle::FRAME_SURFACES_LAST;
 
-DialogStyle::~DialogStyle()
+ascii::DialogStyle::~DialogStyle()
 {
     if (IsFramed)
     {
@@ -30,7 +30,7 @@ DialogStyle::~DialogStyle()
     }
 }
 
-DialogStyle* DialogStyle::FromFile(string path)
+ascii::DialogStyle* ascii::DialogStyle::FromFile(string path)
 {
     /* Load a DialogStyle from the given file path. DialogStyle files have the
      * following JSON format:
@@ -245,7 +245,7 @@ DialogStyle* DialogStyle::FromFile(string path)
     return style;
 }
 
-void DialogStyle::AssignPartInfo(int* partCounter,
+void ascii::DialogStyle::AssignPartInfo(int* partCounter,
         unsigned int cornerDimension, unsigned int* partDimension,
         unsigned int* partSurfaceCoord)
 {
@@ -277,7 +277,7 @@ void DialogStyle::AssignPartInfo(int* partCounter,
 }
 
 // Sorry about this function. I really can't find a better way to do it.
-Surface* DialogStyle::MakeFrame(int width, int height)
+ascii::Surface* ascii::DialogStyle::MakeFrame(int width, int height)
 {
     Surface* frameSurface = new Surface(width, height);
 

@@ -8,7 +8,7 @@ namespace mac
 #endif
 
 #ifdef MAC
-string GetWorkingDirectory()
+string ascii::GetWorkingDirectory()
 {
     //Log::Print("Working directory needs to be simulated for Mac app.");
 
@@ -28,10 +28,10 @@ string GetWorkingDirectory()
 }
 #endif
 
-string FileAccessPath(string path)
+string ascii::FileAccessPath(string path)
 {
 #ifdef MAC
-    return GetWorkingDirectory() + "/" + path;
+    return ascii::GetWorkingDirectory() + "/" + path;
 #endif
 	return path;
 }

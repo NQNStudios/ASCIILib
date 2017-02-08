@@ -7,6 +7,9 @@ using namespace std;
 #include "Surface.h"
 using namespace ascii;
 
+namespace ascii
+{
+
 
 // Loads and frees ASCIILib surfaces
 class SurfaceManager
@@ -28,3 +31,5 @@ class SurfaceManager
     private:
         map<string, Surface*> mSurfaces;
 };
+
+}

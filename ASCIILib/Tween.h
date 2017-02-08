@@ -9,6 +9,9 @@ using namespace std;
 using namespace ascii;
 
 
+namespace ascii
+{
+
 // Represents an ongoing surface tween, as an ASCII surface moves from one
 // point to another.
 class Tween
@@ -43,3 +46,5 @@ struct TweenIsFinished : public unary_function<const Tween&, bool>
         return tween.IsFinished();
     }
 };
+
+}

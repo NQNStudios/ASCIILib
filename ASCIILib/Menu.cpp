@@ -11,7 +11,7 @@ using namespace ascii;
 #include "TextManager.h"
 #include "Game.h"
 
-Menu::Menu(Game* game)
+ascii::Menu::Menu(Game* game)
     : mpGame(game), mSelectedIndex(0),
     mLastSelectedIndex(0), mpNextState(NULL), mUsingMouse(false),
     mpSelectUpAction(game->inputMappings()->GetAction("Up")),
@@ -21,7 +21,7 @@ Menu::Menu(Game* game)
 {
 }
 
-void Menu::SetSelectedIndex(int index)
+void ascii::Menu::SetSelectedIndex(int index)
 {
     if (index > mButtons.size() - 1 || index < 0)
     {
@@ -35,7 +35,7 @@ void Menu::SetSelectedIndex(int index)
     mSelectedIndex = index;
 }
 
-Button* Menu::ButtonForKey(string actionKey, int* outIndex)
+Button* ascii::Menu::ButtonForKey(string actionKey, int* outIndex)
 {
     for (int i = 0; i < mButtons.size(); ++i)
     {
@@ -64,7 +64,7 @@ Button* Menu::ButtonForKey(string actionKey, int* outIndex)
     return NULL;
 }
 
-Button* Menu::GetButtonForKey(string actionKey, int* outIndex)
+Button* ascii::Menu::GetButtonForKey(string actionKey, int* outIndex)
 {
     Button* button = ButtonForKey(actionKey, outIndex);
 
@@ -76,13 +76,13 @@ Button* Menu::GetButtonForKey(string actionKey, int* outIndex)
     return button;
 }
 
-bool Menu::IsButtonForKey(string actionKey)
+bool ascii::Menu::IsButtonForKey(string actionKey)
 {
     return ButtonForKey(actionKey) != NULL; 
 }
 
 
-Label* Menu::LabelForKey(string textKey)
+Label* ascii::Menu::LabelForKey(string textKey)
 {
     for (int i = 0; i < mLabels.size(); ++i)
     {
@@ -98,14 +98,14 @@ Label* Menu::LabelForKey(string textKey)
     return NULL;
 }
 
-void Menu::SetSelectedIndexByKey(string actionKey)
+void ascii::Menu::SetSelectedIndexByKey(string actionKey)
 {
     int i;
     ButtonForKey(actionKey, &i);
     SetSelectedIndex(i);
 }
 
-void Menu::SwitchSelectedIndexByKey(string currentActionKey, string newActionKey)
+void ascii::Menu::SwitchSelectedIndexByKey(string currentActionKey, string newActionKey)
 {
     int firstIndex;
     ButtonForKey(currentActionKey, &firstIndex);
@@ -119,13 +119,13 @@ void Menu::SwitchSelectedIndexByKey(string currentActionKey, string newActionKey
     }
 }
 
-void Menu::SetButtonTextByKeys(string actionKey, string messageKey)
+void ascii::Menu::SetButtonTextByKeys(string actionKey, string messageKey)
 {
     Button* button = ButtonForKey(actionKey);
     button->SetText(mpGame->textManager()->GetText(messageKey));
 }
 
-void Menu::AppendButtonTextByKey(string actionKey, UnicodeString appendage)
+void ascii::Menu::AppendButtonTextByKey(string actionKey, UnicodeString appendage)
 {
     Button* button = ButtonForKey(actionKey);
     
@@ -133,7 +133,7 @@ void Menu::AppendButtonTextByKey(string actionKey, UnicodeString appendage)
     button->SetText(fullText + appendage);
 }
 
-void Menu::HandleInput(Input& input)
+void ascii::Menu::HandleInput(Input& input)
 {
     // Don't handle any input if there are no buttons or action triggers
     if (mButtons.empty() && mActionTriggers.empty()) return;
@@ -236,7 +236,7 @@ void Menu::HandleInput(Input& input)
     mFirstFrame = false;
 }
 
-void Menu::Draw(Graphics& graphics)
+void ascii::Menu::Draw(Graphics& graphics)
 {
     // Make sure the menu background is opaque
     graphics.clearOpaque();
@@ -260,7 +260,7 @@ void Menu::Draw(Graphics& graphics)
     }
 }
 
-int Menu::AddButton(Button button)
+int ascii::Menu::AddButton(Button button)
 {
     // Check what index the button is added at
     int buttonIndex = mButtons.size();
@@ -270,7 +270,7 @@ int Menu::AddButton(Button button)
     return buttonIndex;
 }
 
-bool Menu::IsMouseOverSelectedButton(Input& input)
+bool ascii::Menu::IsMouseOverSelectedButton(Input& input)
 {
     // Retrieve the screen coordinates of the mouse cursor
     int pixelMouseX = input.mouseX();
@@ -286,24 +286,24 @@ bool Menu::IsMouseOverSelectedButton(Input& input)
     return button.IsSelected(cellMouseX, cellMouseY);
 }
 
-void Menu::AddActionTrigger(InputAction* action, string actionKey)
+void ascii::Menu::AddActionTrigger(InputAction* action, string actionKey)
 {
     mActionTriggers[action] = actionKey;
 }
 
-void Menu::SelectDown()
+void ascii::Menu::SelectDown()
 {
     MoveSelectionDown();
     SeekDown();
 }
 
-void Menu::SelectUp()
+void ascii::Menu::SelectUp()
 {
     MoveSelectionUp();
     SeekUp();
 }
 
-void Menu::MoveSelectionDown()
+void ascii::Menu::MoveSelectionDown()
 {
     // Don't do this without buttons
     if (mButtons.empty()) return;
@@ -315,7 +315,7 @@ void Menu::MoveSelectionDown()
     mSelectedIndex = mSelectedIndex % mButtons.size();
 }
 
-void Menu::MoveSelectionUp()
+void ascii::Menu::MoveSelectionUp()
 {
     // Don't do this without buttons
     if (mButtons.empty()) return;
@@ -330,7 +330,7 @@ void Menu::MoveSelectionUp()
     }
 }
 
-void Menu::SeekDown()
+void ascii::Menu::SeekDown()
 {
     // Don't do this without buttons
     if (mButtons.empty()) return;
@@ -341,7 +341,7 @@ void Menu::SeekDown()
     }
 }
 
-void Menu::SeekUp()
+void ascii::Menu::SeekUp()
 {
     // Don't do this without buttons
     if (mButtons.empty()) return;
@@ -352,7 +352,7 @@ void Menu::SeekUp()
     }
 }
 
-void Menu::SeekInitialSelection()
+void ascii::Menu::SeekInitialSelection()
 {
     SeekDown();
 

@@ -6,6 +6,9 @@ using namespace std;
 
 #include "DialogStyle.h"
 
+namespace ascii
+{
+
 // Loads and frees dialog styles
 class StyleManager
 {
@@ -20,3 +23,5 @@ class StyleManager
     private:
         map<string, DialogStyle*> mStyles;
 };
+
+}

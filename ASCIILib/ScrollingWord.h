@@ -10,6 +10,9 @@ using namespace ascii;
 
 #include "DialogStyle.h"
 
+namespace ascii
+{
+
 
 // Contains a word which is being revealed or hidden through
 // scrolling characters. Words are hidden from the same side as they scroll
@@ -53,3 +56,5 @@ class ScrollingWord
 
         bool mRevealing;
 };
+
+}

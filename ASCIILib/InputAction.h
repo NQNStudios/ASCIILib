@@ -10,6 +10,9 @@ using namespace ascii;
 
 #include "json.h"
 
+namespace ascii
+{
+
 
 // Holds a set of input mappings which will trigger an action. Checks these
 // mappings against the current input frame, to decide whether the action fires.
@@ -91,3 +94,5 @@ class InputAction
         bool CheckFalsePositive();
         bool mFalsePositive;
 };
+
+}

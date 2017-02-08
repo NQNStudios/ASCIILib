@@ -6,18 +6,18 @@
 using namespace ascii;
 
 
-void StyleManager::LoadStyle(string key, string stylePath)
+void ascii::StyleManager::LoadStyle(string key, string stylePath)
 {
     mStyles[key] = DialogStyle::FromFile(stylePath);
 }
 
-void StyleManager::FreeStyle(string key)
+void ascii::StyleManager::FreeStyle(string key)
 {
     delete mStyles[key];
     mStyles.erase(key);
 }
 
-DialogStyle* StyleManager::GetStyle(string key)
+DialogStyle* ascii::StyleManager::GetStyle(string key)
 {
     if (!mStyles[key])
     {

@@ -16,12 +16,12 @@ namespace
     const string TEXT_DIR("content/text/");
 }
 
-TextManager::TextManager(LanguageManager* languageManager)
+ascii::TextManager::TextManager(LanguageManager* languageManager)
     : mpLanguageManager(languageManager)
 {
 }
 
-UnicodeString TextManager::GetText(string key)
+UnicodeString ascii::TextManager::GetText(string key)
 {
     // If the desired message is not defined in this language pack, we have an
     // error
@@ -38,7 +38,7 @@ UnicodeString TextManager::GetText(string key)
     return mText[key];
 }
 
-UnicodeString TextManager::GetRandomText(int minLength)
+UnicodeString ascii::TextManager::GetRandomText(int minLength)
 {
     if (mText.empty())
     {
@@ -57,7 +57,7 @@ UnicodeString TextManager::GetRandomText(int minLength)
     }
 }
 
-void TextManager::LoadFile(Handle fileHandle)
+void ascii::TextManager::LoadFile(Handle fileHandle)
 {
     // Construct the paths to the JSON files for text by searching the directory
     // for the currently selected language
@@ -104,7 +104,7 @@ void TextManager::LoadFile(Handle fileHandle)
     delete textJson;
 }
 
-void TextManager::UnloadFile(Handle fileHandle)
+void ascii::TextManager::UnloadFile(Handle fileHandle)
 {
     // Retrieve the list of keys owned by the file
     vector<string> textKeys = mFiles[fileHandle];
@@ -122,7 +122,7 @@ void TextManager::UnloadFile(Handle fileHandle)
     mFiles.erase(fileHandle);
 }
 
-void TextManager::ReloadFiles()
+void ascii::TextManager::ReloadFiles()
 {
     // Unload and reload every file that's currently loaded, to ensure all text
     // is loaded in the current language

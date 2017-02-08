@@ -3,7 +3,7 @@
 #include <algorithm>
 using std::max;
 
-Tween::Tween(Surface* surface, Point source, Point dest, unsigned int totalMS)
+ascii::Tween::Tween(Surface* surface, Point source, Point dest, unsigned int totalMS)
     : mSurface(surface), mCurrentPos(source), mDestPos(dest), mElapsedMS(0)
 {
     // Delta between source and destination (+ or -)
@@ -25,7 +25,7 @@ Tween::Tween(Surface* surface, Point source, Point dest, unsigned int totalMS)
     mStepMS = totalMS / steps;
 }
 
-void Tween::Update(int deltaMS)
+void ascii::Tween::Update(int deltaMS)
 {
     mElapsedMS += deltaMS;
 
@@ -42,12 +42,12 @@ void Tween::Update(int deltaMS)
     }
 }
 
-void Tween::Draw(Graphics& graphics)
+void ascii::Tween::Draw(Graphics& graphics)
 {
     graphics.blitSurface(mSurface, mCurrentPos.x, mCurrentPos.y);
 }
 
-void Tween::SkipAnimation()
+void ascii::Tween::SkipAnimation()
 {
     mCurrentPos = mDestPos;
 }

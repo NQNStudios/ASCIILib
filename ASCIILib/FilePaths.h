@@ -35,6 +35,9 @@ namespace
 }
 
 
+namespace ascii
+{
+
 #if defined (MAC) || defined(LINUX)
 inline string UserHome()
 {
@@ -173,3 +176,5 @@ string GetWorkingDirectory();
 // Convert the given path (relative to the assumed working directory) into an
 // appropriate path for accessing the file on the current operating system
 string FileAccessPath(string path);
+
+}

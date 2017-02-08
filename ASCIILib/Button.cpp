@@ -6,7 +6,7 @@ namespace
 }
 
 
-Button::Button(UnicodeString text, Rectangle bounds, Alignment alignment,
+ascii::Button::Button(UnicodeString text, Rectangle bounds, Alignment alignment,
         Color textColor, Color textColorSelected, Color boxColor,
         Color boxColorSelected, string actionKey, bool keyboardEnabled) 
     : mHidden(false)
@@ -41,7 +41,7 @@ Button::Button(UnicodeString text, Rectangle bounds, Alignment alignment,
     }
 }
 
-bool Button::IsSelected(int cursorX, int cursorY)
+bool ascii::Button::IsSelected(int cursorX, int cursorY)
 {
     // The button is never selected if it is hidden
     if (mHidden) return false;
@@ -52,7 +52,7 @@ bool Button::IsSelected(int cursorX, int cursorY)
         && mBounds.right() > cursorX && mBounds.bottom() > cursorY;
 }
 
-void Button::Draw(Graphics& graphics, bool selected) const
+void ascii::Button::Draw(Graphics& graphics, bool selected) const
 {
     // Don't draw the button if it's hidden
     if (mHidden) return;

@@ -19,7 +19,7 @@ namespace
 }
 
 
-LanguageManager::LanguageManager()
+ascii::LanguageManager::LanguageManager()
     : mSelectedPackIndex(0)
 {
     // Load the game's available language configurations
@@ -37,17 +37,17 @@ LanguageManager::LanguageManager()
     delete rootPtr;
 }
 
-LanguagePack LanguageManager::CurrentPack()
+LanguagePack ascii::LanguageManager::CurrentPack()
 {
     return mLanguagePacks[mSelectedPackIndex];
 }
 
-LanguagePack LanguageManager::GetPack(int index)
+LanguagePack ascii::LanguageManager::GetPack(int index)
 {
     return mLanguagePacks[index];
 }
 
-void LanguageManager::LoadPack(Json::Value jsonElement)
+void ascii::LanguageManager::LoadPack(Json::Value jsonElement)
 {
     // Make an empty pack
     LanguagePack pack;
@@ -91,7 +91,7 @@ void LanguageManager::LoadPack(Json::Value jsonElement)
     mLanguagePacks.push_back(pack);
 }
 
-bool LanguageManager::PauseAfterToken(UnicodeString token)
+bool ascii::LanguageManager::PauseAfterToken(UnicodeString token)
 {
     // Don't process the trailing space
     token.trim();
@@ -129,12 +129,12 @@ bool LanguageManager::PauseAfterToken(UnicodeString token)
     return ContainsLetter(CurrentPack().pauseCharacters, lastChar);
 }
 
-bool ContainsWord(const vector<UnicodeString>& list, const UnicodeString& word)
+bool ascii::ContainsWord(const vector<UnicodeString>& list, const UnicodeString& word)
 {
     return find(list.begin(), list.end(), word) != list.end();
 }
 
-bool ContainsLetter(const UnicodeString& list, UChar letter)
+bool ascii::ContainsLetter(const UnicodeString& list, UChar letter)
 {
     for (int i = 0; i < list.length(); ++i)
     {
@@ -148,7 +148,7 @@ bool ContainsLetter(const UnicodeString& list, UChar letter)
 }
 
 
-PrintMode LanguageManager::ParsePrintMode(string printMode)
+PrintMode ascii::LanguageManager::ParsePrintMode(string printMode)
 {
     // mode codes
     map<string, PrintMode> printModes;

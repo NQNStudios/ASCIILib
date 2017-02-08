@@ -10,6 +10,9 @@ using namespace ascii;
 #include "Alignment.h"
 
 
+namespace ascii
+{
+
 // Defines static, stationary text in a game menu
 class Label
 {
@@ -35,3 +38,5 @@ class Label
 
         Rectangle mBounds;
 };
+
+}

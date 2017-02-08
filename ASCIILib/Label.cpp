@@ -4,18 +4,18 @@
 using namespace ascii;
 
 
-Label::Label(UnicodeString text, Point position, Alignment alignment, Color textColor)
+ascii::Label::Label(UnicodeString text, Point position, Alignment alignment, Color textColor)
     : mText(text), mPosition(position), mAlignment(alignment),
     mTextColor(textColor)
 {
 }
 
-Label::Label(UnicodeString text, Rectangle bounds, Color textColor)
+ascii::Label::Label(UnicodeString text, Rectangle bounds, Color textColor)
     : mText(text), mBounds(bounds), mTextColor(textColor)
 {
 }
 
-void Label::Draw(Graphics& graphics) const
+void ascii::Label::Draw(Graphics& graphics) const
 {
     // Draw text across multiple lines bounded by mBounds
     if (mBounds.width > 0 && mBounds.height > 0)

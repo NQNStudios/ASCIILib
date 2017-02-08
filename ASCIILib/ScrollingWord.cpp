@@ -6,18 +6,18 @@
 using namespace ascii;
 
 
-ScrollingWord::ScrollingWord(UnicodeString word, Point position, DialogStyle* style)
+ascii::ScrollingWord::ScrollingWord(UnicodeString word, Point position, DialogStyle* style)
     : mWord(word), mPosition(position), mRevealedChars(0), mRevealing(false),
     mpStyle(style)
 {
 }
 
-int ScrollingWord::LettersToReveal()
+int ascii::ScrollingWord::LettersToReveal()
 {
     return mWord.length() - mRevealedChars;
 }
 
-void ScrollingWord::RevealLetters(unsigned int amount)
+void ascii::ScrollingWord::RevealLetters(unsigned int amount)
 {
     mRevealedChars += amount;
     // Be careful not to reveal more than exists. That's undefined behavior
@@ -29,12 +29,12 @@ void ScrollingWord::RevealLetters(unsigned int amount)
     mRevealing = true;
 }
 
-void ScrollingWord::RevealAllLetters()
+void ascii::ScrollingWord::RevealAllLetters()
 {
     mRevealedChars = mWord.length();
 }
 
-void ScrollingWord::HideLetters(unsigned int amount)
+void ascii::ScrollingWord::HideLetters(unsigned int amount)
 {
     mRevealedChars -= amount;
     // Be careful not to go negative. That's DEFINITELY undefined behavior
@@ -46,7 +46,7 @@ void ScrollingWord::HideLetters(unsigned int amount)
     mRevealing = false;
 }
 
-void ScrollingWord::Draw(Graphics& graphics)
+void ascii::ScrollingWord::Draw(Graphics& graphics)
 {
     int drawX = mPosition.x;
     int drawY = mPosition.y;
@@ -70,7 +70,7 @@ void ScrollingWord::Draw(Graphics& graphics)
     }
 }
 
-Point ScrollingWord::NextCell()
+Point ascii::ScrollingWord::NextCell()
 {
     Point next = mPosition;
     next.x += mRevealedChars;

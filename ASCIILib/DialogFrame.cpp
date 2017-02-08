@@ -18,7 +18,7 @@ namespace
 }
 
 
-DialogFrame::DialogFrame(Rectangle frame, DialogStyle* style, ascii::Game* game)
+ascii::DialogFrame::DialogFrame(Rectangle frame, DialogStyle* style, ascii::Game* game)
     : mFrame(frame), mTextColor(style->TextColor), mpGame(game),
     mLastCharX(mFrame.x), mLastCharY(mFrame.y),
     mMarkedCharX(0), mMarkedCharY(0),
@@ -29,17 +29,17 @@ DialogFrame::DialogFrame(Rectangle frame, DialogStyle* style, ascii::Game* game)
 {
 }
 
-int DialogFrame::Width()
+int ascii::DialogFrame::Width()
 {
     return frameFinishX - frameStartX + 1;
 }
 
-int DialogFrame::Height()
+int ascii::DialogFrame::Height()
 {
     return frameFinishY - frameStartY + 1;
 }
 
-void DialogFrame::AddWord(UnicodeString word)
+void ascii::DialogFrame::AddWord(UnicodeString word)
 {
     // Count the length of the word, including trailing whitespace
     int lengthWithSpace = word.length();
@@ -83,7 +83,7 @@ void DialogFrame::AddWord(UnicodeString word)
     mLastCharY = drawY;
 }
 
-void DialogFrame::AddHeading(UnicodeString heading)
+void ascii::DialogFrame::AddHeading(UnicodeString heading)
 {
     // Make sure the heading will fit on a line
     if (heading.length() > Width())
@@ -101,7 +101,7 @@ void DialogFrame::AddHeading(UnicodeString heading)
     mLastCharX = drawX + heading.length() - 1;
 }
 
-UnicodeString DialogFrame::AddParagraphFlush(UnicodeString paragraph)
+UnicodeString ascii::DialogFrame::AddParagraphFlush(UnicodeString paragraph)
 {
     if (mLastCharY > frameFinishY) return paragraph;
 
@@ -234,7 +234,7 @@ UnicodeString DialogFrame::AddParagraphFlush(UnicodeString paragraph)
     return remainder;
 }
 
-void DialogFrame::AddSurface(Surface* surface)
+void ascii::DialogFrame::AddSurface(Surface* surface)
 {
     // Make sure the surface will fit on a line
     if (surface->width() > Width())
@@ -259,7 +259,7 @@ void DialogFrame::AddSurface(Surface* surface)
     HalfLineBreak();
 }
 
-UnicodeString DialogFrame::MockWord(UnicodeString word, UChar mockLetter)
+UnicodeString ascii::DialogFrame::MockWord(UnicodeString word, UChar mockLetter)
 {
     UnicodeString mockWord;
     for (int i = 0; i < word.length(); ++i)
@@ -269,7 +269,7 @@ UnicodeString DialogFrame::MockWord(UnicodeString word, UChar mockLetter)
     return mockWord;
 }
 
-bool DialogFrame::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
+bool ascii::DialogFrame::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
 {
     StringTokenizer tokenizer(paragraph);
 
@@ -298,7 +298,7 @@ bool DialogFrame::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
     return false;
 }
 
-void DialogFrame::FillMockParagraphs(UChar mockLetter)
+void ascii::DialogFrame::FillMockParagraphs(UChar mockLetter)
 {
     bool fitLastParagraph = true;
     while (fitLastParagraph)
@@ -310,7 +310,7 @@ void DialogFrame::FillMockParagraphs(UChar mockLetter)
     }
 }
 
-void DialogFrame::FillMockParagraphsFlush(UChar mockLetter)
+void ascii::DialogFrame::FillMockParagraphsFlush(UChar mockLetter)
 {
     int maxLettersLeft = (frameFinishY - mLastCharY + 1) * Width();
     int letters = 0;
@@ -341,7 +341,7 @@ void DialogFrame::FillMockParagraphsFlush(UChar mockLetter)
     }
 }
 
-void DialogFrame::LineBreak()
+void ascii::DialogFrame::LineBreak()
 {
     // Don't line break ever if the style doesn't allow it
     if (!mpStyle->LineBreaks)
@@ -359,7 +359,7 @@ void DialogFrame::LineBreak()
     mLastCharY += LINE_BREAK_AMOUNT;
 }
 
-void DialogFrame::HalfLineBreak()
+void ascii::DialogFrame::HalfLineBreak()
 {
     if (mpStyle->LineBreaks)
     {
@@ -368,7 +368,7 @@ void DialogFrame::HalfLineBreak()
     }
 }
 
-bool DialogFrame::CanFitWord(UnicodeString word)
+bool ascii::DialogFrame::CanFitWord(UnicodeString word)
 {
     // If we're already past the end of the frame because of a line break,
     // no go.
@@ -405,7 +405,7 @@ bool DialogFrame::CanFitWord(UnicodeString word)
     return true; // It fits on the current line
 }
 
-bool DialogFrame::CanFitHeading()
+bool ascii::DialogFrame::CanFitHeading()
 {
     // 3 lines must remain in order for any text to be fit after the line
     // breaking following the heading
@@ -414,7 +414,7 @@ bool DialogFrame::CanFitHeading()
     return (frameFinishY - mLastCharY + 1 >= linesRequired);
 }
 
-bool DialogFrame::CanLineBreak()
+bool ascii::DialogFrame::CanLineBreak()
 {
     // This doesn't make sense but trust me on it
     if (!mpStyle->LineBreaks) return true;
@@ -422,7 +422,7 @@ bool DialogFrame::CanLineBreak()
     return mLastCharY < frameFinishY;
 }
 
-int DialogFrame::RevealedLetters()
+int ascii::DialogFrame::RevealedLetters()
 {
     int sum = 0;
     for (int i = 0; i < mWords.size(); ++i)
@@ -432,7 +432,7 @@ int DialogFrame::RevealedLetters()
     return sum;
 }
 
-int DialogFrame::LettersToReveal()
+int ascii::DialogFrame::LettersToReveal()
 {
     // Return the greatest number of letters that any child ScrollingWord is
     // missing. The sum is not returned because every ScrollingWord currently
@@ -451,7 +451,7 @@ int DialogFrame::LettersToReveal()
     return max;
 }
 
-void DialogFrame::RevealLetters(int amount)
+void ascii::DialogFrame::RevealLetters(int amount)
 {
     // Reveal letters on every word that's currently scrolling
     // (This can be used to reveal multiple words at the same time in
@@ -465,7 +465,7 @@ void DialogFrame::RevealLetters(int amount)
     }
 }
 
-void DialogFrame::RevealAllLetters()
+void ascii::DialogFrame::RevealAllLetters()
 {
     // Reveal all letters on every word in the message
     for (auto it = mWords.begin(); it != mWords.end(); ++it)
@@ -477,7 +477,7 @@ void DialogFrame::RevealAllLetters()
     }
 }
 
-void DialogFrame::HideLetters(int amount, int dummyCells)
+void ascii::DialogFrame::HideLetters(int amount, int dummyCells)
 {
     if (mDummyCellsPassed < dummyCells)
     {
@@ -499,7 +499,7 @@ void DialogFrame::HideLetters(int amount, int dummyCells)
     }
 }
 
-bool DialogFrame::AllWordsRevealed()
+bool ascii::DialogFrame::AllWordsRevealed()
 {
     // If no words have been added, then all words are revealed
     if (mWords.empty())
@@ -520,7 +520,7 @@ bool DialogFrame::AllWordsRevealed()
     return true;
 }
 
-bool DialogFrame::AllWordsHidden()
+bool ascii::DialogFrame::AllWordsHidden()
 {
     // If no words have been added, then all words are hidden
     if (mWords.empty())
@@ -541,7 +541,7 @@ bool DialogFrame::AllWordsHidden()
     return true;
 }
 
-void DialogFrame::Clear()
+void ascii::DialogFrame::Clear()
 {
     // clear all scrolling words
     mWords.clear();
@@ -553,7 +553,7 @@ void DialogFrame::Clear()
     mLastCharY = frameStartY;
 }
 
-void DialogFrame::Draw(Graphics& graphics, Preferences* config)
+void ascii::DialogFrame::Draw(Graphics& graphics, Preferences* config)
 {
     // Draw every scrolling word
     for (auto it = mWords.begin(); it != mWords.end(); ++it)
@@ -581,7 +581,7 @@ void DialogFrame::Draw(Graphics& graphics, Preferences* config)
     }
 }
 
-void DialogFrame::DrawCursor(Graphics& graphics)
+void ascii::DialogFrame::DrawCursor(Graphics& graphics)
 {
     // If this frame's DialogStyle requires a cursor, draw it following all
     // text that has been revealed
@@ -607,19 +607,19 @@ void DialogFrame::DrawCursor(Graphics& graphics)
     
 }
 
-bool DialogFrame::HasWords()
+bool ascii::DialogFrame::HasWords()
 {
     // This might be some hackish trickery
     return !mWords.empty() || !mSurfaces.empty();
 }
 
-void DialogFrame::MarkPosition()
+void ascii::DialogFrame::MarkPosition()
 {
     mMarkedCharX = mLastCharX;
     mMarkedCharY = mLastCharY;
 }
 
-void DialogFrame::RewindPosition()
+void ascii::DialogFrame::RewindPosition()
 {
     mLastCharX = mMarkedCharX;
     mLastCharY = mMarkedCharY;

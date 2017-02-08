@@ -6,24 +6,24 @@ using namespace ascii;
 #include "FilePaths.h"
 
 
-void SurfaceManager::LoadSurface(string key, string surfaceFile)
+void ascii::SurfaceManager::LoadSurface(string key, string surfaceFile)
 {
     mSurfaces[key] = Surface::FromFile(surfaceFile.c_str());
 }
 
-Surface* SurfaceManager::CreateSurface(string key, int width, int height)
+Surface* ascii::SurfaceManager::CreateSurface(string key, int width, int height)
 {
     mSurfaces[key] = new Surface(width, height);
     return mSurfaces[key];
 }
 
-void SurfaceManager::FreeSurface(string key)
+void ascii::SurfaceManager::FreeSurface(string key)
 {
     delete mSurfaces[key];
     mSurfaces.erase(key);
 }
 
-Surface* SurfaceManager::GetSurface(string key)
+Surface* ascii::SurfaceManager::GetSurface(string key)
 {
     if (mSurfaces.find(key) == mSurfaces.end())
     {
@@ -34,7 +34,7 @@ Surface* SurfaceManager::GetSurface(string key)
     return mSurfaces[key];
 }
 
-void SurfaceManager::PrintContents()
+void ascii::SurfaceManager::PrintContents()
 {
     Log::Print("Surface manager contents:");
     for (auto it = mSurfaces.begin(); it != mSurfaces.end(); ++it)

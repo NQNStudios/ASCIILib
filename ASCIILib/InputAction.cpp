@@ -5,14 +5,14 @@
 #include "Log.h"
 
 
-InputAction::InputAction(vector<SDL_Keycode> keys,
+ascii::InputAction::InputAction(vector<SDL_Keycode> keys,
         vector<MouseButton> mouseButtons)
     : mKeys(keys), mMouseButtons(mouseButtons), mEnabled(true),
     mFalsePositive(false)
 {
 }
 
-bool InputAction::IsTriggered(Input& input, bool counts)
+bool ascii::InputAction::IsTriggered(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -22,7 +22,7 @@ bool InputAction::IsTriggered(Input& input, bool counts)
     return IsKeyTriggered(input) || IsMouseTriggered(input);
 }
 
-bool InputAction::IsHeld(Input& input, bool counts)
+bool ascii::InputAction::IsHeld(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -32,7 +32,7 @@ bool InputAction::IsHeld(Input& input, bool counts)
     return IsKeyHeld(input) || IsMouseHeld(input);
 }
 
-bool InputAction::IsKeyTriggered(Input& input, bool counts)
+bool ascii::InputAction::IsKeyTriggered(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -52,7 +52,7 @@ bool InputAction::IsKeyTriggered(Input& input, bool counts)
     return false;
 }
 
-bool InputAction::IsMouseTriggered(Input& input, bool counts)
+bool ascii::InputAction::IsMouseTriggered(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -72,7 +72,7 @@ bool InputAction::IsMouseTriggered(Input& input, bool counts)
     return false;
 }
 
-bool InputAction::IsKeyHeld(Input& input, bool counts)
+bool ascii::InputAction::IsKeyHeld(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -92,7 +92,7 @@ bool InputAction::IsKeyHeld(Input& input, bool counts)
     return false;
 }
 
-bool InputAction::IsMouseHeld(Input& input, bool counts)
+bool ascii::InputAction::IsMouseHeld(Input& input, bool counts)
 {
     if (counts && CheckFalsePositive()) return true;
     if (!mEnabled) return false;
@@ -112,28 +112,28 @@ bool InputAction::IsMouseHeld(Input& input, bool counts)
     return false;
 }
 
-void InputAction::RemoveKey(SDL_Keycode key)
+void ascii::InputAction::RemoveKey(SDL_Keycode key)
 {
     mKeys.erase(remove(mKeys.begin(), mKeys.end(), key));
 }
 
-void InputAction::RemoveMouseButton(MouseButton button)
+void ascii::InputAction::RemoveMouseButton(MouseButton button)
 {
     mMouseButtons.erase(remove(mMouseButtons.begin(), mMouseButtons.end(), button));
 }
 
-bool InputAction::ContainsKey(SDL_Keycode key)
+bool ascii::InputAction::ContainsKey(SDL_Keycode key)
 {
     return find(mKeys.begin(), mKeys.end(), key) != mKeys.end();
 }
 
-bool InputAction::ContainsMouseButton(MouseButton button)
+bool ascii::InputAction::ContainsMouseButton(MouseButton button)
 {
     return find(mMouseButtons.begin(), mMouseButtons.end(), button)
         != mMouseButtons.end();
 }
 
-Json::Value InputAction::AsJson()
+Json::Value ascii::InputAction::AsJson()
 {
     // Create an empty value to fill in
     Json::Value value;
@@ -160,7 +160,7 @@ Json::Value InputAction::AsJson()
     return value;
 }
 
-string InputAction::MouseButtonAsString(MouseButton button)
+string ascii::InputAction::MouseButtonAsString(MouseButton button)
 {
     switch (button)
     {
@@ -172,12 +172,12 @@ string InputAction::MouseButtonAsString(MouseButton button)
             return "middle";
     }
 }
-void InputAction::QueueFalsePositive()
+void ascii::InputAction::QueueFalsePositive()
 {
     mFalsePositive = true;
     Log::Print("Queueing a false positive!");
 }
-bool InputAction::CheckFalsePositive()
+bool ascii::InputAction::CheckFalsePositive()
 {
     bool falsePositive = mFalsePositive;
     mFalsePositive = false;

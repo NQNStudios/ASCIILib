@@ -8,10 +8,10 @@ using namespace ascii;
 
 
 // Static redeclaration
-Rectangle DialogScene::msLastFrame = Rectangle();
+Rectangle ascii::DialogScene::msLastFrame = Rectangle();
 
 
-DialogScene::DialogScene(DialogStyle* style, Game* game)
+ascii::DialogScene::DialogScene(DialogStyle* style, Game* game)
     : mStyle(style), mCurrentFrame(0), mFilled(false), mSaveLineBreak(false),
     mpGame(game),
     // Dialog bubbles stretch downward by default
@@ -19,7 +19,7 @@ DialogScene::DialogScene(DialogStyle* style, Game* game)
 {
 }
 
-void DialogScene::AddFrame(Rectangle frame, bool needsPadding)
+void ascii::DialogScene::AddFrame(Rectangle frame, bool needsPadding)
 {
     // Output the frame's coordinates for debugging
     //stringstream output;
@@ -53,7 +53,7 @@ void DialogScene::AddFrame(Rectangle frame, bool needsPadding)
     }
 }
 
-void DialogScene::AddRelativeFrame(int xOffset, int yOffset, int width, int height)
+void ascii::DialogScene::AddRelativeFrame(int xOffset, int yOffset, int width, int height)
 {
     if (abs(xOffset + yOffset) == 0)
     {
@@ -94,7 +94,7 @@ void DialogScene::AddRelativeFrame(int xOffset, int yOffset, int width, int heig
     }
 }
 
-Rectangle DialogScene::MeasureBubbleFrame(UnicodeString paragraph)
+Rectangle ascii::DialogScene::MeasureBubbleFrame(UnicodeString paragraph)
 {
     //Log::Print("Measuring a bubble frame for paragraph: " + paragraph);
     //Log::Print(paragraph.length());
@@ -158,7 +158,7 @@ Rectangle DialogScene::MeasureBubbleFrame(UnicodeString paragraph)
     return bubbleFrame;
 }
 
-void DialogScene::SetBubbleFrame(UnicodeString paragraph)
+void ascii::DialogScene::SetBubbleFrame(UnicodeString paragraph)
 {
     // Delete every other frame so the new bubble frame will be the only one
     DeleteFrames();
@@ -170,7 +170,7 @@ void DialogScene::SetBubbleFrame(UnicodeString paragraph)
     AddFrame(bubbleFrame);
 }
 
-void DialogScene::AddWord(UnicodeString word)
+void ascii::DialogScene::AddWord(UnicodeString word)
 {
     DialogFrame* nextFrame = FrameForWord(word);
 
@@ -186,7 +186,7 @@ void DialogScene::AddWord(UnicodeString word)
     }
 }
 
-void DialogScene::AddHeading(UnicodeString heading)
+void ascii::DialogScene::AddHeading(UnicodeString heading)
 {
     DialogFrame* nextFrame = FrameForHeading();
 
@@ -202,13 +202,13 @@ void DialogScene::AddHeading(UnicodeString heading)
     }
 }
 
-void DialogScene::AddSurface(Surface* surface)
+void ascii::DialogScene::AddSurface(Surface* surface)
 {
     DialogFrame* frame = &mFrames[mCurrentFrame];
     frame->AddSurface(surface);
 }
 
-UnicodeString DialogScene::AddParagraphFlush(UnicodeString paragraph)
+UnicodeString ascii::DialogScene::AddParagraphFlush(UnicodeString paragraph)
 {
     UnicodeString remainingParagraph = paragraph;
     for (; mCurrentFrame < mFrames.size(); ++mCurrentFrame)
@@ -229,7 +229,7 @@ UnicodeString DialogScene::AddParagraphFlush(UnicodeString paragraph)
     return remainingParagraph;
 }
 
-void DialogScene::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
+void ascii::DialogScene::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
 {
     // TODO  this will only add the mock paragraph until it fills the CURRENT
     // frame, it will not spread the remainder to remaining frames. This
@@ -241,7 +241,7 @@ void DialogScene::AddMockParagraph(UnicodeString paragraph, UChar mockLetter)
     frame->AddMockParagraph(paragraph, mockLetter);
 }
 
-void DialogScene::FillMockParagraphs(UChar mockLetter)
+void ascii::DialogScene::FillMockParagraphs(UChar mockLetter)
 {
     for (; mCurrentFrame < mFrames.size(); ++mCurrentFrame)
     {
@@ -257,7 +257,7 @@ void DialogScene::FillMockParagraphs(UChar mockLetter)
     }
 }
 
-void DialogScene::LineBreak()
+void ascii::DialogScene::LineBreak()
 {
     DialogFrame* nextFrame = FrameForLineBreak();
 
@@ -271,7 +271,7 @@ void DialogScene::LineBreak()
     }
 }
 
-bool DialogScene::AllWordsRevealed()
+bool ascii::DialogScene::AllWordsRevealed()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -283,7 +283,7 @@ bool DialogScene::AllWordsRevealed()
     return true;
 }
 
-bool DialogScene::AllWordsHidden()
+bool ascii::DialogScene::AllWordsHidden()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -295,7 +295,7 @@ bool DialogScene::AllWordsHidden()
     return true;
 }
 
-int DialogScene::LettersToReveal()
+int ascii::DialogScene::LettersToReveal()
 {
     if (mFrames.empty())
     {
@@ -306,7 +306,7 @@ int DialogScene::LettersToReveal()
     return mFrames[mCurrentFrame].LettersToReveal();
 }
 
-int DialogScene::RevealedLetters()
+int ascii::DialogScene::RevealedLetters()
 {
     int sum = 0;
     for (int i = 0; i < mFrames.size(); ++i)
@@ -316,7 +316,7 @@ int DialogScene::RevealedLetters()
     return sum;
 }
 
-void DialogScene::RevealLetters(int amount)
+void ascii::DialogScene::RevealLetters(int amount)
 {
     // Reveal letters from every text frame that has letters to reveal,
     // in case there are multiple revealing words simultaneously
@@ -326,7 +326,7 @@ void DialogScene::RevealLetters(int amount)
     }
 }
 
-void DialogScene::RevealAllWords()
+void ascii::DialogScene::RevealAllWords()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -334,7 +334,7 @@ void DialogScene::RevealAllWords()
     }
 }
 
-void DialogScene::HideLetters(int amount)
+void ascii::DialogScene::HideLetters(int amount)
 {
     // This code has to get pretty weird in order to make hiding multiple
     // centered frames look good. If one centered frame below another is
@@ -365,7 +365,7 @@ void DialogScene::HideLetters(int amount)
     }
 }
 
-void DialogScene::Draw(Graphics& graphics, Preferences* config)
+void ascii::DialogScene::Draw(Graphics& graphics, Preferences* config)
 {
     // Draw dynamically sized frames based on the style's frame style,
     // if it has one
@@ -384,7 +384,7 @@ void DialogScene::Draw(Graphics& graphics, Preferences* config)
     }
 }
 
-void DialogScene::DrawCursor(Graphics& graphics)
+void ascii::DialogScene::DrawCursor(Graphics& graphics)
 {
     DialogFrame* nextFrame = FrameForWord("a");
     if (nextFrame)
@@ -397,7 +397,7 @@ void DialogScene::DrawCursor(Graphics& graphics)
     }
 }
 
-DialogFrame* DialogScene::FrameForWord(UnicodeString word)
+ascii::DialogFrame* ascii::DialogScene::FrameForWord(UnicodeString word)
 {
     //Log::Print("Searching for a frame for word:");
     //Log::Print(word);
@@ -419,7 +419,7 @@ DialogFrame* DialogScene::FrameForWord(UnicodeString word)
     return NULL;
 }
 
-DialogFrame* DialogScene::FrameForHeading()
+ascii::DialogFrame* ascii::DialogScene::FrameForHeading()
 {
     for (; mCurrentFrame < mFrames.size(); ++mCurrentFrame)
     {
@@ -434,7 +434,7 @@ DialogFrame* DialogScene::FrameForHeading()
     return NULL;
 }
 
-DialogFrame* DialogScene::FrameForLineBreak()
+ascii::DialogFrame* ascii::DialogScene::FrameForLineBreak()
 {
     // Iterate through every frame and check if they can fit it
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
@@ -450,7 +450,7 @@ DialogFrame* DialogScene::FrameForLineBreak()
     return NULL;
 }
 
-void DialogScene::ClearAllFrames()
+void ascii::DialogScene::ClearAllFrames()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -467,7 +467,7 @@ void DialogScene::ClearAllFrames()
     mCurrentFrame = 0;
 }
 
-void DialogScene::ResetAllFrames()
+void ascii::DialogScene::ResetAllFrames()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -483,7 +483,7 @@ void DialogScene::ResetAllFrames()
     mCurrentFrame = 0;
 }
 
-void DialogScene::DeleteFrames()
+void ascii::DialogScene::DeleteFrames()
 {
     // Get rid of all frames
     mFrames.clear();
@@ -498,14 +498,14 @@ void DialogScene::DeleteFrames()
     mCurrentFrame = 0;
 }
 
-void DialogScene::SetBubbleFixedValues(int v1, int v2, int v3)
+void ascii::DialogScene::SetBubbleFixedValues(int v1, int v2, int v3)
 {
     mBubbleValue1 = v1;
     mBubbleValue2 = v2;
     mBubbleValue3 = v3;
 }
 
-void DialogScene::SetStretchDirection(string direction)
+void ascii::DialogScene::SetStretchDirection(string direction)
 {
     map<string, StretchDirection> stretchDirections;
     stretchDirections["Down"] = STRETCH_DOWN;
@@ -516,7 +516,7 @@ void DialogScene::SetStretchDirection(string direction)
     mStretchDirection = stretchDirections[direction];
 }
 
-bool DialogScene::HasWords()
+bool ascii::DialogScene::HasWords()
 {
     for (auto it = mFrames.begin(); it != mFrames.end(); ++it)
     {
@@ -526,13 +526,13 @@ bool DialogScene::HasWords()
     return false;
 }
 
-void DialogScene::MarkPosition()
+void ascii::DialogScene::MarkPosition()
 {
     DialogFrame* frame = &mFrames[mCurrentFrame];
     frame->MarkPosition();
 }
 
-void DialogScene::RewindPosition()
+void ascii::DialogScene::RewindPosition()
 {
     DialogFrame* frame = &mFrames[mCurrentFrame];
     frame->RewindPosition();

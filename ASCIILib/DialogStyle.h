@@ -8,6 +8,8 @@ using namespace std;
 #include "Color.h"
 using namespace ascii;
 
+namespace ascii
+{
 
 // Represents a style of MessageDialog, including information such as text
 // color, border and background style, 
@@ -85,3 +87,5 @@ struct DialogStyle
         // represents bottom-right
         Surface* mFrameSurfaces[3][3];
 };
+
+}

@@ -9,6 +9,9 @@ using namespace Json;
 #include "FileReader.h"
 using namespace ascii;
 
+namespace ascii
+{
+
 
 // Manages game configuration which is saved in a JSON file. Attributes are
 // indexed with string keys
@@ -62,3 +65,5 @@ class Preferences
 
         Value* mRoot;
 };
+
+}

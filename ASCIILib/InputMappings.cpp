@@ -6,7 +6,7 @@ using namespace ascii;
 #include "Game.h"
 
 
-InputMappings::InputMappings(Preferences* preferences)
+ascii::InputMappings::InputMappings(Preferences* preferences)
     : mpPreferences(preferences)
 {
     // Parse each InputAction defined in the JSON
@@ -46,7 +46,7 @@ InputMappings::InputMappings(Preferences* preferences)
     }
 }
 
-InputMappings::~InputMappings()
+ascii::InputMappings::~InputMappings()
 {
     for (auto it = mInputActions.begin(); it != mInputActions.end(); ++it)
     {
@@ -54,7 +54,7 @@ InputMappings::~InputMappings()
     }
 }
 
-void InputMappings::WriteMappings()
+void ascii::InputMappings::WriteMappings()
 {
     // Generate a JSON value for each input action, then place it in the
     // Preferences object replacing the JSON value that was there first
@@ -67,7 +67,7 @@ void InputMappings::WriteMappings()
     mpPreferences->WriteValues();
 }
 
-void InputMappings::Update()
+void ascii::InputMappings::Update()
 {
     for (auto it = mInputActions.begin(); it != mInputActions.end(); ++it)
     {
@@ -75,12 +75,12 @@ void InputMappings::Update()
     }
 }
 
-InputAction* InputMappings::GetAction(string actionName)
+InputAction* ascii::InputMappings::GetAction(string actionName)
 {
     return mInputActions[actionName];
 }
 
-bool InputMappings::AnyKeyQualifies(vector<SDL_Keycode> keys, string actionName)
+bool ascii::InputMappings::AnyKeyQualifies(vector<SDL_Keycode> keys, string actionName)
 {
     for (int i = 0; i < keys.size(); ++i)
     {
@@ -110,7 +110,7 @@ bool InputMappings::AnyKeyQualifies(vector<SDL_Keycode> keys, string actionName)
     return false;
 }
 
-bool InputMappings::AnyKeyPressed(Input& input, string actionName = "")
+bool ascii::InputMappings::AnyKeyPressed(Input& input, string actionName = "")
 {
     // Check every key currently being pressed to see if it qualifies
     vector<SDL_Keycode> pressedKeys = input.allPressedKeys();
@@ -118,14 +118,14 @@ bool InputMappings::AnyKeyPressed(Input& input, string actionName = "")
     return AnyKeyQualifies(pressedKeys, actionName);
 }
 
-bool InputMappings::AnyKeyHeld(Input& input, string actionName="")
+bool ascii::InputMappings::AnyKeyHeld(Input& input, string actionName="")
 {
     // Check every key currently being held to see if it qualifies
     vector<SDL_Keycode> heldKeys = input.allHeldKeys();
     return AnyKeyQualifies(heldKeys, actionName);
 }
 
-string InputMappings::AddKeyMapping(string actionName, SDL_Keycode key)
+string ascii::InputMappings::AddKeyMapping(string actionName, SDL_Keycode key)
 {
     // Retrieve the InputAction to modify
     InputAction* action = mInputActions[actionName];
@@ -181,12 +181,12 @@ string InputMappings::AddKeyMapping(string actionName, SDL_Keycode key)
     return "";
 }
 
-void InputMappings::ClearKeyMappings(string actionName)
+void ascii::InputMappings::ClearKeyMappings(string actionName)
 {
     mInputActions[actionName]->ClearKeys();
 }
 
-MouseButton InputMappings::ParseMouseButton(string mouseButtonName)
+MouseButton ascii::InputMappings::ParseMouseButton(string mouseButtonName)
 {
     // Initialize the map used to parse mouse button enums
     map<string, MouseButton> mouseButtons;
@@ -198,7 +198,7 @@ MouseButton InputMappings::ParseMouseButton(string mouseButtonName)
     return mouseButtons[mouseButtonName];
 }
 
-UnicodeString InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
+UnicodeString ascii::InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
 {
     UnicodeString toReturn;
 
@@ -229,7 +229,7 @@ UnicodeString InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
     return toReturn;
 }
 
-UnicodeString InputMappings::MouseButtonNameList(Game* game,
+UnicodeString ascii::InputMappings::MouseButtonNameList(Game* game,
         vector<MouseButton> mouseButtonList)
 {
     UnicodeString toReturn = "";
@@ -268,7 +268,7 @@ UnicodeString InputMappings::MouseButtonNameList(Game* game,
     return toReturn;
 }
 
-void InputMappings::MapMouseButton(MouseButton button, string actionName)
+void ascii::InputMappings::MapMouseButton(MouseButton button, string actionName)
 {
     // Find whichever input action the mouse button is already mapped to
     // and unmap it
@@ -286,7 +286,7 @@ void InputMappings::MapMouseButton(MouseButton button, string actionName)
     mInputActions[actionName]->AddMouseButton(button);
 }
 
-void InputMappings::UnmapMouseButton(MouseButton button)
+void ascii::InputMappings::UnmapMouseButton(MouseButton button)
 {
     // Find whichever input action the mouse button is already mapped to
     // and unmap it
@@ -301,4 +301,4 @@ void InputMappings::UnmapMouseButton(MouseButton button)
     }
 }
 
-const int InputMappings::MAX_KEYS_PER_ACTION;
+const int ascii::InputMappings::MAX_KEYS_PER_ACTION;

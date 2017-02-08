@@ -9,7 +9,7 @@
 #include "Rectangle.h"
 
 
-PixelFont::PixelFont(int charWidth, int charHeight,
+ascii::PixelFont::PixelFont(int charWidth, int charHeight,
         string fontLayoutFile, string textureSheet)
     : mCharWidth(charWidth), mCharHeight(charHeight),
     mInitialized(false)
@@ -18,7 +18,7 @@ PixelFont::PixelFont(int charWidth, int charHeight,
     mFontPath = textureSheet;
 }
 
-void PixelFont::Initialize(SDL_Renderer* pRenderer)
+void ascii::PixelFont::Initialize(SDL_Renderer* pRenderer)
 {
     Log::Print("Initializing pixel font: " + mFontPath);
     mpRenderer = pRenderer;
@@ -101,12 +101,12 @@ void PixelFont::Initialize(SDL_Renderer* pRenderer)
     mInitialized = true;
 }
 
-PixelFont::~PixelFont()
+ascii::PixelFont::~PixelFont()
 {
     Dispose();
 }
 
-void PixelFont::Dispose()
+void ascii::PixelFont::Dispose()
 {
     if (mInitialized)
     {
@@ -117,7 +117,7 @@ void PixelFont::Dispose()
     mInitialized = false;
 }
 
-void PixelFont::RenderCharacter(UChar character, int x, int y, Color color)
+void ascii::PixelFont::RenderCharacter(UChar character, int x, int y, Color color)
 {
     if (!mInitialized)
     {

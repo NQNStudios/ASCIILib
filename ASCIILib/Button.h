@@ -8,6 +8,9 @@ using namespace ascii;
 
 #include "Alignment.h"
 
+namespace ascii
+{
+
 
 // A button in a game menu.
 class Button
@@ -55,3 +58,5 @@ class Button
         bool mKeyboardEnabled;
         bool mHidden;
 };
+
+}
