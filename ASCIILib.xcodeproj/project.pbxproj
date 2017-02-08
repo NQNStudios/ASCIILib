@@ -9,9 +9,9 @@
 /* Begin PBXAggregateTarget section */
 		DC5375B159DE4BACA70219DB /* ZERO_CHECK */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = A0DE074342D0475E96F4EE0C /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildConfigurationList = 66775D5E1B204F3DA34C735D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
 			buildPhases = (
-				AC10E77B5541415D8C02E71F /* CMake Rules */,
+				B245FF382D3144C29D8C8761 /* CMake Rules */,
 			);
 			dependencies = (
 			);
@@ -20,13 +20,13 @@
 		};
 		DEED6B6F97884A128A41433F /* ALL_BUILD */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = B9DE1DFAA2CE45F380134AC5 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildConfigurationList = B6C65711A9F445A4A8A74633 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
 			buildPhases = (
-				3D005868E409455DB19D0811 /* CMake Rules */,
+				3D40F7F774484C63A81F0B66 /* CMake Rules */,
 			);
 			dependencies = (
-				A5D257824D84443DAB1C3088 /* PBXTargetDependency */,
-				1208DF4D32264925AB12AD4B /* PBXTargetDependency */,
+				66BA8728451A4C67813E972E /* PBXTargetDependency */,
+				564933C825F041D9BDDA14D2 /* PBXTargetDependency */,
 			);
 			name = ALL_BUILD;
 			productName = ALL_BUILD;
@@ -34,132 +34,132 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0411D20441934C1E9C323B6D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */ = {isa = PBXBuildFile; fileRef = 43C524E2913E4B36A3100924 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		0894DEEBE0B549DD8B881A0A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */ = {isa = PBXBuildFile; fileRef = 82CC42C483A24D8BB07710F7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		0A0E9D9C2EB84F5C883A98F9 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 2263234A0C39422EA5348E27 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */; settings = {COMPILER_FLAGS = ""; }; };
-		0BFF342A30CF41BE89071B3B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */ = {isa = PBXBuildFile; fileRef = 71BE52FEC74F4F7A8B2AA807 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */; settings = {COMPILER_FLAGS = ""; }; };
-		0F3A7406924E42FABA79EB55 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */ = {isa = PBXBuildFile; fileRef = 3D5ACBA483FD4B9D8C727BA6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		11FAE8AC7710480FBC002303 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */ = {isa = PBXBuildFile; fileRef = 370CB9AADF384B4A88120CCF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */; settings = {COMPILER_FLAGS = ""; }; };
-		1C2EBFD4C17C469EADBABD30 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */ = {isa = PBXBuildFile; fileRef = 7330F9F9187E4064A12DB634 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		1C464A6F752F4C2D9676ED86 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */ = {isa = PBXBuildFile; fileRef = 77090E76B9F54A6FB132F1DD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		219E942913B748149A994E40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */ = {isa = PBXBuildFile; fileRef = D007CD90BBF244F1A1D7DB25 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		249197F5CD9F49B6B6A60F06 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */ = {isa = PBXBuildFile; fileRef = A6CF4DE3D52D495AA134C2FF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */; settings = {COMPILER_FLAGS = ""; }; };
-		27DC4D62EAED452A92689DD3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */ = {isa = PBXBuildFile; fileRef = 32150018CA47420B97E60089 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */; settings = {COMPILER_FLAGS = ""; }; };
-		2A0DA87136ED487FADC258D7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */ = {isa = PBXBuildFile; fileRef = 13D1A77E02FE428CB6646D5D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		2BFC3EE48A88449D991FCA5A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */ = {isa = PBXBuildFile; fileRef = 3D53183BFC40463D86357435 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		30CE96A42BAF4C33B84597B1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */ = {isa = PBXBuildFile; fileRef = E8C44D428BCB45BDA84B9348 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */; settings = {COMPILER_FLAGS = ""; }; };
-		37354FB2CEBF4780B76DD2A9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */ = {isa = PBXBuildFile; fileRef = 96B5AC861BCF4F638A89FACC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		3A054B99018945C2A2B50FA4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */ = {isa = PBXBuildFile; fileRef = 4451BE59EC0A4F82BC39E862 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */; settings = {COMPILER_FLAGS = ""; }; };
-		3CE59FB91CBB4A61B2F55781 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */ = {isa = PBXBuildFile; fileRef = 79180F105F0345B2863773B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		3F4F4A9FBB264494AD25E945 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */ = {isa = PBXBuildFile; fileRef = B1C079D465FF424284E19A04 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		4020C56DE76642C0BF57119A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */ = {isa = PBXBuildFile; fileRef = 16A8FDEA48064385AA5A6ADA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		42DFB415B1E84F47862BA156 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */ = {isa = PBXBuildFile; fileRef = 22A9CE4B6DAD4828A1A47A70 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */; settings = {COMPILER_FLAGS = ""; }; };
-		4C42CB08CC3F42F6B4787C10 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */ = {isa = PBXBuildFile; fileRef = 2D71213F07F34E51B38321D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		4EDF66D2E94942F0BA086540 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */ = {isa = PBXBuildFile; fileRef = F7BA010F14F44A24AD1E2920 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */; settings = {COMPILER_FLAGS = ""; }; };
-		5074DA5ECD274AF997540E8A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */ = {isa = PBXBuildFile; fileRef = AB34D64460F348AE9AFCEB20 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		56D0112AED2B449DBA9D4C87 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */ = {isa = PBXBuildFile; fileRef = 413BE1822EAC4743848496ED /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */; settings = {COMPILER_FLAGS = ""; }; };
-		5BD8A4CBADD44C6C81B53122 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */ = {isa = PBXBuildFile; fileRef = B998EA2E4CF74FB8B6B2708C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		5D84BA00DD01483DBA4904F9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */ = {isa = PBXBuildFile; fileRef = C489C9B0BF3540D8B0F36D95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */; settings = {COMPILER_FLAGS = ""; }; };
-		650A6D0E00694079A9ECBC64 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */ = {isa = PBXBuildFile; fileRef = EB41F2E435A040CAA8FF4583 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		6F2DDD437C7B43E9B98E1709 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */ = {isa = PBXBuildFile; fileRef = 0EC61F6EA3054F108123E25F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */; settings = {COMPILER_FLAGS = ""; }; };
-		749DDFBD21144C5DA858CD16 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */ = {isa = PBXBuildFile; fileRef = 36B8E29B59D747F39AF94E44 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		77F70D881E144486AF6787C4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */ = {isa = PBXBuildFile; fileRef = D9C7B91ED44F431AA1DB28EB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */; settings = {COMPILER_FLAGS = ""; }; };
-		7B341FED0B294E4AB0A93479 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */ = {isa = PBXBuildFile; fileRef = AA7E0BA8BC1D419096077E66 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		8158C05FA67C442095BFEC0A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */ = {isa = PBXBuildFile; fileRef = 002B53E209D94281A553F824 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		8651A29778EB43FC81197439 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */ = {isa = PBXBuildFile; fileRef = 665BC941FCBE4AE48A22F9D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */; settings = {COMPILER_FLAGS = ""; }; };
-		87BAE4B54DA9459ABA2ABD4F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */ = {isa = PBXBuildFile; fileRef = EE6CD50332E34D2BACDA11AC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */; settings = {COMPILER_FLAGS = ""; }; };
-		892A706721AB4403A4F50FD0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */ = {isa = PBXBuildFile; fileRef = 2BB247655ACF40B7AD3B63B1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		892F4AD74DB745259D721552 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */ = {isa = PBXBuildFile; fileRef = B7076B8CE0DD4106B9D7387A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */; settings = {COMPILER_FLAGS = ""; }; };
-		91C5DD738771475AB529C58E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */ = {isa = PBXBuildFile; fileRef = 2144CC8CB92440AF8C844C19 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		94364AAB9A3C4C67B633CFAD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */ = {isa = PBXBuildFile; fileRef = 5C56D3FEB2824026BB1D8CB0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */; settings = {COMPILER_FLAGS = ""; }; };
-		9B14E755F3C144E4BCADB972 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */ = {isa = PBXBuildFile; fileRef = FD75602965B24E62917D9EFD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */; settings = {COMPILER_FLAGS = ""; }; };
-		A6C3D3163F2840CDA72937C4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */ = {isa = PBXBuildFile; fileRef = A9FED22CB66F43A6BCE6AA7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		AAEE2D3565C84DFDB637AB21 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */ = {isa = PBXBuildFile; fileRef = D25E9F2375B343A7B5F9224C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		ABD7B91191D84072BE79D7BF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */ = {isa = PBXBuildFile; fileRef = C37E8D52E6AE4420927B02A0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */; settings = {COMPILER_FLAGS = ""; }; };
-		ACEC721BD30F46418999634E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */ = {isa = PBXBuildFile; fileRef = A703615D908C484387CCEA9F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */; settings = {COMPILER_FLAGS = ""; }; };
-		AD1994FE0CD34072AB049811 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */ = {isa = PBXBuildFile; fileRef = 672EAC787291462D86F92916 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		B14016FB68FC43648605688B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */ = {isa = PBXBuildFile; fileRef = FFFF0C04F6F74AEB9C841A18 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */; settings = {COMPILER_FLAGS = ""; }; };
-		B1A4BC5CC3FF486788557932 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */ = {isa = PBXBuildFile; fileRef = C745CE8BA7A74E3AA2504343 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		B1B2237A89FA448C98CE152A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */ = {isa = PBXBuildFile; fileRef = 2B3E2A689BCA4F228A6BB760 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */; settings = {COMPILER_FLAGS = ""; }; };
-		B35E97FECB8545DBB1DD007A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */ = {isa = PBXBuildFile; fileRef = 4D742B9D23B24035B9063B68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		B829132B59B440EF865F9C16 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */ = {isa = PBXBuildFile; fileRef = F4713A4A27234C668F2628CD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		B8D49483890149ECB47EF5EF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */ = {isa = PBXBuildFile; fileRef = 7ABBAAAA482B4BFC8B7D59B4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		BCDB3D5F062C4F30A5AE095F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */ = {isa = PBXBuildFile; fileRef = 7112AA3F24584175BFCC985C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		BF32FDF16FE6478196040B6F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */ = {isa = PBXBuildFile; fileRef = D30AEE5899164318B4A7E4E9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C0FCC58FC9304B0F9FD13D01 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */ = {isa = PBXBuildFile; fileRef = 9F65D83B320C43E6B5D12CC4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C4D494B98EED42F1869D2B70 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */ = {isa = PBXBuildFile; fileRef = 986D198738B1450A879FD0BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C532A23954D14F23B1189CF5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */ = {isa = PBXBuildFile; fileRef = 3AFE6DAE11844BD696327494 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C5EC6BB40BCB42DE94294297 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */ = {isa = PBXBuildFile; fileRef = 1DC97242C00B42C680CDFF06 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C68B2E6FD398443082D88488 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */ = {isa = PBXBuildFile; fileRef = 2469329265F64FC2AFEBDEA4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */; settings = {COMPILER_FLAGS = ""; }; };
-		C6EE3528178D48CA9369A167 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */ = {isa = PBXBuildFile; fileRef = B786CEED45DD404D9478DB3A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		CB4700CE7C024BF3B576315F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */ = {isa = PBXBuildFile; fileRef = D784881F8319412893548B97 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */; settings = {COMPILER_FLAGS = ""; }; };
-		DA85AE2AB3AF4B0DB6263528 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */ = {isa = PBXBuildFile; fileRef = B43CD7F36E4540A78D5FAD7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		DB9C9148EB024DFC9F2DC4CD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */ = {isa = PBXBuildFile; fileRef = 9DD13124D258409F98AF87A9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */; settings = {COMPILER_FLAGS = ""; }; };
-		DD3F58C730964F0FA7B4583E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */ = {isa = PBXBuildFile; fileRef = 598AE344BA844411B0572CC2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		E4E5EC9F6969424A82E3060F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */ = {isa = PBXBuildFile; fileRef = DD38CF24617847E8BFA75360 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */; settings = {COMPILER_FLAGS = ""; }; };
-		E80F3A06B3B144F7B7FA50AD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */ = {isa = PBXBuildFile; fileRef = 78EFE4E8477141939E344ACB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		EB991D3D479A4F9E9F7969A7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */ = {isa = PBXBuildFile; fileRef = F7ACAFAB37A44941A0893DE4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */; settings = {COMPILER_FLAGS = ""; }; };
-		EFC4694FDA7D4B4F8438F3F0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */ = {isa = PBXBuildFile; fileRef = 7536AB50C90A4DB6AB551CE5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		EFE1EE75E29D4050A090C76E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */ = {isa = PBXBuildFile; fileRef = 180C03E7F49543159419AAE2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		F430974A2E384C7B9BE6BDA1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */ = {isa = PBXBuildFile; fileRef = 1482DF33E322432585499F02 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		F82F136EA1B44ED2A07B6C7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */ = {isa = PBXBuildFile; fileRef = 00B4392D3DED4B3C82C3B486 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */; settings = {COMPILER_FLAGS = ""; }; };
-		F8C62CFA446F45219F15A4FD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */ = {isa = PBXBuildFile; fileRef = 7E0CCE206942449CA5FD3582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */; settings = {COMPILER_FLAGS = ""; }; };
-		FB9EA5597B064D83918ECFBF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */ = {isa = PBXBuildFile; fileRef = F458A8A606594B6DAD79576F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */; settings = {COMPILER_FLAGS = ""; }; };
-		FBB41B9C846044D6AE4A68EE /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */ = {isa = PBXBuildFile; fileRef = 988D6B53BD5E44718A8943BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */; settings = {COMPILER_FLAGS = ""; }; };
-		FCA0C9F126474D83B44045B1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */ = {isa = PBXBuildFile; fileRef = B35EA7CEE5EC4890922B9CD7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */; settings = {COMPILER_FLAGS = ""; }; };
-		FD087005F44C44EB9019383B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */ = {isa = PBXBuildFile; fileRef = 9418CB19D69E4EFFA3C6D0B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		07552C8E715D412EA64964C3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */ = {isa = PBXBuildFile; fileRef = C347361866914FD08BBEC5F3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		0A144FC75314471693FAD871 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */ = {isa = PBXBuildFile; fileRef = CA29307469AB4584A525DC6F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */; settings = {COMPILER_FLAGS = ""; }; };
+		106F661F0F304B93AC91EFFA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */ = {isa = PBXBuildFile; fileRef = 976B2231CB76425A9DB0AF95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */; settings = {COMPILER_FLAGS = ""; }; };
+		12D4C23897D44570ACD1E8EF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */ = {isa = PBXBuildFile; fileRef = CAD1DC690C744F4A947D9C61 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		196CC28BF8EC405EB4C976B9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */ = {isa = PBXBuildFile; fileRef = CD685A8040AF47E8B0A7353E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */; settings = {COMPILER_FLAGS = ""; }; };
+		1AF607A0E6D74B1BAF775468 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */ = {isa = PBXBuildFile; fileRef = E4CAEF76FBFC4FD2AEB3CD46 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		1BC0BF40C86C43B48B89D740 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */ = {isa = PBXBuildFile; fileRef = 873D44B224814F8FAAC2035A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */; settings = {COMPILER_FLAGS = ""; }; };
+		1C39A5AF6F714AB0A2BADCA9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */ = {isa = PBXBuildFile; fileRef = 7EEE82DDCFF8492FBB30C006 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		1EAA79248DC746B992C92719 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 79B99B12E85943CD9FFB02D1 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */; settings = {COMPILER_FLAGS = ""; }; };
+		1EF09DE425E74A03A15965F2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */ = {isa = PBXBuildFile; fileRef = 06CAEBF9D3F24F0C8E58F59A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */; settings = {COMPILER_FLAGS = ""; }; };
+		21730E0667D54F9A9F35C649 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */ = {isa = PBXBuildFile; fileRef = 4E54C1C3F789462BB16DBA28 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		24C141D526854E1A8D369772 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */ = {isa = PBXBuildFile; fileRef = 6CE688B3ABEE4827AD2E2101 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		2DD49BC321574B40A30340F4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */ = {isa = PBXBuildFile; fileRef = A94497CD86DC45C58DE1E564 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */; settings = {COMPILER_FLAGS = ""; }; };
+		385E95145B48412E9B4D298C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */ = {isa = PBXBuildFile; fileRef = D7F3CE7FB70E476B97AE3ED9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		38BE8E2FD5434A719A54B434 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */ = {isa = PBXBuildFile; fileRef = 3F1D0B3B2E774C8DA6883656 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		3A0F3FB5E90547B694A4604B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */ = {isa = PBXBuildFile; fileRef = BECC33B8772E4B0DB78B38E0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */; settings = {COMPILER_FLAGS = ""; }; };
+		48EAA7BA807D4B45BCBC1899 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */ = {isa = PBXBuildFile; fileRef = C765732C84F24764B3F3737D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */; settings = {COMPILER_FLAGS = ""; }; };
+		49FC7730827846F787016D0B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */ = {isa = PBXBuildFile; fileRef = 9F9269585BEA4A408BFDBFE8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		4DA81772FE5748038975A0A8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */ = {isa = PBXBuildFile; fileRef = 5670C2491EEB4803B8624370 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */; settings = {COMPILER_FLAGS = ""; }; };
+		4EAFB6168CAD49BABFEB6122 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */ = {isa = PBXBuildFile; fileRef = 04D018256E39408FA8F66234 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		4F2C742986764B00B6AC0BB9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */ = {isa = PBXBuildFile; fileRef = CEBB492F57D742A788A347BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		4FF841583A3043F1AFC697D9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */ = {isa = PBXBuildFile; fileRef = 80C5A8BDEBB54165A927EDDD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		50A81D7F148F485C8B4595B7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */ = {isa = PBXBuildFile; fileRef = 6BA2B1CAE84E4F5985E9F201 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		54750908E09E494DB26FF194 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */ = {isa = PBXBuildFile; fileRef = 79B4F556B2264D0EA04855C6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */; settings = {COMPILER_FLAGS = ""; }; };
+		56A4B21B80DE4CF0884D19FC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */ = {isa = PBXBuildFile; fileRef = A5D08F722C514585B5DA452D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		56CB621882C148C4B21AC593 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */ = {isa = PBXBuildFile; fileRef = B61079DE3FF9484DA46D724A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */; settings = {COMPILER_FLAGS = ""; }; };
+		5922C7E17294485EB90105D1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */ = {isa = PBXBuildFile; fileRef = 134610A5B91F4B75A347E972 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		6107F49DBD2547F7B7234C62 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */ = {isa = PBXBuildFile; fileRef = BFF3250256994BFB9DF28B8C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		61DA2256EE624243A3871E4C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */ = {isa = PBXBuildFile; fileRef = EBDAB48F05734EEB8D5B6040 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */; settings = {COMPILER_FLAGS = ""; }; };
+		6DA224CA56FE4635ABD46ECD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */ = {isa = PBXBuildFile; fileRef = 2B9A37EE98BA40A6854CA9A4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */; settings = {COMPILER_FLAGS = ""; }; };
+		73E123852DAB4E3FA36C0FE7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */ = {isa = PBXBuildFile; fileRef = 8E0E15908E0D452E83F59232 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */; settings = {COMPILER_FLAGS = ""; }; };
+		757B7F3DD6C941DE966F02E2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */ = {isa = PBXBuildFile; fileRef = 6F44122E235049A08E5FD66C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		786385D4E2BB43CDB16135D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */ = {isa = PBXBuildFile; fileRef = C01FCE62BD0A46799EB1F4EA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */; settings = {COMPILER_FLAGS = ""; }; };
+		78D5725DD533437B82221291 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */ = {isa = PBXBuildFile; fileRef = DB89B8382B184A409484532D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		79132B36130F40369B344DF2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */ = {isa = PBXBuildFile; fileRef = 1E5ED94C68AF45EF88EBCD51 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		7B7D38F2CDC34D65908BB603 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */ = {isa = PBXBuildFile; fileRef = 8B853C5606A8428A956741A8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		8308D8EC95324988A73EAF15 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */ = {isa = PBXBuildFile; fileRef = EE3E2AB9135F4C459C1DF54C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		8484EC88197A45B59288033F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */ = {isa = PBXBuildFile; fileRef = 03FF6F8B41F6422EA3DC4775 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		87112A59830E49BE95CFA7D7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */ = {isa = PBXBuildFile; fileRef = C59A4A89DA6A42819C790066 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */; settings = {COMPILER_FLAGS = ""; }; };
+		875B78C56D4340F394B1148F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */ = {isa = PBXBuildFile; fileRef = 9C233AA5EE284BD789F6AD1F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */; settings = {COMPILER_FLAGS = ""; }; };
+		87F6663C8ADE437482683B6F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */ = {isa = PBXBuildFile; fileRef = 69BB9A84E89A425B9FB0AF4E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */; settings = {COMPILER_FLAGS = ""; }; };
+		937417DEC8874945B15DE74A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */ = {isa = PBXBuildFile; fileRef = 3596B5D7B3FE435181308B7C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		981712AA162A49D5A342DEDF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */ = {isa = PBXBuildFile; fileRef = 2121A062C59044BDBBFDD36A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		9A80F280DA224460BEFD9FB3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */ = {isa = PBXBuildFile; fileRef = B4EC08E009724AE8878B53D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */; settings = {COMPILER_FLAGS = ""; }; };
+		9D724C9A56964C1F877C2D37 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */ = {isa = PBXBuildFile; fileRef = 0B6A7169349343A1AFCCD582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		9DA8ACE2D8EF4B529C8204F8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */ = {isa = PBXBuildFile; fileRef = 19C4EB04F21A44E4A00E4BE0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */; settings = {COMPILER_FLAGS = ""; }; };
+		9EDE05C351D04DDC8B53EB31 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */ = {isa = PBXBuildFile; fileRef = 93269623443D4005AEEC9CCD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */; settings = {COMPILER_FLAGS = ""; }; };
+		A638DE09B2E84A44B10499DE /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */ = {isa = PBXBuildFile; fileRef = 544C592887E748AF9D82D51C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */; settings = {COMPILER_FLAGS = ""; }; };
+		AB51826D4EA946A6B49823C4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */ = {isa = PBXBuildFile; fileRef = CC8FEFF6E2B74DC28DEA1978 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		AF147358FB0C44469E2AF97C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */ = {isa = PBXBuildFile; fileRef = 5B89C610852D45D8AD7FDC48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		B26FE2E4C6CD4D829AB4AE8F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */ = {isa = PBXBuildFile; fileRef = 236C50CE243E4917B757EB1C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		B820B0E38CD949CD85B2982C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */ = {isa = PBXBuildFile; fileRef = A720B21C6A084687BD0CD4EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		BAB79DA7B39C44D0A13A6076 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */ = {isa = PBXBuildFile; fileRef = 01E2638226BF4A239B04E6EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */; settings = {COMPILER_FLAGS = ""; }; };
+		BC5A7CC6E69146108C6F357D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */ = {isa = PBXBuildFile; fileRef = 6560A6759807452AB7989ACA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */; settings = {COMPILER_FLAGS = ""; }; };
+		BEE2A87F3E4444319626CC40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */ = {isa = PBXBuildFile; fileRef = 9E54E2275437466DAC90EE48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		C40E32D1E95342328543AFE2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */ = {isa = PBXBuildFile; fileRef = 4C460BF546684EA48E5452CC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */; settings = {COMPILER_FLAGS = ""; }; };
+		C93128CCE5364D1FA33B080B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */ = {isa = PBXBuildFile; fileRef = F322E85CF117431FB77CC78D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		CB9F783014A04896ACA2D7E4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */ = {isa = PBXBuildFile; fileRef = DD96C97ACFAC41CB8B74EE76 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		CE058FE5BC6D4A3F943EBA4D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */ = {isa = PBXBuildFile; fileRef = 51039BA9A85B4738B0F70A64 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */; settings = {COMPILER_FLAGS = ""; }; };
+		D360C3C02FB0401D9F6BBF42 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */ = {isa = PBXBuildFile; fileRef = 2957C6C57EF8469CB9ADE830 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */; settings = {COMPILER_FLAGS = ""; }; };
+		D4988C44CEC14A0089F2D682 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */ = {isa = PBXBuildFile; fileRef = A930FCF1EAC347219FC4442C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		D74B9DB31DA84E458C7C0D55 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */ = {isa = PBXBuildFile; fileRef = B96123D08BA242328BC4938E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */; settings = {COMPILER_FLAGS = ""; }; };
+		D819398ADF2C47B083F36487 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */ = {isa = PBXBuildFile; fileRef = 549EDC9829DC4FD0A7FEACAB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		D92414C6F80647B292A023BB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */ = {isa = PBXBuildFile; fileRef = 0C5DA01293D04BFAA7E65CEA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		DB7704FCE2B344F096F9832C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */ = {isa = PBXBuildFile; fileRef = F6770F1E6CC8454687A5230D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		DF36A0551C0D4336A280F801 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */ = {isa = PBXBuildFile; fileRef = 3A1CF25CCF1847EA879E1601 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		E13E8E2C39214A37B264735C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */ = {isa = PBXBuildFile; fileRef = 7D5563F41567448A8090EB68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		E396061B86F6421DB7D2DEB5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */ = {isa = PBXBuildFile; fileRef = 969250DB05514785BD4F99B3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */; settings = {COMPILER_FLAGS = ""; }; };
+		E860E690DC074856A0862DB9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */ = {isa = PBXBuildFile; fileRef = 3AD6C6B8B2FB41059C260796 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		ECC425CEB1474BFA9931C552 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */ = {isa = PBXBuildFile; fileRef = A29B508D64994C92836E6F68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */; settings = {COMPILER_FLAGS = ""; }; };
+		F047F82A2E2341C684E72DA7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */ = {isa = PBXBuildFile; fileRef = DF6B198562164BE69818A3F9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */; settings = {COMPILER_FLAGS = ""; }; };
+		F2AC168062D54B0DA82ABA9C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */ = {isa = PBXBuildFile; fileRef = EC89275508B14FBEB1F0DF3F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */; settings = {COMPILER_FLAGS = ""; }; };
+		F82410F12DB84B1F8357B1D3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */ = {isa = PBXBuildFile; fileRef = BB25751FFB68407A800DFEA9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */; settings = {COMPILER_FLAGS = ""; }; };
+		FD59202A50AF453EBD426E2D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */ = {isa = PBXBuildFile; fileRef = 73A32BF9DA06443A9F7BAD40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */; settings = {COMPILER_FLAGS = ""; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
-		0C5809CB36614799B2213C64 /* Debug */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-			};
-			name = Debug;
-		};
-		3A3FF381CE00492CA9955847 /* MinSizeRel */ = {
+		12393C2FBED447F99D4DF504 /* MinSizeRel */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
 			name = MinSizeRel;
 		};
-		61DA630DCB1347A7882C4963 /* Release */ = {
+		6B6D331C5A894AFEA5972946 /* Release */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
 			name = Release;
 		};
-		8BEF5DF6966C4D16B43F7905 /* RelWithDebInfo */ = {
+		7CFB9BD4D7874F858A9F9C21 /* RelWithDebInfo */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
 			name = RelWithDebInfo;
 		};
-		D4415B03BF7B4A5D8D6A9EB0 = {
+		805D4619C74044A7A23810C7 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		A536E2CBE926403B9FD67DC1 = {
 			isa = PBXBuildStyle;
 		};
 /* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
-		3418DC24653143ECBB745185 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42CEABA2122C432CAB3E802B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E352C3192F004B36A7608D95;
-			remoteInfo = ASCIILib;
-		};
-		5FB0CDB817EE48C1AF8143E7 /* PBXContainerItemProxy */ = {
+		448B258B1E46448C94813EE8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42CEABA2122C432CAB3E802B /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = DC5375B159DE4BACA70219DB;
 			remoteInfo = ZERO_CHECK;
 		};
-		8667620BE5E741C5B042EB0A /* PBXContainerItemProxy */ = {
+		B95C2B2F77614CC59909D1E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42CEABA2122C432CAB3E802B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E352C3192F004B36A7608D95;
+			remoteInfo = ASCIILib;
+		};
+		EFCE4128BFC94E6B9EAD33B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42CEABA2122C432CAB3E802B /* Project object */;
 			proxyType = 1;
@@ -169,247 +169,247 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		002B53E209D94281A553F824 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ContentManager.cpp; path = ASCIILib/ContentManager.cpp; sourceTree = SOURCE_ROOT; };
-		00B4392D3DED4B3C82C3B486 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogScene.cpp; path = ASCIILib/DialogScene.cpp; sourceTree = SOURCE_ROOT; };
-		0EC61F6EA3054F108123E25F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = content.h; path = ASCIILib/content.h; sourceTree = SOURCE_ROOT; };
-		13D1A77E02FE428CB6646D5D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = InputAction.cpp; path = ASCIILib/InputAction.cpp; sourceTree = SOURCE_ROOT; };
-		1482DF33E322432585499F02 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FilePaths.cpp; path = ASCIILib/FilePaths.cpp; sourceTree = SOURCE_ROOT; };
-		16A8FDEA48064385AA5A6ADA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ImageCache.cpp; path = ASCIILib/ImageCache.cpp; sourceTree = SOURCE_ROOT; };
-		180C03E7F49543159419AAE2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Color.cpp; path = ASCIILib/Color.cpp; sourceTree = SOURCE_ROOT; };
-		1CA334D54DE1415FB115C21D /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
-		1DC97242C00B42C680CDFF06 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = InputAction.h; path = ASCIILib/InputAction.h; sourceTree = SOURCE_ROOT; };
-		2144CC8CB92440AF8C844C19 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PixelFont.cpp; path = ASCIILib/PixelFont.cpp; sourceTree = SOURCE_ROOT; };
-		2263234A0C39422EA5348E27 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
-		22A9CE4B6DAD4828A1A47A70 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ScrollingWord.h; path = ASCIILib/ScrollingWord.h; sourceTree = SOURCE_ROOT; };
-		2469329265F64FC2AFEBDEA4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Tween.h; path = ASCIILib/Tween.h; sourceTree = SOURCE_ROOT; };
-		2B3E2A689BCA4F228A6BB760 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogStyle.h; path = ASCIILib/DialogStyle.h; sourceTree = SOURCE_ROOT; };
-		2BB247655ACF40B7AD3B63B1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Surface.cpp; path = ASCIILib/Surface.cpp; sourceTree = SOURCE_ROOT; };
-		2D71213F07F34E51B38321D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = InputMappings.cpp; path = ASCIILib/InputMappings.cpp; sourceTree = SOURCE_ROOT; };
-		32150018CA47420B97E60089 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogScene.h; path = ASCIILib/DialogScene.h; sourceTree = SOURCE_ROOT; };
-		36B8E29B59D747F39AF94E44 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ScrollingWord.cpp; path = ASCIILib/ScrollingWord.cpp; sourceTree = SOURCE_ROOT; };
-		370CB9AADF384B4A88120CCF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogFrame.h; path = ASCIILib/DialogFrame.h; sourceTree = SOURCE_ROOT; };
-		3AFE6DAE11844BD696327494 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = SoundManager.h; path = ASCIILib/SoundManager.h; sourceTree = SOURCE_ROOT; };
-		3D53183BFC40463D86357435 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Input.cpp; path = ASCIILib/Input.cpp; sourceTree = SOURCE_ROOT; };
-		3D5ACBA483FD4B9D8C727BA6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = SurfaceManager.h; path = ASCIILib/SurfaceManager.h; sourceTree = SOURCE_ROOT; };
-		413BE1822EAC4743848496ED /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = parsing.h; path = ASCIILib/parsing.h; sourceTree = SOURCE_ROOT; };
-		43C524E2913E4B36A3100924 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FileReader.cpp; path = ASCIILib/FileReader.cpp; sourceTree = SOURCE_ROOT; };
-		4451BE59EC0A4F82BC39E862 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = State.h; path = ASCIILib/State.h; sourceTree = SOURCE_ROOT; };
-		4D742B9D23B24035B9063B68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogStyle.cpp; path = ASCIILib/DialogStyle.cpp; sourceTree = SOURCE_ROOT; };
-		4E1955B352574492A8A99F85 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
-		598AE344BA844411B0572CC2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Menu.cpp; path = ASCIILib/Menu.cpp; sourceTree = SOURCE_ROOT; };
-		5C56D3FEB2824026BB1D8CB0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Point.h; path = ASCIILib/Point.h; sourceTree = SOURCE_ROOT; };
-		665BC941FCBE4AE48A22F9D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Rectangle.h; path = ASCIILib/Rectangle.h; sourceTree = SOURCE_ROOT; };
-		672EAC787291462D86F92916 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GlobalArgs.cpp; path = ASCIILib/GlobalArgs.cpp; sourceTree = SOURCE_ROOT; };
-		7112AA3F24584175BFCC985C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TextManager.cpp; path = ASCIILib/TextManager.cpp; sourceTree = SOURCE_ROOT; };
-		71BE52FEC74F4F7A8B2AA807 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = StringTokenizer.h; path = ASCIILib/StringTokenizer.h; sourceTree = SOURCE_ROOT; };
-		7330F9F9187E4064A12DB634 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SoundManager.cpp; path = ASCIILib/SoundManager.cpp; sourceTree = SOURCE_ROOT; };
-		7536AB50C90A4DB6AB551CE5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogFrame.cpp; path = ASCIILib/DialogFrame.cpp; sourceTree = SOURCE_ROOT; };
-		77090E76B9F54A6FB132F1DD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Rectangle.cpp; path = ASCIILib/Rectangle.cpp; sourceTree = SOURCE_ROOT; };
-		78EFE4E8477141939E344ACB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Log.cpp; path = ASCIILib/Log.cpp; sourceTree = SOURCE_ROOT; };
-		79180F105F0345B2863773B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = TextManager.h; path = ASCIILib/TextManager.h; sourceTree = SOURCE_ROOT; };
-		7ABBAAAA482B4BFC8B7D59B4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Point.cpp; path = ASCIILib/Point.cpp; sourceTree = SOURCE_ROOT; };
-		7E0CCE206942449CA5FD3582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = InputMappings.h; path = ASCIILib/InputMappings.h; sourceTree = SOURCE_ROOT; };
-		82CC42C483A24D8BB07710F7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Camera.cpp; path = ASCIILib/Camera.cpp; sourceTree = SOURCE_ROOT; };
-		9418CB19D69E4EFFA3C6D0B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Preferences.cpp; path = ASCIILib/Preferences.cpp; sourceTree = SOURCE_ROOT; };
-		96B5AC861BCF4F638A89FACC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StringTokenizer.cpp; path = ASCIILib/StringTokenizer.cpp; sourceTree = SOURCE_ROOT; };
-		986D198738B1450A879FD0BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Label.h; path = ASCIILib/Label.h; sourceTree = SOURCE_ROOT; };
-		988D6B53BD5E44718A8943BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Alignment.h; path = ASCIILib/Alignment.h; sourceTree = SOURCE_ROOT; };
-		9DD13124D258409F98AF87A9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Button.h; path = ASCIILib/Button.h; sourceTree = SOURCE_ROOT; };
-		9F65D83B320C43E6B5D12CC4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Game.h; path = ASCIILib/Game.h; sourceTree = SOURCE_ROOT; };
-		A6CF4DE3D52D495AA134C2FF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Color.h; path = ASCIILib/Color.h; sourceTree = SOURCE_ROOT; };
-		A703615D908C484387CCEA9F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ImageCache.h; path = ASCIILib/ImageCache.h; sourceTree = SOURCE_ROOT; };
-		A9FED22CB66F43A6BCE6AA7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Label.cpp; path = ASCIILib/Label.cpp; sourceTree = SOURCE_ROOT; };
-		AA7E0BA8BC1D419096077E66 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Tween.cpp; path = ASCIILib/Tween.cpp; sourceTree = SOURCE_ROOT; };
-		AB34D64460F348AE9AFCEB20 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = jsoncpp.cpp; path = ASCIILib/jsoncpp.cpp; sourceTree = SOURCE_ROOT; };
-		B1C079D465FF424284E19A04 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Button.cpp; path = ASCIILib/Button.cpp; sourceTree = SOURCE_ROOT; };
-		B35EA7CEE5EC4890922B9CD7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Menu.h; path = ASCIILib/Menu.h; sourceTree = SOURCE_ROOT; };
-		B43CD7F36E4540A78D5FAD7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Graphics.cpp; path = ASCIILib/Graphics.cpp; sourceTree = SOURCE_ROOT; };
-		B7076B8CE0DD4106B9D7387A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = Log.tpp; path = ASCIILib/Log.tpp; sourceTree = SOURCE_ROOT; };
-		B786CEED45DD404D9478DB3A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SurfaceManager.cpp; path = ASCIILib/SurfaceManager.cpp; sourceTree = SOURCE_ROOT; };
-		B998EA2E4CF74FB8B6B2708C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = content.cpp; path = ASCIILib/content.cpp; sourceTree = SOURCE_ROOT; };
-		C37E8D52E6AE4420927B02A0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Log.h; path = ASCIILib/Log.h; sourceTree = SOURCE_ROOT; };
-		C489C9B0BF3540D8B0F36D95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Input.h; path = ASCIILib/Input.h; sourceTree = SOURCE_ROOT; };
-		C745CE8BA7A74E3AA2504343 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = StyleManager.h; path = ASCIILib/StyleManager.h; sourceTree = SOURCE_ROOT; };
-		D007CD90BBF244F1A1D7DB25 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Game.cpp; path = ASCIILib/Game.cpp; sourceTree = SOURCE_ROOT; };
-		D25E9F2375B343A7B5F9224C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LanguageManager.cpp; path = ASCIILib/LanguageManager.cpp; sourceTree = SOURCE_ROOT; };
-		D30AEE5899164318B4A7E4E9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = LanguageManager.h; path = ASCIILib/LanguageManager.h; sourceTree = SOURCE_ROOT; };
-		D784881F8319412893548B97 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FilePaths.h; path = ASCIILib/FilePaths.h; sourceTree = SOURCE_ROOT; };
-		D9C7B91ED44F431AA1DB28EB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "json-forwards.h"; path = "ASCIILib/json-forwards.h"; sourceTree = SOURCE_ROOT; };
-		DD38CF24617847E8BFA75360 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Surface.h; path = ASCIILib/Surface.h; sourceTree = SOURCE_ROOT; };
-		DFECE4A9FD764B94A1D0C571 /* ASCIILib */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libASCIILib.a; refType = 0; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8C44D428BCB45BDA84B9348 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = json.h; path = ASCIILib/json.h; sourceTree = SOURCE_ROOT; };
-		EB41F2E435A040CAA8FF4583 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ContentManager.h; path = ASCIILib/ContentManager.h; sourceTree = SOURCE_ROOT; };
-		EE6CD50332E34D2BACDA11AC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Preferences.h; path = ASCIILib/Preferences.h; sourceTree = SOURCE_ROOT; };
-		F458A8A606594B6DAD79576F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = GlobalArgs.h; path = ASCIILib/GlobalArgs.h; sourceTree = SOURCE_ROOT; };
-		F4713A4A27234C668F2628CD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StyleManager.cpp; path = ASCIILib/StyleManager.cpp; sourceTree = SOURCE_ROOT; };
-		F7ACAFAB37A44941A0893DE4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FileReader.h; path = ASCIILib/FileReader.h; sourceTree = SOURCE_ROOT; };
-		F7BA010F14F44A24AD1E2920 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Camera.h; path = ASCIILib/Camera.h; sourceTree = SOURCE_ROOT; };
-		FD75602965B24E62917D9EFD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Graphics.h; path = ASCIILib/Graphics.h; sourceTree = SOURCE_ROOT; };
-		FFFF0C04F6F74AEB9C841A18 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = PixelFont.h; path = ASCIILib/PixelFont.h; sourceTree = SOURCE_ROOT; };
+		01E2638226BF4A239B04E6EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Preferences.h; path = ASCIILib/Preferences.h; sourceTree = SOURCE_ROOT; };
+		03FF6F8B41F6422EA3DC4775 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Button.cpp; path = ASCIILib/Button.cpp; sourceTree = SOURCE_ROOT; };
+		04D018256E39408FA8F66234 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StyleManager.cpp; path = ASCIILib/StyleManager.cpp; sourceTree = SOURCE_ROOT; };
+		06CAEBF9D3F24F0C8E58F59A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Surface.h; path = ASCIILib/Surface.h; sourceTree = SOURCE_ROOT; };
+		0B6A7169349343A1AFCCD582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PixelFont.cpp; path = ASCIILib/PixelFont.cpp; sourceTree = SOURCE_ROOT; };
+		0C5DA01293D04BFAA7E65CEA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Preferences.cpp; path = ASCIILib/Preferences.cpp; sourceTree = SOURCE_ROOT; };
+		134610A5B91F4B75A347E972 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = InputAction.cpp; path = ASCIILib/InputAction.cpp; sourceTree = SOURCE_ROOT; };
+		19C4EB04F21A44E4A00E4BE0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Camera.h; path = ASCIILib/Camera.h; sourceTree = SOURCE_ROOT; };
+		1E5ED94C68AF45EF88EBCD51 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FilePaths.cpp; path = ASCIILib/FilePaths.cpp; sourceTree = SOURCE_ROOT; };
+		2121A062C59044BDBBFDD36A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Color.cpp; path = ASCIILib/Color.cpp; sourceTree = SOURCE_ROOT; };
+		236C50CE243E4917B757EB1C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Label.cpp; path = ASCIILib/Label.cpp; sourceTree = SOURCE_ROOT; };
+		2957C6C57EF8469CB9ADE830 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Game.h; path = ASCIILib/Game.h; sourceTree = SOURCE_ROOT; };
+		2B9A37EE98BA40A6854CA9A4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Menu.h; path = ASCIILib/Menu.h; sourceTree = SOURCE_ROOT; };
+		2EDB3D6388204667A444B6FB /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		3596B5D7B3FE435181308B7C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Point.cpp; path = ASCIILib/Point.cpp; sourceTree = SOURCE_ROOT; };
+		3A1CF25CCF1847EA879E1601 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogFrame.cpp; path = ASCIILib/DialogFrame.cpp; sourceTree = SOURCE_ROOT; };
+		3AD6C6B8B2FB41059C260796 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogStyle.cpp; path = ASCIILib/DialogStyle.cpp; sourceTree = SOURCE_ROOT; };
+		3F1D0B3B2E774C8DA6883656 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = SurfaceManager.h; path = ASCIILib/SurfaceManager.h; sourceTree = SOURCE_ROOT; };
+		4C460BF546684EA48E5452CC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Input.h; path = ASCIILib/Input.h; sourceTree = SOURCE_ROOT; };
+		4E54C1C3F789462BB16DBA28 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = SoundManager.h; path = ASCIILib/SoundManager.h; sourceTree = SOURCE_ROOT; };
+		51039BA9A85B4738B0F70A64 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogStyle.h; path = ASCIILib/DialogStyle.h; sourceTree = SOURCE_ROOT; };
+		544C592887E748AF9D82D51C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = State.h; path = ASCIILib/State.h; sourceTree = SOURCE_ROOT; };
+		549EDC9829DC4FD0A7FEACAB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SoundManager.cpp; path = ASCIILib/SoundManager.cpp; sourceTree = SOURCE_ROOT; };
+		5670C2491EEB4803B8624370 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ScrollingWord.h; path = ASCIILib/ScrollingWord.h; sourceTree = SOURCE_ROOT; };
+		5B89C610852D45D8AD7FDC48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = LanguageManager.h; path = ASCIILib/LanguageManager.h; sourceTree = SOURCE_ROOT; };
+		6560A6759807452AB7989ACA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = InputMappings.h; path = ASCIILib/InputMappings.h; sourceTree = SOURCE_ROOT; };
+		69BB9A84E89A425B9FB0AF4E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Color.h; path = ASCIILib/Color.h; sourceTree = SOURCE_ROOT; };
+		6BA2B1CAE84E4F5985E9F201 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = content.cpp; path = ASCIILib/content.cpp; sourceTree = SOURCE_ROOT; };
+		6CE688B3ABEE4827AD2E2101 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ImageCache.cpp; path = ASCIILib/ImageCache.cpp; sourceTree = SOURCE_ROOT; };
+		6F44122E235049A08E5FD66C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Log.cpp; path = ASCIILib/Log.cpp; sourceTree = SOURCE_ROOT; };
+		73A32BF9DA06443A9F7BAD40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogScene.h; path = ASCIILib/DialogScene.h; sourceTree = SOURCE_ROOT; };
+		79B4F556B2264D0EA04855C6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Log.h; path = ASCIILib/Log.h; sourceTree = SOURCE_ROOT; };
+		79B99B12E85943CD9FFB02D1 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		7D5563F41567448A8090EB68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Rectangle.cpp; path = ASCIILib/Rectangle.cpp; sourceTree = SOURCE_ROOT; };
+		7EEE82DDCFF8492FBB30C006 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GlobalArgs.cpp; path = ASCIILib/GlobalArgs.cpp; sourceTree = SOURCE_ROOT; };
+		80C5A8BDEBB54165A927EDDD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Camera.cpp; path = ASCIILib/Camera.cpp; sourceTree = SOURCE_ROOT; };
+		873D44B224814F8FAAC2035A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "json-forwards.h"; path = "ASCIILib/json-forwards.h"; sourceTree = SOURCE_ROOT; };
+		8B853C5606A8428A956741A8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FileReader.cpp; path = ASCIILib/FileReader.cpp; sourceTree = SOURCE_ROOT; };
+		8E0E15908E0D452E83F59232 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ImageCache.h; path = ASCIILib/ImageCache.h; sourceTree = SOURCE_ROOT; };
+		93269623443D4005AEEC9CCD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Graphics.h; path = ASCIILib/Graphics.h; sourceTree = SOURCE_ROOT; };
+		969250DB05514785BD4F99B3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = TextManager.h; path = ASCIILib/TextManager.h; sourceTree = SOURCE_ROOT; };
+		976B2231CB76425A9DB0AF95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Label.h; path = ASCIILib/Label.h; sourceTree = SOURCE_ROOT; };
+		9C233AA5EE284BD789F6AD1F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = InputAction.h; path = ASCIILib/InputAction.h; sourceTree = SOURCE_ROOT; };
+		9E54E2275437466DAC90EE48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StringTokenizer.cpp; path = ASCIILib/StringTokenizer.cpp; sourceTree = SOURCE_ROOT; };
+		9F9269585BEA4A408BFDBFE8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ContentManager.cpp; path = ASCIILib/ContentManager.cpp; sourceTree = SOURCE_ROOT; };
+		A29B508D64994C92836E6F68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Point.h; path = ASCIILib/Point.h; sourceTree = SOURCE_ROOT; };
+		A5D08F722C514585B5DA452D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TextManager.cpp; path = ASCIILib/TextManager.cpp; sourceTree = SOURCE_ROOT; };
+		A720B21C6A084687BD0CD4EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Graphics.cpp; path = ASCIILib/Graphics.cpp; sourceTree = SOURCE_ROOT; };
+		A930FCF1EAC347219FC4442C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = StyleManager.h; path = ASCIILib/StyleManager.h; sourceTree = SOURCE_ROOT; };
+		A94497CD86DC45C58DE1E564 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = Log.tpp; path = ASCIILib/Log.tpp; sourceTree = SOURCE_ROOT; };
+		B4EC08E009724AE8878B53D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = GlobalArgs.h; path = ASCIILib/GlobalArgs.h; sourceTree = SOURCE_ROOT; };
+		B61079DE3FF9484DA46D724A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Button.h; path = ASCIILib/Button.h; sourceTree = SOURCE_ROOT; };
+		B96123D08BA242328BC4938E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = json.h; path = ASCIILib/json.h; sourceTree = SOURCE_ROOT; };
+		BB25751FFB68407A800DFEA9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Alignment.h; path = ASCIILib/Alignment.h; sourceTree = SOURCE_ROOT; };
+		BECC33B8772E4B0DB78B38E0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DialogFrame.h; path = ASCIILib/DialogFrame.h; sourceTree = SOURCE_ROOT; };
+		BFF3250256994BFB9DF28B8C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = jsoncpp.cpp; path = ASCIILib/jsoncpp.cpp; sourceTree = SOURCE_ROOT; };
+		C011C67BD530461A93256340 /* ASCIILib */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libASCIILib.a; refType = 0; sourceTree = BUILT_PRODUCTS_DIR; };
+		C01FCE62BD0A46799EB1F4EA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FileReader.h; path = ASCIILib/FileReader.h; sourceTree = SOURCE_ROOT; };
+		C347361866914FD08BBEC5F3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ContentManager.h; path = ASCIILib/ContentManager.h; sourceTree = SOURCE_ROOT; };
+		C38F8BE68F504B989F3A93C5 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		C59A4A89DA6A42819C790066 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Rectangle.h; path = ASCIILib/Rectangle.h; sourceTree = SOURCE_ROOT; };
+		C765732C84F24764B3F3737D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = parsing.h; path = ASCIILib/parsing.h; sourceTree = SOURCE_ROOT; };
+		CA29307469AB4584A525DC6F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = StringTokenizer.h; path = ASCIILib/StringTokenizer.h; sourceTree = SOURCE_ROOT; };
+		CAD1DC690C744F4A947D9C61 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Input.cpp; path = ASCIILib/Input.cpp; sourceTree = SOURCE_ROOT; };
+		CC8FEFF6E2B74DC28DEA1978 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = InputMappings.cpp; path = ASCIILib/InputMappings.cpp; sourceTree = SOURCE_ROOT; };
+		CD685A8040AF47E8B0A7353E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = PixelFont.h; path = ASCIILib/PixelFont.h; sourceTree = SOURCE_ROOT; };
+		CEBB492F57D742A788A347BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ScrollingWord.cpp; path = ASCIILib/ScrollingWord.cpp; sourceTree = SOURCE_ROOT; };
+		D7F3CE7FB70E476B97AE3ED9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Game.cpp; path = ASCIILib/Game.cpp; sourceTree = SOURCE_ROOT; };
+		DB89B8382B184A409484532D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SurfaceManager.cpp; path = ASCIILib/SurfaceManager.cpp; sourceTree = SOURCE_ROOT; };
+		DD96C97ACFAC41CB8B74EE76 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Menu.cpp; path = ASCIILib/Menu.cpp; sourceTree = SOURCE_ROOT; };
+		DF6B198562164BE69818A3F9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = content.h; path = ASCIILib/content.h; sourceTree = SOURCE_ROOT; };
+		E4CAEF76FBFC4FD2AEB3CD46 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Surface.cpp; path = ASCIILib/Surface.cpp; sourceTree = SOURCE_ROOT; };
+		EBDAB48F05734EEB8D5B6040 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Tween.h; path = ASCIILib/Tween.h; sourceTree = SOURCE_ROOT; };
+		EC89275508B14FBEB1F0DF3F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FilePaths.h; path = ASCIILib/FilePaths.h; sourceTree = SOURCE_ROOT; };
+		EE3E2AB9135F4C459C1DF54C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LanguageManager.cpp; path = ASCIILib/LanguageManager.cpp; sourceTree = SOURCE_ROOT; };
+		F322E85CF117431FB77CC78D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Tween.cpp; path = ASCIILib/Tween.cpp; sourceTree = SOURCE_ROOT; };
+		F6770F1E6CC8454687A5230D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DialogScene.cpp; path = ASCIILib/DialogScene.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		0AD0F81F69684BDDB3807FDB /* ASCIILib */ = {
-			isa = PBXGroup;
-			children = (
-				3D1399C36606429A94C71432 /* Source Files */,
-				8C65E388AA9E4B6BA5C0073B /* Header Files */,
-				B7076B8CE0DD4106B9D7387A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */,
-				2263234A0C39422EA5348E27 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
-			);
-			name = ASCIILib;
-			sourceTree = "<group>";
-		};
-		1F73C13D5FC845B9ACD7308B /* ALL_BUILD */ = {
-			isa = PBXGroup;
-			children = (
-				3007D262EEDB44438FD06C3B /* CMake Rules */,
-				4E1955B352574492A8A99F85 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
-			);
-			name = ALL_BUILD;
-			sourceTree = "<group>";
-		};
-		3007D262EEDB44438FD06C3B /* CMake Rules */ = {
+		12FEE40A13074367886A374C /* CMake Rules */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "CMake Rules";
 			sourceTree = "<group>";
 		};
-		3D1399C36606429A94C71432 /* Source Files */ = {
-			isa = PBXGroup;
-			children = (
-				B1C079D465FF424284E19A04 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */,
-				82CC42C483A24D8BB07710F7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */,
-				180C03E7F49543159419AAE2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */,
-				002B53E209D94281A553F824 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */,
-				7536AB50C90A4DB6AB551CE5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */,
-				00B4392D3DED4B3C82C3B486 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */,
-				4D742B9D23B24035B9063B68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */,
-				1482DF33E322432585499F02 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */,
-				43C524E2913E4B36A3100924 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */,
-				D007CD90BBF244F1A1D7DB25 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */,
-				672EAC787291462D86F92916 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */,
-				B43CD7F36E4540A78D5FAD7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */,
-				16A8FDEA48064385AA5A6ADA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */,
-				3D53183BFC40463D86357435 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */,
-				13D1A77E02FE428CB6646D5D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */,
-				2D71213F07F34E51B38321D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */,
-				A9FED22CB66F43A6BCE6AA7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */,
-				D25E9F2375B343A7B5F9224C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */,
-				78EFE4E8477141939E344ACB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */,
-				598AE344BA844411B0572CC2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */,
-				2144CC8CB92440AF8C844C19 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */,
-				7ABBAAAA482B4BFC8B7D59B4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */,
-				9418CB19D69E4EFFA3C6D0B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */,
-				77090E76B9F54A6FB132F1DD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */,
-				36B8E29B59D747F39AF94E44 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */,
-				7330F9F9187E4064A12DB634 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */,
-				96B5AC861BCF4F638A89FACC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */,
-				F4713A4A27234C668F2628CD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */,
-				2BB247655ACF40B7AD3B63B1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */,
-				B786CEED45DD404D9478DB3A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */,
-				7112AA3F24584175BFCC985C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */,
-				AA7E0BA8BC1D419096077E66 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */,
-				B998EA2E4CF74FB8B6B2708C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */,
-				AB34D64460F348AE9AFCEB20 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		8C65E388AA9E4B6BA5C0073B /* Header Files */ = {
-			isa = PBXGroup;
-			children = (
-				988D6B53BD5E44718A8943BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */,
-				9DD13124D258409F98AF87A9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */,
-				F7BA010F14F44A24AD1E2920 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */,
-				A6CF4DE3D52D495AA134C2FF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */,
-				EB41F2E435A040CAA8FF4583 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */,
-				370CB9AADF384B4A88120CCF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */,
-				32150018CA47420B97E60089 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */,
-				2B3E2A689BCA4F228A6BB760 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */,
-				D784881F8319412893548B97 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */,
-				F7ACAFAB37A44941A0893DE4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */,
-				9F65D83B320C43E6B5D12CC4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */,
-				F458A8A606594B6DAD79576F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */,
-				FD75602965B24E62917D9EFD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */,
-				A703615D908C484387CCEA9F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */,
-				C489C9B0BF3540D8B0F36D95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */,
-				1DC97242C00B42C680CDFF06 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */,
-				7E0CCE206942449CA5FD3582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */,
-				986D198738B1450A879FD0BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */,
-				D30AEE5899164318B4A7E4E9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */,
-				C37E8D52E6AE4420927B02A0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */,
-				B35EA7CEE5EC4890922B9CD7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */,
-				FFFF0C04F6F74AEB9C841A18 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */,
-				5C56D3FEB2824026BB1D8CB0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */,
-				EE6CD50332E34D2BACDA11AC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */,
-				665BC941FCBE4AE48A22F9D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */,
-				22A9CE4B6DAD4828A1A47A70 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */,
-				3AFE6DAE11844BD696327494 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */,
-				4451BE59EC0A4F82BC39E862 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */,
-				71BE52FEC74F4F7A8B2AA807 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */,
-				C745CE8BA7A74E3AA2504343 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */,
-				DD38CF24617847E8BFA75360 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */,
-				3D5ACBA483FD4B9D8C727BA6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */,
-				79180F105F0345B2863773B5 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */,
-				2469329265F64FC2AFEBDEA4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */,
-				0EC61F6EA3054F108123E25F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */,
-				D9C7B91ED44F431AA1DB28EB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */,
-				E8C44D428BCB45BDA84B9348 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */,
-				413BE1822EAC4743848496ED /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */,
-			);
-			name = "Header Files";
-			sourceTree = "<group>";
-		};
-		931C9C8183964EC28F857578 = {
-			isa = PBXGroup;
-			children = (
-				CE9F24B692DC4D6DB7763658 /* Sources */,
-				C954A743686E4C318899991C /* Resources */,
-				C95A005F79EF4DC9AFDDA182 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		C4CD5D6F8BFA47EBAD4910F8 /* ZERO_CHECK */ = {
-			isa = PBXGroup;
-			children = (
-				C5577A687A3A41489E6F73B1 /* CMake Rules */,
-				1CA334D54DE1415FB115C21D /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
-			);
-			name = ZERO_CHECK;
-			sourceTree = "<group>";
-		};
-		C5577A687A3A41489E6F73B1 /* CMake Rules */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "CMake Rules";
-			sourceTree = "<group>";
-		};
-		C954A743686E4C318899991C /* Resources */ = {
+		181366468D1D42ECB2516455 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		C95A005F79EF4DC9AFDDA182 /* Products */ = {
+		197DDFFCDA11402395213DF4 /* ZERO_CHECK */ = {
 			isa = PBXGroup;
 			children = (
-				DFECE4A9FD764B94A1D0C571 /* ASCIILib */,
+				3CD42485835B4BF293933461 /* CMake Rules */,
+				C38F8BE68F504B989F3A93C5 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
+			);
+			name = ZERO_CHECK;
+			sourceTree = "<group>";
+		};
+		3704F5A2B7BD4839A02DE725 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8DB9501481D8400584F5E3A0 /* ALL_BUILD */,
+				197DDFFCDA11402395213DF4 /* ZERO_CHECK */,
+				CA63CE089AB8407AA7DCFFFB /* ASCIILib */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		3CD42485835B4BF293933461 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		69F2EC325F84445D9222A8EB /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				BB25751FFB68407A800DFEA9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Alignment.h */,
+				B61079DE3FF9484DA46D724A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.h */,
+				19C4EB04F21A44E4A00E4BE0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.h */,
+				69BB9A84E89A425B9FB0AF4E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.h */,
+				C347361866914FD08BBEC5F3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.h */,
+				BECC33B8772E4B0DB78B38E0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.h */,
+				73A32BF9DA06443A9F7BAD40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.h */,
+				51039BA9A85B4738B0F70A64 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.h */,
+				EC89275508B14FBEB1F0DF3F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.h */,
+				C01FCE62BD0A46799EB1F4EA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.h */,
+				2957C6C57EF8469CB9ADE830 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.h */,
+				B4EC08E009724AE8878B53D2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.h */,
+				93269623443D4005AEEC9CCD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.h */,
+				8E0E15908E0D452E83F59232 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.h */,
+				4C460BF546684EA48E5452CC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.h */,
+				9C233AA5EE284BD789F6AD1F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.h */,
+				6560A6759807452AB7989ACA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.h */,
+				976B2231CB76425A9DB0AF95 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.h */,
+				5B89C610852D45D8AD7FDC48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.h */,
+				79B4F556B2264D0EA04855C6 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.h */,
+				2B9A37EE98BA40A6854CA9A4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.h */,
+				CD685A8040AF47E8B0A7353E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.h */,
+				A29B508D64994C92836E6F68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.h */,
+				01E2638226BF4A239B04E6EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.h */,
+				C59A4A89DA6A42819C790066 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.h */,
+				5670C2491EEB4803B8624370 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.h */,
+				4E54C1C3F789462BB16DBA28 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.h */,
+				544C592887E748AF9D82D51C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/State.h */,
+				CA29307469AB4584A525DC6F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.h */,
+				A930FCF1EAC347219FC4442C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.h */,
+				06CAEBF9D3F24F0C8E58F59A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.h */,
+				3F1D0B3B2E774C8DA6883656 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.h */,
+				969250DB05514785BD4F99B3 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.h */,
+				EBDAB48F05734EEB8D5B6040 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.h */,
+				DF6B198562164BE69818A3F9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.h */,
+				873D44B224814F8FAAC2035A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json-forwards.h */,
+				B96123D08BA242328BC4938E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/json.h */,
+				C765732C84F24764B3F3737D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/parsing.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		78B735131378477096F16037 = {
+			isa = PBXGroup;
+			children = (
+				3704F5A2B7BD4839A02DE725 /* Sources */,
+				181366468D1D42ECB2516455 /* Resources */,
+				B3E6A690FA2043E0BD89CB01 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8DB9501481D8400584F5E3A0 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				12FEE40A13074367886A374C /* CMake Rules */,
+				2EDB3D6388204667A444B6FB /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		B3E6A690FA2043E0BD89CB01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C011C67BD530461A93256340 /* ASCIILib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE9F24B692DC4D6DB7763658 /* Sources */ = {
+		CA63CE089AB8407AA7DCFFFB /* ASCIILib */ = {
 			isa = PBXGroup;
 			children = (
-				1F73C13D5FC845B9ACD7308B /* ALL_BUILD */,
-				C4CD5D6F8BFA47EBAD4910F8 /* ZERO_CHECK */,
-				0AD0F81F69684BDDB3807FDB /* ASCIILib */,
+				D9538A6DCFE74493BA5A1A36 /* Source Files */,
+				69F2EC325F84445D9222A8EB /* Header Files */,
+				A94497CD86DC45C58DE1E564 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.tpp */,
+				79B99B12E85943CD9FFB02D1 /* /Users/natman/whisperer-rewrite/ASCIILib/CMakeLists.txt */,
 			);
-			name = Sources;
+			name = ASCIILib;
+			sourceTree = "<group>";
+		};
+		D9538A6DCFE74493BA5A1A36 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				03FF6F8B41F6422EA3DC4775 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */,
+				80C5A8BDEBB54165A927EDDD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */,
+				2121A062C59044BDBBFDD36A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */,
+				9F9269585BEA4A408BFDBFE8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */,
+				3A1CF25CCF1847EA879E1601 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */,
+				F6770F1E6CC8454687A5230D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */,
+				3AD6C6B8B2FB41059C260796 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */,
+				1E5ED94C68AF45EF88EBCD51 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */,
+				8B853C5606A8428A956741A8 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */,
+				D7F3CE7FB70E476B97AE3ED9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */,
+				7EEE82DDCFF8492FBB30C006 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */,
+				A720B21C6A084687BD0CD4EC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */,
+				6CE688B3ABEE4827AD2E2101 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */,
+				CAD1DC690C744F4A947D9C61 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */,
+				134610A5B91F4B75A347E972 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */,
+				CC8FEFF6E2B74DC28DEA1978 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */,
+				236C50CE243E4917B757EB1C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */,
+				EE3E2AB9135F4C459C1DF54C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */,
+				6F44122E235049A08E5FD66C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */,
+				DD96C97ACFAC41CB8B74EE76 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */,
+				0B6A7169349343A1AFCCD582 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */,
+				3596B5D7B3FE435181308B7C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */,
+				0C5DA01293D04BFAA7E65CEA /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */,
+				7D5563F41567448A8090EB68 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */,
+				CEBB492F57D742A788A347BD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */,
+				549EDC9829DC4FD0A7FEACAB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */,
+				9E54E2275437466DAC90EE48 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */,
+				04D018256E39408FA8F66234 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */,
+				E4CAEF76FBFC4FD2AEB3CD46 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */,
+				DB89B8382B184A409484532D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */,
+				A5D08F722C514585B5DA452D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */,
+				F322E85CF117431FB77CC78D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */,
+				6BA2B1CAE84E4F5985E9F201 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */,
+				BFF3250256994BFB9DF28B8C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */,
+			);
+			name = "Source Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,18 +417,18 @@
 /* Begin PBXNativeTarget section */
 		E352C3192F004B36A7608D95 /* ASCIILib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6192BF1C79C742C3929F530C /* Build configuration list for PBXNativeTarget "ASCIILib" */;
+			buildConfigurationList = CAFB83DE97F44C09B0DB37ED /* Build configuration list for PBXNativeTarget "ASCIILib" */;
 			buildPhases = (
-				B76A2912597A4074826D0348 /* Sources */,
+				EEA24EE7668A420EBFD95783 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F80A870CE8964AB0ACA29348 /* PBXTargetDependency */,
+				28783554C4934609BAC79FB9 /* PBXTargetDependency */,
 			);
 			name = ASCIILib;
 			productName = ASCIILib;
-			productReference = DFECE4A9FD764B94A1D0C571 /* ASCIILib */;
+			productReference = C011C67BD530461A93256340 /* ASCIILib */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -439,18 +439,18 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 			};
-			buildConfigurationList = 4913D7626D0B4AF889A4098A /* Build configuration list for PBXProject "ASCIILib" */;
+			buildConfigurationList = ED6CD8DC0A3A4174B01C6677 /* Build configuration list for PBXProject "ASCIILib" */;
 			buildSettings = {
 			};
 			buildStyles = (
-				0C5809CB36614799B2213C64 /* Debug */,
-				61DA630DCB1347A7882C4963 /* Release */,
-				3A3FF381CE00492CA9955847 /* MinSizeRel */,
-				8BEF5DF6966C4D16B43F7905 /* RelWithDebInfo */,
+				805D4619C74044A7A23810C7 /* Debug */,
+				6B6D331C5A894AFEA5972946 /* Release */,
+				12393C2FBED447F99D4DF504 /* MinSizeRel */,
+				7CFB9BD4D7874F858A9F9C21 /* RelWithDebInfo */,
 			);
 			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 0;
-			mainGroup = 931C9C8183964EC28F857578;
+			mainGroup = 78B735131378477096F16037;
 			projectDirPath = .;
 			projectRoot = "";
 			targets = (
@@ -462,37 +462,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		267AEB056205409FAC6776DC = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# shell script goes here
-exit 0";
-			showEnvVarsInLog = 0;
-		};
-		2C707A5CD818428DB62A1B5A = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# shell script goes here
-exit 0";
-			showEnvVarsInLog = 0;
-		};
-		3D005868E409455DB19D0811 /* CMake Rules */ = {
+		3D40F7F774484C63A81F0B66 /* CMake Rules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -503,7 +473,22 @@ exit 0";
 			shellScript = "make -C /Users/natman/whisperer-rewrite/ASCIILib -f /Users/natman/whisperer-rewrite/ASCIILib/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
 			showEnvVarsInLog = 0;
 		};
-		AC10E77B5541415D8C02E71F /* CMake Rules */ = {
+		93E8C008805442DA95D5CE12 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		B245FF382D3144C29D8C8761 /* CMake Rules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -514,114 +499,87 @@ exit 0";
 			shellScript = "make -C /Users/natman/whisperer-rewrite/ASCIILib -f /Users/natman/whisperer-rewrite/ASCIILib/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION all";
 			showEnvVarsInLog = 0;
 		};
+		DBF176CC84AF43E6AC6C458C = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B76A2912597A4074826D0348 /* Sources */ = {
+		EEA24EE7668A420EBFD95783 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F4F4A9FBB264494AD25E945 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */,
-				0894DEEBE0B549DD8B881A0A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */,
-				EFE1EE75E29D4050A090C76E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */,
-				8158C05FA67C442095BFEC0A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */,
-				EFC4694FDA7D4B4F8438F3F0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */,
-				F82F136EA1B44ED2A07B6C7D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */,
-				B35E97FECB8545DBB1DD007A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */,
-				F430974A2E384C7B9BE6BDA1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */,
-				0411D20441934C1E9C323B6D /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */,
-				219E942913B748149A994E40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */,
-				AD1994FE0CD34072AB049811 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */,
-				DA85AE2AB3AF4B0DB6263528 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */,
-				4020C56DE76642C0BF57119A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */,
-				2BFC3EE48A88449D991FCA5A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */,
-				2A0DA87136ED487FADC258D7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */,
-				4C42CB08CC3F42F6B4787C10 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */,
-				A6C3D3163F2840CDA72937C4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */,
-				AAEE2D3565C84DFDB637AB21 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */,
-				E80F3A06B3B144F7B7FA50AD /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */,
-				DD3F58C730964F0FA7B4583E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */,
-				91C5DD738771475AB529C58E /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */,
-				B8D49483890149ECB47EF5EF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */,
-				FD087005F44C44EB9019383B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */,
-				1C464A6F752F4C2D9676ED86 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */,
-				749DDFBD21144C5DA858CD16 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */,
-				1C2EBFD4C17C469EADBABD30 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */,
-				37354FB2CEBF4780B76DD2A9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */,
-				B829132B59B440EF865F9C16 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */,
-				892A706721AB4403A4F50FD0 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */,
-				C6EE3528178D48CA9369A167 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */,
-				BCDB3D5F062C4F30A5AE095F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */,
-				7B341FED0B294E4AB0A93479 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */,
-				5BD8A4CBADD44C6C81B53122 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */,
-				5074DA5ECD274AF997540E8A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */,
+				8484EC88197A45B59288033F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Button.cpp */,
+				4FF841583A3043F1AFC697D9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Camera.cpp */,
+				981712AA162A49D5A342DEDF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Color.cpp */,
+				49FC7730827846F787016D0B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ContentManager.cpp */,
+				DF36A0551C0D4336A280F801 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogFrame.cpp */,
+				DB7704FCE2B344F096F9832C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogScene.cpp */,
+				E860E690DC074856A0862DB9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/DialogStyle.cpp */,
+				79132B36130F40369B344DF2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FilePaths.cpp */,
+				7B7D38F2CDC34D65908BB603 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/FileReader.cpp */,
+				385E95145B48412E9B4D298C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Game.cpp */,
+				1C39A5AF6F714AB0A2BADCA9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/GlobalArgs.cpp */,
+				B820B0E38CD949CD85B2982C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Graphics.cpp */,
+				24C141D526854E1A8D369772 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ImageCache.cpp */,
+				12D4C23897D44570ACD1E8EF /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Input.cpp */,
+				5922C7E17294485EB90105D1 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputAction.cpp */,
+				AB51826D4EA946A6B49823C4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/InputMappings.cpp */,
+				B26FE2E4C6CD4D829AB4AE8F /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Label.cpp */,
+				8308D8EC95324988A73EAF15 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/LanguageManager.cpp */,
+				757B7F3DD6C941DE966F02E2 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Log.cpp */,
+				CB9F783014A04896ACA2D7E4 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Menu.cpp */,
+				9D724C9A56964C1F877C2D37 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/PixelFont.cpp */,
+				937417DEC8874945B15DE74A /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Point.cpp */,
+				D92414C6F80647B292A023BB /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Preferences.cpp */,
+				E13E8E2C39214A37B264735C /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Rectangle.cpp */,
+				4F2C742986764B00B6AC0BB9 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/ScrollingWord.cpp */,
+				D819398ADF2C47B083F36487 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SoundManager.cpp */,
+				BEE2A87F3E4444319626CC40 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StringTokenizer.cpp */,
+				4EAFB6168CAD49BABFEB6122 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/StyleManager.cpp */,
+				1AF607A0E6D74B1BAF775468 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Surface.cpp */,
+				78D5725DD533437B82221291 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/SurfaceManager.cpp */,
+				56A4B21B80DE4CF0884D19FC /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/TextManager.cpp */,
+				C93128CCE5364D1FA33B080B /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/Tween.cpp */,
+				50A81D7F148F485C8B4595B7 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/content.cpp */,
+				6107F49DBD2547F7B7234C62 /* /Users/natman/whisperer-rewrite/ASCIILib/ASCIILib/jsoncpp.cpp */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1208DF4D32264925AB12AD4B /* PBXTargetDependency */ = {
+		28783554C4934609BAC79FB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC5375B159DE4BACA70219DB /* ZERO_CHECK */;
+			targetProxy = 448B258B1E46448C94813EE8 /* PBXContainerItemProxy */;
+		};
+		564933C825F041D9BDDA14D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC5375B159DE4BACA70219DB /* ZERO_CHECK */;
+			targetProxy = EFCE4128BFC94E6B9EAD33B4 /* PBXContainerItemProxy */;
+		};
+		66BA8728451A4C67813E972E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E352C3192F004B36A7608D95 /* ASCIILib */;
-			targetProxy = 3418DC24653143ECBB745185 /* PBXContainerItemProxy */;
-		};
-		A5D257824D84443DAB1C3088 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DC5375B159DE4BACA70219DB /* ZERO_CHECK */;
-			targetProxy = 5FB0CDB817EE48C1AF8143E7 /* PBXContainerItemProxy */;
-		};
-		F80A870CE8964AB0ACA29348 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DC5375B159DE4BACA70219DB /* ZERO_CHECK */;
-			targetProxy = 8667620BE5E741C5B042EB0A /* PBXContainerItemProxy */;
+			targetProxy = B95C2B2F77614CC59909D1E0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0119385E7DB44D2FA526DD4D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = Release;
-		};
-		2B38DF42D1AC48A8A72B3970 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = Release;
-		};
-		3D5F39153F3444E28900ED8C /* MinSizeRel */ = {
+		03AACB0B9ABA44D9B021B3B3 /* MinSizeRel */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -642,87 +600,7 @@ exit 0";
 			};
 			name = MinSizeRel;
 		};
-		42D86109591D4D95B1315CC2 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
-			};
-			name = MinSizeRel;
-		};
-		89352FC9B9E74B5C9AB20F7B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
-			};
-			name = Debug;
-		};
-		99DF81DCEAFC4F7BBB9EF1A0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CPLUSPLUSFLAGS = "-std=c++11     -DNDEBUG -D RELEASE '-std=gnu++11'  ";
-				OTHER_LIBTOOLFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ASCIILib;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = Release;
-		};
-		A6520DDE84E94B0B8BB49745 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
-			};
-			name = Release;
-		};
-		A8E6A3F532AD432BBD6AE166 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CPLUSPLUSFLAGS = "-std=c++11        -DNDEBUG '-std=gnu++11'  ";
-				OTHER_LIBTOOLFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ASCIILib;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = RelWithDebInfo;
-		};
-		A8F0BF923BDA4953A51D822C /* MinSizeRel */ = {
+		0C2462949EB54AEB9AAF2AD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -741,86 +619,9 @@ exit 0";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
 			};
-			name = MinSizeRel;
+			name = Release;
 		};
-		B3FE4CF9BB6A48EA90A0BDC3 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = RelWithDebInfo;
-		};
-		B90CA9633ADC44F791434970 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = Debug;
-		};
-		C54737496C9C4BF6AA339F57 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
-				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CPLUSPLUSFLAGS = "-std=c++11     -DNDEBUG '-std=gnu++11'  ";
-				OTHER_LIBTOOLFLAGS = " ";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ASCIILib;
-				SECTORDER_FLAGS = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
-			};
-			name = MinSizeRel;
-		};
-		C91CBA0298054E84BA8BE7C0 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = "";
-				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
-			};
-			name = RelWithDebInfo;
-		};
-		CBF777DF98724CEA828B06E1 /* Debug */ = {
+		160A706088FD4143AE0F0353 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -845,7 +646,7 @@ exit 0";
 			};
 			name = Debug;
 		};
-		E47FD2CC8D5C4380A8503AE4 /* RelWithDebInfo */ = {
+		47E450DAF8D04E809AE036DC /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -866,7 +667,144 @@ exit 0";
 			};
 			name = RelWithDebInfo;
 		};
-		FCB5534EC7FF4CADB7E94DF6 /* Debug */ = {
+		4CACA69C61334F089733E049 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "-std=c++11     -DNDEBUG '-std=gnu++11'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ASCIILib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		5BE1ED5F4DB44C5A9F024CDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
+			};
+			name = Release;
+		};
+		5C62B8BAA4A74BFEBC242EF2 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "-std=c++11        -DNDEBUG '-std=gnu++11'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ASCIILib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		8809FBD7CF724CDC87362357 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
+			};
+			name = MinSizeRel;
+		};
+		B36B6F8B93EB49B789E57170 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		B675C37163F7411D8464C9FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		B8670C2459684837951AE000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", MAC, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CPLUSPLUSFLAGS = "-std=c++11     -DNDEBUG -D RELEASE '-std=gnu++11'  ";
+				OTHER_LIBTOOLFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ASCIILib;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		BA489B9A8D3242A78F6AEF71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -887,49 +825,111 @@ exit 0";
 			};
 			name = Debug;
 		};
+		BDC7673952A94921B89AB9EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
+			};
+			name = Debug;
+		};
+		C349FDEF4883417C9CD1D3DF /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		CC05C7168C21422E87BC7398 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Frameworks/SDL2.framework/Headers, /Library/Frameworks/SDL2_mixer.framework/Headers, /Library/Frameworks/SDL2_image.framework/Headers, /Library/Frameworks/SDL2_ttf.framework/Headers, /usr/local/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		E456989AE17A4782BD4A2CDA /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = "";
+				SYMROOT = "/Users/natman/whisperer-rewrite/ASCIILib/build";
+			};
+			name = RelWithDebInfo;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4913D7626D0B4AF889A4098A /* Build configuration list for PBXProject "ASCIILib" */ = {
+		66775D5E1B204F3DA34C735D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				89352FC9B9E74B5C9AB20F7B /* Debug */,
-				A6520DDE84E94B0B8BB49745 /* Release */,
-				42D86109591D4D95B1315CC2 /* MinSizeRel */,
-				C91CBA0298054E84BA8BE7C0 /* RelWithDebInfo */,
+				BA489B9A8D3242A78F6AEF71 /* Debug */,
+				0C2462949EB54AEB9AAF2AD0 /* Release */,
+				C349FDEF4883417C9CD1D3DF /* MinSizeRel */,
+				CC05C7168C21422E87BC7398 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		6192BF1C79C742C3929F530C /* Build configuration list for PBXNativeTarget "ASCIILib" */ = {
+		B6C65711A9F445A4A8A74633 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CBF777DF98724CEA828B06E1 /* Debug */,
-				99DF81DCEAFC4F7BBB9EF1A0 /* Release */,
-				C54737496C9C4BF6AA339F57 /* MinSizeRel */,
-				A8E6A3F532AD432BBD6AE166 /* RelWithDebInfo */,
+				B36B6F8B93EB49B789E57170 /* Debug */,
+				B675C37163F7411D8464C9FB /* Release */,
+				03AACB0B9ABA44D9B021B3B3 /* MinSizeRel */,
+				47E450DAF8D04E809AE036DC /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		A0DE074342D0475E96F4EE0C /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+		CAFB83DE97F44C09B0DB37ED /* Build configuration list for PBXNativeTarget "ASCIILib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FCB5534EC7FF4CADB7E94DF6 /* Debug */,
-				2B38DF42D1AC48A8A72B3970 /* Release */,
-				A8F0BF923BDA4953A51D822C /* MinSizeRel */,
-				B3FE4CF9BB6A48EA90A0BDC3 /* RelWithDebInfo */,
+				160A706088FD4143AE0F0353 /* Debug */,
+				B8670C2459684837951AE000 /* Release */,
+				4CACA69C61334F089733E049 /* MinSizeRel */,
+				5C62B8BAA4A74BFEBC242EF2 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		B9DE1DFAA2CE45F380134AC5 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+		ED6CD8DC0A3A4174B01C6677 /* Build configuration list for PBXProject "ASCIILib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B90CA9633ADC44F791434970 /* Debug */,
-				0119385E7DB44D2FA526DD4D /* Release */,
-				3D5F39153F3444E28900ED8C /* MinSizeRel */,
-				E47FD2CC8D5C4380A8503AE4 /* RelWithDebInfo */,
+				BDC7673952A94921B89AB9EE /* Debug */,
+				5BE1ED5F4DB44C5A9F024CDF /* Release */,
+				8809FBD7CF724CDC87362357 /* MinSizeRel */,
+				E456989AE17A4782BD4A2CDA /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
