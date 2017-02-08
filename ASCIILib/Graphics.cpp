@@ -95,7 +95,9 @@ void ascii::Graphics::ApplyOptions()
 
     // Set the window size to the current scale option
     SDL_SetWindowSize(mpWindow, pixelWindowWidth(), pixelWindowHeight());
-    SDL_SetWindowPosition(mpWindow, SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex), SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex));
+    SDL_SetWindowPosition(mpWindow,
+            SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex),
+            SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex));
     
     // Go fullscreen if fullscreen is needed
 
