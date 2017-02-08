@@ -11,7 +11,8 @@ const int kFPS = 60;
 const int kMaxFrameTime = 5 * 1000 / 60;
 
 ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeight,
-        int charWidth, int charHeight)
+        int charWidth, int charHeight, float* scaleOptions, int numScaleOptions,
+        int currentScaleOption, bool fullscreen)
 	: mBufferWidth(bufferWidth), mBufferHeight(bufferHeight), mWindowTitle(title), mRunning(false),
     mTextManager(&mLanguageManager), mFirstInputFrame(true)
 {
@@ -28,7 +29,12 @@ ascii::Game::Game(const char* title, const int bufferWidth, const int bufferHeig
 
 	mpSoundManager = new SoundManager();
 
-	mpGraphics = new ascii::Graphics(mWindowTitle, charWidth, charHeight, mBufferWidth, mBufferHeight);
+    vector<float> scaleOptionsVec;
+    for (int i = 0; i < numScaleOptions; ++i)
+    {
+        scaleOptionsVec.push_back(scaleOptions[i]);
+    }
+	mpGraphics = new ascii::Graphics(mWindowTitle, charWidth, charHeight, scaleOptionsVec, currentScaleOption, fullscreen, mBufferWidth, mBufferHeight);
 
 	mpInput = new Input();
 }

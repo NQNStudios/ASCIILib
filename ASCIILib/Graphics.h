@@ -36,11 +36,11 @@ namespace ascii
 			/// Creates a game window and sets up the Graphics instance.
 			///</summary>
 			///<param name="title">The title of the game window.</param>
-			Graphics(const char* title, int charWidth, int charHeight, int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
+			Graphics(const char* title, int charWidth, int charHeight,
+                    vector<float> scaleOptions, int currentScaleOption,
+                    bool fullscreen,
+                    int bufferWidth=kBufferWidth, int bufferHeight=kBufferHeight);
 			~Graphics();
-
-            // Sets the list of scales Graphics can apply when rendering
-            void SetScaleOptions(float* scales, int count);
 
             // Applies the desired scale option, or the next smallest option
             // which fits on the current display
@@ -51,7 +51,7 @@ namespace ascii
             /// Warning: This rebuilds the image cache. All images will need
             /// to be reloaded.
             ///</summary>
-            void Initialize();
+            void ApplyOptions();
 
             void AddFont(string key, int size, string fontPath, string fontLayoutPath);
             void SetDefaultFont(string key);
@@ -68,6 +68,9 @@ namespace ascii
             /// Sets the window to fullscreen or not
             ///</summary>
             void SetFullscreen(bool fullscreen);
+
+            int pixelWindowWidth() { return width() * mCharWidth * mScale; }
+            int pixelWindowHeight() { return height() * mCharHeight * mScale; }
 
             ///<summary>
             /// Toggles fullscreen rendering (but does not cause scaling to
@@ -195,7 +198,7 @@ namespace ascii
             PixelFont* GetFont(string key);
             string mDefaultFont;
 
-            float mScale = 1.0f;
+            float mScale;
 
             vector<float> mScaleOptions;
             int mCurrentScaleOption;

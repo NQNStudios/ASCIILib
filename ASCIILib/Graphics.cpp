@@ -24,36 +24,27 @@ const unsigned int ascii::Graphics::kBufferHeight = 25;
 
 
 ascii::Graphics::Graphics(const char* title, int charWidth, int charHeight,
+        vector<float> scaleOptions, int currentScaleOption, bool fullscreen,
         int bufferWidth, int bufferHeight)
 	: Surface(bufferWidth, bufferHeight),
     mTitle(title),
-    mFullscreen(false), mBackgroundColor(ascii::Color::Black),
+    mBackgroundColor(ascii::Color::Black),
     mpWindow(NULL), mpRenderer(NULL), mHidingImages(false),
+    mFullscreen(fullscreen),
     mCellFonts(bufferWidth, vector<string>(bufferHeight, "")),
     mCharWidth(charWidth), mCharHeight(charHeight)
 {
-    // Default scale options only include 1.0 
-    mScaleOptions.push_back(1.0f);
-    mCurrentScaleOption = 0;
-
-    // Initialize graphics at the default scale and everything
-    Initialize();
-}
-
-ascii::Graphics::~Graphics(void)
-{
-    Dispose();
-}
-
-void ascii::Graphics::Initialize()
-{
-    mFullscreen = false;
+    // Start by creating the window in the correct scale
+    mScaleOptions.insert(mScaleOptions.end(), scaleOptions.begin(), scaleOptions.end());
+    mCurrentScaleOption = currentScaleOption;
+    mScale = mScaleOptions[mCurrentScaleOption];
 
     int flags = SDL_WINDOW_SHOWN;
 
+    // Only create the window once
 	mpWindow = SDL_CreateWindow(mTitle, 
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		width() * mCharWidth * mScale, height() * mCharHeight * mScale,
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+		pixelWindowWidth(), pixelWindowHeight(),
 		flags);
 
     if (!mpWindow)
@@ -62,8 +53,7 @@ void ascii::Graphics::Initialize()
         Log::SDLError();
     }
 
-	checkSize();
-
+    // oOnly create the renderer once
 	mpRenderer = SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED);
 
     if (!mpRenderer)
@@ -72,9 +62,22 @@ void ascii::Graphics::Initialize()
         Log::SDLError();
     }
 
+    // Only create the ImageCache once
 	mpCache = new ascii::ImageCache(mpRenderer,
             mCharWidth,
             mCharHeight);
+
+    ApplyOptions();
+}
+
+ascii::Graphics::~Graphics(void)
+{
+    Dispose();
+}
+
+void ascii::Graphics::ApplyOptions()
+{
+	checkSize();
 
     for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
     {
@@ -89,6 +92,29 @@ void ascii::Graphics::Initialize()
 
     // Save the display index so we can react when it changes
     mLastDisplayIndex = SDL_GetWindowDisplayIndex(mpWindow);
+
+    // Set the window size to the current scale option
+    SDL_SetWindowSize(mpWindow, pixelWindowWidth(), pixelWindowHeight());
+    SDL_SetWindowPosition(mpWindow, SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex), SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex));
+    
+    // Go fullscreen if fullscreen is needed
+
+    if (mFullscreen)
+    {
+        if (SDL_SetWindowFullscreen(mpWindow, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
+        {
+            Log::Error("Failed to set fullscreen.");
+            Log::SDLError();
+        }
+    }
+    else
+    {
+        if (SDL_SetWindowFullscreen(mpWindow, SDL_WINDOW_SHOWN) != 0)
+        {
+            Log::Error("Failed to disable fullscreen.");
+            Log::SDLError();
+        }
+    }
 }
 
 void ascii::Graphics::getCurrentDisplayResolution(int* outWidth, int* outHeight)
@@ -116,15 +142,6 @@ void ascii::Graphics::getCurrentDisplayResolution(int* outWidth, int* outHeight)
 }
 
 
-void ascii::Graphics::SetScaleOptions(float* scales, int count)
-{
-    mScaleOptions.clear();
-    for (int i = 0; i < count; ++i)
-    {
-        mScaleOptions.push_back(scales[i]);
-    }
-}
-
 void ascii::Graphics::ApplyClosestScaleOption(int option)
 {
     Log::Print("Applying scale option: ", false);
@@ -148,8 +165,7 @@ void ascii::Graphics::ApplyClosestScaleOption(int option)
             Log::Print("Closest available option was: ", false);
             Log::Print(idx);
             mScale = scaleToCheck;
-            Dispose();
-            Initialize();
+            ApplyOptions();
             return;
         }
     }
@@ -209,27 +225,10 @@ void ascii::Graphics::SetDefaultFont(string key)
 
 void ascii::Graphics::SetFullscreen(bool fullscreen)
 {
-    // Don't go into any of these operations if unnecessary
-    if (fullscreen == mFullscreen) return;
-
     mFullscreen = fullscreen;
 
-    Uint32 flags = 0; 
-    if (fullscreen)
-    {
-        flags = flags | SDL_WINDOW_FULLSCREEN_DESKTOP;
-    }
-    else
-    {
-        Dispose();
-        Initialize();
-    }
+    ApplyOptions();
 
-    if (SDL_SetWindowFullscreen(mpWindow, flags) != 0)
-    {
-        Log::Error("Failed to set fullscreen.");
-        Log::SDLError();
-    }
 }
 
 void ascii::Graphics::ToggleFullscreen()

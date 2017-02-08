@@ -27,7 +27,9 @@ namespace ascii
 			///<param name="bufferWidth">The width of the game's buffer, in cells.</param>
 			///<param name="bufferHeight">The height of the game's buffer, in cells.</param>
 			Game(const char* title, const int bufferWidth, const int bufferHeight,
-                    int charWidth, int charHeight);
+                    int charWidth, int charHeight,
+                    float* scaleOptions, int numScaleOptions, int currentScaleOption,
+                    bool fullscreen);
 
             ~Game();
 
