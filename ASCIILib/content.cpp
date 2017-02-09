@@ -1,5 +1,7 @@
 #include "content.h"
 
+#include <iterator>
+
 #include "Log.h"
 using namespace ascii;
 

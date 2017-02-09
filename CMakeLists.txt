@@ -17,6 +17,10 @@ else()
     SET(ENV{SDL2_IMAGE} "${ASCIILib_SOURCE_DIR}")
     SET(ENV{SDL2_MIXER} "${ASCIILib_SOURCE_DIR}")
     SET(ENV{ICU_ROOT} "${ASCIILib_SOURCE_DIR}")
+
+    # Define preprocessor definitions to avoid unwanted windows includes
+    add_definitions(-DNOGDI)
+    add_definitions(-DNOMINMAX)
 endif(UNIX)
 
 
@@ -106,7 +110,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ASCIILib_SOURCE_DIR}/cmake")
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
 
 find_package(ICU COMPONENTS uc io REQUIRED)
 
