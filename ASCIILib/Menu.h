@@ -72,9 +72,9 @@ class Menu : public State
         virtual void HandleInput(Input& input);
         virtual void Draw(Graphics& graphics);
 
-        bool IsFinished() { return mpNextState != NULL; }
+        virtual bool IsFinished() { return mpNextState != NULL; }
         bool MustRefreshScreen() { return true; }
-        State* NextState(Game* game) { return mpNextState; }
+        virtual State* NextState(Game* game) { return mpNextState; }
 
         // Find and select the first keyboard-enabled button by moving down and
         // wrapping if necessary. Includes the originally selected button.
