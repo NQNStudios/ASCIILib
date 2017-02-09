@@ -69,6 +69,8 @@ namespace ascii
             ///</summary>
             void SetFullscreen(bool fullscreen);
 
+            vector<float> GetScaleOptions() { return mScaleOptions; }
+
             int pixelWindowWidth() { return width() * mCharWidth * mScale; }
             int pixelWindowHeight() { return height() * mCharHeight * mScale; }
 

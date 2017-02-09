@@ -70,7 +70,6 @@ namespace ascii
             // Set the current language
             void SetLanguage(int index);
 
-
             void ActivateCondition(string condition);
             void DeactivateCondition(string condition);
             bool ConditionIsActive(string condition);
@@ -84,6 +83,7 @@ namespace ascii
 			/// Stops running the game's event loop and quits the game.
 			///</summary>
 			void Quit();
+
         protected:
 			virtual void LoadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
 			virtual void UnloadContent(ImageCache* imageCache, SoundManager* soundManager)=0;
