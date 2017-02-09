@@ -77,8 +77,6 @@ ascii::Graphics::~Graphics(void)
 
 void ascii::Graphics::ApplyOptions()
 {
-	checkSize();
-
     for (auto it = mFonts.begin(); it != mFonts.end(); ++it)
     {
         if (it->second->charHeight() == mCharHeight * mScale)
@@ -98,6 +96,9 @@ void ascii::Graphics::ApplyOptions()
     SDL_SetWindowPosition(mpWindow,
             SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex),
             SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex));
+
+	checkSize();
+
     
     // Go fullscreen if fullscreen is needed
 
@@ -497,11 +498,23 @@ void ascii::Graphics::checkSize()
         int w, h;
         SDL_GetWindowSize(mpWindow, &w, &h);
 
-        bool check = width() * mCharWidth * mScale == w && height() * mCharHeight * mScale == h;
+        int expectedWidth = pixelWindowWidth();
+        int expectedHeight = pixelWindowHeight();
+        bool check = expectedWidth == w && expectedHeight == h;
 
         if (!check)
         {
             Log::Error("The size of the created window does not match expected dimensions! This could be because the width and height of the graphics buffer are too small.");
+            Log::Print("Expected: (", false);
+            Log::Print(expectedWidth, false);
+            Log::Print(", ", false);
+            Log::Print(expectedHeight, false);
+            Log::Print(")");
+            Log::Print("Got: (", false);
+            Log::Print(w, false);
+            Log::Print(", ", false);
+            Log::Print(h, false);
+            Log::Print(")");
         }
     }
 }
