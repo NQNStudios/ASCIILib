@@ -64,3 +64,5 @@ Whisperer.build/
 ASCIILib.build/
 ASCIILib.xcodeproj/project.xcworkspace/
 ASCIILib.xcodeproj/xcuserdata/
+
+*.xcodeproj/
