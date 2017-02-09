@@ -26,6 +26,15 @@ ascii::Preferences::Preferences(string filename, string defaultFilename)
     if (existingConfig)
     {
         mRoot = Json::Load(filename);
+
+        // After parsing the existing config file, make sure it contains every
+        // key in the default
+        Json::Value* defaultValues = Json::Load(defaultFilename);
+
+        CopyMissingValues(mRoot, defaultValues);
+        delete defaultValues;
+
+        WriteValues();
     }
     // Or make a default one
     else

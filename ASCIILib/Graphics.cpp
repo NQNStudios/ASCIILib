@@ -98,7 +98,6 @@ void ascii::Graphics::ApplyOptions()
             SDL_WINDOWPOS_CENTERED_DISPLAY(mLastDisplayIndex));
 
 	checkSize();
-
     
     // Go fullscreen if fullscreen is needed
 

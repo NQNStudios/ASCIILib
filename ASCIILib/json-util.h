@@ -125,4 +125,19 @@ namespace Json
     {
         return GetValue(root, elementKey).asFloat();
     }
+
+    // For every value that exists in theirs but not mine, copy theirs
+    inline void CopyMissingValues(Json::Value* mine, Json::Value* theirs)
+    {
+        Json::Value::Members theirMembers = theirs->getMemberNames();
+
+        for (int idx = 0; idx < theirMembers.size(); ++idx)
+        {
+            string key = theirMembers[idx];
+            if (!ElementExists(*mine, key))
+            {
+                (*mine)[key] = (*theirs)[key];
+            }
+        }
+    }
 }
