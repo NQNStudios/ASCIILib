@@ -59,8 +59,6 @@ Button* ascii::Menu::ButtonForKey(string actionKey, int* outIndex)
         *outIndex = -1;
     }
 
-    Log::Print("Failed to find button with action key " + actionKey);
-
     return NULL;
 }
 
