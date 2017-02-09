@@ -6,7 +6,6 @@
 using namespace std;
 
 #include <SDL.h>
-#include <SDL_ttf.h>
 
 #include "Surface.h"
 #include "Rectangle.h"
