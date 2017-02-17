@@ -102,7 +102,8 @@ SET(ASCIILib_src
     "${SRC_DIR}/parsing.h"
     )
 
-    add_library(${PROJECT_NAME} ${ASCIILib_src})
+add_library(${PROJECT_NAME} ${ASCIILib_src})
+message("Creating library" ${PROJECT_NAME})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ASCIILib_SOURCE_DIR}/cmake")
 
