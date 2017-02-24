@@ -7,6 +7,7 @@
 #include "FileReader.h"
 #include "Log.h"
 #include "Rectangle.h"
+#include "FilePaths.h"
 
 
 ascii::PixelFont::PixelFont(int charWidth, int charHeight,
@@ -14,8 +15,8 @@ ascii::PixelFont::PixelFont(int charWidth, int charHeight,
     : mCharWidth(charWidth), mCharHeight(charHeight),
     mInitialized(false)
 {
-    mFontLayoutPath = fontLayoutFile;
-    mFontPath = textureSheet;
+    mFontLayoutPath = FileAccessPath(fontLayoutFile);
+    mFontPath = FileAccessPath(textureSheet);
 }
 
 void ascii::PixelFont::Initialize(SDL_Renderer* pRenderer)

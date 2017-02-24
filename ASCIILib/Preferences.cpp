@@ -29,7 +29,7 @@ ascii::Preferences::Preferences(string filename, string defaultFilename)
 
         // After parsing the existing config file, make sure it contains every
         // key in the default
-        Json::Value* defaultValues = Json::Load(defaultFilename);
+        Json::Value* defaultValues = Json::Load(FileAccessPath(defaultFilename));
 
         CopyMissingValues(mRoot, defaultValues);
         delete defaultValues;
