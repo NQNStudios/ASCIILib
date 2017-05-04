@@ -34,6 +34,10 @@ namespace ascii
             // Complete this state's execution immediately if possible
             virtual void Skip() { }
 
+            // Retrieve the type of state this is--override by subclasses to
+            // identify them in debug logs
+            virtual string Type() { return "No type"; }
+
             // If the state is finished, this method will return the next state for
             // the game to run
             virtual State* NextState(Game* game)=0;
