@@ -35,6 +35,7 @@ namespace Json
         if (!success)
         {
             Log::Error("Failed to parse text file as JSON: " + path);
+            Log::Error(fileJson);
             Log::Error(reader.getFormattedErrorMessages());
         }
 
