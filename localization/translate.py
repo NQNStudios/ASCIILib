@@ -63,8 +63,9 @@ if __name__ == "__main__":
                 translated_dict[key] = translated_paragraph
 
                 # Save the translated file at every step, to avoid losing work!
-                json.dump(translated_dict, open(translated_filename, 'w'))
+                json.dump(translated_dict, open(translated_filename, 'w'), indent=4)
 
+        json.dump(translated_dict, open(translated_filename, 'w'), indent=4)
         print('Done translating ' + filename + '!')
 
     print('Done translating all of the files!')
