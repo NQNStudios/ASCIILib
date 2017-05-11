@@ -34,6 +34,15 @@ if __name__ == "__main__":
 
         # Have to reload the file to read it line by line
         original_file = open(filename, 'r')
+
+        # Also check if there's already a partially- or fully-translated file
+        # for this one already
+        stripped_filename = filename[filename.rfind('/'):]
+        translated_filename = language_name + '/' + stripped_filename
+
+        if (os.path.exists(translated_filename)):
+            translated_dict = json.load(open(translated_filename, 'r'))
+
         for line in original_file.readlines():
             # Check that the line contains a JSON key/value pair
             if line.count('"'):
@@ -41,6 +50,11 @@ if __name__ == "__main__":
                 second_quote_index = line.find('"', first_quote_index+1)
 
                 key = line[first_quote_index+1:second_quote_index]
+
+                # Don't ask the user to re-translate what they already have
+                if key in translated_dict:
+                    continue
+
                 paragraph = text_dict[key]
 
                 print(paragraph)
@@ -48,11 +62,8 @@ if __name__ == "__main__":
                 translated_paragraph = raw_input('Your translation: ')
                 translated_dict[key] = translated_paragraph
 
-                stripped_filename = filename[filename.rfind('/'):]
-
                 # Save the translated file at every step, to avoid losing work!
-                json.dump(translated_dict, open(language_name + '/' +
-                                                stripped_filename, 'w'))
+                json.dump(translated_dict, open(translated_filename, 'w'))
 
         print('Done translating ' + filename + '!')
 
