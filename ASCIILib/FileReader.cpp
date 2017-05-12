@@ -25,12 +25,39 @@ ascii::FileReader::FileReader(string path)
     Initialize(path);
 }
 
-ascii::FileReader::FileReader(string path, string forbiddenCharactersPath)
+ascii::FileReader::FileReader(string path, string characterSwapsPath)
 {
-    // Read the list of forbidden characters from the given forbidden
-    // characters file, if there is one
-    mForbiddenCharacters = ReadContents(forbiddenCharactersPath);
-    mForbiddenCharacters.trim(); // Trim the trailing newline
+    // Read the list of character swaps from the character swaps file,
+    // if there is one
+    UnicodeString characterSwapsStr = ReadContents(characterSwapsPath);
+
+    int idx = 0;
+    // Parse out each swap
+    while ((idx = characterSwapsStr.indexOf(':')) != -1)
+    {
+        UnicodeString charToSwap = UnicodeString(characterSwapsStr, 0, idx);
+        characterSwapsStr = UnicodeString(characterSwapsStr, idx+1);
+        idx = characterSwapsStr.indexOf('\n');
+        UnicodeString charToUse = UnicodeString(characterSwapsStr, 0, idx);
+
+        if (idx == characterSwapsStr.length())
+        {
+        Log::Print("Initializing character swap: " + charToSwap + " for " + charToUse);
+        Log::Print("Remaining swaps: " + characterSwapsStr);
+
+        mCharacterSwaps[UnicodeString(charToSwap)] = charToUse;
+            break;
+        }
+
+        characterSwapsStr = UnicodeString(characterSwapsStr, idx+1);
+
+        Log::Print("Initializing character swap: " + charToSwap + " for " + charToUse);
+        Log::Print("Remaining swaps: " + characterSwapsStr);
+
+        mCharacterSwaps[UnicodeString(charToSwap)] = charToUse;
+    }
+
+    //mForbiddenCharacters.trim(); // Trim the trailing newline
 
     //Log::Print("Loading file ", false);
     //Log::Print(path, false);
@@ -89,18 +116,64 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         while (!u_feof(ufile))
         {
             UChar nextChar = u_fgetc(ufile);
-            contents[index++] = nextChar;
 
-            charsEncountered[nextChar] = true;
-
-            // Make sure none of the characters we read are forbidden
-            if (mForbiddenCharacters.indexOf(nextChar) != -1)
+            // Make sure none of the characters we read are forbidden. Swap
+            // them with better ones if they are
+            if (mCharacterSwaps.find(UnicodeString(nextChar)) != mCharacterSwaps.end())
             {
-                Log::Error(UnicodeString("Forbidden character '") + UnicodeString(nextChar) + UnicodeString("' found in file: ") + UnicodeString::fromUTF8(path));
+                Log::Print(UnicodeString("Forbidden character '") + UnicodeString(nextChar) + UnicodeString("' found in file: ") + UnicodeString::fromUTF8(path));
+                // Print the line where we found it
                 Log::Print("Line: ", false);
                 Log::Print(line);
-                Log::Print("Character: ", false);
+                // And which column of the line
+                Log::Print("Column: ", false);
                 Log::Print(lineCharacter);
+
+                // Swap it for a more acceptable phrase
+                UnicodeString useInstead = mCharacterSwaps[UnicodeString(nextChar)];
+
+                Log::Print("Using " + useInstead + " instead");
+
+                // If the swap version is just a single character we don't need
+                // to change anything
+                if (useInstead.length() == 1)
+                {
+                    nextChar = useInstead[0];
+                }
+                else
+                {
+                    // Otherwise we need to expand the array we're using to
+                    // store the contents
+                    UChar* newContents = new UChar[fileSize + useInstead.length()]; // omit the +1 because useInstead's first char is already counted in filesize
+                    copy(contents, contents + fileSize + 1, newContents);
+                    delete[] contents;
+
+                    contents = newContents;
+
+                    // Now add the replacement characters to the string
+                    for (int idx = 0; idx < useInstead.length(); ++idx)
+                    {
+                        Log::Print("Including the use instead phrase");
+                        contents[index++] = useInstead[idx];
+                        charsEncountered[useInstead[idx]] = true;
+
+                        //newlines won't be included in the swap phrases
+                        ++lineCharacter;
+                    }
+
+                    continue;
+                }
+            }
+
+            // Add the character to the contents we're reading
+            contents[index++] = nextChar;
+
+            // Mark that this character was found in one of the files, for
+            // debugging/font dev purposes
+            charsEncountered[nextChar] = true;
+            if (nextChar == UChar('}'))
+            {
+                Log::Print("Yeah it does happen");
             }
 
             // Update the current position in the file
@@ -134,7 +207,7 @@ UnicodeString ascii::FileReader::ReadContents(string path)
             Log::Error("Warning. File contains UTF-8 bit order mark: " + path);
 
             // Strip the BOM
-            contentsUString = contentsUString.tempSubString(3);
+            contentsUString = contentsUString.tempSubString(3);//UnicodeString(contentsUString, 3);
         }
 
         return contentsUString;
@@ -169,6 +242,10 @@ void ascii::FileReader::ParseLines(UnicodeString contents, string path)
                 line += nextChar;
             }
         }
+
+        // Make sure the last line is included
+        if (line.length() != 0)
+            mLines.push_back(line);
     }
 }
 

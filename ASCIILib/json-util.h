@@ -22,7 +22,7 @@ namespace Json
     // Parse a file for a root JSON object
     inline Json::Value* Load(string path)
     {
-        FileReader file(path, FileAccessPath("content/text/forbidden-characters.txt"));
+        FileReader file(path, FileAccessPath("content/text/character-swaps.txt"));
 
         string fileJson = file.FullContents();
 

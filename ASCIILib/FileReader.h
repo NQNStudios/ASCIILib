@@ -14,18 +14,18 @@ using namespace icu;
 namespace ascii
 {
 
-    // Reads a Unicode file line by line or all at once. Will print error messages
-    // if a nonexistent file is opened, and will simplify file input code by
-    // automatically closing the file read. Returns UTF-8 encoded std::strings and
-    // ICU UnicodeStrings
-    class FileReader
-    {
+    // Reads a Unicode file line by line or all at once. Will print error
+    // messages if a nonexistent file is opened, and will simplify file input
+    // code by automatically closing the file read. Returns UTF-8 encoded
+    // std::strings and ICU UnicodeStrings
+    class FileReader {
         public:
             // Construct a FileReader of the given filepath.
             FileReader(string path);
-            // Construct a FileReader of the given filepath checking for
-            // forbidden characters defined in the second given file
-            FileReader(string path, string forbiddenCharactersPath);
+            // Construct a FileReader of the given filepath replacing forbidden
+            // characters defined in the second given file with their
+            // acceptable forms, i.e. "—" (unsupported emdash) becomes "--"
+            FileReader(string path, string characterSwapsPath);
 
             // Check if the file was successfully opened
             inline bool Exists() { return mExists; }
@@ -56,7 +56,8 @@ namespace ascii
 
             deque<UnicodeString> mLines;
             bool mExists;
-            UnicodeString mForbiddenCharacters;
+
+            map<UnicodeString, UnicodeString> mCharacterSwaps;
     };
 
 }
