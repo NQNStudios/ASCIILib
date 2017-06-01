@@ -70,6 +70,10 @@ void ascii::Button::Draw(Graphics& graphics, bool selected) const
     if (mText.length() > 1 && extraWidth > 0)
     {
         bounds.width += extraWidth;
+        if (mAlignment == ALIGN_CENTER)
+        {
+            bounds.x -= extraWidth / 2;
+        }
         if (mAlignment == ALIGN_RIGHT)
         {
             bounds.x -= extraWidth;
