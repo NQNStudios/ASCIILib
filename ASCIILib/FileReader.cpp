@@ -20,12 +20,14 @@ void ascii::FileReader::PrintEncounteredChars()
 }
 
 
-ascii::FileReader::FileReader(string path)
+ascii::FileReader::FileReader(string path, bool runtimeLinting)
+    : mRuntimeLinting(runtimeLinting)
 {
     Initialize(path);
 }
 
-ascii::FileReader::FileReader(string path, string characterSwapsPath)
+ascii::FileReader::FileReader(string path, string characterSwapsPath, bool runtimeLinting)
+    : mRuntimeLinting(runtimeLinting)
 {
     // Read the list of character swaps from the character swaps file,
     // if there is one
@@ -117,6 +119,28 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         {
             UChar nextChar = u_fgetc(ufile);
 
+            // Make sure we never read two spaces in a row
+            if (mRuntimeLinting && index > 0 && contents[index-1] == UChar(' ') && nextChar == UChar(' '))
+            {
+                // Shrink the size by 1
+                
+                Log::Print("Double space encountered at line ", false);
+                Log::Print(line, false);
+                Log::Print(" column ", false);
+                Log::Print(lineCharacter, false);
+                Log::Print(" of file ", false);
+                Log::Print(path, false);
+                Log::Print(". Skipping it");
+                
+                
+                UChar* newContents = ResizeContents(contents, &fileSize, fileSize - 1);
+                delete[] contents;
+                contents = newContents;
+                
+                ++lineCharacter;
+                continue;
+            }
+            
             // Make sure none of the characters we read are forbidden. Swap
             // them with better ones if they are
             if (mCharacterSwaps.find(UnicodeString(nextChar)) != mCharacterSwaps.end())
@@ -129,39 +153,41 @@ UnicodeString ascii::FileReader::ReadContents(string path)
                 Log::Print("Column: ", false);
                 Log::Print(lineCharacter);
 
-                // Swap it for a more acceptable phrase
-                UnicodeString useInstead = mCharacterSwaps[UnicodeString(nextChar)];
-
-                Log::Print("Using " + useInstead + " instead");
-
-                // If the swap version is just a single character we don't need
-                // to change anything
-                if (useInstead.length() == 1)
+                if (mRuntimeLinting)
                 {
-                    nextChar = useInstead[0];
-                }
-                else
-                {
-                    // Otherwise we need to expand the array we're using to
-                    // store the contents
-                    UChar* newContents = new UChar[fileSize + useInstead.length()]; // omit the +1 because useInstead's first char is already counted in filesize
-                    copy(contents, contents + fileSize + 1, newContents);
-                    delete[] contents;
+                    // Swap it for a more acceptable phrase
+                    UnicodeString useInstead = mCharacterSwaps[UnicodeString(nextChar)];
 
-                    contents = newContents;
+                    Log::Print("Using " + useInstead + " instead");
 
-                    // Now add the replacement characters to the string
-                    for (int idx = 0; idx < useInstead.length(); ++idx)
+                    // If the swap version is just a single character we don't need
+                    // to change anything
+                    if (useInstead.length() == 1)
                     {
-                        Log::Print("Including the use instead phrase");
-                        contents[index++] = useInstead[idx];
-                        charsEncountered[useInstead[idx]] = true;
-
-                        //newlines won't be included in the swap phrases
-                        ++lineCharacter;
+                        nextChar = useInstead[0];
                     }
+                    else
+                    {
+                        // Otherwise we need to expand the array we're using to
+                        // store the contents
+                        UChar* newContents = ResizeContents(contents, &fileSize, fileSize + useInstead.length()); // omit the +1 because useInstead's first char is already counted in filesize
+                        delete[] contents;
+                        contents = newContents;
+                    
 
-                    continue;
+                        // Now add the replacement characters to the string
+                        for (int idx = 0; idx < useInstead.length(); ++idx)
+                        {
+                            Log::Print("Including the use instead phrase");
+                            contents[index++] = useInstead[idx];
+                            charsEncountered[useInstead[idx]] = true;
+
+                            //newlines won't be included in the swap phrases
+                            ++lineCharacter;
+                        }
+
+                        continue;
+                    }
                 }
             }
 
@@ -213,6 +239,19 @@ UnicodeString ascii::FileReader::ReadContents(string path)
         return contentsUString;
     }
 }
+
+UChar* ascii::FileReader::ResizeContents(UChar* contents, long* fileSize, int newSize)
+{
+    UChar* newContents = new UChar[newSize];
+    copy(contents, contents + newSize, newContents);
+    
+    *fileSize = newSize + 1;
+    
+    contents = newContents;
+    
+    return newContents;
+}
+
 
 void ascii::FileReader::ParseLines(UnicodeString contents, string path)
 {

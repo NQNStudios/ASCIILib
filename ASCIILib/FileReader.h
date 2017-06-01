@@ -21,15 +21,15 @@ namespace ascii
     class FileReader {
         public:
             // Construct a FileReader of the given filepath.
-            FileReader(string path);
+            FileReader(string path, bool runtimeLinting = false);
             // Construct a FileReader of the given filepath replacing forbidden
             // characters defined in the second given file with their
             // acceptable forms, i.e. "—" (unsupported emdash) becomes "--"
-            FileReader(string path, string characterSwapsPath);
+            FileReader(string path, string characterSwapsPath, bool runtimeLinting = false);
 
             // Check if the file was successfully opened
             inline bool Exists() { return mExists; }
-
+        
             // Check if the file contains another line to read.
             bool HasNextLine();
             // Retrieve the next line from the file being read, UTF-8 encoded.
@@ -47,13 +47,16 @@ namespace ascii
 
         private:
             static map<UChar, bool> charsEncountered;
-
+            bool mRuntimeLinting;
+        
             void Initialize(string path);
             // Retrieve the full UTF-8 contents
             UnicodeString ReadContents(string path);
             // Parse the UTF-8 contents of a file into individual lines of text
             void ParseLines(UnicodeString contents, string path);
 
+            UChar* ResizeContents(UChar* contents, long* fileSize, int newSize);
+        
             deque<UnicodeString> mLines;
             bool mExists;
 

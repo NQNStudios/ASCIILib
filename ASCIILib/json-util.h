@@ -22,8 +22,8 @@ namespace Json
     // Parse a file for a root JSON object
     inline Json::Value* Load(string path)
     {
-        FileReader file(path, FileAccessPath("content/text/character-swaps.txt"));
-
+        FileReader file(path, FileAccessPath("content/text/character-swaps.txt"), true); // Do runtime linting when loading JSON
+        
         string fileJson = file.FullContents();
 
         // Parse the text file as JSON
