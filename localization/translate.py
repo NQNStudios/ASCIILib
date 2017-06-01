@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 key = line[first_quote_index+1:second_quote_index]
 
                 # Don't ask the user to re-translate what they already have
-                if key in translated_dict:
+                if key in translated_dict and len(translated_dict[key]) > 0:
                     continue
 
                 paragraph = text_dict[key]
