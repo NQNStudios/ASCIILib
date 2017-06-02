@@ -162,6 +162,7 @@ namespace ascii
             Rectangle getSpecialRectangle(string key);
             // Retrieve a list of special rectangles defined in this Surface
             map<string, Rectangle> getSpecialRectangles();
+            Point getSpecialPoint(string key);
             // Remove all special info that belongs to the given special
             // rectangle
             void removeSpecialRectangle(string key);

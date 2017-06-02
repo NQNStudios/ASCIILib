@@ -124,13 +124,13 @@ UnicodeString ascii::FileReader::ReadContents(string path)
             {
                 // Shrink the size by 1
                 
-                Log::Print("Double space encountered at line ", false);
-                Log::Print(line, false);
-                Log::Print(" column ", false);
-                Log::Print(lineCharacter, false);
-                Log::Print(" of file ", false);
-                Log::Print(path, false);
-                Log::Print(". Skipping it");
+//                Log::Print("Double space encountered at line ", false);
+//                Log::Print(line, false);
+//                Log::Print(" column ", false);
+//                Log::Print(lineCharacter, false);
+//                Log::Print(" of file ", false);
+//                Log::Print(path, false);
+//                Log::Print(". Skipping it");
                 
                 
                 UChar* newContents = ResizeContents(contents, &fileSize, fileSize - 1);

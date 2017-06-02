@@ -728,7 +728,10 @@ vector<ascii::Point> ascii::Surface::getSpecialPoints(string key)
         for (int y = 0; y < height(); ++y)
         {
             string specialInfo = mSpecialInfo[x][y];
-
+            
+            if (specialInfo.compare(""))
+                Log::Print(specialInfo);
+            
             if (!specialInfo.compare("POINT_" + key))
             {
                 Log::Print("Found a point! " + key);
@@ -761,7 +764,9 @@ ascii::Rectangle ascii::Surface::getSpecialRectangle(string key)
     if (correspondingPoints.size() != 2)
     {
         Log::Error("Tried to construct special rectangle with other than 2 points: " + key);
-
+        Log::Print("Number of points: ", false);
+        Log::Print(correspondingPoints.size());
+        
         return Rectangle::Empty;
     }
 
@@ -805,6 +810,16 @@ map<string, ascii::Rectangle> ascii::Surface::getSpecialRectangles()
     }
 
     return specialRectangles;
+}
+
+ascii::Point ascii::Surface::getSpecialPoint(string key)
+{
+    vector<Point> correspondingPoints = getSpecialPoints(key);
+
+    Log::Print("Matching points: ", false);
+    Log::Print(correspondingPoints.size());
+    
+    return correspondingPoints[0];
 }
 
 void ascii::Surface::printContents()
