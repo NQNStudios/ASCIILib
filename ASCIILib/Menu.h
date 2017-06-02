@@ -66,7 +66,7 @@ class Menu : public State
         { mButtons[index].SetText(value); }
 
         void SetButtonTextByKeys(string actionKey, string messageKey);
-        void AppendButtonTextByKey(string actionKey, UnicodeString appendage);
+        void AppendButtonTextByKey(string actionKey, UnicodeString appendage, bool withSpace = false);
 
         virtual void Update(int deltaMS) { }
         virtual void HandleInput(Input& input);

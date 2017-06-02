@@ -123,8 +123,11 @@ void ascii::Menu::SetButtonTextByKeys(string actionKey, string messageKey)
     button->SetText(mpGame->textManager()->GetText(messageKey));
 }
 
-void ascii::Menu::AppendButtonTextByKey(string actionKey, UnicodeString appendage)
+void ascii::Menu::AppendButtonTextByKey(string actionKey, UnicodeString appendage, bool withSpace)
 {
+    if (withSpace)
+        appendage = UnicodeString(" ") + appendage;
+    
     Button* button = ButtonForKey(actionKey);
     
     UnicodeString fullText = button->GetText();
