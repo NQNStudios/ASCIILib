@@ -1,0 +1,3 @@
+[submodule "REXSpeeder"]
+	path = REXSpeeder
+	url = https://github.com/pyridine/REXSpeeder
