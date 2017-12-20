@@ -38,6 +38,11 @@ UnicodeString ascii::TextManager::GetText(string key)
     return mText[key];
 }
 
+bool ascii::TextManager::ContainsText(string key)
+{
+  return (mText.find(key) != mText.end());
+}
+
 UnicodeString ascii::TextManager::GetRandomText(int minLength)
 {
     if (mText.empty())
@@ -140,4 +145,4 @@ void ascii::TextManager::ReloadFiles()
         UnloadFile(*it);
         LoadFile(*it);
     }
-}   
+}

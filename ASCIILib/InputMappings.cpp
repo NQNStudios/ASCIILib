@@ -198,7 +198,7 @@ MouseButton ascii::InputMappings::ParseMouseButton(string mouseButtonName)
     return mouseButtons[mouseButtonName];
 }
 
-UnicodeString ascii::InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
+UnicodeString ascii::InputMappings::KeyNameList(Game* game, vector<SDL_Keycode> keyList)
 {
     UnicodeString toReturn;
 
@@ -216,9 +216,19 @@ UnicodeString ascii::InputMappings::KeyNameList(vector<SDL_Keycode> keyList)
             keyName = "UNKNOWN";
         }
 
-        // Add it to the list string
-        toReturn += UnicodeString(keyName.c_str());
-
+        string prefix = "keyname";
+        // Try to localize the human-readable name
+        if (game->textManager()->ContainsText(prefix + keyName))
+        {
+          // Log::Print("Returning a localized key name");
+          toReturn += game->textManager()->GetText(prefix + keyName);
+        }
+        else
+        {
+			// Log::Print("Giving a non-localized key name");
+          // Add it to the list string
+          toReturn += UnicodeString(keyName.c_str());
+        }
         // If it's not the last key, append a comma and a space
         if (i < keyList.size() - 1)
         {

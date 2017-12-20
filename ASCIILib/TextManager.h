@@ -35,6 +35,8 @@ class TextManager
 
         // Retrieve a string of text from a loaded text file
         UnicodeString GetText(string key);
+        // Check if a string of text exists for the given key
+        bool ContainsText(string key);
 
         // Retrieve a random string of text from the currently loaded files,
         // with the requisite minimum length

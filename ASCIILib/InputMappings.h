@@ -35,7 +35,7 @@ class InputMappings
         static MouseButton ParseMouseButton(string mouseButtonName);
         // Construct a string containing the name of each key mapped to an
         // action
-        static UnicodeString KeyNameList(vector<SDL_Keycode> keyList);
+        static UnicodeString KeyNameList(Game* game, vector<SDL_Keycode> keyList);
         // Construct a string containing the name of each mouse button mapped
         // to an action
         static UnicodeString MouseButtonNameList(Game* game,
@@ -94,5 +94,5 @@ class InputMappings
 
         Preferences* mpPreferences;
 };
-    
+
 }
