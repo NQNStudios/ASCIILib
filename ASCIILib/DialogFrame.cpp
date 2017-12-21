@@ -212,7 +212,7 @@ UnicodeString ascii::DialogFrame::AddParagraphFlush(UnicodeString paragraph)
         spaces.push_back(0);
 
         int k = 0;
-        
+
         for (int i = 0; i < line.size(); ++i)
         {
             UnicodeString uword = line[i];
@@ -294,7 +294,7 @@ bool ascii::DialogFrame::AddMockParagraph(UnicodeString paragraph, UChar mockLet
         LineBreak();
         return true;
     }
-    
+
     return false;
 }
 
@@ -515,7 +515,7 @@ bool ascii::DialogFrame::AllWordsRevealed()
             return false;
         }
     }
-    
+
     // If none is unfinished, then all words are revealed
     return true;
 }
@@ -566,7 +566,7 @@ void ascii::DialogFrame::Draw(Graphics& graphics, Preferences* config)
     {
         graphics.blitSurface(it->second, it->first.x, it->first.y);
     }
-   
+
     // If debug view is enabled, display the text frame's bounding
     // rectangle visually:
     if (config->GetBool("debug-view"))
@@ -590,7 +590,7 @@ void ascii::DialogFrame::DrawCursor(Graphics& graphics)
         Point cursorPosition(mLastCharX, mLastCharY);
         if (!mWords.empty())
         {
-            cursorPosition = mWords.back().NextCell(); 
+            cursorPosition = mWords.back().NextCell();
 
             // Draw on the next line if it would appear past the end of this
             // one
@@ -604,7 +604,7 @@ void ascii::DialogFrame::DrawCursor(Graphics& graphics)
         graphics.setBackgroundColor(cursorPosition.x, cursorPosition.y,
                 mpStyle->CursorColor);
     }
-    
+
 }
 
 bool ascii::DialogFrame::HasWords()

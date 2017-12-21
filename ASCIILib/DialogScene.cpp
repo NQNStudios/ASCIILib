@@ -15,7 +15,8 @@ ascii::DialogScene::DialogScene(DialogStyle* style, Game* game)
     : mStyle(style), mCurrentFrame(0), mFilled(false), mSaveLineBreak(false),
     mpGame(game),
     // Dialog bubbles stretch downward by default
-    mStretchDirection(STRETCH_DOWN)
+    mStretchDirection(STRETCH_DOWN),
+    mOnlyHalfLineBreaks(false)
 {
 }
 
@@ -104,7 +105,7 @@ Rectangle ascii::DialogScene::MeasureBubbleFrame(UnicodeString paragraph)
 
     /* START BY CALCULATING WIDTH AND HEIGHT */
 
-    // If we're stretching to the right or left 
+    // If we're stretching to the right or left
     if (mStretchDirection == STRETCH_LEFT || mStretchDirection == STRETCH_RIGHT)
     {
         // width equals horizontal padding + length of the text line
@@ -124,7 +125,7 @@ Rectangle ascii::DialogScene::MeasureBubbleFrame(UnicodeString paragraph)
         // Start by determining how many lines are needed
         Rectangle model(
                 0, 0,
-                bubbleFrame.width - mStyle->PaddingX * 2, 
+                bubbleFrame.width - mStyle->PaddingX * 2,
                 mpGame->graphics()->height());
         int lines = Surface::measureStringMultilineY(paragraph, model);
         int height = mStyle->PaddingY * 2 + lines;
@@ -237,7 +238,7 @@ void ascii::DialogScene::AddMockParagraph(UnicodeString paragraph, UChar mockLet
     // needs to fill so far, it is fine
 
 
-    DialogFrame* frame = &mFrames[mCurrentFrame]; 
+    DialogFrame* frame = &mFrames[mCurrentFrame];
     frame->AddMockParagraph(paragraph, mockLetter);
 }
 
@@ -245,7 +246,7 @@ void ascii::DialogScene::FillMockParagraphs(UChar mockLetter)
 {
     for (; mCurrentFrame < mFrames.size(); ++mCurrentFrame)
     {
-        DialogFrame* frame = &mFrames[mCurrentFrame]; 
+        DialogFrame* frame = &mFrames[mCurrentFrame];
         if (mStyle->IsTextFlush)
         {
             frame->FillMockParagraphsFlush(mockLetter);
@@ -263,7 +264,14 @@ void ascii::DialogScene::LineBreak()
 
     if (nextFrame != NULL)
     {
-        nextFrame->LineBreak();
+		if (mOnlyHalfLineBreaks)
+		{
+			nextFrame->HalfLineBreak();
+		}
+		else
+		{
+			nextFrame->LineBreak();
+		}
     }
     else
     {

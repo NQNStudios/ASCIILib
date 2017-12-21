@@ -172,6 +172,8 @@ class DialogScene
 
         static Rectangle msLastFrame;
         Game* mpGame;
+      public:
+        bool mOnlyHalfLineBreaks;
 };
-    
+
 }
